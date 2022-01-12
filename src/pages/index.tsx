@@ -4,7 +4,7 @@ import TextEditorBlock from '../components/text-editor/text-editor-block';
 const Home: NextPage = () => {
   return (
     <>
-      <TextEditorBlock />
+      <TextEditorBlock test='test' />
     </>
   );
 };
