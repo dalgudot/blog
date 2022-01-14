@@ -22,10 +22,13 @@ const Block: React.FC<IBlock> = ({
 }) => {
   const [text, setText] = useState('');
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const currentIndex = blockContents.indexOf(content);
+  const nextIndexBlock = blockContents[currentIndex + 1];
 
   useEffect(() => {
     focusBlock();
-  }, []);
+    // 다음 배열 변경(삭제) 되면 focus
+  }, [nextIndexBlock]);
 
   const focusBlock = () => {
     textAreaRef.current?.focus();
@@ -37,7 +40,7 @@ const Block: React.FC<IBlock> = ({
 
   const addBlock = () => {
     const newBlockContent = new NewBlockContent();
-    const currentIndex = blockContents.indexOf(content);
+    // const currentIndex = blockContents.indexOf(content);
     const isEnd = currentIndex === blockContents.length - 1;
 
     if (isEnd) {
@@ -48,7 +51,7 @@ const Block: React.FC<IBlock> = ({
     } else {
       // 아래 링크 꼭 참고!
       // https://velopert.com/3486
-      // 불변성 유지하기 위해 배열을 복사해서 특정 부분에 넣어준 뒤 업데이트
+      // 불변성 유지하기 위해 배열을 복사한 뒤 업데이트해서 setBlockContents(copyBlockContents)!
       const copyBlockContents = [...blockContents];
       copyBlockContents.splice(currentIndex + 1, 0, newBlockContent);
       setBlockContents(copyBlockContents);
@@ -90,6 +93,7 @@ const Block: React.FC<IBlock> = ({
           setText(e.target.value)
         }
         onKeyDown={onKeyDown}
+        spellCheck={false}
         placeholder='placeholder'
       />
     </TextBlock>
