@@ -54,7 +54,7 @@ const Block: React.FC<IBlock> = ({
 
     if (text === '' && e.key === 'Backspace') {
       e.preventDefault();
-      // removeBlock();
+      removeBlock();
     }
   };
 
@@ -96,9 +96,9 @@ const TextArea = styled.textarea`
   /* Text */
   caret-color: whitesmoke;
   color: whitesmoke;
-  font-weight: 400;
+  font-weight: 900;
   line-height: 1.4;
-  font-size: 18px;
+  font-size: 36px;
   /* Text */
 
   ::placeholder {
