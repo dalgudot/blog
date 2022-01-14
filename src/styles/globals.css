@@ -18,3 +18,7 @@ a {
   margin: 0;
   box-sizing: border-box;
 }
+
+textarea {
+  outline-style: none;
+}
