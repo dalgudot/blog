@@ -1,13 +1,16 @@
-import { tid } from './../../lib/utils/tid';
+import { uuid } from '../../lib/utils/id';
 
-type TnewBlockContent = {
-  tid: string;
+export interface INewBlockContent {
+  uuid: string;
   tagName: textTagName;
-  text: string;
-};
+}
 
-export const newBlockContent: TnewBlockContent = {
-  tid: tid(),
-  tagName: 'p',
-  text: '',
-};
+export class NewBlockContent implements INewBlockContent {
+  uuid: string;
+  tagName: textTagName;
+
+  constructor() {
+    this.uuid = uuid();
+    this.tagName = 'p';
+  }
+}

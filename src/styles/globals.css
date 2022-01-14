@@ -2,8 +2,6 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   background-color: #343434;
   color: aliceblue;
 }
@@ -16,9 +14,9 @@ a {
 * {
   padding: 0;
   margin: 0;
-  box-sizing: border-box;
-}
-
-textarea {
   outline-style: none;
+  box-sizing: border-box;
+  font-family: 'Noto Sans KR', Apple SD Gothic Neo, Noto Sans KR, Inter,
+    system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica,
+    Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, sans-serif;
 }

@@ -1,101 +1,108 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  ChangeEvent,
+  Dispatch,
+  KeyboardEvent,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import styled from 'styled-components';
-import { TnewBlockContent } from './text-editor';
+import { INewBlockContent, NewBlockContent } from './Model';
 
-interface IBlockProps {
-  content: TnewBlockContent;
-  handleBlock: (e: React.KeyboardEvent<HTMLParagraphElement>) => void;
+interface IBlock {
+  content: INewBlockContent;
+  blockContents: INewBlockContent[];
+  setBlockContents: Dispatch<React.SetStateAction<INewBlockContent[]>>;
 }
 
-const Block: React.FC<IBlockProps> = ({ content, handleBlock }) => {
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const [isActiveBlock, setIsActiveBlock] = useState<boolean>(true);
+const Block: React.FC<IBlock> = ({
+  content,
+  blockContents,
+  setBlockContents,
+}) => {
   const [text, setText] = useState('');
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  const focusTextBlock = () => {
+  useEffect(() => {
+    focusBlock();
+  }, []);
+
+  const focusBlock = () => {
     textAreaRef.current?.focus();
   };
 
-  useEffect(() => {
-    focusTextBlock();
-  }, []);
-
-  const activeBlock = () => {
-    setIsActiveBlock(true);
-    focusTextBlock();
-  };
-
   const blurBlock = () => {
-    setIsActiveBlock(false);
+    textAreaRef.current?.blur();
   };
 
-  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    console.log(e.target.value);
+  const removeBlock = () => {
+    const uuid = content.uuid;
+    setBlockContents(blockContents.filter((content) => content.uuid !== uuid));
+  };
+
+  const handleTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
 
-  return (
-    <>
-      <TextBlock
-        as={content.tagName}
-        onClick={activeBlock}
-        onBlur={blurBlock}
-        onKeyDown={handleBlock}
-      >
-        <AutoSizeTextArea
-          ref={textAreaRef}
-          value={text}
-          onChange={handleTextChange}
-          placeholder='placeholder'
+  const onKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      blurBlock();
+      const newBlockContent = new NewBlockContent();
+      setBlockContents((prev) => [...prev, newBlockContent]);
+    }
 
-          // onFocus={focusBlock}
-        />
-        {/* {isActiveBlock ? (
-          <AutoSizeTextArea
-            ref={textAreaRef}
-            value={text}
-            onChange={(e) => handleTextChange(e)}
-            // onFocus={focusBlock}
-          />
-        ) : (
-          text
-        )} */}
-      </TextBlock>
-    </>
+    if (text === '' && e.key === 'Backspace') {
+      e.preventDefault();
+      // removeBlock();
+    }
+  };
+
+  return (
+    <TextBlock as={content.tagName}>
+      <TextArea
+        ref={textAreaRef}
+        value={text}
+        onChange={handleTextChange}
+        onKeyDown={onKeyDown}
+        placeholder='placeholder'
+      />
+    </TextBlock>
   );
 };
 
 export default Block;
 
 const TextBlock = styled.p`
-  background-color: aliceblue;
+  padding: 0 36px;
 `;
 
-// Enter 치면 textarea focus 해제되면서 다음 block 생성
-const AutoSizeTextArea = styled.textarea`
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+const TextArea = styled.textarea`
   -webkit-appearance: none; // remove iOS upper inner shadow
+  /* https://uxgjs.tistory.com/45 */
+  /* vertical-align: bottom;  */
+  display: block; // p tag 하단에 생기는 3px 제거
 
-  padding: 24px;
   width: 100%;
   height: 100%;
   overflow: hidden;
   background-color: transparent;
+
   // 안드로이드 삼성 인터넷에서 작동 안 해서 !important
   /* border: 1px solid #dbdbdb !important;  */
+
   resize: none; // 늘이고 줄이는 기능 없애기
 
-  /* text */
-  caret-color: black;
-  color: #434343;
-  /* font-weight: 400;
-  line-height: 1.4; */
+  /* Text */
+  caret-color: whitesmoke;
+  color: whitesmoke;
+  font-weight: 400;
+  line-height: 1.4;
   font-size: 18px;
+  /* Text */
 
   ::placeholder {
-    color: #dadada;
+    color: #5f5f5f;
   }
 
   @media (hover: hover) {

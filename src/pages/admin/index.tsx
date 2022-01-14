@@ -1,19 +1,12 @@
 import type { NextPage } from 'next';
-import { useState } from 'react';
-import TextEditorBlock from '../../components/text-editor/text-editor';
-import { tid } from '../../lib/utils/tid';
+import TextEditor from '../../components/text-editor/text-editor';
+import DraftEditor from '../../components/draft/draft-editor';
 
 const Admin: NextPage = () => {
-  const initialBlock = { id: tid(), text: '', tag: 'p' };
-  const [blocks, setBlocks] = useState([initialBlock]);
-
   return (
     <>
-      {/* {blocks.map((block, idx) => (
-        <div key={idx}> */}
-      <TextEditorBlock />
-      {/* </div>
-      ))} */}
+      <TextEditor />
+      {/* <DraftEditor /> */}
     </>
   );
 };
