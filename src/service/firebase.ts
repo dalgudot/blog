@@ -20,7 +20,6 @@ const firebaseConfig = {
 
 // 사용자 관리
 // https://firebase.google.com/docs/auth/web/manage-users?authuser=0
-
 // 로그인 유지
 // https://firebase.google.com/docs/auth/web/auth-state-persistence
 // https://firebase.google.com/docs/auth/admin/manage-cookies
