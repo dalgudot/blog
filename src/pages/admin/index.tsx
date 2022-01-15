@@ -3,19 +3,18 @@ import { User } from 'firebase/auth';
 import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
 import TextEditor from '../../components/text-editor/text-editor';
-import {
-  authState,
-  signInWithGoogle,
-  signOutWithGoogle,
-} from '../../service/firebase';
+import { AuthService } from '../../service/auth_service';
+import { authState } from '../../service/firebase';
 
 const Admin: NextPage = () => {
+  const authService = new AuthService();
   const [user, setUser] = useState<User>();
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const { showToast } = useToast();
 
   useEffect(() => {
-    authState(setUser, showToast);
+    authService //
+      .onAuthChange(setUser, showToast); // 같은 탭 안에서 새로고침해도 로그인 유지(세션)
 
     if (user?.uid === process.env.NEXT_PUBLIC_ADMIN_UID) {
       setIsAdmin(true);
@@ -27,24 +26,36 @@ const Admin: NextPage = () => {
   // console.log('user', user);
   // console.log('isAdmin', isAdmin);
 
+  const onLogIn = () => {
+    authService //
+      .logIn('Google')
+      .then((data) => {
+        const user = data.user;
+        setUser(user);
+        showToast('로그인');
+      });
+  };
+
+  const onLogOut = () => {
+    authService //
+      .logOut()
+      .then(() => {
+        setUser(undefined);
+        showToast('로그아웃');
+      });
+  };
+
   if (isAdmin) {
     return (
       <>
         <TextEditor />
-        <button onClick={() => signOutWithGoogle(setUser, showToast)}>
-          로그아웃
-        </button>
+        <button onClick={onLogOut}>로그아웃</button>
       </>
     );
   } else {
     return (
       <>
-        <button onClick={() => signInWithGoogle(setUser, showToast)}>
-          구글로 로그인
-        </button>
-        <button onClick={() => signOutWithGoogle(setUser, showToast)}>
-          로그아웃
-        </button>
+        <button onClick={onLogIn}>구글로 로그인</button>
       </>
     );
   }

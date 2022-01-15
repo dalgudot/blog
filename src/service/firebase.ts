@@ -11,7 +11,7 @@ import {
 } from 'firebase/auth';
 import { Dispatch, SetStateAction } from 'react';
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_PUBLIC_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
@@ -26,7 +26,8 @@ const firebaseConfig = {
 // 엘리님 추천: 파이어베이스에서 제공하는 서버 사이드 세션 쿠키 관리
 
 // Initialize Firebase
-initializeApp(firebaseConfig);
+export const firebaseApp = initializeApp(firebaseConfig);
+
 const googleAuthProvider = new GoogleAuthProvider();
 const auth = getAuth();
 
