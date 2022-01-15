@@ -1,12 +1,10 @@
 import type { NextPage } from 'next';
 import TextEditor from '../../components/text-editor/text-editor';
-import DraftEditor from '../../components/draft/draft-editor';
 
 const Admin: NextPage = () => {
   return (
     <>
       <TextEditor />
-      {/* <DraftEditor /> */}
     </>
   );
 };

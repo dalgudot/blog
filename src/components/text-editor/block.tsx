@@ -27,7 +27,7 @@ const Block: React.FC<IBlock> = ({
 
   useEffect(() => {
     focusBlock();
-    // 다음 배열 변경(삭제) 되면 focus
+    // 다음 블럭 돔 요소가 삭제(변경)되면 focus
   }, [nextIndexBlock]);
 
   const focusBlock = () => {
@@ -40,7 +40,6 @@ const Block: React.FC<IBlock> = ({
 
   const addBlock = () => {
     const newBlockContent = new NewBlockContent();
-    // const currentIndex = blockContents.indexOf(content);
     const isEnd = currentIndex === blockContents.length - 1;
 
     if (isEnd) {
@@ -66,21 +65,25 @@ const Block: React.FC<IBlock> = ({
       const uuid = content.uuid;
       setBlockContents(
         blockContents.filter((content) => content.uuid !== uuid)
-      ); // 불변성 지키기 위해 push, splice, sort 등의 함수를 사용하면 안 됨.
+      ); // 불변성 지키기 위해 state에 바로 push, splice, sort 등의 함수를 사용하면 안 됨. 전개 연산자 등으로 복사 후 써야 함.
     }
   };
 
-  const onKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+  const onKeyPress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter') {
+      // [IME] '자음'과 '모음'을 함께 쓰는 한글의 특성으로 인해 버그 발생함.
+      // https://answers.microsoft.com/ko-kr/ie/forum/all/%ED%95%9C%EA%B8%80-%EC%9E%85%EB%A0%A5-%ED%9B%84/2071781c-f2e2-4320-8755-d306439c2f19
+      // KeyDown -> KeyPress로 해결! (https://ckbcorp.tistory.com/819)
       e.preventDefault();
       blurBlock();
       addBlock();
     }
+  };
 
+  const onKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (text === '' && e.key === 'Backspace') {
       e.preventDefault();
       removeBlock();
-      // 이전 블럭으로 이동
     }
   };
 
@@ -92,6 +95,7 @@ const Block: React.FC<IBlock> = ({
         onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
           setText(e.target.value)
         }
+        onKeyPress={onKeyPress}
         onKeyDown={onKeyDown}
         spellCheck={false}
         placeholder='placeholder'
@@ -108,9 +112,11 @@ const TextBlock = styled.p`
 
 const TextArea = styled.textarea`
   -webkit-appearance: none; // remove iOS upper inner shadow
+  resize: none; // 늘이고 줄이는 기능 없애기
+
   /* https://uxgjs.tistory.com/45 */
-  /* vertical-align: bottom;  */
   display: block; // p tag 하단에 생기는 3px 제거
+  display: -webkit-box; // fix a chrome specific bug
 
   width: 100%;
   height: 100%;
@@ -119,8 +125,6 @@ const TextArea = styled.textarea`
 
   // 안드로이드 삼성 인터넷에서 작동 안 해서 !important
   /* border: 1px solid #dbdbdb !important;  */
-
-  resize: none; // 늘이고 줄이는 기능 없애기
 
   /* Text */
   caret-color: whitesmoke;
