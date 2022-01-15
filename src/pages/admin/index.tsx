@@ -1,12 +1,53 @@
+import { useToast } from '@dalgu/react-toast';
+import { User } from 'firebase/auth';
 import type { NextPage } from 'next';
+import { useEffect, useState } from 'react';
 import TextEditor from '../../components/text-editor/text-editor';
+import {
+  authState,
+  signInWithGoogle,
+  signOutWithGoogle,
+} from '../../service/firebase';
 
 const Admin: NextPage = () => {
-  return (
-    <>
-      <TextEditor />
-    </>
-  );
+  const [user, setUser] = useState<User>();
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const { showToast } = useToast();
+
+  useEffect(() => {
+    authState(setUser, showToast);
+
+    if (user?.uid === process.env.NEXT_PUBLIC_ADMIN_UID) {
+      setIsAdmin(true);
+    } else if (user === undefined) {
+      setIsAdmin(false);
+    }
+  }, [user]);
+
+  // console.log('user', user);
+  // console.log('isAdmin', isAdmin);
+
+  if (isAdmin) {
+    return (
+      <>
+        <TextEditor />
+        <button onClick={() => signOutWithGoogle(setUser, showToast)}>
+          로그아웃
+        </button>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <button onClick={() => signInWithGoogle(setUser, showToast)}>
+          구글로 로그인
+        </button>
+        <button onClick={() => signOutWithGoogle(setUser, showToast)}>
+          로그아웃
+        </button>
+      </>
+    );
+  }
 };
 
 export default Admin;
