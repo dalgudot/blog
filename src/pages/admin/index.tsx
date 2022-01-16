@@ -1,10 +1,12 @@
+import type { NextPage } from 'next';
 import { useToast } from '@dalgu/react-toast';
 import { User } from 'firebase/auth';
-import type { NextPage } from 'next';
-import { useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import TextEditor from '../../components/text-editor/text-editor';
-import { AuthService } from '../../service/auth_service';
-import { authState } from '../../service/firebase';
+import {
+  AuthService,
+  TproviderName,
+} from '../../service/firebase/auth_service';
 
 const Admin: NextPage = () => {
   const authService = new AuthService();
@@ -13,8 +15,12 @@ const Admin: NextPage = () => {
   const { showToast } = useToast();
 
   useEffect(() => {
-    authService //
-      .onAuthChange(setUser, showToast); // 같은 탭 안에서 새로고침해도 로그인 유지(세션)
+    const onUserChanged = (user: User) => {
+      setUser(user);
+      showToast('로그인 유지');
+    };
+
+    authService.onAuthChange(onUserChanged);
 
     if (user?.uid === process.env.NEXT_PUBLIC_ADMIN_UID) {
       setIsAdmin(true);
@@ -26,9 +32,9 @@ const Admin: NextPage = () => {
   // console.log('user', user);
   // console.log('isAdmin', isAdmin);
 
-  const onLogIn = () => {
+  const onLogIn = (providerName: TproviderName) => {
     authService //
-      .logIn('Google')
+      .logIn(providerName)
       .then((data) => {
         const user = data.user;
         setUser(user);
@@ -55,7 +61,8 @@ const Admin: NextPage = () => {
   } else {
     return (
       <>
-        <button onClick={onLogIn}>구글로 로그인</button>
+        <button onClick={() => onLogIn('Google')}>구글로 로그인</button>
+        {/* <button onClick={() => onLogIn('Github')}>깃헙으로 로그인</button> */}
       </>
     );
   }

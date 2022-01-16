@@ -8,15 +8,14 @@ import {
   UserCredential,
   User,
 } from 'firebase/auth';
-import { Dispatch, SetStateAction } from 'react';
-import { firebaseConfig } from './firebase';
+import { firebaseConfig } from './config';
+
+export type TproviderName = 'Google' | 'Github';
 
 export interface IAuthService {
   logIn: (providerName: TproviderName) => Promise<UserCredential>;
   logOut: () => Promise<void>;
 }
-
-type TproviderName = 'Google' | 'Github';
 
 export class AuthService implements IAuthService {
   private auth: Auth;
@@ -39,14 +38,10 @@ export class AuthService implements IAuthService {
     return this.auth.signOut();
   }
 
-  onAuthChange(
-    setUser: Dispatch<SetStateAction<User | undefined>>,
-    showToast: (message: string) => void
-  ) {
+  onAuthChange(onUserChanged: (user: User) => void) {
     this.auth.onAuthStateChanged((user) => {
       if (user) {
-        setUser(user);
-        showToast('로그인 유지');
+        onUserChanged(user);
       } else {
         // User is signed out
         // ...
