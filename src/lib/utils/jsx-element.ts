@@ -5,7 +5,7 @@ interface IDynamicTypeElement {
 }
 
 interface IDynamicTypeTextElement extends IDynamicTypeElement {
-  tagName: textTagName;
+  tagName: TtextTagName;
   onKeyDown: any;
 }
 

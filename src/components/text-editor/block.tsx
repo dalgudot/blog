@@ -7,15 +7,18 @@ import React, {
   useState,
 } from 'react';
 import styled from 'styled-components';
-import { INewBlockContent, NewBlockContent } from './Model';
+import { Tuser } from '../../type/firebase';
+import { IArticleContent, ArticleContent } from './Model';
 
 interface IBlock {
-  content: INewBlockContent;
-  blockContents: INewBlockContent[];
-  setBlockContents: Dispatch<React.SetStateAction<INewBlockContent[]>>;
+  setBlockContents: Dispatch<React.SetStateAction<IArticleContent[]>>;
+  user: Tuser;
+  content: IArticleContent;
+  blockContents: IArticleContent[];
 }
 
 const Block: React.FC<IBlock> = ({
+  user,
   content,
   blockContents,
   setBlockContents,
@@ -39,7 +42,7 @@ const Block: React.FC<IBlock> = ({
   };
 
   const addBlock = () => {
-    const newBlockContent = new NewBlockContent();
+    const newBlockContent = new ArticleContent(user);
     const isEnd = currentIndex === blockContents.length - 1;
 
     if (isEnd) {
@@ -62,9 +65,9 @@ const Block: React.FC<IBlock> = ({
     const isMoreThanTwoBlock = blockContents.length > 1;
 
     if (isMoreThanTwoBlock) {
-      const uuid = content.uuid;
+      const blockId = content.blockId;
       setBlockContents(
-        blockContents.filter((content) => content.uuid !== uuid)
+        blockContents.filter((content) => content.blockId !== blockId)
       ); // 불변성 지키기 위해 state에 바로 push, splice, sort 등의 함수를 사용하면 안 됨. 전개 연산자 등으로 복사 후 써야 함.
     }
   };

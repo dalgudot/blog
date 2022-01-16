@@ -1,26 +1,62 @@
+import { useToast } from '@dalgu/react-toast';
 import React, { useState } from 'react';
+import { FireStoreDB } from '../../service/firebase/firestore-db';
+import { Tuser } from '../../type/firebase';
 import Block from './block';
-import { INewBlockContent, NewBlockContent } from './Model';
+import { ArticleContent, IArticleContent } from './Model';
 
-const TextEditor: React.FC = () => {
-  const newBlockContent: INewBlockContent = new NewBlockContent();
-  const [blockContents, setBlockContents] = useState<INewBlockContent[]>([
-    newBlockContent,
+export interface ItextEditor {
+  user: Tuser;
+}
+
+const TextEditor: React.FC<ItextEditor> = ({ user }) => {
+  const { showToast } = useToast();
+
+  const articleContent: IArticleContent = new ArticleContent(user);
+  const [articleContents, setArticleContent] = useState<IArticleContent[]>([
+    articleContent,
   ]);
-  // 리액트에서 state를 업데이트할 때에는 항상 불변성을 지켜야 한다. 그러지 않으면 제대로 동작하지 않음.
 
+  const [blockContents, setBlockContents] = useState<IArticleContent[]>([
+    articleContent,
+  ]);
+
+  const date = new Date();
+  // console.log(date);
+
+  console.log(articleContent);
+
+  const firestore = new FireStoreDB();
+  const saveFirestoreDB = () => {
+    firestore
+      .setDocument(
+        { test: '1' },
+        'articles',
+        `${articleContent.title.category}/${articleContent.title.h1}`
+      )
+      .then(() => {
+        showToast('서버 저장');
+      })
+      .catch((error) => {
+        throw new Error();
+      });
+  };
+
+  // 리액트에서 state를 업데이트할 때에는 항상 불변성을 지켜야 한다. 그러지 않으면 제대로 동작하지 않음.
   // console.log(blockContents);
 
   return (
     <>
       {blockContents.map((content) => (
         <Block
-          key={content.uuid}
+          key={content.blockId}
+          user={user}
           content={content}
           blockContents={blockContents}
           setBlockContents={setBlockContents}
         />
       ))}
+      <button onClick={saveFirestoreDB}>서버에 저장</button>
     </>
   );
 };

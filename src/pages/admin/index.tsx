@@ -1,25 +1,25 @@
 import type { NextPage } from 'next';
-import { useToast } from '@dalgu/react-toast';
-import { User } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import TextEditor from '../../components/text-editor/text-editor';
 import {
-  AuthService,
+  Authentication,
+  IAuthentication,
   TproviderName,
-} from '../../service/firebase/auth_service';
+} from '../../service/firebase/authentication';
+import { initializeFirebaseApp } from '../../service/firebase/config';
+import { Tuser } from '../../type/firebase';
 
 const Admin: NextPage = () => {
-  const authService = new AuthService();
-  const [user, setUser] = useState<User>();
+  initializeFirebaseApp();
+  const auth: IAuthentication = new Authentication();
+  const [user, setUser] = useState<Tuser>();
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const { showToast } = useToast();
 
   useEffect(() => {
-    const onUserChanged = (user: User) => {
+    const onUserChanged = (user: Tuser) => {
       setUser(user);
-      // showToast('로그인 유지');
     };
-    authService.onAuthChange(onUserChanged); // 한 세션(탭)에서 새로고침 시 로그인 유지
+    auth.onAuthChange(onUserChanged); // 한 세션(탭)에서 새로고침 시 로그인 유지
 
     user?.uid === process.env.NEXT_PUBLIC_ADMIN_UID
       ? setIsAdmin(true)
@@ -27,27 +27,31 @@ const Admin: NextPage = () => {
   }, [user]);
 
   const onLogIn = (providerName: TproviderName) => {
-    authService //
+    auth //
       .logIn(providerName)
       .then((data) => {
         setUser(data.user);
-        showToast('로그인');
+      })
+      .catch((error) => {
+        throw new Error(error);
       });
   };
 
   const onLogOut = () => {
-    authService //
+    auth //
       .logOut()
       .then(() => {
         setUser(undefined);
-        showToast('로그아웃');
+      })
+      .catch((error) => {
+        throw new Error(error);
       });
   };
 
   if (isAdmin) {
     return (
       <>
-        <TextEditor />
+        <TextEditor user={user} />
         <button onClick={onLogOut}>로그아웃</button>
       </>
     );
@@ -55,7 +59,6 @@ const Admin: NextPage = () => {
     return (
       <>
         <button onClick={() => onLogIn('Google')}>구글로 로그인</button>
-        {/* <button onClick={() => onLogIn('Github')}>깃헙으로 로그인</button> */}
       </>
     );
   }

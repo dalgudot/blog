@@ -1,4 +1,3 @@
-import { initializeApp } from 'firebase/app';
 import {
   getAuth,
   signInWithPopup,
@@ -8,22 +7,21 @@ import {
   UserCredential,
   User,
 } from 'firebase/auth';
-import { firebaseConfig } from './config';
 
 export type TproviderName = 'Google' | 'Github' | 'Apple';
 
-export interface IAuthService {
+export interface IAuthentication {
   logIn: (providerName: TproviderName) => Promise<UserCredential>;
   logOut: () => Promise<void>;
+  onAuthChange: (onUserChanged: (user: User) => void) => void;
 }
 
-export class AuthService implements IAuthService {
+export class Authentication implements IAuthentication {
   private auth: Auth;
   private googleAuthProvider: GoogleAuthProvider;
   private githubAuthProvider: GithubAuthProvider;
 
   constructor() {
-    initializeApp(firebaseConfig);
     this.auth = getAuth();
     this.googleAuthProvider = new GoogleAuthProvider();
     this.githubAuthProvider = new GithubAuthProvider();
