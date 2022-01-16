@@ -1,36 +1,43 @@
 import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
-import TextEditor from '../../components/text-editor/text-editor';
+import List from '../../components/list/list';
+import { setUid } from '../../redux-toolkit/slices/userSlice';
+import {
+  RootState,
+  useAppDispatch,
+  useAppSelector,
+} from '../../redux-toolkit/store';
 import {
   Authentication,
   IAuthentication,
   TproviderName,
 } from '../../service/firebase/authentication';
-import { initializeFirebaseApp } from '../../service/firebase/config';
-import { Tuser } from '../../type/firebase';
+import { Tuser } from '../../types/firebase';
 
 const Admin: NextPage = () => {
-  initializeFirebaseApp();
   const auth: IAuthentication = new Authentication();
-  const [user, setUser] = useState<Tuser>();
+  // const [user, setUser] = useState<Tuser>();
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
+  const { uid } = useAppSelector((state: RootState) => state.user);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const onUserChanged = (user: Tuser) => {
-      setUser(user);
+      dispatch(setUid(user?.uid));
     };
     auth.onAuthChange(onUserChanged); // 한 세션(탭)에서 새로고침 시 로그인 유지
 
-    user?.uid === process.env.NEXT_PUBLIC_ADMIN_UID
+    uid === process.env.NEXT_PUBLIC_ADMIN_UID
       ? setIsAdmin(true)
       : setIsAdmin(false);
-  }, [user]);
+  }, [uid]);
 
   const onLogIn = (providerName: TproviderName) => {
     auth //
       .logIn(providerName)
       .then((data) => {
-        setUser(data.user);
+        dispatch(setUid(data.user.uid));
       })
       .catch((error) => {
         throw new Error(error);
@@ -41,7 +48,8 @@ const Admin: NextPage = () => {
     auth //
       .logOut()
       .then(() => {
-        setUser(undefined);
+        setUid(undefined);
+        dispatch(setUid(undefined));
       })
       .catch((error) => {
         throw new Error(error);
@@ -51,7 +59,7 @@ const Admin: NextPage = () => {
   if (isAdmin) {
     return (
       <>
-        <TextEditor user={user} />
+        <List />
         <button onClick={onLogOut}>로그아웃</button>
       </>
     );

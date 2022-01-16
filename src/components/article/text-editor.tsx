@@ -1,9 +1,9 @@
 import { useToast } from '@dalgu/react-toast';
 import React, { useState } from 'react';
 import { FireStoreDB } from '../../service/firebase/firestore-db';
-import { Tuser } from '../../type/firebase';
+import { Tuser } from '../../types/firebase';
 import Block from './block';
-import { ArticleContent, IArticleContent } from './Model';
+import { ArticleContent, IArticleContent } from './models/article-content';
 
 export interface ItextEditor {
   user: Tuser;
@@ -21,9 +21,6 @@ const TextEditor: React.FC<ItextEditor> = ({ user }) => {
     articleContent,
   ]);
 
-  const date = new Date();
-  // console.log(date);
-
   console.log(articleContent);
 
   const firestore = new FireStoreDB();
@@ -38,7 +35,7 @@ const TextEditor: React.FC<ItextEditor> = ({ user }) => {
         showToast('서버 저장');
       })
       .catch((error) => {
-        throw new Error();
+        throw new Error(error);
       });
   };
 
@@ -49,7 +46,7 @@ const TextEditor: React.FC<ItextEditor> = ({ user }) => {
     <>
       {blockContents.map((content) => (
         <Block
-          key={content.blockId}
+          key={content.id}
           user={user}
           content={content}
           blockContents={blockContents}
