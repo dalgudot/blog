@@ -10,7 +10,7 @@ import {
 } from 'firebase/auth';
 import { firebaseConfig } from './config';
 
-export type TproviderName = 'Google' | 'Github';
+export type TproviderName = 'Google' | 'Github' | 'Apple';
 
 export interface IAuthService {
   logIn: (providerName: TproviderName) => Promise<UserCredential>;

@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import { useToast } from '@dalgu/react-toast';
 import { User } from 'firebase/auth';
-import { MouseEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import TextEditor from '../../components/text-editor/text-editor';
 import {
   AuthService,
@@ -17,27 +17,20 @@ const Admin: NextPage = () => {
   useEffect(() => {
     const onUserChanged = (user: User) => {
       setUser(user);
-      showToast('로그인 유지');
+      // showToast('로그인 유지');
     };
+    authService.onAuthChange(onUserChanged); // 한 세션(탭)에서 새로고침 시 로그인 유지
 
-    authService.onAuthChange(onUserChanged);
-
-    if (user?.uid === process.env.NEXT_PUBLIC_ADMIN_UID) {
-      setIsAdmin(true);
-    } else if (user === undefined) {
-      setIsAdmin(false);
-    }
+    user?.uid === process.env.NEXT_PUBLIC_ADMIN_UID
+      ? setIsAdmin(true)
+      : setIsAdmin(false);
   }, [user]);
-
-  // console.log('user', user);
-  // console.log('isAdmin', isAdmin);
 
   const onLogIn = (providerName: TproviderName) => {
     authService //
       .logIn(providerName)
       .then((data) => {
-        const user = data.user;
-        setUser(user);
+        setUser(data.user);
         showToast('로그인');
       });
   };
