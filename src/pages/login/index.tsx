@@ -65,19 +65,12 @@ const Login: NextPage = () => {
   if (isAdmin) {
     return (
       <>
-        <Link href='/admin/a'>
-          <a>A로</a>
-        </Link>
-        <List />
         <button onClick={onLogOut}>로그아웃</button>
       </>
     );
   } else {
     return (
       <>
-        <Link href='/admin/a'>
-          <a>A로</a>
-        </Link>
         <button onClick={() => onLogIn('Google')}>구글로 로그인</button>
       </>
     );

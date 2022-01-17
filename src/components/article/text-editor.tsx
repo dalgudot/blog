@@ -21,7 +21,7 @@ const TextEditor: React.FC<ItextEditor> = ({ user }) => {
     articleContent,
   ]);
 
-  console.log(articleContent);
+  // console.log(articleContent);
 
   const firestore = new FireStoreDB();
   const saveFirestoreDB = () => {

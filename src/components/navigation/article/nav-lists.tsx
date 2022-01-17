@@ -1,24 +1,23 @@
 import styled from 'styled-components';
 import List from './list';
 
-type Props = {
+type NavListsProps = {
   datas: {
     category: string;
-    order: number;
-    content: string;
+    order: string;
   }[];
 };
 
-const NavLists: React.FC<Props> = ({ datas }) => {
+const NavLists: React.FC<NavListsProps> = ({ datas }) => {
   return (
     <Nav>
       <Ul>
-        {datas.map((data) => (
+        {datas.map((data, idx) => (
           <List
-            key={data.content}
+            key={idx}
             category={data.category}
             order={data.order}
-            content={data.content}
+            // content={data.content}
           />
         ))}
       </Ul>

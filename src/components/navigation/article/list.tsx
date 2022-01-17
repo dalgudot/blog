@@ -3,11 +3,10 @@ import styled from 'styled-components';
 
 type Props = {
   category: string;
-  order: number;
-  content: string;
+  order: string;
 };
 
-const List: React.FC<Props> = ({ category, order, content }) => {
+const List: React.FC<Props> = ({ category, order }) => {
   const isAdmin = false;
   const url = isAdmin
     ? `/post/${category}/${order}/writing`
@@ -18,7 +17,7 @@ const List: React.FC<Props> = ({ category, order, content }) => {
       <Li>
         <Link href='/post/[category]/[order]' as={url}>
           <a>
-            <h1>List {content}</h1>
+            <h1>List {order}</h1>
           </a>
         </Link>
       </Li>

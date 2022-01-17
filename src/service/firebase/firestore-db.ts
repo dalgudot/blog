@@ -1,4 +1,10 @@
-import { doc, Firestore, setDoc, WithFieldValue } from 'firebase/firestore';
+import {
+  doc,
+  Firestore,
+  getDoc,
+  setDoc,
+  WithFieldValue,
+} from 'firebase/firestore';
 import { getDB } from './config';
 
 type TarticleDataType = {};
@@ -28,5 +34,13 @@ export class FireStoreDB implements IFireStoreDB {
     ...pathSegments: string[]
   ) {
     await setDoc(doc(this.db, path, ...pathSegments), data);
+  }
+
+  async getAllPosts() {
+    const docSnap = await getDoc(doc(this.db, 'posts/dev'));
+    const dataArray = Object.values(docSnap.data() as any); // Object to Array
+    console.log(dataArray);
+
+    return dataArray;
   }
 }
