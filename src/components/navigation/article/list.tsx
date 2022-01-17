@@ -9,13 +9,13 @@ type Props = {
 const List: React.FC<Props> = ({ category, order }) => {
   const isAdmin = false;
   const url = isAdmin
-    ? `/post/${category}/${order}/writing`
-    : `/post/${category}/${order}`;
+    ? `/${category}/${order}/writing`
+    : `/${category}/${order}`;
 
   return (
     <>
       <Li>
-        <Link href='/post/[category]/[order]' as={url}>
+        <Link href='/[category]/[order]' as={url}>
           <a>
             <h1>List {order}</h1>
           </a>

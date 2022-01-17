@@ -1,46 +1,37 @@
 import {
+  collection,
   doc,
-  Firestore,
   getDoc,
   setDoc,
   WithFieldValue,
+  orderBy,
+  query,
+  limit,
+  where,
+  getDocs,
 } from 'firebase/firestore';
+import { objectToArray } from '../../lib/utils/data';
+
 import { getDB } from './config';
 
 type TarticleDataType = {};
 
-export interface IFireStoreDB {
-  db: Firestore;
-  setDocument: (
-    data: WithFieldValue<TarticleDataType>,
-    path: string,
-    ...pathSegments: string[]
-  ) => Promise<void>;
-}
+const db = getDB();
+const devCollectionRef = collection(db, 'dev');
+const devDocWritingRef = doc(db, 'dev', 'writing');
+const devDocPublishRef = doc(db, 'dev', 'publish');
 
-export class FireStoreDB implements IFireStoreDB {
-  db: Firestore;
+export const setDocument = async (
+  data: WithFieldValue<TarticleDataType> | undefined,
+  path: string,
+  ...pathSegments: string[]
+) => {
+  await setDoc(doc(db, path, ...pathSegments), data);
+};
 
-  constructor() {
-    this.db = getDB();
-  }
-
-  // firestore 규칙
-  // https://firebase.google.com/docs/firestore/security/get-started
-  // https://firebase.google.com/docs/firestore/security/rules-structure
-  async setDocument(
-    data: WithFieldValue<TarticleDataType> | undefined,
-    path: string,
-    ...pathSegments: string[]
-  ) {
-    await setDoc(doc(this.db, path, ...pathSegments), data);
-  }
-
-  async getAllPosts() {
-    const docSnap = await getDoc(doc(this.db, 'posts/dev'));
-    const dataArray = Object.values(docSnap.data() as any); // Object to Array
-    console.log(dataArray);
-
-    return dataArray;
-  }
-}
+export const getAllArticles = async () => {
+  const docSnap = await getDoc(devDocPublishRef);
+  const dataArray = objectToArray(docSnap.data() as object);
+  console.log('get');
+  return dataArray;
+};

@@ -1,7 +1,7 @@
 import { useCheckAdminPage } from '../../lib/hooks/useCheckAdminPage';
 
 const Header: React.FC = () => {
-  useCheckAdminPage();
+  // useCheckAdminPage();
 
   return (
     <>

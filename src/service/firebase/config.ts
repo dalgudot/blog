@@ -13,7 +13,8 @@ export const initializeFirebaseApp = () => {
 };
 
 export const getDB = () => {
-  return getFirestore();
+  const db = getFirestore();
+  return db;
 };
 
 // 사용자 관리
