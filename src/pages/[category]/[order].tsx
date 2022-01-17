@@ -1,6 +1,7 @@
 // import Article from '../../components/article/article';
 import { getAllArticles } from '../../service/firebase/firestore-db';
 import Link from 'next/link';
+import { InferGetStaticPropsType } from 'next';
 
 type Props = {
   props: {
@@ -9,8 +10,9 @@ type Props = {
   };
 };
 
-const Post = (props: Props) => {
+const Post = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   console.log('Post', props);
+
   return (
     <>
       {/* <Article /> */}
@@ -32,6 +34,8 @@ type Params = {
   };
 };
 
+// [API Docs] yarn dev(next dev)에서는 매번 호출!
+// GitHub repo에서 Vercel 프론트 서버로 푸시한 뒤에 하는 '빌드'에서만 호출! -> 사용자는 파이어스토어 호출하지 않음.
 // This also gets called at build time
 export const getStaticProps = async ({ params }: Params) => {
   // const posts = await getAllArticles();
