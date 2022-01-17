@@ -1,6 +1,6 @@
-import type { NextPage } from 'next';
-import { useEffect, useState } from 'react';
-import List from '../../components/list/list';
+import { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { setUid } from '../../redux-toolkit/slices/userSlice';
 import {
   RootState,
@@ -10,17 +10,14 @@ import {
 import {
   Authentication,
   IAuthentication,
-  TproviderName,
 } from '../../service/firebase/authentication';
 import { Tuser } from '../../types/firebase';
 
 const Admin: NextPage = () => {
-  const auth: IAuthentication = new Authentication();
-  // const [user, setUser] = useState<Tuser>();
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
-
+  const router = useRouter();
   const { uid } = useAppSelector((state: RootState) => state.user);
   const dispatch = useAppDispatch();
+  const auth: IAuthentication = new Authentication();
 
   useEffect(() => {
     const onUserChanged = (user: Tuser) => {
@@ -28,53 +25,16 @@ const Admin: NextPage = () => {
     };
     auth.onAuthChange(onUserChanged); // 한 세션(탭)에서 새로고침 시 로그인 유지
 
-    uid === process.env.NEXT_PUBLIC_ADMIN_UID
-      ? setIsAdmin(true)
-      : setIsAdmin(false);
+    if (uid === process.env.NEXT_PUBLIC_ADMIN_UID) {
+      router.push('/', '/admin');
+    }
   }, [uid]);
 
-  const onLogIn = (providerName: TproviderName) => {
-    auth //
-      .logIn(providerName)
-      .then((data) => {
-        dispatch(setUid(data.user.uid));
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
-  };
-
-  const onLogOut = () => {
-    auth //
-      .logOut()
-      .then(() => {
-        setUid(undefined);
-        dispatch(setUid(undefined));
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
-  };
-
-  if (isAdmin) {
-    return (
-      <>
-        <List />
-        <button onClick={onLogOut}>로그아웃</button>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <button onClick={() => onLogIn('Google')}>구글로 로그인</button>
-      </>
-    );
-  }
+  return (
+    <>
+      <h1>Admin</h1>
+    </>
+  );
 };
 
 export default Admin;
-
-// https://medium.com/swlh/how-to-build-a-text-editor-like-notion-c510aedfdfcc#:~:text=From%20a%20technical,or%20textarea%20element.
-
-// From a technical perspective, a block is a so-called contenteditable element. Nearly every HTML element can be turned into an editable one. You just have to add the contenteditable="true" attribute to it.
-// This indicates if the element should be editable by the user. If so, users can edit their content directly in the HTML document as if it would be an input or textarea element.
