@@ -1,4 +1,4 @@
-import Article from '../../components/article/article';
+// import Article from '../../components/article/article';
 import { getAllArticles } from '../../service/firebase/firestore-db';
 import Link from 'next/link';
 
@@ -13,7 +13,7 @@ const Post = (props: Props) => {
   console.log('Post', props);
   return (
     <>
-      <Article />
+      {/* <Article /> */}
       <Link href='/'>
         <a>
           <h1>home</h1>
@@ -46,7 +46,7 @@ export const getStaticPaths = async () => {
   const posts = await getAllArticles();
 
   // Get the paths we want to pre-render based on posts
-  const paths = posts.map((post: any) => ({
+  const paths = posts.map((post) => ({
     params: { category: post.category, order: post.order },
   }));
 
