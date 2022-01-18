@@ -1,6 +1,7 @@
 import { useToast } from '@dalgu/react-toast';
 import { InferGetStaticPropsType, NextPage } from 'next';
 import styled from 'styled-components';
+import TestTextEditor from '../components/article/test/test-text-editor';
 import NavLists from '../components/navigation/article/nav-lists';
 import { getAllArticles, setDocument } from '../service/firebase/firestore-db';
 
@@ -49,10 +50,11 @@ const Index: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
 
   return (
     <>
-      <NavLists datas={listDatas} />
+      {/* <NavLists datas={listDatas} /> */}
       <TestButton onClick={saveDB}>테스트 저장</TestButton>
       <TestButton>새로운 글 작성</TestButton>
       <code>code</code>
+      <TestTextEditor />
     </>
   );
 };
