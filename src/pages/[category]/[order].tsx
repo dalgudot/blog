@@ -1,21 +1,19 @@
-// import Article from '../../components/article/article';
+import Article from '../../components/article/article';
 import { getAllArticles } from '../../service/firebase/firestore-db';
 import Link from 'next/link';
-import { InferGetStaticPropsType } from 'next';
+import { InferGetStaticPropsType, NextPage } from 'next';
 
-type Props = {
-  props: {
-    category: string;
-    order: string;
-  };
-};
+const Post: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
+  props
+) => {
+  // console.log('Post', props);
 
-const Post = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
-  console.log('Post', props);
+  // 올린 후 '수정' 기능
+  // 올리기 전 '저장' '게시'
 
   return (
     <>
-      {/* <Article /> */}
+      <Article />
       <Link href='/'>
         <a>
           <h1>home</h1>
@@ -34,6 +32,7 @@ type Params = {
   };
 };
 
+// https://yceffort.kr/2020/03/nextjs-02-data-fetching
 // [API Docs] yarn dev(next dev)에서는 매번 호출!
 // GitHub repo에서 Vercel 프론트 서버로 푸시한 뒤에 하는 '빌드'에서만 호출! -> 사용자는 파이어스토어 호출하지 않음.
 // This also gets called at build time
@@ -51,7 +50,7 @@ export const getStaticPaths = async () => {
 
   // Get the paths we want to pre-render based on posts
   const paths = posts.map((post) => ({
-    params: { category: post.category, order: post.order },
+    params: { category: post.category, order: String(post.order) }, // number -> string,
   }));
 
   // We'll pre-render only these paths at build time.
