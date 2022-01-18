@@ -1,5 +1,5 @@
 import DOMPurify from 'dompurify';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ArticleBlock, IArticleBlock } from '../models/article-block';
 
@@ -18,32 +18,6 @@ const ContentEditable = ({
   const [text, setText] = useState('');
   const currentIndex = blockContents.indexOf(content);
   const nextIndexBlock = blockContents[currentIndex + 1];
-
-  const changeToBold = () => {
-    const selection = window.getSelection();
-    const range = selection?.getRangeAt(0);
-
-    const start = range?.startOffset as number;
-    const end = range?.endOffset as number;
-    const textArray = text.split('');
-
-    console.log('start', start);
-    console.log('end', end);
-    console.log('textArray', textArray);
-
-    textArray.splice(start, 0, '<b>');
-    textArray.splice(end + 1, 0, '</b>');
-
-    const final = textArray.join('');
-
-    console.log(final);
-
-    const tempBlockContents = [...blockContents];
-    tempBlockContents[currentIndex].text = final;
-    setBlockContents(tempBlockContents);
-
-    setText(final);
-  };
 
   const onInput = (e: ChangeEvent<HTMLParagraphElement>) => {
     // 리액트가 dangerouslySetInnerHTML을 관리할 수 있는 방법을 구현해야 함.
@@ -78,7 +52,8 @@ const ContentEditable = ({
     setBlockContents([...blockContents, block]);
   };
 
-  const onKeyPress = (e: any) => {
+  const [startPosition, setStartPosition] = useState<number>();
+  const onKeyPress = (e: KeyboardEvent<HTMLParagraphElement>) => {
     // console.log(e);
 
     if (e.key === 'Enter') {
@@ -89,7 +64,65 @@ const ContentEditable = ({
 
     if (e.key === '`') {
       // `를 시작점으로 해서 `로 끝나면 코드 블럭으로 바꾸기
+      // const range = document.createRange();
+
+      const selection = window.getSelection();
+      const range = selection?.getRangeAt(0);
+      const position = range?.startOffset;
+
+      if (startPosition === undefined) {
+        setStartPosition(position);
+        console.log(position);
+      } else {
+        const endPosition = position as number;
+        const textArray = text.split('');
+        console.log('textArray', textArray);
+
+        textArray.splice(startPosition, 1, '<code>');
+        textArray.splice(endPosition, 1, '</code>');
+
+        console.log(textArray);
+
+        const final = textArray.join('');
+
+        console.log('final', final);
+
+        const tempBlockContents = [...blockContents];
+        tempBlockContents[currentIndex].text = final;
+        setBlockContents(tempBlockContents);
+
+        setText(final);
+        setStartPosition(undefined);
+      }
     }
+  };
+
+  const changeToBold = () => {
+    const selection = window.getSelection();
+    const range = selection?.getRangeAt(0);
+
+    const start = range?.startOffset as number;
+    const end = range?.endOffset as number;
+    const textArray = text.split('');
+
+    console.log('start', start);
+    console.log('end', end);
+    console.log('textArray', textArray);
+
+    textArray.splice(start, 0, '<b>');
+    textArray.splice(end + 1, 0, '</b>');
+
+    const final = textArray.join('');
+
+    console.log(final);
+
+    const tempBlockContents = [...blockContents];
+    tempBlockContents[currentIndex].text = final;
+    console.log('tempBlockContents', tempBlockContents);
+
+    setBlockContents(tempBlockContents);
+
+    setText(final);
   };
 
   return (
