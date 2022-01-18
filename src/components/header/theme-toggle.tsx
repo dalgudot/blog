@@ -1,6 +1,7 @@
 import { useTheme } from 'next-themes';
 import { useMounted } from '../../lib/hooks/useMounted';
 
+// https://github.com/pacocoursey/next-themes
 const ThemeToggle = () => {
   const mounted = useMounted();
   const { theme, setTheme } = useTheme();
