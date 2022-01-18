@@ -1,4 +1,5 @@
 import { useCheckAdminPage } from '../../lib/hooks/useCheckAdminPage';
+import ThemeToggle from './theme-toggle';
 
 const Header: React.FC = () => {
   // useCheckAdminPage();
@@ -6,6 +7,7 @@ const Header: React.FC = () => {
   return (
     <>
       <h1>Header</h1>
+      <ThemeToggle />
     </>
   );
 };

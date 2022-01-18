@@ -7,6 +7,7 @@ import { ThemeProvider } from 'next-themes';
 import GlobalStyle from '../styles/globals';
 import Fonts from '../styles/fonts';
 import Colors from '../styles/colors';
+import Header from '../components/header/header';
 
 initializeFirebaseApp();
 const ArticlesApp = ({ Component, pageProps }: AppProps) => {
@@ -18,7 +19,7 @@ const ArticlesApp = ({ Component, pageProps }: AppProps) => {
       <Provider store={store}>
         <ThemeProvider>
           <ToastProvider>
-            {/* <Header /> */}
+            <Header />
             <Component {...pageProps} />
           </ToastProvider>
         </ThemeProvider>

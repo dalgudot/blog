@@ -13,6 +13,3 @@ const Colors = createGlobalStyle`
 `;
 
 export default Colors;
-
-/* font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-    Bitstream Vera Sans Mono, Courier New, monospace; */
