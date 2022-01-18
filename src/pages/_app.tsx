@@ -1,22 +1,27 @@
-import '../styles/fonts.css';
-import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { ToastProvider } from '@dalgu/react-toast';
 import { initializeFirebaseApp } from '../service/firebase/config';
-import Header from '../components/header/header';
 import { Provider } from 'react-redux';
 import store from '../redux-toolkit/store';
-import { useEffect } from 'react';
+import { ThemeProvider } from 'next-themes';
+import GlobalStyle from '../styles/globals';
+import Fonts from '../styles/fonts';
+import Colors from '../styles/colors';
 
 initializeFirebaseApp();
 const ArticlesApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
+      <GlobalStyle />
+      <Fonts />
+      <Colors />
       <Provider store={store}>
-        <ToastProvider>
-          {/* <Header /> */}
-          <Component {...pageProps} />
-        </ToastProvider>
+        <ThemeProvider>
+          <ToastProvider>
+            {/* <Header /> */}
+            <Component {...pageProps} />
+          </ToastProvider>
+        </ThemeProvider>
       </Provider>
     </>
   );
