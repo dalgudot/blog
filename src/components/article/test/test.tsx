@@ -18,7 +18,10 @@ const ContentEditable = ({
   setBlockContents: React.Dispatch<React.SetStateAction<IArticleBlock[]>>;
 }) => {
   const ref = useRef<HTMLParagraphElement | null>(null);
-  const [text, setText] = useState('');
+  // const [inputTextIncludedHTML, setInputTextIncludedHTML] = useState('');
+  const [prevInputText, setPrevInputText] = useState('');
+  const [prevInputTextIncludedHTML, setPrevInputTextIncludedHTML] =
+    useState('');
   const currentIndex = blockContents.indexOf(content);
   const nextIndexBlock = blockContents[currentIndex + 1];
 
@@ -36,46 +39,65 @@ const ContentEditable = ({
 
   const onInput = (e: ChangeEvent<HTMLParagraphElement>) => {
     // 리액트가 dangerouslySetInnerHTML을 관리할 수 있는 방법을 구현해야 함.
-    // content를 e.target.innerText로 업데이트해줘야 함.
+    // const inputText = e.target.innerText;
+    const inputHtml = e.target.innerHTML;
+    // setPrevInputText(inputText);
 
-    // const tempBlockContents = [...blockContents];
-    // tempBlockContents[currentIndex].text = e.target.innerText;
-    // setBlockContents(tempBlockContents);
-    // 새로 렌더링하니 커서가 맨 앞으로 이동하는 문제 발생
+    // console.log('inputText', inputText);
+    console.log('inputHtml', inputHtml);
+    // console.log('content.text', content.text);
 
-    // setText(e.target.innerText);
-    // const isBacktick: boolean = e.target.innerText.includes('`');
-    // let removeBacktick;
-    // if (isBacktick) {
-    //   removeBacktick = e.target.innerText.replace('`', '');
-    //   innerText = removeBacktick;
-    // } else {
-    //   innerText = e.target.innerText;
-    // }
+    const countBacktick = inputHtml.match(/`/g)?.length; // ` 개수
+    // console.log('countBacktick', countBacktick);
 
-    // innerText = e.target.innerText;
-    // console.log('onInput', e.target.innerText);
-    // prevText = e.target.innerText;
-    const inputText = e.target.innerText;
-    console.log('inputText', inputText);
-
-    const countBacktick = inputText.match(/`/g)?.length;
-    console.log('countBacktick', countBacktick);
-
-    const includesBacktick: boolean = inputText.includes('`'); // e.key === '`' 이벤트 대체
-
+    // 마치 리액트가 관리하는 것처럼 만들어줘야 함
+    // key 이벤트가 아닌 onInput에서 처리해줘야 리액트와 렌더링 순서 일치
     if (countBacktick === 2) {
-      // console.log('` 입력', 'if (includesBacktick) 내부 inputText', inputText);
+      // e.target.innerText = '';
+      // console.log(e.target.innerHTML);
+      console.log('countBacktick === 2');
+      // 문제: onInput은 태그 정보를 가지고 있지 않다.
+      // console.log(prevInputTextIncludedHTML);
+
+      // console.log('content.text', content.text);
+      // const currentText = prevInputTextIncludedHTML + '`';
 
       // 첫 번째 `는 <code>로 두 번째 `는 </code>로!
-      const firstBacktickToTag = inputText.replace('`', '<code>');
-      const secondBacktickToTag = firstBacktickToTag.replace('`', '</code>');
-      console.log('secondBacktickToTag', secondBacktickToTag);
+      const firstBacktickToTag = inputHtml.replace('`', '&nbsp<code>'); // &nbsp is for design
+      const secondBacktickToTag = firstBacktickToTag.replace(
+        '`',
+        `</code>&nbsp` // &nbsp로 코드 블럭 벗어나기
+      );
+      // console.log('secondBacktickToTag', secondBacktickToTag);
 
       const tempBlockContents = [...blockContents];
       tempBlockContents[currentIndex].text = secondBacktickToTag;
       setBlockContents(tempBlockContents);
+
+      // setPrevInputTextIncludedHTML(tempBlockContents[currentIndex].text);
     }
+    // else {
+    //   const lastWord = inputHtml.replace(prevInputText, ''); // Input의 텍스트 비교로 lastWord 만듦, prevInputText는 리액트가 관리해 여기서는 이전 상태
+    //   console.log('lastWord', lastWord);
+
+    //   setPrevInputTextIncludedHTML(prevInputTextIncludedHTML + lastWord); // 리액트로 렌더링은 안 함. HTML 코드 포함돼 있지만, Input과 동기화된 상태.
+    // }
+
+    ////////////////////////////////////////////
+    // else {
+    //   const lastWord = inputText.replace(prevInputText, '');
+    //   console.log('lastWord', lastWord);
+
+    //   const tempBlockContents = [...blockContents];
+    //   tempBlockContents[currentIndex].text += lastWord;
+    //   setBlockContents(tempBlockContents);
+
+    //   setPrevInputText(tempBlockContents[currentIndex].text);
+
+    // }
+    // onIput에 '새롭게 추가되는 문자열'만 content 뒤쪽에 계속 업데이트
+    // 1) 현재 들어온 inputText에서 prevInputText(-> 이 컴포넌트의 useState 활용!)의 모든 텍스트 제거한 뒤
+    // 2) content 뒤쪽에 추가시켜줌.
 
     // const tempBlockContents = [...blockContents];
     // tempBlockContents[currentIndex].text = e.target.innerText;
@@ -89,6 +111,7 @@ const ContentEditable = ({
   // const [startPosition, setStartPosition] = useState<number>();
   const onKeyPress = (e: KeyboardEvent<HTMLParagraphElement>) => {
     // console.log(e);
+    // console.log('e.key', e.key);
 
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -96,37 +119,8 @@ const ContentEditable = ({
       addBlock();
     }
 
-    if (e.key === '`' && innerText) {
-      // `를 시작점으로 해서 `로 끝나면 코드 블럭으로 바꾸기
-      // const range = document.createRange();
-
-      console.log('입력 `', 'innerText', innerText);
-      const currentText = `${innerText}\``;
-      console.log('currentText', currentText);
-
-      const checkAlreadyBacktick = (): boolean => {
-        const isBacktick: boolean = innerText.includes('`');
-        return isBacktick;
-      };
-      const isAlreadyBacktick = checkAlreadyBacktick();
-      console.log('isAlreadyBacktick', isAlreadyBacktick);
-
-      if (isAlreadyBacktick) {
-        // 첫 번째 `는 <code>로 두 번째 `는 </code>로!
-        const firstBacktickToTag = currentText.replace('`', '<code>');
-        const secondBacktickToTag = firstBacktickToTag.replace('`', '</code>');
-        console.log('secondBacktickToTag', secondBacktickToTag);
-
-        const tempBlockContents = [...blockContents];
-        tempBlockContents[currentIndex].text = secondBacktickToTag;
-        setBlockContents(tempBlockContents);
-
-        // setText(secondBacktickToTag);
-        // 여기서만 업데이트해야 아래 useEffect(~, [text])가 정상 동작
-      }
-    }
-
     if (e.key === '`') {
+      // 순서상 onInput에서 처리해줘야 리액트와 렌더링 순서 일치
       // console.log(prevText);
     }
   };
@@ -134,16 +128,12 @@ const ContentEditable = ({
   // 최초 foucus 및
   // [blockContents]는 백틱 변환 이후 blockContents 변화 감지해 커서 강제 이동 위해 필요.
   useEffect(() => {
-    // const removeBacktickInnerText = innerText?.replace(/\`/g, '');
-    // console.log('in useEffect', removeBacktickInnerText);
-    // 현재 셀렉션에서 ` 찾아서 제거!
-    // <code></code> 밖으로 커서 이동
     // console.log('useEffect');
     ref.current && focusContentEditableTextToEnd(ref.current);
-  }, [content.text]); // 리액트에서 텍스트 관리하기 위해 강제 이동
-  // }, []);
+  }, [content.text]);
 
-  console.log('react-content.text', content.text);
+  // console.log('prevInputText', prevInputText);
+  // console.log('react-content.text', content.text);
 
   return (
     <>
@@ -159,8 +149,7 @@ const ContentEditable = ({
         onInput={onInput}
         onKeyPress={onKeyPress}
         placeholder='placeholder'
-        dangerouslySetInnerHTML={{ __html: content.text }}
-        // dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content.text) }}
+        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content.text) }}
       />
     </>
   );
