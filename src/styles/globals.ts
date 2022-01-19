@@ -28,7 +28,8 @@ const GlobalStyle = createGlobalStyle`
       font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
         Bitstream Vera Sans Mono, Courier New, monospace;
       padding: 4px;
-      background-color: violet;
+      background-color: #bdbdbd;
+      border-radius: 4px;
     }
 `;
 

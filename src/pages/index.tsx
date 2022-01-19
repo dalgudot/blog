@@ -1,7 +1,7 @@
 import { useToast } from '@dalgu/react-toast';
 import { InferGetStaticPropsType, NextPage } from 'next';
 import styled from 'styled-components';
-import TestTextEditor from '../components/article/test/test-text-editor';
+import TestTextEditor from '../components/article/views/text-block/text-editor';
 import NavLists from '../components/navigation/article/nav-lists';
 import { getAllArticles, setDocument } from '../service/firebase/firestore-db';
 
