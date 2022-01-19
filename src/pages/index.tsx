@@ -1,8 +1,7 @@
 import { useToast } from '@dalgu/react-toast';
 import { InferGetStaticPropsType, NextPage } from 'next';
-import styled from 'styled-components';
-import TestTextEditor from '../components/article/views/text-block/text-editor';
 import NavLists from '../components/navigation/article/nav-lists';
+import { Main, TestButton } from '../components/pages/index.style';
 import { getAllArticles, setDocument } from '../service/firebase/firestore-db';
 
 // rule: 페이지 컴포넌트에서는 데이터를 전달하기만 한다 -> 나만의 리액트 클린 아키텍처 만들기
@@ -49,13 +48,12 @@ const Index: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
   };
 
   return (
-    <>
-      {/* <NavLists datas={listDatas} /> */}
+    <Main>
+      <NavLists datas={listDatas} />
       <TestButton onClick={saveDB}>테스트 저장</TestButton>
       <TestButton>새로운 글 작성</TestButton>
       <code>code</code>
-      <TestTextEditor />
-    </>
+    </Main>
   );
 };
 
@@ -70,8 +68,3 @@ export const getStaticProps = async () => {
     props: { allPosts },
   };
 };
-
-const TestButton = styled.button`
-  background-color: var(--fg);
-  color: var(--bg);
-`;

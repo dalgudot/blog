@@ -1,10 +1,10 @@
 import { NextPage } from 'next';
-import TextEditor from '../components/article/views/text-block/text-editor';
+import BlockWYSIWYG from '../components/article/block-wysiwhg/block-wysiwhg';
 
 const TestPage: NextPage = () => {
   return (
     <>
-      <TextEditor />
+      <BlockWYSIWYG />
     </>
   );
 };

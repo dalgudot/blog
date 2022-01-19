@@ -2,28 +2,31 @@ import Article from '../../components/article/article';
 import { getAllArticles } from '../../service/firebase/firestore-db';
 import Link from 'next/link';
 import { InferGetStaticPropsType, NextPage } from 'next';
+import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
+import { Main } from '../../components/pages/category-order.style';
 
-const Post: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
-  props
-) => {
-  // console.log('Post', props);
-
+const CategoryOrderPost: NextPage<
+  InferGetStaticPropsType<typeof getStaticProps>
+> = (props) => {
+  const { isAdmin } = useIsAdmin();
+  const contentEditable: boolean = isAdmin;
+  // CRUD
   // 올린 후 '수정' 기능
-  // 올리기 전 '저장' '게시'
+  // 올리기 전 '저장', '게시'
 
   return (
-    <>
-      <Article />
+    <Main>
+      <Article contentEditable={contentEditable} />
       <Link href='/'>
         <a>
           <h1>home</h1>
         </a>
       </Link>
-    </>
+    </Main>
   );
 };
 
-export default Post;
+export default CategoryOrderPost;
 
 type Params = {
   params: {
@@ -41,7 +44,6 @@ export const getStaticProps = async ({ params }: Params) => {
   const category = params.category;
   const order = params.order;
 
-  // Pass post data to the page via props
   return { props: { category, order } };
 };
 

@@ -1,9 +1,9 @@
 import DOMPurify from 'dompurify';
 import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { ArticleBlock, IArticleBlock } from '../../models/article-block';
+import { ArticleBlock, IArticleBlock } from '../../../models/article-block';
 
-const TextBlock = ({
+const ParagraphBlock = ({
   content,
   blockContents,
   setBlockContents,
@@ -102,6 +102,35 @@ const TextBlock = ({
   //   }
   // };
 
+  // const changeToBold = () => {
+  //   const selection = window.getSelection();
+  //   const range = selection?.getRangeAt(0);
+
+  //   const start = range?.startOffset as number;
+  //   const end = range?.endOffset as number;
+  //   const textArray = text.split('');
+
+  //   console.log('start', start);
+  //   console.log('end', end);
+  //   console.log('textArray', textArray);
+
+  //   textArray.splice(start, 0, '<b>');
+  //   textArray.splice(end + 1, 0, '</b>');
+
+  //   const final = textArray.join('');
+
+  //   console.log(final);
+
+  //   const tempBlockContents = [...blockContents];
+  //   tempBlockContents[currentIndex].text = final;
+  //   console.log('tempBlockContents', tempBlockContents);
+
+  //   setBlockContents(tempBlockContents);
+
+  //   setText(final);
+  //   ref.current && replaceCaret(ref.current);
+  // };
+
   return (
     <>
       {/* <button onClick={changeToBold}>선택 영역 볼드</button> */}
@@ -120,7 +149,7 @@ const TextBlock = ({
   );
 };
 
-export default TextBlock;
+export default ParagraphBlock;
 
 const P = styled.p`
   width: 100vw;
