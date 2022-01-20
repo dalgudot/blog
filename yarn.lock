@@ -164,6 +164,11 @@
     "framer-motion" "^4.1.17"
     "styled-components" "^5.3.3"
 
+"@dalgu/react-utility-hooks@^0.1.1":
+  "integrity" "sha512-1qxiZy2OUwu/2K0b5ry8Trq/uTkR15mKz+JnYVv9242mMPysPUPFqlVKih4IUtMlDO1RBVjCcN5wZ+4ChgzXnQ=="
+  "resolved" "https://registry.npmjs.org/@dalgu/react-utility-hooks/-/react-utility-hooks-0.1.1.tgz"
+  "version" "0.1.1"
+
 "@emotion/is-prop-valid@^0.8.2", "@emotion/is-prop-valid@^0.8.8":
   "integrity" "sha512-u5WtneEAr5IDG2Wv65yhunPSMLIpuKsbuOktRojfrEiEvRyC85LgPMZI63cr7NUqT8ZIGdSVg8ZKGxIug4lXcA=="
   "resolved" "https://registry.npmjs.org/@emotion/is-prop-valid/-/is-prop-valid-0.8.8.tgz"
