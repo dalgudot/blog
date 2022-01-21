@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { InferGetStaticPropsType, NextPage } from 'next';
 import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
 import { Main } from '../../components/pages/category-order.style';
+import BlockWYSIWYG from '../../components/article/block-wysiwyg/block-wysiwyg';
+import Response from '../../components/article/response/response';
 
 const CategoryOrderPost: NextPage<
   InferGetStaticPropsType<typeof getStaticProps>
@@ -15,9 +17,14 @@ const CategoryOrderPost: NextPage<
   // 올리기 전 '저장', '게시'
 
   return (
-    <Main>
-      <Article contentEditable={contentEditable} />
-    </Main>
+    <>
+      <Main>
+        <Article contentEditable={contentEditable} />
+      </Main>
+      <Response />
+      <BlockWYSIWYG contentEditable={contentEditable} />
+      {/* 레퍼런스  <BlockWYSIWYG /> */}
+    </>
   );
 };
 
