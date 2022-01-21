@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import styles from './response.module.scss';
+import styles from './response.module.css';
 
 const Response: FC = () => {
   return (
