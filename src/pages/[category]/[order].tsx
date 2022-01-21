@@ -17,11 +17,6 @@ const CategoryOrderPost: NextPage<
   return (
     <Main>
       <Article contentEditable={contentEditable} />
-      <Link href='/'>
-        <a>
-          <h1>home</h1>
-        </a>
-      </Link>
     </Main>
   );
 };

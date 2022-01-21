@@ -1,5 +1,5 @@
 import { ArticleContainer } from './article.style';
-import BlockWYSIWYG from './block-wysiwhg/block-wysiwhg';
+import BlockWYSIWYG from './block-wysiwyg/block-wysiwyg';
 
 type Props = {
   contentEditable: boolean;

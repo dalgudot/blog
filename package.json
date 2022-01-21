@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@dalgu/react-toast": "^1.2.3",
-    "@dalgu/react-utility-hooks": "^0.1.1",
+    "@dalgu/react-utility-hooks": "^0.1.3",
     "@reduxjs/toolkit": "^1.7.1",
     "@types/react-redux": "^7.1.22",
     "dompurify": "^2.3.4",

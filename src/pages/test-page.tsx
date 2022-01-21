@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import BlockWYSIWYG from '../components/article/block-wysiwhg/block-wysiwhg';
+import BlockWYSIWYG from '../components/article/block-wysiwyg/block-wysiwyg';
 
 const TestPage: NextPage = () => {
   return (

@@ -1,5 +1,5 @@
+import { useMounted } from '@dalgu/react-utility-hooks';
 import { useTheme } from 'next-themes';
-import { useMounted } from '../../lib/hooks/useMounted';
 
 // https://github.com/pacocoursey/next-themes
 const ThemeToggle = () => {
