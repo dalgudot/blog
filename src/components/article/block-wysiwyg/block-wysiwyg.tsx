@@ -15,7 +15,7 @@ const BlockWYSIWYG: React.FC<Props> = ({ contentEditable }) => {
   ]);
 
   const mounted: boolean = useMounted();
-  console.log(mounted);
+  // console.log(mounted);
   // console.log(blockContents);
 
   // 모든 블럭(본문 블럭, 코드 블럭)의 switching을 담당하는 <Blocks /> component의 map을 돌린다!

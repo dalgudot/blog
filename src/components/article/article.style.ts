@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const ArticleContainer = styled.article`
+export const ArticleLayout = styled.article`
   margin-top: 48px;
   margin-bottom: 48px;
 
