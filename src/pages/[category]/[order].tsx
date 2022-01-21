@@ -1,9 +1,7 @@
 import Article from '../../components/article/article';
 import { getAllArticles } from '../../service/firebase/firestore-db';
-import Link from 'next/link';
 import { InferGetStaticPropsType, NextPage } from 'next';
 import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
-import { Main } from '../../components/pages/category-order.style';
 import BlockWYSIWYG from '../../components/article/block-wysiwyg/block-wysiwyg';
 import Response from '../../components/article/response/response';
 
@@ -18,9 +16,9 @@ const CategoryOrderPost: NextPage<
 
   return (
     <>
-      <Main>
+      <main>
         <Article contentEditable={contentEditable} />
-      </Main>
+      </main>
       <Response />
       <BlockWYSIWYG contentEditable={contentEditable} />
       {/* 레퍼런스  <BlockWYSIWYG /> */}

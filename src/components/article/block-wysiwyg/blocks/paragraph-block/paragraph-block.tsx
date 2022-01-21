@@ -1,7 +1,7 @@
 import DOMPurify from 'dompurify';
 import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
 import { ArticleBlock, IArticleBlock } from '../../../models/article-block';
+import styled from './paragraph-block.module.css';
 
 const ParagraphBlock = ({
   content,
@@ -134,7 +134,8 @@ const ParagraphBlock = ({
   return (
     <>
       {/* <button onClick={changeToBold}>선택 영역 볼드</button> */}
-      <P
+      <p
+        className={styled.paragraph}
         ref={ref}
         contentEditable={true}
         suppressContentEditableWarning={true}
@@ -150,27 +151,6 @@ const ParagraphBlock = ({
 };
 
 export default ParagraphBlock;
-
-const P = styled.p`
-  width: 100vw;
-  height: 100%;
-  border: 1px solid whitesmoke;
-
-  /* Text */
-  caret-color: whitesmoke;
-  color: whitesmoke;
-  font-weight: 400;
-  line-height: 1.4;
-  font-size: 36px;
-  /* Text */
-
-  // placeholder
-  &:empty:before {
-    content: attr(placeholder);
-    color: grey;
-    display: inline-block;
-  }
-`;
 
 function replaceCaret(element: HTMLElement) {
   if (element.innerText.length === 0) {

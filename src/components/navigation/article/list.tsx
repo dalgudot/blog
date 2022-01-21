@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import styled from 'styled-components';
 
 type Props = {
   category: string;
@@ -14,17 +13,15 @@ const List: React.FC<Props> = ({ category, order }) => {
 
   return (
     <>
-      <Li>
+      <li>
         <Link href='/[category]/[order]' as={url}>
           <a>
             <h1>List {order}</h1>
           </a>
         </Link>
-      </Li>
+      </li>
     </>
   );
 };
 
 export default List;
-
-const Li = styled.li``;
