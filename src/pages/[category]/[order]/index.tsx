@@ -2,7 +2,6 @@ import Post from '../../../components/post/post';
 import { getAllArticles } from '../../../service/firebase/firestore-db';
 import { InferGetStaticPropsType, NextPage } from 'next';
 import { useIsAdmin } from '../../../lib/hooks/useIsAdmin';
-import BlockWYSIWYG from '../../../components/post/block-wysiwyg/block-wysiwyg';
 import Response from '../../../components/post/response/response';
 import Reference from '../../../components/post/reference/reference';
 
@@ -17,11 +16,11 @@ const CategoryOrderPost: NextPage<
 
   return (
     <>
-      <main>
+      {/* <main>
         <Post contentEditable={contentEditable} />
       </main>
-      <Response />
-      <Reference />
+      <Response /> */}
+      <Reference contentEditable={contentEditable} />
     </>
   );
 };

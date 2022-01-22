@@ -1,5 +1,6 @@
 import { useToast } from '@dalgu/react-toast';
 import { InferGetStaticPropsType, NextPage } from 'next';
+import Link from 'next/link';
 import NavLists from '../components/navigation/article/nav-lists';
 import { getAllArticles, setDocument } from '../service/firebase/firestore-db';
 
@@ -47,9 +48,20 @@ const Index: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
   };
 
   return (
-    <main>
-      <NavLists datas={listDatas} />
-    </main>
+    <>
+      <main>
+        <NavLists datas={listDatas} />
+      </main>
+      <Link href='/'>
+        <a>전체</a>
+      </Link>
+      <Link href='/' as='/dev'>
+        <a>개발</a>
+      </Link>
+      <Link href='/' as='/design'>
+        <a>디자인</a>
+      </Link>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import styles from './code.module.scss';
+import styles from './content-editable-code.module.scss';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 

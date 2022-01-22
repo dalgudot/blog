@@ -5,7 +5,11 @@ type Props = {
 };
 
 const ContentEditableLink: FC<Props> = ({ blockType }) => {
-  return <div>{blockType}</div>;
+  return (
+    <li>
+      <a>{blockType}</a>
+    </li>
+  );
 };
 
 export default ContentEditableLink;

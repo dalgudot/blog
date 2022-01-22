@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { TBlockType } from '../../models/article-block';
-import ContentEditableCode from './code/code';
-import ContentEditableHeading from './heading/heading';
-import ContentEditableLink from './link/link';
+import ContentEditableCode from './code/content-editable-code';
+import ContentEditableHeading from './heading/content-editable-heading';
+import ContentEditableLink from './link/content-editable-link';
 import ContentEditableParagraph from './paragraph/paragraph';
 
 type Props = {
