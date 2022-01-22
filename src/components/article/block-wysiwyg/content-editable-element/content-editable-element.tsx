@@ -1,18 +1,17 @@
-import { useToast } from '@dalgu/react-toast';
-import { NextPage } from 'next';
-import ContentEditableElement from '../components/article/block-wysiwyg/content-editable-element/content-editable-element';
-import Response from '../components/article/response/response';
+import { FC } from 'react';
+import { TBlockType } from '../../models/article-block';
+import ContentEditableCode from './code/code';
+import ContentEditableHeading from './heading/heading';
+import ContentEditableLink from './link/link';
+import ContentEditableParagraph from './paragraph/paragraph';
 
-const TestPage: NextPage = () => {
-  const { showToast } = useToast();
-  return (
-    <>
-      {/* <h1>Test!</h1> */}
-      {/* <Response /> */}
-      <ContentEditableElement
-        blockType='Code'
-        language='tsx'
-        codeString={`const ContentEditableElement: FC<Props> = ({
+type Props = {
+  blockType: TBlockType;
+  language?: 'tsx' | 'typescript' | 'css';
+  codeString?: string;
+};
+
+const ContentEditableElement: FC<Props> = ({
   blockType,
   language,
   codeString,
@@ -32,7 +31,10 @@ const TestPage: NextPage = () => {
           codeString={codeString}
         />
       ) : (
-        <></>
+        <span>
+          ***language & codeString props*** is needed when you use the Code
+          Block
+        </span>
       );
     case 'Link':
       return <ContentEditableLink blockType='Link' />;
@@ -41,11 +43,4 @@ const TestPage: NextPage = () => {
   }
 };
 
-export default ContentEditableElement;`}
-      />
-      {/* <button onClick={() => showToast('hi')}>토스트</button> */}
-    </>
-  );
-};
-
-export default TestPage;
+export default ContentEditableElement;

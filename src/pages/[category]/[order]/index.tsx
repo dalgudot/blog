@@ -1,9 +1,9 @@
-import Article from '../../components/article/article';
-import { getAllArticles } from '../../service/firebase/firestore-db';
+import Article from '../../../components/article/article';
+import { getAllArticles } from '../../../service/firebase/firestore-db';
 import { InferGetStaticPropsType, NextPage } from 'next';
-import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
-import BlockWYSIWYG from '../../components/article/block-wysiwyg/block-wysiwyg';
-import Response from '../../components/article/response/response';
+import { useIsAdmin } from '../../../lib/hooks/useIsAdmin';
+import BlockWYSIWYG from '../../../components/article/block-wysiwyg/block-wysiwyg';
+import Response from '../../../components/article/response/response';
 
 const CategoryOrderPost: NextPage<
   InferGetStaticPropsType<typeof getStaticProps>

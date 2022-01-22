@@ -1,7 +1,7 @@
 import DOMPurify from 'dompurify';
 import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { ArticleBlock, IArticleBlock } from '../../../models/article-block';
-import styled from './paragraph-block.module.scss';
+import styles from './paragraph-block.module.scss';
 
 const ParagraphBlock = ({
   content,
@@ -135,7 +135,7 @@ const ParagraphBlock = ({
     <>
       {/* <button onClick={changeToBold}>선택 영역 볼드</button> */}
       <p
-        className={styled.paragraph}
+        className={styles.paragraph}
         ref={ref}
         contentEditable={true}
         suppressContentEditableWarning={true}

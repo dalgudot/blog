@@ -1,25 +1,23 @@
 import { uuid } from '../../../lib/utils/id';
 
-export type Ttype =
-  | 'Title'
+export type TBlockType =
   | 'Heading1'
   | 'Heading2'
+  | 'Heading3'
   | 'Paragraph'
-  | 'Space'
-  | 'Image'
   | 'Code'
-  | 'iframe'
   | 'Link';
+// | 'iframe'   | 'Image'   | 'Reference'(Link에 포함)
 
 export interface IArticleBlock {
   id: string;
-  // type: Ttype;
+  // type: TblockType;
   text: string;
 }
 
 export class ArticleBlock implements IArticleBlock {
   id: string;
-  // type: Ttype;
+  // type: TblockType;
   text: string;
 
   constructor() {
