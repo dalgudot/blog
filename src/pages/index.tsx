@@ -49,7 +49,6 @@ const Index: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
   return (
     <main>
       <NavLists datas={listDatas} />
-      <code>code</code>
     </main>
   );
 };

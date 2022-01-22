@@ -1,7 +1,7 @@
 import { useToast } from '@dalgu/react-toast';
 import { NextPage } from 'next';
-import ContentEditableElement from '../components/article/block-wysiwyg/content-editable-element/content-editable-element';
-import Response from '../components/article/response/response';
+import ContentEditableElement from '../components/post/block-wysiwyg/content-editable-element/content-editable-element';
+import Response from '../components/post/response/response';
 
 const TestPage: NextPage = () => {
   const { showToast } = useToast();

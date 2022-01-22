@@ -1,9 +1,10 @@
-import Article from '../../../components/article/article';
+import Post from '../../../components/post/post';
 import { getAllArticles } from '../../../service/firebase/firestore-db';
 import { InferGetStaticPropsType, NextPage } from 'next';
 import { useIsAdmin } from '../../../lib/hooks/useIsAdmin';
-import BlockWYSIWYG from '../../../components/article/block-wysiwyg/block-wysiwyg';
-import Response from '../../../components/article/response/response';
+import BlockWYSIWYG from '../../../components/post/block-wysiwyg/block-wysiwyg';
+import Response from '../../../components/post/response/response';
+import Reference from '../../../components/post/reference/reference';
 
 const CategoryOrderPost: NextPage<
   InferGetStaticPropsType<typeof getStaticProps>
@@ -17,11 +18,10 @@ const CategoryOrderPost: NextPage<
   return (
     <>
       <main>
-        <Article contentEditable={contentEditable} />
+        <Post contentEditable={contentEditable} />
       </main>
       <Response />
-      <BlockWYSIWYG contentEditable={contentEditable} />
-      {/* 레퍼런스  <BlockWYSIWYG /> */}
+      <Reference />
     </>
   );
 };
