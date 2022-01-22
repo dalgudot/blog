@@ -1,5 +1,6 @@
 {
-  "name": "articles",
+  "name": "blog",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -20,11 +21,13 @@
     "next-themes": "^0.0.15",
     "postcss": "^8.4.5",
     "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-js": "^4.0.0",
     "postcss-nested": "^5.0.6",
     "postcss-preset-env": "^7.2.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-redux": "^7.2.6"
+    "react-redux": "^7.2.6",
+    "sass": "^1.49.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.1",
