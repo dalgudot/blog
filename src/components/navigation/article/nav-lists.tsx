@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import List from './list';
 
 type NavListsProps = {
@@ -10,8 +9,8 @@ type NavListsProps = {
 
 const NavLists: React.FC<NavListsProps> = ({ datas }) => {
   return (
-    <Nav>
-      <Ul>
+    <nav>
+      <ul>
         {datas.map((data, idx) => (
           <List
             key={idx}
@@ -20,13 +19,9 @@ const NavLists: React.FC<NavListsProps> = ({ datas }) => {
             // content={data.content}
           />
         ))}
-      </Ul>
-    </Nav>
+      </ul>
+    </nav>
   );
 };
 
 export default NavLists;
-
-const Nav = styled.nav``;
-
-const Ul = styled.ul``;

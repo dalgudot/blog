@@ -13,16 +13,19 @@ export type Ttype =
 
 export interface IArticleBlock {
   id: string;
-  type: Ttype;
+  // type: Ttype;
+  text: string;
 }
 
 export class ArticleBlock implements IArticleBlock {
   id: string;
-  type: Ttype;
+  // type: Ttype;
+  text: string;
 
   constructor() {
     this.id = uuid();
-    this.type = 'Paragraph';
+    // this.type = 'Paragraph';
+    this.text = '';
   }
 }
 

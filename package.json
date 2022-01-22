@@ -1,30 +1,43 @@
 {
-  "name": "articles",
+  "name": "blog",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest --watch"
   },
   "dependencies": {
-    "@dalgu/react-toast": "^1.2.3",
+    "@dalgu/react-toast": "^1.2.6",
+    "@dalgu/react-utility-hooks": "^0.1.3",
     "@reduxjs/toolkit": "^1.7.1",
     "@types/react-redux": "^7.1.22",
+    "autoprefixer": "^10.4.2",
+    "dompurify": "^2.3.4",
     "firebase": "^9.6.3",
     "next": "^12.0.8",
     "next-themes": "^0.0.15",
+    "postcss": "^8.4.5",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-js": "^4.0.0",
+    "postcss-nested": "^5.0.6",
+    "postcss-preset-env": "^7.2.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",
-    "styled-components": "^5.3.3"
+    "sass": "^1.49.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^12.1.2",
+    "@types/dompurify": "^2.3.3",
     "@types/node": "17.0.8",
     "@types/react": "17.0.38",
-    "@types/styled-components": "^5.1.20",
     "eslint": "8.6.0",
     "eslint-config-next": "12.0.7",
+    "jest": "^27.4.7",
     "typescript": "4.5.4"
   }
 }

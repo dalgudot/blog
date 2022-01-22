@@ -1,32 +1,21 @@
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import { FC } from 'react';
+import BlockWYSIWYG from './block-wysiwyg/block-wysiwyg';
 
-const Article: React.FC = () => {
-  // const router = useRouter();
-  // const { category, order } = router.query;
-  // // 현재 category와 order에 맞는 데이터를 DB에서 받아옴!
+type Props = {
+  contentEditable: boolean;
+};
 
-  // const [orderState, setOrderState] = useState<string | string[]>();
-
-  // useEffect(() => {
-
-  //   if (order) {
-  //     setOrderState(order[0]);
-  //   }
-  // }, [router.query]);
-
-  // console.log(orderState);
-
-  // category와 orderState에 따라 서버에서 가져오는 데이터 달라짐.
-
+const Article: FC<Props> = ({ contentEditable }) => {
   return (
-    <ArticleContainer>
+    <article>
       <h1>Article</h1>
-    </ArticleContainer>
+      {/* <<BlockWYSIWYG />의 기본값 및 '최대 블럭수'를 정해서 제목 영역, 본문 영역, 레퍼런스 영역 총 3가지 만들기!  */}
+      {/* 제목  <BlockWYSIWYG /> */}
+      <BlockWYSIWYG contentEditable={contentEditable} />
+      {/* 본문  <BlockWYSIWYG /> */}
+      <BlockWYSIWYG contentEditable={contentEditable} />
+    </article>
   );
 };
 
 export default Article;
-
-const ArticleContainer = styled.article``;
