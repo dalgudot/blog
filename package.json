@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watch"
+    "test": "jest --watchAll"
   },
   "dependencies": {
     "@dalgu/react-toast": "^1.2.6",
@@ -19,11 +19,6 @@
     "firebase": "^9.6.3",
     "next": "^12.0.8",
     "next-themes": "^0.0.15",
-    "postcss": "^8.4.5",
-    "postcss-flexbugs-fixes": "^5.0.2",
-    "postcss-js": "^4.0.0",
-    "postcss-nested": "^5.0.6",
-    "postcss-preset-env": "^7.2.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",

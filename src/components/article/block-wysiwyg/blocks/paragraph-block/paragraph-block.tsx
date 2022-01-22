@@ -1,7 +1,7 @@
 import DOMPurify from 'dompurify';
 import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { ArticleBlock, IArticleBlock } from '../../../models/article-block';
-import styled from './paragraph-block.module.css';
+import styled from './paragraph-block.module.scss';
 
 const ParagraphBlock = ({
   content,
