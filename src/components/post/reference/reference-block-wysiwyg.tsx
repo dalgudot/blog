@@ -1,18 +1,37 @@
 import { FC } from 'react';
+import {
+  IRefData,
+  setRefTitleData,
+  setRefUrlData,
+} from '../../../redux-toolkit/slices/post-datas-slice';
+import {
+  RootState,
+  useAppDispatch,
+  useAppSelector,
+} from '../../../redux-toolkit/store';
 import EditableLink from '../block-wysiwyg/editable-element/link/editable-link';
 import styles from './reference-block-wysiwyg.module.scss';
 
 type Props = {
   contentEditable: boolean;
-  datas: {
-    title: string;
-    url: string;
-  }[];
 };
 
-const ReferenceBlockWYSIWYG: FC<Props> = ({ contentEditable, datas }) => {
-  // 여기서 상태 관리 - 서버에 저장 // 서버에서 정보 받아옴.
+// <EditableLink />을 활용한 Block WYSIWYG을 만드는 컴포넌트!
+const ReferenceBlockWYSIWYG: FC<Props> = ({ contentEditable }) => {
   // 데이터는 2가지: 제목(클라이언트에서 한줄 다 차면 ...으로 표시), 링크
+
+  // 여기서 새로 데이터를 가져와야 부모 컴포넌트 모두가 렌더링 안 됨.
+  const { postDatas } = useAppSelector((state: RootState) => state.postDates);
+  const datas: IRefData[] = postDatas.refDatas;
+
+  // lib화를 위해 dispatch 같은 리덕스 함수는 여기에 있어야 한다.
+  const dispatch = useAppDispatch();
+  const setTitleData = (data: string, currentIndex: number) => {
+    dispatch(setRefTitleData({ data, currentIndex }));
+  };
+  const setUrlData = (data: string, currentIndex: number) => {
+    dispatch(setRefUrlData({ data, currentIndex }));
+  };
 
   return (
     <>
@@ -23,7 +42,10 @@ const ReferenceBlockWYSIWYG: FC<Props> = ({ contentEditable, datas }) => {
             <EditableLink
               key={data.title}
               contentEditable={contentEditable}
+              datas={datas}
               data={data}
+              setTitleData={setTitleData}
+              setUrlData={setUrlData}
             />
           ))}
         </ul>

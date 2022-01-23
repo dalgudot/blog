@@ -16,10 +16,10 @@ const ArticlesApp = ({ Component, pageProps }: AppProps) => {
     <>
       <Provider store={store}>
         <ThemeProvider>
-          {/* <ToastProvider> */}
-          {/* <Header /> */}
-          <Component {...pageProps} />
-          {/* </ToastProvider> */}
+          <ToastProvider>
+            {/* <Header /> */}
+            <Component {...pageProps} />
+          </ToastProvider>
         </ThemeProvider>
       </Provider>
     </>

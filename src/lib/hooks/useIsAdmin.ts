@@ -1,7 +1,7 @@
 import { RootState } from './../../redux-toolkit/store';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux-toolkit/store';
-import { setUid } from '../../redux-toolkit/slices/userSlice';
+import { setUid } from '../../redux-toolkit/slices/user-slice';
 import {
   Authentication,
   IAuthentication,

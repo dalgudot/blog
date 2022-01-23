@@ -32,6 +32,15 @@ export const setDocument = async (
 export const getAllArticles = async () => {
   const docSnap = await getDoc(devDocPublishRef);
   const dataArray = objectToArray(docSnap.data() as object);
-  console.log('get');
+
+  return dataArray;
+};
+
+export const getRefDatas = async () => {
+  const devDocRefRef = doc(db, 'dev', 'ref');
+  const docSnap = await getDoc(devDocRefRef);
+  const dataArray = docSnap.data()?.refDatas;
+  // 객체 key로 바로 배열 가져옴.
+
   return dataArray;
 };

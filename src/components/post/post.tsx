@@ -5,7 +5,7 @@ type Props = {
   contentEditable: boolean;
 };
 
-const Post: FC<Props> = ({ contentEditable }) => {
+const Article: FC<Props> = ({ contentEditable }) => {
   return (
     <article>
       <h1>Article</h1>
@@ -18,4 +18,4 @@ const Post: FC<Props> = ({ contentEditable }) => {
   );
 };
 
-export default Post;
+export default Article;

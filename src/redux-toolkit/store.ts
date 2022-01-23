@@ -1,10 +1,12 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import userReducer from './slices/userSlice';
+import { postDataReducer } from './slices/post-datas-slice';
+import { userReducer } from './slices/user-slice';
 
 const store = configureStore({
   reducer: {
     user: userReducer,
+    postDates: postDataReducer,
   },
 });
 
