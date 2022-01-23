@@ -17,8 +17,8 @@ import {
 } from '../../../redux-toolkit/store';
 import {
   IRefData,
-  setRefDatas,
-} from '../../../redux-toolkit/slices/post-datas-slice';
+  setPostAllDatas,
+} from '../../../redux-toolkit/slices/post/all-datas-slice';
 
 const CategoryOrderPost: NextPage<{ refData: IRefData[] }> = (props) => {
   // const { isAdmin } = useIsAdmin();
@@ -26,22 +26,25 @@ const CategoryOrderPost: NextPage<{ refData: IRefData[] }> = (props) => {
   const { showToast } = useToast();
 
   // 첫 렌더링 시 getStaticProps()로 받아온 static data를 리덕스에 저장해 초기화
-  // 서버에서 받아온 데이터는 클라이언트(리덕스)에서 관리
-  const staticDatas = props.refData;
+  // 서버에서 받아온 뒤 변경되는 데이터는 서버에 저장하기 전까지 클라이언트(리덕스)에서 관리
+  const staticDatas = props;
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(setRefDatas(staticDatas));
+    dispatch(setPostAllDatas(staticDatas.refData)); // 임시로 refData
   }, []);
 
   // 수정한 데이터는 리덕스에서 갖고 있다가 'saveDataToFireStoreDB' 버튼 누르면 업데이트
-  const { postDatas } = useAppSelector((state: RootState) => state.postDates);
+  const { postAllDatas } = useAppSelector(
+    (state: RootState) => state.postDates
+  );
+  // console.log('postDatas', postDatas);
+
   const saveDataToFireStoreDB = () => {
-    setDocument(postDatas, 'dev/ref') // 저장되는 위치 동적으로 변경
+    setDocument(postAllDatas, 'dev/ref') // 저장되는 위치 동적으로 변경
       .then(() => {
         showToast('서버 저장 완료');
       });
   };
-  console.log(postDatas);
 
   // useEffect(() => {
   //   // local이든 production이든 수정할 때는 수정한 내용 반영되도록, contentEditable이면 클라이언트에서 새로 데이터 받아와서 정렬
@@ -55,7 +58,11 @@ const CategoryOrderPost: NextPage<{ refData: IRefData[] }> = (props) => {
       </main>
       <Contact />
       <Response /> */}
-      <ReferenceBlockWYSIWYG contentEditable={contentEditable} />
+      렌더링 안 되는 부분
+      <ReferenceBlockWYSIWYG
+        contentEditable={contentEditable}
+        staticDatas={staticDatas.refData}
+      />
       {contentEditable && (
         <>
           <button

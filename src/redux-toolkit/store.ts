@@ -1,6 +1,6 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { postDataReducer } from './slices/post-datas-slice';
+import { postDataReducer } from './slices/post/all-datas-slice';
 import { userReducer } from './slices/user-slice';
 
 const store = configureStore({

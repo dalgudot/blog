@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useState } from 'react';
-import { IRefData } from '../../../../../redux-toolkit/slices/post-datas-slice';
+import { IRefData } from '../../../../../redux-toolkit/slices/post/all-datas-slice';
 import { useAppDispatch } from '../../../../../redux-toolkit/store';
 import EditableElement from '../../editable-element';
 import styles from './editable-link.module.scss';
@@ -23,18 +23,12 @@ const EditableLink: FC<Props> = ({
   const currentIndex = datas.indexOf(data);
 
   // 임시로 텍스트를 가지고 있다가, focusout이 되면 data를 set <-- 글씨 쓸 때마다 blur되는 것 방지.
-  const [title, setTitle] = useState<string>(data.title);
+  // const [title, setTitle] = useState<string>(data.title);
 
   const onInput = (e: ChangeEvent<HTMLParagraphElement>) => {
     const inputHtml = e.target.innerHTML;
-    setTitle(inputHtml);
-    // setTitleData(inputHtml, currentIndex);
-  };
 
-  // console.log(title);
-
-  const setData = () => {
-    setTitleData(title, currentIndex);
+    setTitleData(inputHtml, currentIndex);
   };
 
   return (
@@ -47,7 +41,6 @@ const EditableLink: FC<Props> = ({
             html={data.title}
             onInput={onInput}
             placeholder='Describe the link'
-            setData={setData}
           />
           <UrlInput
             linkUrl={data.url}
