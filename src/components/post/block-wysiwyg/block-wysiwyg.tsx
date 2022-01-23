@@ -1,7 +1,6 @@
 import { useMounted } from '@dalgu/react-utility-hooks';
 import React, { useState } from 'react';
 import { ArticleBlock, IArticleBlock } from '../models/article-block';
-import Blocks from './blocks/blocks';
 import TextBlock from './blocks/paragraph-block/paragraph-block';
 
 type Props = {
@@ -22,7 +21,6 @@ const BlockWYSIWYG: React.FC<Props> = ({ contentEditable }) => {
 
   return (
     <>
-      <Blocks />
       {mounted &&
         blockContents.map((content, idx) => (
           <TextBlock

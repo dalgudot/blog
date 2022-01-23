@@ -4,16 +4,11 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
 type Props = {
-  blockType: 'Code';
   language: 'tsx' | 'typescript' | 'css';
   codeString: string;
 };
 
-const ContentEditableCode: FC<Props> = ({
-  blockType,
-  language,
-  codeString,
-}) => {
+const EditableCode: FC<Props> = ({ language, codeString }) => {
   return (
     <SyntaxHighlighter
       className={styles.code__block}
@@ -27,4 +22,4 @@ const ContentEditableCode: FC<Props> = ({
   );
 };
 
-export default ContentEditableCode;
+export default EditableCode;

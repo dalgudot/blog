@@ -3,24 +3,44 @@ import { getAllArticles } from '../../../service/firebase/firestore-db';
 import { InferGetStaticPropsType, NextPage } from 'next';
 import { useIsAdmin } from '../../../lib/hooks/useIsAdmin';
 import Response from '../../../components/post/response/response';
-import Reference from '../../../components/post/reference/reference';
+import ReferenceBlockWYSIWYG from '../../../components/post/reference/reference-block-wysiwyg';
+import Contact from '../../../components/contact/contact';
 
 const CategoryOrderPost: NextPage<
   InferGetStaticPropsType<typeof getStaticProps>
 > = (props) => {
-  const { isAdmin } = useIsAdmin();
-  const contentEditable: boolean = isAdmin;
+  // const { isAdmin } = useIsAdmin();
+  const contentEditable: boolean = true;
   // CRUD
   // 올린 후 '수정' 기능
   // 올리기 전 '저장', '게시'
+
+  const tempDatas = [
+    {
+      title: '이벤트 처리하기',
+      url: 'https://ko.reactjs.org/docs/handling-events.html',
+    },
+    {
+      title: '폼',
+      url: 'https://ko.reactjs.org/docs/forms.html',
+    },
+    {
+      title: '조건부 렌더링',
+      url: 'https://ko.reactjs.org/docs/conditional-rendering.html',
+    },
+  ];
 
   return (
     <>
       {/* <main>
         <Post contentEditable={contentEditable} />
       </main>
+      <Contact />
       <Response /> */}
-      <Reference contentEditable={contentEditable} />
+      <ReferenceBlockWYSIWYG
+        contentEditable={contentEditable}
+        datas={tempDatas}
+      />
     </>
   );
 };
