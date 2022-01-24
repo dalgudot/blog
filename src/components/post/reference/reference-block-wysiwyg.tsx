@@ -1,3 +1,4 @@
+import { useMounted } from '@dalgu/react-utility-hooks';
 import { FC } from 'react';
 import { IRefData } from '../../../service/firebase/firestore';
 import EditableLink from '../block-wysiwyg/editable-element/link/editable-link';
@@ -19,21 +20,24 @@ const ReferenceBlockWYSIWYG: FC<Props> = ({
 }) => {
   // 데이터는 2가지: 제목(클라이언트에서 한줄 다 차면 ...으로 표시), 링크
 
+  const mounted = useMounted(); // for SSR
+
   return (
     <>
       <section className={styles.reference__section}>
         <h2>참고 자료</h2>
         <ul>
-          {refDataArray.map((data, idx) => (
-            <EditableLink
-              key={`${data.title}${idx}`}
-              contentEditable={contentEditable}
-              datas={refDataArray}
-              data={data}
-              setRefTitle={setRefTitle}
-              setRefUrl={setRefUrl}
-            />
-          ))}
+          {mounted &&
+            refDataArray.map((data, idx) => (
+              <EditableLink
+                key={`${data.title}${idx}`}
+                contentEditable={contentEditable}
+                datas={refDataArray}
+                data={data}
+                setRefTitle={setRefTitle}
+                setRefUrl={setRefUrl}
+              />
+            ))}
         </ul>
       </section>
     </>

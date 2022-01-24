@@ -1,4 +1,3 @@
-import { useMounted } from '@dalgu/react-utility-hooks';
 import DOMPurify from 'dompurify';
 import {
   ChangeEvent,
@@ -40,7 +39,6 @@ const EditableElement: FC<Props> = ({
 }) => {
   const ref = useRef<HTMLHeadingElement | HTMLParagraphElement>(null);
   const [htmlContent, setHtmlContent] = useState<string>(html);
-  const mounted = useMounted(); // for SSR
 
   const blurBlock = () => {
     ref.current?.blur();
@@ -58,19 +56,17 @@ const EditableElement: FC<Props> = ({
 
   return (
     <>
-      {mounted && (
-        <TagName
-          ref={ref}
-          contentEditable={contentEditable}
-          // suppressContentEditableWarning={contentEditable}
-          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(htmlContent) }}
-          onInput={input}
-          onKeyPress={keyPress}
-          spellCheck={spellCheck}
-          placeholder={placeholder}
-          className={customClassName}
-        />
-      )}
+      <TagName
+        ref={ref}
+        contentEditable={contentEditable}
+        // suppressContentEditableWarning={contentEditable}
+        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(htmlContent) }}
+        onInput={input}
+        onKeyPress={keyPress}
+        spellCheck={spellCheck}
+        placeholder={placeholder}
+        className={customClassName}
+      />
     </>
   );
 };
