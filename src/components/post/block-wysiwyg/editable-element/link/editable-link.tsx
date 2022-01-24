@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useState } from 'react';
-import { IRefData } from '../../../../../redux-toolkit/slices/post/all-datas-slice';
+import { IRefData } from '../../../../../redux-toolkit/slices/post-slice';
 import { useAppDispatch } from '../../../../../redux-toolkit/store';
 import EditableElement from '../../editable-element';
 import styles from './editable-link.module.scss';

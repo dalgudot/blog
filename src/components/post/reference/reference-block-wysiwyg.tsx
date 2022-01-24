@@ -3,7 +3,7 @@ import {
   IRefData,
   setRefTitleData,
   setRefUrlData,
-} from '../../../redux-toolkit/slices/post/all-datas-slice';
+} from '../../../redux-toolkit/slices/post-slice';
 
 import {
   RootState,
