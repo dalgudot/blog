@@ -6,6 +6,7 @@ import {
   SetStateAction,
 } from 'react';
 import { addLinkBlock } from '../../../../../redux-toolkit/slices/post-slice';
+import { addTempLinkBlock } from '../../../../../redux-toolkit/slices/temp-post-slice';
 import { useAppDispatch } from '../../../../../redux-toolkit/store';
 import { IRefData } from '../../../../../service/firebase/firestore';
 import EditableElement from '../../editable-element';
@@ -30,11 +31,9 @@ const EditableLink: FC<Props> = ({
   const currentIndex = datas.indexOf(data);
 
   const onInput = (
-    e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>,
-    setHtmlContent: Dispatch<SetStateAction<string>>
+    e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>
   ) => {
     const inputHtml = e.target.innerHTML;
-    setHtmlContent(inputHtml);
     setRefTitle(inputHtml, currentIndex);
   };
 
@@ -52,7 +51,8 @@ const EditableLink: FC<Props> = ({
         title: '',
         url: '',
       };
-      dispatch(addLinkBlock(newLinkEditableBlock));
+      dispatch(addLinkBlock(newLinkEditableBlock)); // 새로운 블럭 그리기 위해
+      dispatch(addTempLinkBlock(newLinkEditableBlock)); // 데이터 저장하기 위해
 
       console.log('Enter');
     }

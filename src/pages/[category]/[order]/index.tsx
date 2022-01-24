@@ -21,7 +21,11 @@ import {
   setRefTitleData,
   setRefUrlData,
 } from '../../../redux-toolkit/slices/post-slice';
-import { shallowEqual } from 'react-redux';
+import {
+  setTempPostData,
+  setTempRefTitleData,
+  setTempRefUrlData,
+} from '../../../redux-toolkit/slices/temp-post-slice';
 
 const CategoryOrderPost: NextPage<any> = (props) => {
   // const { isAdmin } = useIsAdmin();
@@ -35,23 +39,32 @@ const CategoryOrderPost: NextPage<any> = (props) => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(setPostData(props.post));
+    dispatch(setTempPostData(props.post));
   }, []);
 
   const setRefTitle = (data: string, currentIndex: number) => {
-    dispatch(setRefTitleData({ data, currentIndex }));
+    // dispatch(setRefTitleData({ data, currentIndex }));
+    dispatch(setTempRefTitleData({ data, currentIndex }));
   };
   const setRefUrl = (data: string, currentIndex: number) => {
-    dispatch(setRefUrlData({ data, currentIndex }));
+    // dispatch(setRefUrlData({ data, currentIndex }));
+    dispatch(setTempRefUrlData({ data, currentIndex }));
   };
 
   // 수정한 데이터는 리덕스에서 갖고 있다가 'saveDataToFireStoreDB' 버튼 누르면 업데이트
   const { post } = useAppSelector((state: RootState) => state.post);
+  const { tempPost } = useAppSelector((state: RootState) => state.tempPost);
   console.log('post', post);
+  console.log('tempPost', tempPost);
+
+  const saveDataToRedux = () => {
+    // dispatch(setPostData(tempPost));
+  };
 
   const saveDataToFireStoreDB = () => {
     const currentCategory = router.query.category;
     const currentOrder = router.query.order;
-    setDocument(post, `${currentCategory}/${currentOrder}`) // 저장되는 위치 동적으로 변경
+    setDocument(tempPost, `${currentCategory}/${currentOrder}`) // 저장되는 위치 동적으로 변경
       .then(() => {
         showToast('서버 저장 완료');
       });
@@ -73,6 +86,12 @@ const CategoryOrderPost: NextPage<any> = (props) => {
       />
       {contentEditable && (
         <>
+          <button
+            onClick={saveDataToRedux}
+            style={{ marginTop: 48, marginLeft: 24 }}
+          >
+            리덕스에 임시 저장
+          </button>
           <button
             onClick={saveDataToFireStoreDB}
             style={{ marginTop: 48, marginLeft: 24 }}

@@ -35,7 +35,7 @@ const SwitchEditableBlocks: FC<Props> = ({
     //     </span>
     //   );
     case 'Link':
-      return <EditableLink contentEditable={contentEditable} />;
+    // return <EditableLink contentEditable={contentEditable} />;
     default:
       return <></>;
     // return <EditableParagraph contentEditable={contentEditable}/>;

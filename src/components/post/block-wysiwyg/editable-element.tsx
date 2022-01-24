@@ -5,6 +5,7 @@ import {
   FC,
   KeyboardEvent,
   SetStateAction,
+  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -14,10 +15,7 @@ type Props = {
   TagName: 'h1' | 'h2' | 'h3' | 'p';
   contentEditable: boolean;
   html: string;
-  onInput?: (
-    e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>,
-    setHtmlContent: Dispatch<SetStateAction<string>>
-  ) => void;
+  onInput?: (e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>) => void;
   onKeyPress?: (
     e: KeyboardEvent<HTMLHeadingElement | HTMLParagraphElement>,
     blurBlock: () => void
@@ -38,15 +36,19 @@ const EditableElement: FC<Props> = ({
   customClassName = styles.editable__element,
 }) => {
   const ref = useRef<HTMLHeadingElement | HTMLParagraphElement>(null);
-  const [htmlContent, setHtmlContent] = useState<string>(html);
+
+  const focusBlock = () => {
+    ref.current?.focus();
+  };
 
   const blurBlock = () => {
     ref.current?.blur();
   };
 
-  const input = (e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>) => {
-    onInput && onInput(e, setHtmlContent);
-  };
+  // 새로 생성된 블럭의 커서 위치
+  useEffect(() => {
+    ref.current && focusContentEditableTextToEnd(ref.current);
+  }, []);
 
   const keyPress = (
     e: KeyboardEvent<HTMLHeadingElement | HTMLParagraphElement>
@@ -54,14 +56,20 @@ const EditableElement: FC<Props> = ({
     onKeyPress && onKeyPress(e, blurBlock);
   };
 
+  // const [text, setText] = useState(html);
+  // const input = (e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>) => {
+  //   const inputHtml = e.target.innerHTML;
+  //   setText(inputHtml);
+  // };
+
   return (
     <>
       <TagName
         ref={ref}
         contentEditable={contentEditable}
-        // suppressContentEditableWarning={contentEditable}
-        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(htmlContent) }}
-        onInput={input}
+        suppressContentEditableWarning={contentEditable}
+        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }}
+        onInput={onInput}
         onKeyPress={keyPress}
         spellCheck={spellCheck}
         placeholder={placeholder}
@@ -72,3 +80,17 @@ const EditableElement: FC<Props> = ({
 };
 
 export default EditableElement;
+
+const focusContentEditableTextToEnd = (element: HTMLElement) => {
+  if (element.innerText.length === 0) {
+    element.focus();
+    return;
+  }
+
+  const selection = window.getSelection();
+  const newRange = document.createRange();
+  newRange.selectNodeContents(element);
+  newRange.collapse(false);
+  selection?.removeAllRanges();
+  selection?.addRange(newRange);
+};
