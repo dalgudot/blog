@@ -40,10 +40,6 @@ export const postSlice = createSlice({
   },
 });
 
-export const {
-  // setPostAllDatas,
-  setPostData,
-  setRefTitleData,
-  setRefUrlData,
-} = postSlice.actions;
+export const { setPostData, setRefTitleData, setRefUrlData } =
+  postSlice.actions;
 export const postReducer = postSlice.reducer;

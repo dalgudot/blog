@@ -16,7 +16,11 @@ import {
   useAppSelector,
 } from '../../../redux-toolkit/store';
 import { useRouter } from 'next/router';
-import { setPostData } from '../../../redux-toolkit/slices/post-slice';
+import {
+  setPostData,
+  setRefTitleData,
+  setRefUrlData,
+} from '../../../redux-toolkit/slices/post-slice';
 
 const CategoryOrderPost: NextPage<any> = (props) => {
   // const { isAdmin } = useIsAdmin();
@@ -32,6 +36,13 @@ const CategoryOrderPost: NextPage<any> = (props) => {
   useEffect(() => {
     dispatch(setPostData(props.post));
   }, []);
+
+  const setRefTitle = (data: string, currentIndex: number) => {
+    dispatch(setRefTitleData({ data, currentIndex }));
+  };
+  const setRefUrl = (data: string, currentIndex: number) => {
+    dispatch(setRefUrlData({ data, currentIndex }));
+  };
 
   // 수정한 데이터는 리덕스에서 갖고 있다가 'saveDataToFireStoreDB' 버튼 누르면 업데이트
   const { post } = useAppSelector((state: RootState) => state.post);
@@ -62,7 +73,9 @@ const CategoryOrderPost: NextPage<any> = (props) => {
       렌더링 안 되는 부분
       <ReferenceBlockWYSIWYG
         contentEditable={contentEditable}
-        staticDatas={refDataArray}
+        refDataArray={refDataArray}
+        setRefTitle={setRefTitle}
+        setRefUrl={setRefUrl}
       />
       {contentEditable && (
         <>

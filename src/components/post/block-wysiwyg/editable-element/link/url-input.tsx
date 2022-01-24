@@ -1,22 +1,24 @@
-import { ChangeEvent, FC } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import styles from './url-input.module.scss';
 
 type Props = {
   linkUrl: string;
-  setUrlData: (data: string, currentIndex: number) => void;
+  setRefUrl: (data: string, currentIndex: number) => void;
   currentIndex: number;
 };
 
-const UrlInput: FC<Props> = ({ linkUrl, setUrlData, currentIndex }) => {
+const UrlInput: FC<Props> = ({ linkUrl, setRefUrl, currentIndex }) => {
+  const [text, setText] = useState<string>(linkUrl);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setUrlData(e.target.value, currentIndex);
+    setText(e.target.value);
+    setRefUrl(e.target.value, currentIndex);
   };
 
   return (
     <form className={styles.url__input__form}>
       <input
         type='text'
-        value={linkUrl}
+        value={text}
         onChange={handleChange}
         placeholder='Enter the URL'
       />
