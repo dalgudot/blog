@@ -1,4 +1,3 @@
-import { IPostData } from './../../service/firebase/firestore';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IRefData } from '../../service/firebase/firestore';
 
@@ -37,9 +36,13 @@ export const postSlice = createSlice({
       state.post.refDataArray[action.payload.currentIndex].url =
         action.payload.data;
     },
+
+    addLinkBlock: (state, action: PayloadAction<IRefData>) => {
+      state.post.refDataArray.push(action.payload);
+    },
   },
 });
 
-export const { setPostData, setRefTitleData, setRefUrlData } =
+export const { setPostData, setRefTitleData, setRefUrlData, addLinkBlock } =
   postSlice.actions;
 export const postReducer = postSlice.reducer;

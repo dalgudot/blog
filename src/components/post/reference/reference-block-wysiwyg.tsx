@@ -24,9 +24,9 @@ const ReferenceBlockWYSIWYG: FC<Props> = ({
       <section className={styles.reference__section}>
         <h2>참고 자료</h2>
         <ul>
-          {refDataArray.map((data) => (
+          {refDataArray.map((data, idx) => (
             <EditableLink
-              key={data.title}
+              key={`${data.title}${idx}`}
               contentEditable={contentEditable}
               datas={refDataArray}
               data={data}

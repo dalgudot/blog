@@ -21,13 +21,13 @@ import {
   setRefTitleData,
   setRefUrlData,
 } from '../../../redux-toolkit/slices/post-slice';
+import { shallowEqual } from 'react-redux';
 
 const CategoryOrderPost: NextPage<any> = (props) => {
   // const { isAdmin } = useIsAdmin();
   const contentEditable: boolean = true;
   const { showToast } = useToast();
   const router = useRouter();
-
   const refDataArray = props.post.refDataArray;
 
   // 첫 렌더링 시 getStaticProps()로 받아온 static data를 리덕스에 저장해 초기화
@@ -46,22 +46,16 @@ const CategoryOrderPost: NextPage<any> = (props) => {
 
   // 수정한 데이터는 리덕스에서 갖고 있다가 'saveDataToFireStoreDB' 버튼 누르면 업데이트
   const { post } = useAppSelector((state: RootState) => state.post);
-  // console.log('post', post);
+  console.log('post', post);
 
   const saveDataToFireStoreDB = () => {
     const currentCategory = router.query.category;
     const currentOrder = router.query.order;
-
     setDocument(post, `${currentCategory}/${currentOrder}`) // 저장되는 위치 동적으로 변경
       .then(() => {
         showToast('서버 저장 완료');
       });
   };
-
-  // useEffect(() => {
-  //   // local이든 production이든 수정할 때는 수정한 내용 반영되도록, contentEditable이면 클라이언트에서 새로 데이터 받아와서 정렬
-  //   contentEditable && fetchDB()
-  // }, [contentEditable])
 
   return (
     <>
@@ -73,7 +67,7 @@ const CategoryOrderPost: NextPage<any> = (props) => {
       렌더링 안 되는 부분
       <ReferenceBlockWYSIWYG
         contentEditable={contentEditable}
-        refDataArray={refDataArray}
+        refDataArray={post.refDataArray}
         setRefTitle={setRefTitle}
         setRefUrl={setRefUrl}
       />
@@ -116,6 +110,11 @@ export const getStaticPaths = async () => {
 
   return { paths, fallback: false };
 };
+
+// useEffect(() => {
+//   // local이든 production이든 수정할 때는 수정한 내용 반영되도록, contentEditable이면 클라이언트에서 새로 데이터 받아와서 정렬
+//   contentEditable && fetchDB()
+// }, [contentEditable])
 
 // https://yceffort.kr/2020/03/nextjs-02-data-fetching
 // [API Docs] yarn dev(next dev)에서는 매번 호출!
