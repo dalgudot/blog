@@ -21,6 +21,7 @@ export interface IPostData {
 }
 
 export interface IRefData {
+  // blockId: string;
   title: string;
   url: string;
 }

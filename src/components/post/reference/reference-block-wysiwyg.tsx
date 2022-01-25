@@ -1,5 +1,5 @@
 import { useMounted } from '@dalgu/react-utility-hooks';
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { IRefData } from '../../../service/firebase/firestore';
 import EditableLink from '../block-wysiwyg/editable-element/link/editable-link';
 import styles from './reference-block-wysiwyg.module.scss';
@@ -15,7 +15,6 @@ const ReferenceBlockWYSIWYG: FC<Props> = ({
   refDataArray,
 }) => {
   // 데이터는 2가지: 제목(클라이언트에서 한줄 다 차면 ...으로 표시), 링크
-
   const mounted = useMounted(); // for SSR
 
   return (
@@ -38,4 +37,5 @@ const ReferenceBlockWYSIWYG: FC<Props> = ({
   );
 };
 
-export default ReferenceBlockWYSIWYG;
+// props는 첫 렌덜이 이후 변하지 않으므로 memo 이용하면 렌더링 성능 극대화
+export default memo(ReferenceBlockWYSIWYG);

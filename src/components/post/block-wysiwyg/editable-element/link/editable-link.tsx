@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, KeyboardEvent } from 'react';
+import { ChangeEvent, FC, KeyboardEvent, memo } from 'react';
 import { addLinkBlock } from '../../../../../redux-toolkit/slices/post-slice';
 import {
   addTempLinkBlock,
