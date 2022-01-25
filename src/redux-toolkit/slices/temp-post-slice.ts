@@ -1,6 +1,6 @@
-import { IRefDataModel } from './../model/ref-data';
+import { IRefDataModel } from '../model/ref-data-model';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IRefData, RefDataModel } from '../model/ref-data';
+import { IRefData, RefDataModel } from '../model/ref-data-model';
 
 const refData: IRefDataModel = new RefDataModel();
 
@@ -53,6 +53,13 @@ export const tempPostSlice = createSlice({
         );
       }
     },
+
+    removeTempLinkBlock: (
+      state,
+      action: PayloadAction<{ currentIndex: number }>
+    ) => {
+      state.tempPost.refDataArray.splice(action.payload.currentIndex, 1);
+    },
   },
 });
 
@@ -61,5 +68,6 @@ export const {
   setTempRefTitleData,
   setTempRefUrlData,
   addTempLinkBlock,
+  removeTempLinkBlock,
 } = tempPostSlice.actions;
 export const tempPostReducer = tempPostSlice.reducer;

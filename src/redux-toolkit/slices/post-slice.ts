@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IRefData, IRefDataModel, RefDataModel } from '../model/ref-data';
+import { IRefData, IRefDataModel, RefDataModel } from '../model/ref-data-model';
 
 const refData: IRefDataModel = new RefDataModel();
 
@@ -36,8 +36,15 @@ export const postSlice = createSlice({
         );
       }
     },
+
+    removeLinkBlock: (
+      state,
+      action: PayloadAction<{ currentIndex: number }>
+    ) => {
+      state.post.refDataArray.splice(action.payload.currentIndex, 1);
+    },
   },
 });
 
-export const { setPostData, addLinkBlock } = postSlice.actions;
+export const { setPostData, addLinkBlock, removeLinkBlock } = postSlice.actions;
 export const postReducer = postSlice.reducer;

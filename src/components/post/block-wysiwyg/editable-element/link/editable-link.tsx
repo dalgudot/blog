@@ -1,13 +1,17 @@
 import DOMPurify from 'dompurify';
-import { ChangeEvent, FC, KeyboardEvent, useRef } from 'react';
+import { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
 import {
   IRefData,
   IRefDataModel,
   RefDataModel,
-} from '../../../../../redux-toolkit/model/ref-data';
-import { addLinkBlock } from '../../../../../redux-toolkit/slices/post-slice';
+} from '../../../../../redux-toolkit/model/ref-data-model';
+import {
+  addLinkBlock,
+  removeLinkBlock,
+} from '../../../../../redux-toolkit/slices/post-slice';
 import {
   addTempLinkBlock,
+  removeTempLinkBlock,
   setTempRefTitleData,
 } from '../../../../../redux-toolkit/slices/temp-post-slice';
 import { useAppDispatch } from '../../../../../redux-toolkit/store';
@@ -17,6 +21,7 @@ import UrlInput from './url-input';
 
 type Props = {
   contentEditable: boolean;
+  datas: IRefData[];
   data: IRefData;
   idx: number;
   refDatasLength: number;
@@ -24,18 +29,21 @@ type Props = {
 
 const EditableLink: FC<Props> = ({
   contentEditable,
+  datas,
   data,
   idx,
   refDatasLength,
 }) => {
   const currentIndex = idx;
   const dispatch = useAppDispatch();
+  const [text, setText] = useState(data.title);
 
   const onInput = (
     e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>
   ) => {
     const inputPureHtml = DOMPurify.sanitize(e.target.innerHTML);
     dispatch(setTempRefTitleData({ inputHtml: inputPureHtml, currentIndex }));
+    setText(inputPureHtml); // onKeyDown의 removeBlock() 조건 + 렌더링 성능 위해
   };
 
   const addBlock = () => {
@@ -47,10 +55,22 @@ const EditableLink: FC<Props> = ({
     dispatch(addTempLinkBlock({ newLinkEditableBlock, currentIndex, isEnd })); // 데이터 저장하기 위해
   };
 
+  const removeBlock = () => {
+    dispatch(removeLinkBlock({ currentIndex }));
+    dispatch(removeTempLinkBlock({ currentIndex }));
+  };
+
   const onKeyPress = (e: KeyboardEvent<HTMLElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       addBlock();
+    }
+  };
+
+  const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
+    if (text === '' && e.key === 'Backspace') {
+      e.preventDefault();
+      removeBlock();
     }
   };
 
@@ -61,9 +81,12 @@ const EditableLink: FC<Props> = ({
           <EditableElement
             TagName='p'
             contentEditable={contentEditable}
+            datas={datas}
+            currentIndex={currentIndex}
             html={data.title}
             onInput={onInput}
             onKeyPress={onKeyPress}
+            onKeyDown={onKeyDown}
             placeholder='Describe the link'
           />
           <UrlInput
@@ -77,6 +100,8 @@ const EditableLink: FC<Props> = ({
           <EditableElement
             TagName='p'
             contentEditable={contentEditable}
+            datas={datas}
+            currentIndex={currentIndex}
             html={data.title}
           />
         </a>

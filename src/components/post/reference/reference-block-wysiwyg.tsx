@@ -1,6 +1,6 @@
 import { useMounted } from '@dalgu/react-utility-hooks';
 import { FC, memo } from 'react';
-import { IRefData } from '../../../redux-toolkit/model/ref-data';
+import { IRefData } from '../../../redux-toolkit/model/ref-data-model';
 import EditableLink from '../block-wysiwyg/editable-element/link/editable-link';
 import styles from './reference-block-wysiwyg.module.scss';
 
@@ -28,6 +28,7 @@ const ReferenceBlockWYSIWYG: FC<Props> = ({
               <EditableLink
                 key={data.blockId}
                 contentEditable={contentEditable}
+                datas={refDataArray}
                 data={data}
                 idx={idx}
                 refDatasLength={refDatasLength}
