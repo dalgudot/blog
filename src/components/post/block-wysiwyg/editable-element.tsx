@@ -65,13 +65,17 @@ const EditableElement: FC<Props> = ({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const getTextDataFromClipboard = async (e: ClipboardEvent) => {
+    const getTextDataFromClipboard = (e: ClipboardEvent) => {
       e.preventDefault();
       const pastedData = e.clipboardData;
       const textData = pastedData?.getData('Text');
 
+      // const selection = window.getSelection();
+      // console.log(selection);
+
       // contentEditable의 innerHtml, TempRef, setText 모두 동기화!
       if (ref.current) {
+        // (TODO) 가장 뒤에 붙여넣기가 되므로 고칠 필요가 있음. -> 셀렉션 커서 혹은 영역을 찾아서 각각 대응해줘야 함.
         const newInnerPureText = DOMPurify.sanitize(
           `${ref.current.innerHTML}${textData}`
         );
@@ -80,6 +84,7 @@ const EditableElement: FC<Props> = ({
           setTempRefTitleData({ inputPureHtml: newInnerPureText, currentIndex })
         );
         setText && setText(newInnerPureText); // onKeyDown의 removeBlock() 조건 + 렌더링 성능 위해
+        focusContentEditableTextToEnd(ref.current);
       }
     };
 
