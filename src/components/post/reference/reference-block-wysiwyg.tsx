@@ -1,6 +1,6 @@
 import { useMounted } from '@dalgu/react-utility-hooks';
 import { FC, memo } from 'react';
-import { IRefData } from '../../../service/firebase/firestore';
+import { IRefData } from '../../../redux-toolkit/model/ref-data';
 import EditableLink from '../block-wysiwyg/editable-element/link/editable-link';
 import styles from './reference-block-wysiwyg.module.scss';
 
@@ -25,7 +25,7 @@ const ReferenceBlockWYSIWYG: FC<Props> = ({
           {mounted &&
             refDataArray.map((data, idx) => (
               <EditableLink
-                key={`${data.title}${idx}`}
+                key={data.blockId}
                 contentEditable={contentEditable}
                 datas={refDataArray}
                 data={data}

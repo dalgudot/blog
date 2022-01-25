@@ -7,10 +7,7 @@ type Props = {
   contentEditable: boolean;
   html: string;
   onInput?: (e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>) => void;
-  onKeyPress?: (
-    e: KeyboardEvent<HTMLHeadingElement | HTMLParagraphElement>,
-    blurBlock: () => void
-  ) => void;
+  onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
   spellCheck?: boolean;
   placeholder?: string;
   customClassName?: string;
@@ -41,10 +38,8 @@ const EditableElement: FC<Props> = ({
     ref.current && focusContentEditableTextToEnd(ref.current);
   }, []);
 
-  const keyPress = (
-    e: KeyboardEvent<HTMLHeadingElement | HTMLParagraphElement>
-  ) => {
-    onKeyPress && onKeyPress(e, blurBlock);
+  const keyPress = (e: KeyboardEvent<HTMLElement>) => {
+    onKeyPress && onKeyPress(e);
   };
 
   return (

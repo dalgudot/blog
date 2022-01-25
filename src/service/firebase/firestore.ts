@@ -10,6 +10,8 @@ import {
 } from 'firebase/firestore';
 import { objectToArray } from '../../lib/utils/data';
 import { getDB } from './config';
+import { uuid } from '../../lib/utils/id';
+import { IRefData } from '../../redux-toolkit/model/ref-data';
 
 const db = getDB();
 const devCollectionRefName = 'dev';
@@ -20,11 +22,11 @@ export interface IPostData {
   refDataArray: IRefData[];
 }
 
-export interface IRefData {
-  // blockId: string;
-  title: string;
-  url: string;
-}
+// export interface IRefData {
+//   blockId: string;
+//   title: string;
+//   url: string;
+// }
 
 const getEachAllCollectionDataArray = async (collectionRefName: string) => {
   // 컬렉션 전체 데이터 받아오는 'getDoc's''

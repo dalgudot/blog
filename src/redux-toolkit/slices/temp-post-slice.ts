@@ -1,15 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IRefData } from '../../service/firebase/firestore';
+import { IRefData, RefData } from '../model/ref-data';
+
+const refData = new RefData();
 
 // const initialState: IPostData = {
 const initialState = {
   tempPost: {
-    refDataArray: [
-      {
-        title: '',
-        url: '',
-      },
-    ],
+    refDataArray: [refData.createNewRefData()],
   },
 };
 

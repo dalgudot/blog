@@ -9,7 +9,7 @@ import {
   getPostByCategoryOrder,
   setDocument,
 } from '../../../service/firebase/firestore';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import {
   RootState,
   useAppDispatch,
@@ -27,32 +27,28 @@ const CategoryOrderPost: NextPage<any> = (props) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    function initializeClientData() {
+    const initializeClientData = () => {
       dispatch(setPostData(props.post)); // 초기화 및 map() 상태 관리(새로운 블럭 그리는 일 등)
       dispatch(setTempPostData(props.post)); // 데이터 저장 위해(contentEditable 요소가 매번 렌더링될 때마다 생기는 문제 방지)
-    }
+    };
     initializeClientData();
   }, []);
 
   const { post } = useAppSelector((state: RootState) => state.post); // 초기화 및 map() 상태 관리(새로운 블럭 그리는 일 등)
   const { tempPost } = useAppSelector((state: RootState) => state.tempPost); // 데이터 저장 위해(contentEditable 요소가 매번 렌더링될 때마다 생기는 문제 방지)
   // console.log('post', post);
-  // console.log('tempPost', tempPost);
+  console.log('tempPost', tempPost);
 
   // saveTempDataToRedux feature is not needed.
-  const saveTempDataToRedux = useCallback(
-    () => dispatch(setPostData(tempPost)),
-    []
-  );
+  const saveTempDataToRedux = () => dispatch(setPostData(tempPost));
 
-  const saveDataToFireStoreDB = useCallback(() => {
+  const saveDataToFireStoreDB = () => {
     const currentCategory = router.query.category;
     const currentOrder = router.query.order;
-    setDocument(tempPost, `${currentCategory}/${currentOrder}`) // 저장되는 위치 동적으로 변경
-      .then(() => {
-        showToast('서버 저장 완료');
-      });
-  }, []);
+    setDocument(tempPost, `${currentCategory}/${currentOrder}`).then(() => {
+      showToast('서버 저장 완료');
+    });
+  };
 
   return (
     <>
