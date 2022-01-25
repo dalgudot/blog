@@ -50,12 +50,10 @@ const ParagraphBlock = ({
     const isEnd = currentIndex === blockContents.length - 1;
 
     if (isEnd) {
-      console.log('isEnd');
       setBlockContents([...blockContents, block]);
     } else {
       const copyBlockContents = [...blockContents];
       copyBlockContents.splice(currentIndex + 1, 0, block);
-      console.log(copyBlockContents);
       setBlockContents(copyBlockContents);
     }
   };

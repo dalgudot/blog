@@ -1,7 +1,10 @@
 import DOMPurify from 'dompurify';
-import { ChangeEvent, FC, KeyboardEvent } from 'react';
-import { uuid } from '../../../../../lib/utils/id';
-import { IRefData, RefData } from '../../../../../redux-toolkit/model/ref-data';
+import { ChangeEvent, FC, KeyboardEvent, useRef } from 'react';
+import {
+  IRefData,
+  IRefDataModel,
+  RefDataModel,
+} from '../../../../../redux-toolkit/model/ref-data';
 import { addLinkBlock } from '../../../../../redux-toolkit/slices/post-slice';
 import {
   addTempLinkBlock,
@@ -14,12 +17,18 @@ import UrlInput from './url-input';
 
 type Props = {
   contentEditable: boolean;
-  datas: IRefData[];
   data: IRefData;
+  idx: number;
+  refDatasLength: number;
 };
 
-const EditableLink: FC<Props> = ({ contentEditable, datas, data }) => {
-  const currentIndex = datas.indexOf(data); // 불완전한 현재 index -> uid로 해결해야 함.
+const EditableLink: FC<Props> = ({
+  contentEditable,
+  data,
+  idx,
+  refDatasLength,
+}) => {
+  const currentIndex = idx;
   const dispatch = useAppDispatch();
 
   const onInput = (
@@ -29,13 +38,19 @@ const EditableLink: FC<Props> = ({ contentEditable, datas, data }) => {
     dispatch(setTempRefTitleData({ inputHtml: inputPureHtml, currentIndex }));
   };
 
+  const addBlock = () => {
+    const refData: IRefDataModel = new RefDataModel();
+    const newLinkEditableBlock: IRefData = refData.createNewRefData();
+    const isEnd: boolean = currentIndex === refDatasLength - 1;
+
+    dispatch(addLinkBlock({ newLinkEditableBlock, currentIndex, isEnd })); // 새로운 블럭 그리기 위해
+    dispatch(addTempLinkBlock({ newLinkEditableBlock, currentIndex, isEnd })); // 데이터 저장하기 위해
+  };
+
   const onKeyPress = (e: KeyboardEvent<HTMLElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      const refData = new RefData();
-      const newLinkEditableBlock = refData.createNewRefData();
-      dispatch(addLinkBlock(newLinkEditableBlock)); // 새로운 블럭 그리기 위해
-      dispatch(addTempLinkBlock(newLinkEditableBlock)); // 데이터 저장하기 위해
+      addBlock();
     }
   };
 

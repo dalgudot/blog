@@ -16,6 +16,7 @@ const ReferenceBlockWYSIWYG: FC<Props> = ({
 }) => {
   // 데이터는 2가지: 제목(클라이언트에서 한줄 다 차면 ...으로 표시), 링크
   const mounted = useMounted(); // for SSR
+  const refDatasLength = refDataArray.length;
 
   return (
     <>
@@ -27,8 +28,9 @@ const ReferenceBlockWYSIWYG: FC<Props> = ({
               <EditableLink
                 key={data.blockId}
                 contentEditable={contentEditable}
-                datas={refDataArray}
                 data={data}
+                idx={idx}
+                refDatasLength={refDatasLength}
               />
             ))}
         </ul>

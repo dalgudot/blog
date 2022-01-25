@@ -1,15 +1,19 @@
 import { uuid } from '../../lib/utils/id';
 
+export interface IRefDataModel {
+  createNewRefData: () => IRefData;
+}
+
 export interface IRefData {
   blockId: string;
   title: string;
   url: string;
 }
 
-export class RefData implements IRefData {
-  blockId: string;
-  title: string;
-  url: string;
+export class RefDataModel implements IRefDataModel {
+  private blockId: string;
+  private title: string;
+  private url: string;
 
   constructor() {
     this.blockId = uuid();
@@ -17,6 +21,7 @@ export class RefData implements IRefData {
     this.url = '';
   }
 
+  // for Data Serealization
   createNewRefData(): IRefData {
     return {
       blockId: this.blockId,

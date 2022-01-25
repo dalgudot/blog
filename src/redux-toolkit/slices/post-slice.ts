@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IRefData, RefData } from '../model/ref-data';
+import { IRefData, IRefDataModel, RefDataModel } from '../model/ref-data';
 
-const refData = new RefData();
+const refData: IRefDataModel = new RefDataModel();
 
 // const initialState: IPostData = {
 const initialState = {
@@ -18,8 +18,23 @@ export const postSlice = createSlice({
       state.post = action.payload;
     },
 
-    addLinkBlock: (state, action: PayloadAction<IRefData>) => {
-      state.post.refDataArray.push(action.payload);
+    addLinkBlock: (
+      state,
+      action: PayloadAction<{
+        newLinkEditableBlock: IRefData;
+        currentIndex: number;
+        isEnd: boolean;
+      }>
+    ) => {
+      if (action.payload.isEnd) {
+        state.post.refDataArray.push(action.payload.newLinkEditableBlock);
+      } else {
+        state.post.refDataArray.splice(
+          action.payload.currentIndex + 1,
+          0,
+          action.payload.newLinkEditableBlock
+        );
+      }
     },
   },
 });
