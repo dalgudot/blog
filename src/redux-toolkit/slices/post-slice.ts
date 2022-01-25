@@ -21,21 +21,21 @@ export const postSlice = createSlice({
       state.post = action.payload;
     },
 
-    setRefTitleData: (
-      state,
-      action: PayloadAction<{ data: string; currentIndex: number }>
-    ) => {
-      state.post.refDataArray[action.payload.currentIndex].title =
-        action.payload.data;
-    },
+    // setRefTitleData: (
+    //   state,
+    //   action: PayloadAction<{ data: string; currentIndex: number }>
+    // ) => {
+    //   state.post.refDataArray[action.payload.currentIndex].title =
+    //     action.payload.data;
+    // },
 
-    setRefUrlData: (
-      state,
-      action: PayloadAction<{ data: string; currentIndex: number }>
-    ) => {
-      state.post.refDataArray[action.payload.currentIndex].url =
-        action.payload.data;
-    },
+    // setRefUrlData: (
+    //   state,
+    //   action: PayloadAction<{ data: string; currentIndex: number }>
+    // ) => {
+    //   state.post.refDataArray[action.payload.currentIndex].url =
+    //     action.payload.data;
+    // },
 
     addLinkBlock: (state, action: PayloadAction<IRefData>) => {
       state.post.refDataArray.push(action.payload);
@@ -43,6 +43,9 @@ export const postSlice = createSlice({
   },
 });
 
-export const { setPostData, setRefTitleData, setRefUrlData, addLinkBlock } =
-  postSlice.actions;
+export const {
+  setPostData,
+  // setRefTitleData, setRefUrlData,
+  addLinkBlock,
+} = postSlice.actions;
 export const postReducer = postSlice.reducer;

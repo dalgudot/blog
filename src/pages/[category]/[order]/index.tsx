@@ -16,23 +16,14 @@ import {
   useAppSelector,
 } from '../../../redux-toolkit/store';
 import { useRouter } from 'next/router';
-import {
-  setPostData,
-  setRefTitleData,
-  setRefUrlData,
-} from '../../../redux-toolkit/slices/post-slice';
-import {
-  setTempPostData,
-  setTempRefTitleData,
-  setTempRefUrlData,
-} from '../../../redux-toolkit/slices/temp-post-slice';
+import { setPostData } from '../../../redux-toolkit/slices/post-slice';
+import { setTempPostData } from '../../../redux-toolkit/slices/temp-post-slice';
 
 const CategoryOrderPost: NextPage<any> = (props) => {
   // const { isAdmin } = useIsAdmin();
   const contentEditable: boolean = true;
   const { showToast } = useToast();
   const router = useRouter();
-  const refDataArray = props.post.refDataArray;
 
   // 첫 렌더링 시 getStaticProps()로 받아온 static data를 리덕스에 저장해 초기화
   // 서버에서 받아온 뒤 변경되는 데이터는 서버에 저장하기 전까지 클라이언트(리덕스)에서 관리
@@ -42,23 +33,14 @@ const CategoryOrderPost: NextPage<any> = (props) => {
     dispatch(setTempPostData(props.post));
   }, []);
 
-  const setRefTitle = (data: string, currentIndex: number) => {
-    // dispatch(setRefTitleData({ data, currentIndex }));
-    dispatch(setTempRefTitleData({ data, currentIndex }));
-  };
-  const setRefUrl = (data: string, currentIndex: number) => {
-    // dispatch(setRefUrlData({ data, currentIndex }));
-    dispatch(setTempRefUrlData({ data, currentIndex }));
-  };
-
   // 수정한 데이터는 리덕스에서 갖고 있다가 'saveDataToFireStoreDB' 버튼 누르면 업데이트
   const { post } = useAppSelector((state: RootState) => state.post);
   const { tempPost } = useAppSelector((state: RootState) => state.tempPost);
-  console.log('post', post);
-  console.log('tempPost', tempPost);
+  // console.log('post', post);
+  // console.log('tempPost', tempPost);
 
-  const saveDataToRedux = () => {
-    // dispatch(setPostData(tempPost));
+  const saveTempDataToRedux = () => {
+    dispatch(setPostData(tempPost));
   };
 
   const saveDataToFireStoreDB = () => {
@@ -81,13 +63,11 @@ const CategoryOrderPost: NextPage<any> = (props) => {
       <ReferenceBlockWYSIWYG
         contentEditable={contentEditable}
         refDataArray={post.refDataArray}
-        setRefTitle={setRefTitle}
-        setRefUrl={setRefUrl}
       />
       {contentEditable && (
         <>
           <button
-            onClick={saveDataToRedux}
+            onClick={saveTempDataToRedux}
             style={{ marginTop: 48, marginLeft: 24 }}
           >
             리덕스에 임시 저장

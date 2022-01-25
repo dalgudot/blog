@@ -1,17 +1,21 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
+import { setTempRefUrlData } from '../../../../../redux-toolkit/slices/temp-post-slice';
+import { useAppDispatch } from '../../../../../redux-toolkit/store';
 import styles from './url-input.module.scss';
 
 type Props = {
   linkUrl: string;
-  setRefUrl: (data: string, currentIndex: number) => void;
+  onKeyPress: (e: KeyboardEvent<HTMLInputElement>) => void;
   currentIndex: number;
 };
 
-const UrlInput: FC<Props> = ({ linkUrl, setRefUrl, currentIndex }) => {
+const UrlInput: FC<Props> = ({ linkUrl, onKeyPress, currentIndex }) => {
   const [text, setText] = useState<string>(linkUrl);
+  const dispatch = useAppDispatch();
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
-    setRefUrl(e.target.value, currentIndex);
+    dispatch(setTempRefUrlData({ data: e.target.value, currentIndex }));
   };
 
   return (
@@ -20,6 +24,7 @@ const UrlInput: FC<Props> = ({ linkUrl, setRefUrl, currentIndex }) => {
         type='text'
         value={text}
         onChange={handleChange}
+        onKeyPress={onKeyPress}
         placeholder='Enter the URL'
       />
     </form>

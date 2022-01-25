@@ -1,14 +1,5 @@
 import DOMPurify from 'dompurify';
-import {
-  ChangeEvent,
-  Dispatch,
-  FC,
-  KeyboardEvent,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { ChangeEvent, FC, KeyboardEvent, useEffect, useRef } from 'react';
 import styles from './editable-element.module.scss';
 
 type Props = {
@@ -55,12 +46,6 @@ const EditableElement: FC<Props> = ({
   ) => {
     onKeyPress && onKeyPress(e, blurBlock);
   };
-
-  // const [text, setText] = useState(html);
-  // const input = (e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>) => {
-  //   const inputHtml = e.target.innerHTML;
-  //   setText(inputHtml);
-  // };
 
   return (
     <>

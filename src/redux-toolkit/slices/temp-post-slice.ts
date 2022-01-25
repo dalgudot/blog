@@ -23,10 +23,10 @@ export const tempPostSlice = createSlice({
 
     setTempRefTitleData: (
       state,
-      action: PayloadAction<{ data: string; currentIndex: number }>
+      action: PayloadAction<{ inputHtml: string; currentIndex: number }>
     ) => {
       state.tempPost.refDataArray[action.payload.currentIndex].title =
-        action.payload.data;
+        action.payload.inputHtml;
     },
 
     setTempRefUrlData: (

@@ -1,12 +1,9 @@
-import {
-  ChangeEvent,
-  Dispatch,
-  FC,
-  KeyboardEvent,
-  SetStateAction,
-} from 'react';
+import { ChangeEvent, FC, KeyboardEvent } from 'react';
 import { addLinkBlock } from '../../../../../redux-toolkit/slices/post-slice';
-import { addTempLinkBlock } from '../../../../../redux-toolkit/slices/temp-post-slice';
+import {
+  addTempLinkBlock,
+  setTempRefTitleData,
+} from '../../../../../redux-toolkit/slices/temp-post-slice';
 import { useAppDispatch } from '../../../../../redux-toolkit/store';
 import { IRefData } from '../../../../../service/firebase/firestore';
 import EditableElement from '../../editable-element';
@@ -17,36 +14,22 @@ type Props = {
   contentEditable: boolean;
   datas: IRefData[];
   data: IRefData;
-  setRefTitle: (data: string, currentIndex: number) => void;
-  setRefUrl: (data: string, currentIndex: number) => void;
 };
 
-const EditableLink: FC<Props> = ({
-  contentEditable,
-  datas,
-  data,
-  setRefTitle,
-  setRefUrl,
-}) => {
+const EditableLink: FC<Props> = ({ contentEditable, datas, data }) => {
   const currentIndex = datas.indexOf(data);
+  const dispatch = useAppDispatch();
 
   const onInput = (
     e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>
   ) => {
     const inputHtml = e.target.innerHTML;
-    setRefTitle(inputHtml, currentIndex);
+    dispatch(setTempRefTitleData({ inputHtml, currentIndex }));
   };
 
-  const dispatch = useAppDispatch();
-
-  const onKeyPress = (
-    e: KeyboardEvent<HTMLHeadingElement | HTMLParagraphElement>,
-    blurBlock: () => void
-  ) => {
+  const onKeyPress = (e: KeyboardEvent<HTMLElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      blurBlock();
-
       const newLinkEditableBlock = {
         title: '',
         url: '',
@@ -54,7 +37,7 @@ const EditableLink: FC<Props> = ({
       dispatch(addLinkBlock(newLinkEditableBlock)); // 새로운 블럭 그리기 위해
       dispatch(addTempLinkBlock(newLinkEditableBlock)); // 데이터 저장하기 위해
 
-      console.log('Enter');
+      console.log('onKeyPress, Enter');
     }
   };
 
@@ -72,7 +55,7 @@ const EditableLink: FC<Props> = ({
           />
           <UrlInput
             linkUrl={data.url}
-            setRefUrl={setRefUrl}
+            onKeyPress={onKeyPress}
             currentIndex={currentIndex}
           />
         </>
