@@ -38,6 +38,7 @@ const CategoryOrderPost: NextPage<any> = (props) => {
   const { tempPost } = useAppSelector((state: RootState) => state.tempPost); // 데이터 저장 위해(contentEditable 요소가 매번 렌더링될 때마다 생기는 문제 방지)
   // console.log('post', post);
   // console.log('tempPost.refDataArray', tempPost.refDataArray);
+  // console.log(tempPost.refDataArray[1]);
 
   // saveTempDataToRedux feature is not needed.
   const saveTempDataToRedux = () => dispatch(setPostData(tempPost));

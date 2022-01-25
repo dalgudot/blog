@@ -37,7 +37,7 @@ const EditableLink: FC<Props> = ({
 }) => {
   const currentIndex = idx;
   const dispatch = useAppDispatch();
-  const [text, setText] = useState(data.title);
+  const [text, setText] = useState<string>(data.title);
 
   const onInput = (
     e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>
@@ -98,6 +98,12 @@ const EditableLink: FC<Props> = ({
           currentIndex,
         })
       );
+      dispatch(
+        setTempRefTitleData({
+          inputPureHtml: emptyCodeInlineBlock,
+          currentIndex,
+        })
+      );
       setText(emptyCodeInlineBlock); // onKeyDown의 removeBlock() 조건 + 렌더링 성능 위해
     } else {
       // 첫 번째 `는 <code>로 두 번째 `는 </code>로!
@@ -109,6 +115,12 @@ const EditableLink: FC<Props> = ({
 
       dispatch(
         setRefTitleData({
+          inputPureHtml: secondBacktickToTag,
+          currentIndex,
+        })
+      );
+      dispatch(
+        setTempRefTitleData({
           inputPureHtml: secondBacktickToTag,
           currentIndex,
         })
@@ -130,6 +142,7 @@ const EditableLink: FC<Props> = ({
             onInput={onInput}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
+            setText={setText}
             placeholder='Describe the link'
           />
           <UrlInput
