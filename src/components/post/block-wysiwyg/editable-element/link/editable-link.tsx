@@ -8,6 +8,7 @@ import {
 import {
   addLinkBlock,
   removeLinkBlock,
+  setRefTitleData,
 } from '../../../../../redux-toolkit/slices/post-slice';
 import {
   addTempLinkBlock,
@@ -42,8 +43,13 @@ const EditableLink: FC<Props> = ({
     e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>
   ) => {
     const inputPureHtml = DOMPurify.sanitize(e.target.innerHTML);
-    dispatch(setTempRefTitleData({ inputHtml: inputPureHtml, currentIndex }));
+    dispatch(setTempRefTitleData({ inputPureHtml, currentIndex }));
     setText(inputPureHtml); // onKeyDown의 removeBlock() 조건 + 렌더링 성능 위해
+
+    const countBacktick = inputPureHtml.match(/`/g)?.length; // ` 개수
+    if (countBacktick === 2) {
+      addInlineCodeBlock(inputPureHtml);
+    }
   };
 
   const addBlock = () => {
@@ -72,6 +78,42 @@ const EditableLink: FC<Props> = ({
     if (text === '' && refDatasLength > 1 && e.key === 'Backspace') {
       e.preventDefault();
       removeBlock();
+    }
+  };
+
+  const addInlineCodeBlock = (inputPureHtml: string) => {
+    const isContinuousBacktick: boolean = inputPureHtml.includes('``');
+
+    if (isContinuousBacktick) {
+      // 2개 연속(``)이면 빈 Block으로 생성
+      const emptyCodeInlineBlock = inputPureHtml.replace(
+        '``',
+        '&nbsp<code>&nbsp</code>&nbsp'
+      );
+
+      // 새로운 내용 전달 위해 전체 리렌더
+      dispatch(
+        setRefTitleData({
+          inputPureHtml: emptyCodeInlineBlock,
+          currentIndex,
+        })
+      );
+      setText(emptyCodeInlineBlock); // onKeyDown의 removeBlock() 조건 + 렌더링 성능 위해
+    } else {
+      // 첫 번째 `는 <code>로 두 번째 `는 </code>로!
+      const firstBacktickToTag = inputPureHtml.replace('`', '&nbsp<code>'); // &nbsp is for design
+      const secondBacktickToTag = firstBacktickToTag.replace(
+        '`',
+        `</code>&nbsp` // &nbsp로 코드 블럭 벗어나기
+      );
+
+      dispatch(
+        setRefTitleData({
+          inputPureHtml: secondBacktickToTag,
+          currentIndex,
+        })
+      );
+      setText(secondBacktickToTag); // onKeyDown의 removeBlock() 조건 + 렌더링 성능 위해
     }
   };
 

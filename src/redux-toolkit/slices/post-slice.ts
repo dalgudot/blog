@@ -18,6 +18,14 @@ export const postSlice = createSlice({
       state.post = action.payload;
     },
 
+    setRefTitleData: (
+      state,
+      action: PayloadAction<{ inputPureHtml: string; currentIndex: number }>
+    ) => {
+      state.post.refDataArray[action.payload.currentIndex].title =
+        action.payload.inputPureHtml;
+    },
+
     addLinkBlock: (
       state,
       action: PayloadAction<{
@@ -46,5 +54,6 @@ export const postSlice = createSlice({
   },
 });
 
-export const { setPostData, addLinkBlock, removeLinkBlock } = postSlice.actions;
+export const { setPostData, setRefTitleData, addLinkBlock, removeLinkBlock } =
+  postSlice.actions;
 export const postReducer = postSlice.reducer;
