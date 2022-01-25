@@ -1,15 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IRefData } from '../../service/firebase/firestore';
+import { IRefData, IRefDataModel, RefDataModel } from '../model/ref-data-model';
+
+const refData: IRefDataModel = new RefDataModel();
 
 // const initialState: IPostData = {
 const initialState = {
   post: {
-    refDataArray: [
-      {
-        title: '',
-        url: '',
-      },
-    ],
+    refDataArray: [refData.createNewRefData()],
   },
 };
 
@@ -21,31 +18,42 @@ export const postSlice = createSlice({
       state.post = action.payload;
     },
 
-    // setRefTitleData: (
-    //   state,
-    //   action: PayloadAction<{ data: string; currentIndex: number }>
-    // ) => {
-    //   state.post.refDataArray[action.payload.currentIndex].title =
-    //     action.payload.data;
-    // },
+    setRefTitleData: (
+      state,
+      action: PayloadAction<{ inputPureHtml: string; currentIndex: number }>
+    ) => {
+      state.post.refDataArray[action.payload.currentIndex].title =
+        action.payload.inputPureHtml;
+    },
 
-    // setRefUrlData: (
-    //   state,
-    //   action: PayloadAction<{ data: string; currentIndex: number }>
-    // ) => {
-    //   state.post.refDataArray[action.payload.currentIndex].url =
-    //     action.payload.data;
-    // },
+    addLinkBlock: (
+      state,
+      action: PayloadAction<{
+        newLinkEditableBlock: IRefData;
+        currentIndex: number;
+        isEnd: boolean;
+      }>
+    ) => {
+      if (action.payload.isEnd) {
+        state.post.refDataArray.push(action.payload.newLinkEditableBlock);
+      } else {
+        state.post.refDataArray.splice(
+          action.payload.currentIndex + 1,
+          0,
+          action.payload.newLinkEditableBlock
+        );
+      }
+    },
 
-    addLinkBlock: (state, action: PayloadAction<IRefData>) => {
-      state.post.refDataArray.push(action.payload);
+    removeLinkBlock: (
+      state,
+      action: PayloadAction<{ currentIndex: number }>
+    ) => {
+      state.post.refDataArray.splice(action.payload.currentIndex, 1);
     },
   },
 });
 
-export const {
-  setPostData,
-  // setRefTitleData, setRefUrlData,
-  addLinkBlock,
-} = postSlice.actions;
+export const { setPostData, setRefTitleData, addLinkBlock, removeLinkBlock } =
+  postSlice.actions;
 export const postReducer = postSlice.reducer;

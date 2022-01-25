@@ -24,32 +24,31 @@ const CategoryOrderPost: NextPage<any> = (props) => {
   const contentEditable: boolean = true;
   const { showToast } = useToast();
   const router = useRouter();
-
-  // 첫 렌더링 시 getStaticProps()로 받아온 static data를 리덕스에 저장해 초기화
-  // 서버에서 받아온 뒤 변경되는 데이터는 서버에 저장하기 전까지 클라이언트(리덕스)에서 관리
   const dispatch = useAppDispatch();
+
   useEffect(() => {
-    dispatch(setPostData(props.post));
-    dispatch(setTempPostData(props.post));
+    const initializeClientData = () => {
+      dispatch(setPostData(props.post)); // 초기화 및 map() 상태 관리(새로운 블럭 그리는 일 등)
+      dispatch(setTempPostData(props.post)); // 데이터 저장 위해(contentEditable 요소가 매번 렌더링될 때마다 생기는 문제 방지)
+    };
+    contentEditable && initializeClientData();
   }, []);
 
-  // 수정한 데이터는 리덕스에서 갖고 있다가 'saveDataToFireStoreDB' 버튼 누르면 업데이트
-  const { post } = useAppSelector((state: RootState) => state.post);
-  const { tempPost } = useAppSelector((state: RootState) => state.tempPost);
+  const { post } = useAppSelector((state: RootState) => state.post); // 초기화 및 map() 상태 관리(새로운 블럭 그리는 일 등)
+  const { tempPost } = useAppSelector((state: RootState) => state.tempPost); // 데이터 저장 위해(contentEditable 요소가 매번 렌더링될 때마다 생기는 문제 방지)
   // console.log('post', post);
-  // console.log('tempPost', tempPost);
+  // console.log('tempPost.refDataArray', tempPost.refDataArray);
+  // console.log(tempPost.refDataArray[1]);
 
-  const saveTempDataToRedux = () => {
-    dispatch(setPostData(tempPost));
-  };
+  // saveTempDataToRedux feature is not needed.
+  const saveTempDataToRedux = () => dispatch(setPostData(tempPost));
 
   const saveDataToFireStoreDB = () => {
     const currentCategory = router.query.category;
     const currentOrder = router.query.order;
-    setDocument(tempPost, `${currentCategory}/${currentOrder}`) // 저장되는 위치 동적으로 변경
-      .then(() => {
-        showToast('서버 저장 완료');
-      });
+    setDocument(tempPost, `${currentCategory}/${currentOrder}`).then(() => {
+      showToast('서버 저장 완료');
+    });
   };
 
   return (
@@ -94,7 +93,6 @@ type Params = {
 };
 
 export const getStaticProps = async ({ params }: Params) => {
-  // console.log('params', params);
   // 동적으로 만들어진 각 페이지의 [category]와 [order]를 매개변수 params로 전달
   const post = await getPostByCategoryOrder(params);
 
@@ -114,11 +112,6 @@ export const getStaticPaths = async () => {
 //   // local이든 production이든 수정할 때는 수정한 내용 반영되도록, contentEditable이면 클라이언트에서 새로 데이터 받아와서 정렬
 //   contentEditable && fetchDB()
 // }, [contentEditable])
-
-// https://yceffort.kr/2020/03/nextjs-02-data-fetching
-// [API Docs] yarn dev(next dev)에서는 매번 호출!
-// GitHub repo에서 Vercel 프론트 서버로 푸시한 뒤에 하는 '빌드'에서만 호출! -> 사용자는 파이어스토어 호출하지 않음.
-// This also gets called at build time
 
 // number -> string,
 // order: String(post.order)

@@ -1,15 +1,13 @@
+import { IRefDataModel } from '../model/ref-data-model';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IRefData } from '../../service/firebase/firestore';
+import { IRefData, RefDataModel } from '../model/ref-data-model';
+
+const refData: IRefDataModel = new RefDataModel();
 
 // const initialState: IPostData = {
 const initialState = {
   tempPost: {
-    refDataArray: [
-      {
-        title: '',
-        url: '',
-      },
-    ],
+    refDataArray: [refData.createNewRefData()],
   },
 };
 
@@ -23,10 +21,10 @@ export const tempPostSlice = createSlice({
 
     setTempRefTitleData: (
       state,
-      action: PayloadAction<{ inputHtml: string; currentIndex: number }>
+      action: PayloadAction<{ inputPureHtml: string; currentIndex: number }>
     ) => {
       state.tempPost.refDataArray[action.payload.currentIndex].title =
-        action.payload.inputHtml;
+        action.payload.inputPureHtml;
     },
 
     setTempRefUrlData: (
@@ -37,8 +35,30 @@ export const tempPostSlice = createSlice({
         action.payload.data;
     },
 
-    addTempLinkBlock: (state, action: PayloadAction<IRefData>) => {
-      state.tempPost.refDataArray.push(action.payload);
+    addTempLinkBlock: (
+      state,
+      action: PayloadAction<{
+        newLinkEditableBlock: IRefData;
+        currentIndex: number;
+        isEnd: boolean;
+      }>
+    ) => {
+      if (action.payload.isEnd) {
+        state.tempPost.refDataArray.push(action.payload.newLinkEditableBlock);
+      } else {
+        state.tempPost.refDataArray.splice(
+          action.payload.currentIndex + 1,
+          0,
+          action.payload.newLinkEditableBlock
+        );
+      }
+    },
+
+    removeTempLinkBlock: (
+      state,
+      action: PayloadAction<{ currentIndex: number }>
+    ) => {
+      state.tempPost.refDataArray.splice(action.payload.currentIndex, 1);
     },
   },
 });
@@ -48,5 +68,6 @@ export const {
   setTempRefTitleData,
   setTempRefUrlData,
   addTempLinkBlock,
+  removeTempLinkBlock,
 } = tempPostSlice.actions;
 export const tempPostReducer = tempPostSlice.reducer;
