@@ -68,7 +68,8 @@ const EditableLink: FC<Props> = ({
   };
 
   const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
-    if (text === '' && e.key === 'Backspace') {
+    // title 텍스트가 없고, 블록이 1개 이상이고, Backspace를 누른 경우
+    if (text === '' && refDatasLength > 1 && e.key === 'Backspace') {
       e.preventDefault();
       removeBlock();
     }
