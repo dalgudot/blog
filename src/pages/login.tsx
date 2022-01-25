@@ -2,19 +2,19 @@ import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import List from '../../components/navigation/article/nav-lists';
-import { setUid } from '../../redux-toolkit/slices/userSlice';
+import List from '../components/navigation/article/nav-lists';
+import { setUid } from '../redux-toolkit/slices/user-slice';
 import {
   RootState,
   useAppDispatch,
   useAppSelector,
-} from '../../redux-toolkit/store';
+} from '../redux-toolkit/store';
 import {
   Authentication,
   IAuthentication,
   TproviderName,
-} from '../../service/firebase/authentication';
-import { Tuser } from '../../types/firebase';
+} from '../service/firebase/authentication';
+import { Tuser } from '../types/firebase';
 
 const Login: NextPage = () => {
   const router = useRouter();
@@ -25,16 +25,18 @@ const Login: NextPage = () => {
   const { uid } = useAppSelector((state: RootState) => state.user);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const onUserChanged = (user: Tuser) => {
-      dispatch(setUid(user?.uid));
-    };
-    auth.onAuthChange(onUserChanged); // 한 세션(탭)에서 새로고침 시 로그인 유지
+  // useEffect(() => {
+  //   const onUserChanged = (user: Tuser) => {
+  //     dispatch(setUid(user?.uid));
+  //   };
+  //   auth.onAuthChange(onUserChanged); // 한 세션(탭)에서 새로고침 시 로그인 유지
 
-    uid === process.env.NEXT_PUBLIC_ADMIN_UID
-      ? setIsAdmin(true)
-      : setIsAdmin(false);
-  }, [uid]);
+  //   uid === process.env.NEXT_PUBLIC_ADMIN_UID
+  //     ? setIsAdmin(true)
+  //     : setIsAdmin(false);
+  // }, [uid]);
+
+  useEffect(() => {}, []);
 
   const onLogIn = (providerName: TproviderName) => {
     auth //
