@@ -1,7 +1,6 @@
-import { useMounted } from '@dalgu/react-utility-hooks';
 import { FC, memo } from 'react';
 import { IRefData } from '../../../redux-toolkit/model/ref-data-model';
-import EditableLink from '../block-wysiwyg/editable-element/link/editable-link';
+import EditableLink from '../../block-wysiwyg/editable-element/link/editable-link';
 import styles from './reference-block-wysiwyg.module.scss';
 
 type Props = {
@@ -15,7 +14,6 @@ const ReferenceBlockWYSIWYG: FC<Props> = ({
   refDataArray,
 }) => {
   // 데이터는 2가지: 제목(클라이언트에서 한줄 다 차면 ...으로 표시), 링크
-  const mounted = useMounted(); // for SSR
   const refDatasLength = refDataArray.length;
 
   return (
@@ -23,17 +21,16 @@ const ReferenceBlockWYSIWYG: FC<Props> = ({
       <section className={styles.reference__section}>
         <h2>참고 자료</h2>
         <ul>
-          {mounted &&
-            refDataArray.map((data, idx) => (
-              <EditableLink
-                key={data.blockId}
-                contentEditable={contentEditable}
-                datas={refDataArray}
-                data={data}
-                idx={idx}
-                refDatasLength={refDatasLength}
-              />
-            ))}
+          {refDataArray.map((data, idx) => (
+            <EditableLink
+              key={data.blockId}
+              contentEditable={contentEditable}
+              datas={refDataArray}
+              data={data}
+              idx={idx}
+              refDatasLength={refDatasLength}
+            />
+          ))}
         </ul>
       </section>
     </>

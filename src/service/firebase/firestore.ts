@@ -54,15 +54,23 @@ export const getAllCollectionDataArray = async () => {
   );
 
   const allCollectionDataArray = devDataArray.concat(designDataArray);
+  console.log(allCollectionDataArray);
+
   return allCollectionDataArray;
 };
 
-export const getPostByCategoryOrder = async (params: {
-  category: string;
-  order: string;
-}) => {
-  const docRef = doc(db, params.category, params.order);
+export const getPostByCategoryOrder = async (
+  params: {
+    category: string;
+    order: string;
+  },
+  locale: 'ko' | 'en'
+) => {
+  const ref = locale === 'ko' ? params.order : `${params.order}-en`;
+  const docRef = doc(db, params.category, ref);
   const docSnap = await getDoc(docRef);
+
+  // console.log('docSnap.data()', docSnap.data());
 
   if (docSnap.exists()) {
     const post = docSnap.data();

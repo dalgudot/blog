@@ -1,12 +1,13 @@
-import { IRefDataModel } from '../model/ref-data-model';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IRefData, RefDataModel } from '../model/ref-data-model';
+import { IRefData, RefDataModel, IRefDataModel } from '../model/ref-data-model';
 
 const refData: IRefDataModel = new RefDataModel();
 
 // const initialState: IPostData = {
 const initialState = {
   tempPost: {
+    dateTime: '',
+    title: '',
     refDataArray: [refData.createNewRefData()],
   },
 };
@@ -17,6 +18,13 @@ export const tempPostSlice = createSlice({
   reducers: {
     setTempPostData: (state, action: PayloadAction<any>) => {
       state.tempPost = action.payload;
+    },
+
+    setTempArticleTitleData: (
+      state,
+      action: PayloadAction<{ inputPureHtml: string }>
+    ) => {
+      state.tempPost.title = action.payload.inputPureHtml;
     },
 
     setTempRefTitleData: (
@@ -65,6 +73,7 @@ export const tempPostSlice = createSlice({
 
 export const {
   setTempPostData,
+  setTempArticleTitleData,
   setTempRefTitleData,
   setTempRefUrlData,
   addTempLinkBlock,

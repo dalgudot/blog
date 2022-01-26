@@ -2,8 +2,6 @@ import { FC } from 'react';
 import styles from './response.module.scss';
 
 const Response: FC = () => {
-  console.log(styles.response);
-
   const height = false ? 100 : 500;
 
   return (

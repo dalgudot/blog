@@ -6,6 +6,8 @@ const refData: IRefDataModel = new RefDataModel();
 // const initialState: IPostData = {
 const initialState = {
   post: {
+    dateTime: '',
+    title: '',
     refDataArray: [refData.createNewRefData()],
   },
 };
@@ -16,6 +18,13 @@ export const postSlice = createSlice({
   reducers: {
     setPostData: (state, action: PayloadAction<any>) => {
       state.post = action.payload;
+    },
+
+    setArticleTitleData: (
+      state,
+      action: PayloadAction<{ inputPureHtml: string }>
+    ) => {
+      state.post.title = action.payload.inputPureHtml;
     },
 
     setRefTitleData: (
@@ -54,6 +63,11 @@ export const postSlice = createSlice({
   },
 });
 
-export const { setPostData, setRefTitleData, addLinkBlock, removeLinkBlock } =
-  postSlice.actions;
+export const {
+  setPostData,
+  setArticleTitleData,
+  setRefTitleData,
+  addLinkBlock,
+  removeLinkBlock,
+} = postSlice.actions;
 export const postReducer = postSlice.reducer;
