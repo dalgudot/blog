@@ -30,8 +30,6 @@ const CategoryOrderPost: NextPage<any> = (props) => {
   const dispatch = useAppDispatch();
   const mounted = useMounted();
 
-  // console.log('props', props);
-
   useEffect(() => {
     const initializeClientData = () => {
       dispatch(setPostData(props.post)); // 초기화 및 map() 상태 관리(새로운 블럭 그리는 일 등)
@@ -106,7 +104,6 @@ type Context = {
 export const getStaticProps = async ({ params, locale }: Context) => {
   // 동적으로 만들어진 각 페이지의 [category]와 [order]를 매개변수 params로 전달
   const post = await getPostByCategoryOrder(params, locale);
-
   return { props: { post } };
 };
 

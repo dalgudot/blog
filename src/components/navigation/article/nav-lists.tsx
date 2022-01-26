@@ -1,22 +1,23 @@
 import List from './list';
 
 type NavListsProps = {
-  datas: {
+  allPostsListData: {
     category: string;
     order: string;
+    title: string;
   }[];
 };
 
-const NavLists: React.FC<NavListsProps> = ({ datas }) => {
+const NavLists: React.FC<NavListsProps> = ({ allPostsListData }) => {
   return (
     <nav>
       <ul>
-        {datas.map((data, idx) => (
+        {allPostsListData.map((data, idx) => (
           <List
             key={idx}
             category={data.category}
             order={data.order}
-            // content={data.content}
+            title={data.title}
           />
         ))}
       </ul>

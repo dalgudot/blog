@@ -30,6 +30,8 @@ const getEachAllCollectionDataArray = async (collectionRefName: string) => {
   const dataArray: {
     category: string;
     order: string;
+    // dateTime: string,
+    title: string;
     refDataArray: IRefData[];
   }[] = [];
 
@@ -37,7 +39,9 @@ const getEachAllCollectionDataArray = async (collectionRefName: string) => {
     dataArray.push({
       category: collectionRefName,
       order: doc.id,
-      refDataArray: doc.data() as IRefData[],
+      // dateTime: string,
+      title: doc.data().title,
+      refDataArray: doc.data().refDataArray,
     });
   });
 
@@ -54,7 +58,6 @@ export const getAllCollectionDataArray = async () => {
   );
 
   const allCollectionDataArray = devDataArray.concat(designDataArray);
-  console.log(allCollectionDataArray);
 
   return allCollectionDataArray;
 };
@@ -69,8 +72,6 @@ export const getPostByCategoryOrder = async (
   const ref = locale === 'ko' ? params.order : `${params.order}-en`;
   const docRef = doc(db, params.category, ref);
   const docSnap = await getDoc(docRef);
-
-  // console.log('docSnap.data()', docSnap.data());
 
   if (docSnap.exists()) {
     const post = docSnap.data();
