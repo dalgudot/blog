@@ -4,19 +4,19 @@ import {
   IRefData,
   IRefDataModel,
   RefDataModel,
-} from '../../../../../redux-toolkit/model/ref-data-model';
+} from '../../../../redux-toolkit/model/ref-data-model';
 import {
   addLinkBlock,
   removeLinkBlock,
   setRefTitleData,
-} from '../../../../../redux-toolkit/slices/post-slice';
+} from '../../../../redux-toolkit/slices/post-slice';
 import {
   addTempLinkBlock,
   removeTempLinkBlock,
   setTempRefTitleData,
-} from '../../../../../redux-toolkit/slices/temp-post-slice';
-import { useAppDispatch } from '../../../../../redux-toolkit/store';
-import EditableElement from '../../editable-element';
+} from '../../../../redux-toolkit/slices/temp-post-slice';
+import { useAppDispatch } from '../../../../redux-toolkit/store';
+import EditableElementSwitch from '../../editable-element-switch';
 import styles from './editable-link.module.scss';
 import UrlInput from './url-input';
 
@@ -133,7 +133,7 @@ const EditableLink: FC<Props> = ({
     <li className={styles.editable__link__li}>
       {contentEditable ? (
         <>
-          <EditableElement
+          <EditableElementSwitch
             TagName='p'
             contentEditable={contentEditable}
             datas={datas}
@@ -153,7 +153,7 @@ const EditableLink: FC<Props> = ({
         </>
       ) : (
         <a href={data.url} target='_blank' rel='noreferrer'>
-          <EditableElement
+          <EditableElementSwitch
             TagName='p'
             contentEditable={contentEditable}
             datas={datas}

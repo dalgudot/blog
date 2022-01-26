@@ -9,7 +9,7 @@ import {
   getPostByCategoryOrder,
   setDocument,
 } from '../../../service/firebase/firestore';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   RootState,
   useAppDispatch,
@@ -18,13 +18,16 @@ import {
 import { useRouter } from 'next/router';
 import { setPostData } from '../../../redux-toolkit/slices/post-slice';
 import { setTempPostData } from '../../../redux-toolkit/slices/temp-post-slice';
+import Article from '../../../components/post/article/article';
+import { useMounted } from '@dalgu/react-utility-hooks';
 
 const CategoryOrderPost: NextPage<any> = (props) => {
   // const { isAdmin } = useIsAdmin();
-  const contentEditable: boolean = true;
+  const [contentEditable, setContentEditable] = useState<boolean>(true); // 임시 불변 변수
   const { showToast } = useToast();
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const mounted = useMounted();
 
   useEffect(() => {
     const initializeClientData = () => {
@@ -52,16 +55,20 @@ const CategoryOrderPost: NextPage<any> = (props) => {
 
   return (
     <>
-      {/* <main>
-        <Article contentEditable={contentEditable} />
-      </main>
-      <Contact />
-      <Response /> */}
-      렌더링 안 되는 부분
-      <ReferenceBlockWYSIWYG
-        contentEditable={contentEditable}
-        refDataArray={post.refDataArray}
-      />
+      {mounted && (
+        <>
+          <main>
+            <Article contentEditable={contentEditable} />
+          </main>
+          {/* <Contact /> */}
+          {/* <Response /> */}
+          <ReferenceBlockWYSIWYG
+            contentEditable={contentEditable}
+            refDataArray={post.refDataArray}
+          />
+        </>
+      )}
+
       {contentEditable && (
         <>
           <button

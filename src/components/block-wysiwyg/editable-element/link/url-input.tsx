@@ -1,6 +1,6 @@
 import { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
-import { setTempRefUrlData } from '../../../../../redux-toolkit/slices/temp-post-slice';
-import { useAppDispatch } from '../../../../../redux-toolkit/store';
+import { setTempRefUrlData } from '../../../../redux-toolkit/slices/temp-post-slice';
+import { useAppDispatch } from '../../../../redux-toolkit/store';
 import styles from './url-input.module.scss';
 
 type Props = {
