@@ -4,30 +4,28 @@ import { focusContentEditableTextToEnd } from '../../lib/utils/focus-content-edi
 import styles from './editable-element.module.scss';
 
 type Props = {
-  TagName: 'h1' | 'h2' | 'h3' | 'p';
+  TagName: 'h1' | 'h2' | 'h3' | 'p' | 'code';
   contentEditable: boolean;
   html: string;
   onInput?: (e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>) => void;
   onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
   syncPasteText: (newInnerPurePasteText: string) => void;
-  spellCheck?: boolean;
   placeholder?: string;
-  customClassName?: string;
+  customClassName: string;
 };
 
 // 개별로 쓸 수 있도록 만들거나, map()으로 블록 만들 때도 쓸 수 있도록 만든 컴포넌트 > 아마 텍스트에만 쓰일 듯.
 const EditableElement: FC<Props> = ({
   TagName,
-  contentEditable,
+  contentEditable = false,
   html,
   onInput,
   onKeyPress,
   onKeyDown,
   syncPasteText,
-  spellCheck = false,
   placeholder = '',
-  customClassName = styles.editable__element,
+  customClassName,
 }) => {
   const ref = useRef<HTMLHeadingElement | HTMLParagraphElement>(null);
 
@@ -62,20 +60,18 @@ const EditableElement: FC<Props> = ({
   }, []);
 
   return (
-    <>
-      <TagName
-        ref={ref}
-        contentEditable={contentEditable}
-        suppressContentEditableWarning={contentEditable}
-        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }}
-        onInput={onInput}
-        onKeyPress={onKeyPress} // optional, 블록 추가
-        onKeyDown={onKeyDown} // optional, 블록 삭제
-        spellCheck={spellCheck}
-        placeholder={placeholder}
-        className={customClassName}
-      />
-    </>
+    <TagName
+      ref={ref}
+      contentEditable={contentEditable}
+      suppressContentEditableWarning={contentEditable}
+      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }}
+      onInput={onInput}
+      onKeyPress={onKeyPress} // optional, 블록 추가
+      onKeyDown={onKeyDown} // optional, 블록 삭제
+      spellCheck={false}
+      placeholder={placeholder}
+      className={customClassName}
+    />
   );
 };
 

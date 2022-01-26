@@ -41,9 +41,10 @@ const CategoryOrderPost: NextPage<any> = (props) => {
   const { tempPost } = useAppSelector((state: RootState) => state.tempPost); // 데이터 저장 위해(contentEditable 요소가 매번 렌더링될 때마다 생기는 문제 방지)
   // console.log('post', post);
   // console.log('tempPost.refDataArray', tempPost.refDataArray);
+  console.log('tempPost.refDataArray', tempPost);
 
   // saveTempDataToRedux feature is not needed.
-  const saveTempDataToRedux = () => dispatch(setPostData(tempPost));
+  const saveTempDataToRedux = () => dispatch(setPostData(tempPost.tempTitle));
 
   const saveDataToFireStoreDB = () => {
     const currentCategory = router.query.category;
@@ -58,7 +59,11 @@ const CategoryOrderPost: NextPage<any> = (props) => {
       {mounted && (
         <>
           <main>
-            <Article contentEditable={contentEditable} />
+            <Article
+              contentEditable={contentEditable}
+              title='제목 데이터'
+              dateTime='2022-01-25'
+            />
           </main>
           {/* <Contact /> */}
           {/* <Response /> */}

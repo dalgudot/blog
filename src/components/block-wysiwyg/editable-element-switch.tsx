@@ -1,4 +1,3 @@
-import DOMPurify from 'dompurify';
 import {
   ChangeEvent,
   Dispatch,
@@ -16,7 +15,7 @@ import EditableElement from './editable-element';
 import styles from './editable-element-switch.module.scss';
 
 type Props = {
-  // blockType:
+  // blockType?:
   //   | 'Heading1'
   //   | 'Heading2'
   //   | 'Heading3'

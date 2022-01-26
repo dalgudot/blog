@@ -1,28 +1,24 @@
-import DOMPurify from 'dompurify';
-import { ChangeEvent, FC, useRef } from 'react';
+import { ChangeEvent, FC } from 'react';
 import EditableElement from '../../../block-wysiwyg/editable-element';
+import EditableText from '../../../block-wysiwyg/editable-element/text/editable-text';
 import styles from './article-title-block-wysiwyg.module.scss';
 import Profile from './profile';
 
 type Props = {
   contentEditable: boolean;
+  title: string;
+  dateTime: string;
 };
 
-const ArticleTitleBlockWYSIWYG: FC<Props> = ({ contentEditable }) => {
-  const ref = useRef<HTMLHeadingElement>(null);
-  const dateTime: string = '2022-01-26';
+const ArticleTitleBlockWYSIWYG: FC<Props> = ({
+  contentEditable,
+  title,
+  dateTime,
+}) => {
   const koreanDate: string = dateTime.replaceAll('-', '.');
 
   // 한국 날짜 표현
   // 미국 날짜 표현: Nov 7, 2020
-
-  const TagName = 'h1';
-  const html = '제목입니다';
-  const placeholder = '글의 제목을 입력해주세요';
-
-  const onInput = (
-    e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>
-  ) => {};
 
   const syncPasteText = (newInnerPurePasteText: string) => {};
 
@@ -32,13 +28,12 @@ const ArticleTitleBlockWYSIWYG: FC<Props> = ({ contentEditable }) => {
         <time dateTime={dateTime}>
           <p>{koreanDate}</p>
         </time>
-        <EditableElement
-          TagName={TagName}
+        <EditableText
+          blockType='Heading1'
           contentEditable={contentEditable}
-          html={html}
-          onInput={onInput} // 필수
+          html={title}
           syncPasteText={syncPasteText}
-          placeholder={placeholder}
+          placeholder='글의 제목을 입력해주세요'
         />
         <Profile />
       </section>

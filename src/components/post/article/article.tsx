@@ -4,12 +4,18 @@ import ArticleTitleBlockWYSIWYG from './title/article-title-block-wysiwyg';
 
 type Props = {
   contentEditable: boolean;
+  title: string;
+  dateTime: string;
 };
 
-const Article: FC<Props> = ({ contentEditable }) => {
+const Article: FC<Props> = ({ contentEditable, title, dateTime }) => {
   return (
     <article>
-      <ArticleTitleBlockWYSIWYG contentEditable={contentEditable} />
+      <ArticleTitleBlockWYSIWYG
+        contentEditable={contentEditable}
+        title={title}
+        dateTime={dateTime}
+      />
       <ArticleParagraphBlockWYSIWYG contentEditable={contentEditable} />
     </article>
   );
