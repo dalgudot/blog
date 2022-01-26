@@ -26,8 +26,11 @@ const CategoryOrderPost: NextPage<any> = (props) => {
   const [contentEditable, setContentEditable] = useState<boolean>(true); // 임시 불변 변수
   const { showToast } = useToast();
   const router = useRouter();
+  const locale = router.locale;
   const dispatch = useAppDispatch();
   const mounted = useMounted();
+
+  // console.log('props', props);
 
   useEffect(() => {
     const initializeClientData = () => {
@@ -35,21 +38,25 @@ const CategoryOrderPost: NextPage<any> = (props) => {
       dispatch(setTempPostData(props.post)); // 데이터 저장 위해(contentEditable 요소가 매번 렌더링될 때마다 생기는 문제 방지)
     };
     contentEditable && initializeClientData();
-  }, []);
+  }, [locale]);
 
   const { post } = useAppSelector((state: RootState) => state.post); // 초기화 및 map() 상태 관리(새로운 블럭 그리는 일 등)
   const { tempPost } = useAppSelector((state: RootState) => state.tempPost); // 데이터 저장 위해(contentEditable 요소가 매번 렌더링될 때마다 생기는 문제 방지)
   // console.log('post', post);
   // console.log('tempPost.refDataArray', tempPost.refDataArray);
-  console.log('tempPost.refDataArray', tempPost);
+  // console.log('tempPost', tempPost);
 
   // saveTempDataToRedux feature is not needed.
-  const saveTempDataToRedux = () => dispatch(setPostData(tempPost.tempTitle));
+  // const saveTempDataToRedux = () => dispatch(setPostData(tempPost));
 
   const saveDataToFireStoreDB = () => {
     const currentCategory = router.query.category;
     const currentOrder = router.query.order;
-    setDocument(tempPost, `${currentCategory}/${currentOrder}`).then(() => {
+    const dbPath =
+      locale === 'ko'
+        ? `${currentCategory}/${currentOrder}`
+        : `${currentCategory}/${currentOrder}-en`;
+    setDocument(tempPost, dbPath).then(() => {
       showToast('서버 저장 완료');
     });
   };
@@ -61,7 +68,7 @@ const CategoryOrderPost: NextPage<any> = (props) => {
           <main>
             <Article
               contentEditable={contentEditable}
-              title='제목 데이터'
+              title={post.title}
               dateTime='2022-01-25'
             />
           </main>
@@ -75,20 +82,12 @@ const CategoryOrderPost: NextPage<any> = (props) => {
       )}
 
       {contentEditable && (
-        <>
-          <button
-            onClick={saveTempDataToRedux}
-            style={{ marginTop: 48, marginLeft: 24 }}
-          >
-            리덕스에 임시 저장
-          </button>
-          <button
-            onClick={saveDataToFireStoreDB}
-            style={{ marginTop: 48, marginLeft: 24 }}
-          >
-            DB에 저장
-          </button>
-        </>
+        <button
+          onClick={saveDataToFireStoreDB}
+          style={{ marginTop: 48, marginLeft: 24 }}
+        >
+          DB에 저장
+        </button>
       )}
     </>
   );
@@ -96,25 +95,38 @@ const CategoryOrderPost: NextPage<any> = (props) => {
 
 export default CategoryOrderPost;
 
-type Params = {
+type Context = {
   params: {
     category: string;
     order: string;
   };
+  locale: 'ko' | 'en';
 };
 
-export const getStaticProps = async ({ params }: Params) => {
+export const getStaticProps = async ({ params, locale }: Context) => {
   // 동적으로 만들어진 각 페이지의 [category]와 [order]를 매개변수 params로 전달
-  const post = await getPostByCategoryOrder(params);
+  const post = await getPostByCategoryOrder(params, locale);
 
   return { props: { post } };
 };
 
 export const getStaticPaths = async () => {
   const allPosts = await getAllCollectionDataArray();
-  const paths = allPosts.map((post) => ({
-    params: { category: post.category, order: post.order },
-  }));
+
+  const paths = allPosts.map((post) =>
+    post.order.includes('en')
+      ? {
+          params: {
+            category: post.category,
+            order: post.order.replace('-en', ''),
+          },
+          locale: 'en',
+        }
+      : {
+          params: { category: post.category, order: post.order },
+          locale: 'ko',
+        }
+  );
 
   return { paths, fallback: false };
 };

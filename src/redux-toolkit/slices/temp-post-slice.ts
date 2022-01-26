@@ -6,8 +6,8 @@ const refData: IRefDataModel = new RefDataModel();
 // const initialState: IPostData = {
 const initialState = {
   tempPost: {
-    tempDateTime: '',
-    tempTitle: '',
+    dateTime: '',
+    title: '',
     refDataArray: [refData.createNewRefData()],
   },
 };
@@ -24,7 +24,7 @@ export const tempPostSlice = createSlice({
       state,
       action: PayloadAction<{ inputPureHtml: string }>
     ) => {
-      state.tempPost.tempTitle = action.payload.inputPureHtml;
+      state.tempPost.title = action.payload.inputPureHtml;
     },
 
     setTempRefTitleData: (

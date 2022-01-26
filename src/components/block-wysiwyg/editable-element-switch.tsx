@@ -85,7 +85,6 @@ const EditableElementSwitch: FC<Props> = ({
         onKeyPress={onKeyPress} // 블록 추가
         onKeyDown={onKeyDown} // 블록 삭제
         syncPasteText={syncPasteText}
-        spellCheck={spellCheck}
         placeholder={placeholder}
         customClassName={customClassName}
       />
