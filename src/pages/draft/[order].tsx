@@ -2,10 +2,8 @@ import { useToast } from '@dalgu/react-toast';
 import { useMounted } from '@dalgu/react-utility-hooks';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import Article from '../../components/post/article/article';
+import { useEffect } from 'react';
 import Post from '../../components/post/post';
-import ReferenceBlockWYSIWYG from '../../components/post/reference/reference-block-wysiwyg';
 import { useGetClientPostData } from '../../lib/hooks/useGetClientPostData';
 import { useGetClientTempPostData } from '../../lib/hooks/useGetClientTempPostData';
 import { setPostData } from '../../redux-toolkit/slices/post-slice';
@@ -19,6 +17,7 @@ import {
 const DraftWriting: NextPage = () => {
   // const { isAdmin } = useIsAdmin();
   const contentEditable = true;
+  const { showToast } = useToast();
   const { post } = useGetClientPostData();
   const { tempPost } = useGetClientTempPostData();
   // const mounted = useMounted();
@@ -41,6 +40,7 @@ const DraftWriting: NextPage = () => {
   const tempSaveDataToFireStoreDB = async () => {
     const dbPath = `draft/${draftOrder}`;
     await saveDataToFireStoreDB(tempPost, dbPath);
+    showToast('서버에 Draft 임시 저장');
   };
 
   // console.log('post', post);
@@ -50,7 +50,7 @@ const DraftWriting: NextPage = () => {
       {draftOrder && <Post contentEditable={contentEditable} postData={post} />}
 
       <button
-        // onClick={tempSaveDataToFireStoreDB}
+        onClick={tempSaveDataToFireStoreDB}
         style={{ marginTop: 48, marginLeft: 24 }}
       >
         Save to DB
