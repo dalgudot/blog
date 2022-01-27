@@ -84,7 +84,7 @@ const CategoryOrderPost: NextPage<any> = (props) => {
           onClick={saveDataToFireStoreDB}
           style={{ marginTop: 48, marginLeft: 24 }}
         >
-          DB에 저장
+          <code>Save to DB</code>
         </button>
       )}
     </>

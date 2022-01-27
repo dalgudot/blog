@@ -22,8 +22,15 @@ a {
 }
 
 code {
-  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-    Bitstream Vera Sans Mono, Courier New, monospace;
+  font-family: 'SourceCodePro', Menlo, Monaco, Lucida Console, Liberation Mono,
+    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+  padding: 4px;
+  background-color: #bdbdbd;
+  border-radius: 4px;
+}
+
+/* post-css autoprefix 적용 안 됨. */
+.inline__code__block {
   padding: 4px;
   background-color: #bdbdbd;
   border-radius: 4px;
