@@ -1,26 +1,20 @@
 import { NextPage } from 'next';
-import { useIsAdmin } from '../../../lib/hooks/useIsAdmin';
-import Response from '../../../components/post/response/response';
-import ReferenceBlockWYSIWYG from '../../../components/post/reference/reference-block-wysiwyg';
-import Contact from '../../../components/contact/contact';
 import { useToast } from '@dalgu/react-toast';
 import {
   changeToPublish,
   getAllCollectionDataArray,
   getPostByCategoryOrder,
   saveDataToFireStoreDB,
-} from '../../../service/firebase/firestore';
+} from '../../service/firebase/firestore';
 import { useEffect, useState } from 'react';
-import {
-  RootState,
-  useAppDispatch,
-  useAppSelector,
-} from '../../../redux-toolkit/store';
+import { useAppDispatch } from '../../redux-toolkit/store';
 import { useRouter } from 'next/router';
-import { setPostData } from '../../../redux-toolkit/slices/post-slice';
-import { setTempPostData } from '../../../redux-toolkit/slices/temp-post-slice';
-import Article from '../../../components/post/article/article';
+import { setPostData } from '../../redux-toolkit/slices/post-slice';
+import { setTempPostData } from '../../redux-toolkit/slices/temp-post-slice';
 import { useMounted } from '@dalgu/react-utility-hooks';
+import Post from '../../components/post/post';
+import { useGetClientPostData } from '../../lib/hooks/useGetClientPostData';
+import { useGetClientTempPostData } from '../../lib/hooks/useGetClientTempPostData';
 
 const CategoryOrderPost: NextPage<any> = (props) => {
   // const { isAdmin } = useIsAdmin();
@@ -39,8 +33,8 @@ const CategoryOrderPost: NextPage<any> = (props) => {
     contentEditable && initializeClientData();
   }, [locale]);
 
-  const { post } = useAppSelector((state: RootState) => state.post); // 초기화 및 map() 상태 관리(새로운 블럭 그리는 일 등)
-  const { tempPost } = useAppSelector((state: RootState) => state.tempPost); // 데이터 저장 위해(contentEditable 요소가 매번 렌더링될 때마다 생기는 문제 방지)
+  const { post } = useGetClientPostData();
+  const { tempPost } = useGetClientTempPostData();
   // console.log('post', post);
   // console.log('tempPost.refDataArray', tempPost.refDataArray);
   // console.log('tempPost', tempPost);
@@ -68,25 +62,7 @@ const CategoryOrderPost: NextPage<any> = (props) => {
 
   return (
     <>
-      {mounted && (
-        <>
-          <main>
-            <Article
-              contentEditable={contentEditable}
-              title={post.title}
-              dateTime='2022-01-25'
-              publish={post.publish}
-            />
-          </main>
-          {/* <Contact /> */}
-          {/* <Response /> */}
-          <ReferenceBlockWYSIWYG
-            contentEditable={contentEditable}
-            refDataArray={post.refDataArray}
-          />
-        </>
-      )}
-
+      {mounted && <Post contentEditable={contentEditable} postData={post} />}
       {contentEditable && (
         <>
           <button

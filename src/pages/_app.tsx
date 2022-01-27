@@ -17,7 +17,7 @@ const ArticlesApp = ({ Component, pageProps }: AppProps) => {
       <Provider store={store}>
         <ThemeProvider>
           <ToastProvider>
-            <Header />
+            {/* <Header /> */}
             <Component {...pageProps} />
           </ToastProvider>
         </ThemeProvider>
