@@ -1,3 +1,4 @@
+import { postInitialState } from './../common/initial-state';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IRefData, IRefDataModel, RefDataModel } from '../model/ref-data-model';
 
@@ -5,11 +6,7 @@ const refData: IRefDataModel = new RefDataModel();
 
 // const initialState: IPostData = {
 const initialState = {
-  post: {
-    dateTime: '',
-    title: '',
-    refDataArray: [refData.createNewRefData()],
-  },
+  post: postInitialState,
 };
 
 export const postSlice = createSlice({

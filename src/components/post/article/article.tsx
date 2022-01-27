@@ -6,15 +6,17 @@ type Props = {
   contentEditable: boolean;
   title: string;
   dateTime: string;
+  publish?: boolean;
 };
 
-const Article: FC<Props> = ({ contentEditable, title, dateTime }) => {
+const Article: FC<Props> = ({ contentEditable, title, dateTime, publish }) => {
   return (
     <article>
       <ArticleTitleBlockWYSIWYG
         contentEditable={contentEditable}
         title={title}
         dateTime={dateTime}
+        publish={publish}
       />
       <ArticleParagraphBlockWYSIWYG contentEditable={contentEditable} />
     </article>

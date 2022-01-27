@@ -21,6 +21,12 @@ a {
     Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, sans-serif;
 }
 
+ul,
+ol,
+li {
+  list-style: none;
+}
+
 code {
   font-family: 'SourceCodePro', Menlo, Monaco, Lucida Console, Liberation Mono,
     DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;

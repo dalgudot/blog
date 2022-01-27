@@ -6,6 +6,7 @@ import {
   getDocs,
   QuerySnapshot,
   setDoc,
+  updateDoc,
   WithFieldValue,
 } from 'firebase/firestore';
 import { objectToArray } from '../../lib/utils/data';
@@ -86,21 +87,17 @@ export const getPostByCategoryOrder = async (
 ///////////////////////////////
 ///////////////////////////////
 ///////////////////////////////
-// const devCollectionRef = collection(db, 'dev');
-// const devDocWritingRef = doc(db, 'dev', 'writing');
-const devDocPublishRef = doc(db, 'dev', 'publish');
 
-export const setDocument = async (
+export const saveDataToFireStoreDB = async (
   data: WithFieldValue<IPostData> | undefined,
-  path: string,
-  ...pathSegments: string[]
+  path: string
+  // ...pathSegments: string[]
 ) => {
-  await setDoc(doc(db, path, ...pathSegments), data);
+  await setDoc(doc(db, path), data);
 };
 
-export const getAllArticles = async () => {
-  const docSnap = await getDoc(devDocPublishRef);
-  const dataArray = objectToArray(docSnap.data() as object);
-
-  return dataArray;
+export const changeToPublish = async (path: string) => {
+  await updateDoc(doc(db, path), {
+    publish: true,
+  });
 };

@@ -5,9 +5,10 @@ import ReferenceBlockWYSIWYG from '../../../components/post/reference/reference-
 import Contact from '../../../components/contact/contact';
 import { useToast } from '@dalgu/react-toast';
 import {
+  changeToPublish,
   getAllCollectionDataArray,
   getPostByCategoryOrder,
-  setDocument,
+  saveDataToFireStoreDB,
 } from '../../../service/firebase/firestore';
 import { useEffect, useState } from 'react';
 import {
@@ -47,16 +48,22 @@ const CategoryOrderPost: NextPage<any> = (props) => {
   // saveTempDataToRedux feature is not needed.
   // const saveTempDataToRedux = () => dispatch(setPostData(tempPost));
 
-  const saveDataToFireStoreDB = () => {
-    const currentCategory = router.query.category;
-    const currentOrder = router.query.order;
-    const dbPath =
-      locale === 'ko'
-        ? `${currentCategory}/${currentOrder}`
-        : `${currentCategory}/${currentOrder}-en`;
-    setDocument(tempPost, dbPath).then(() => {
-      showToast('서버 저장 완료');
-    });
+  const currentCategory = router.query.category;
+  const currentOrder = router.query.order;
+  const dbPath =
+    locale === 'ko'
+      ? `${currentCategory}/${currentOrder}`
+      : `${currentCategory}/${currentOrder}-en`;
+
+  const publishPost = async () => {
+    await saveDataToFireStoreDB(tempPost, dbPath);
+    await changeToPublish(dbPath); // 서버 데이터 바꾸기
+    showToast('발행 완료');
+  };
+
+  const tempSaveDataToFireStoreDB = async () => {
+    await saveDataToFireStoreDB(tempPost, dbPath);
+    showToast('서버에 임시 저장 완료');
   };
 
   return (
@@ -68,6 +75,7 @@ const CategoryOrderPost: NextPage<any> = (props) => {
               contentEditable={contentEditable}
               title={post.title}
               dateTime='2022-01-25'
+              publish={post.publish}
             />
           </main>
           {/* <Contact /> */}
@@ -80,12 +88,21 @@ const CategoryOrderPost: NextPage<any> = (props) => {
       )}
 
       {contentEditable && (
-        <button
-          onClick={saveDataToFireStoreDB}
-          style={{ marginTop: 48, marginLeft: 24 }}
-        >
-          <code>Save to DB</code>
-        </button>
+        <>
+          <button
+            onClick={tempSaveDataToFireStoreDB}
+            style={{ marginTop: 48, marginLeft: 24 }}
+          >
+            <code>Save to DB</code>
+          </button>
+
+          <button
+            onClick={publishPost}
+            style={{ marginTop: 48, marginLeft: 24 }}
+          >
+            <code>발행하기</code>
+          </button>
+        </>
       )}
     </>
   );
