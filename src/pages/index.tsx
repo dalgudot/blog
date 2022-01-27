@@ -1,4 +1,4 @@
-import { InferGetStaticPropsType, NextPage } from 'next';
+import { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import NavLists from '../components/navigation/article/nav-lists';
@@ -27,19 +27,19 @@ const Index: NextPage<Props> = ({ allKoPostsListData, allEnPostsListData }) => {
 
   return (
     <>
-      <main>
-        <NavLists allPostsListData={allPostsListData} />
-      </main>
+      {/* 404 방지 위해 개발과 디자인 각각 파일 만들어주는 게 좋음. */}
       <Link href='/'>
         <a>전체</a>
       </Link>
-      {/* 404 방지 위해 개발과 디자인 각각 파일 만들어주는 게 좋음. */}
       <Link href='/' as='/dev'>
         <a>개발</a>
       </Link>
       <Link href='/' as='/design'>
         <a>디자인</a>
       </Link>
+      <main>
+        <NavLists allPostsListData={allPostsListData} />
+      </main>
     </>
   );
 };
@@ -50,6 +50,7 @@ export default Index;
 export const getStaticProps = async () => {
   // firestore db에서 List를 그릴 title 데이터, seo 데이터(로컬) 받아옴.
   const allPosts = await getAllCollectionDataArray();
+
   const allKoPostsListData = allPosts
     .map((post) => {
       const isEn: boolean = post.order.includes('-en');
@@ -62,6 +63,7 @@ export const getStaticProps = async () => {
       );
     })
     .filter((data) => data !== false);
+
   const allEnPostsListData = allPosts
     .map((post) => {
       const isEn: boolean = post.order.includes('-en');
@@ -74,9 +76,8 @@ export const getStaticProps = async () => {
       );
     })
     .filter((data) => data !== false);
-  // [변경] 필요한 부분만 props로 return!
 
-  console.log(allKoPostsListData, allEnPostsListData);
+  // 리스트 디자인이 끝난 뒤 브런치 링크 넣기
 
   return {
     props: { allKoPostsListData, allEnPostsListData },
