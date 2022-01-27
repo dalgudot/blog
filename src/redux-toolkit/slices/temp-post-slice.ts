@@ -1,12 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { postInitialState } from '../common/initial-state';
-import { IRefData, RefDataModel, IRefDataModel } from '../model/ref-data-model';
+import { IPostData, postInitialData } from '../model/post-data-model';
+import { IRefData } from '../model/ref-data-model';
 
-const refData: IRefDataModel = new RefDataModel();
-
-// const initialState: IPostData = {
-const initialState = {
-  tempPost: postInitialState,
+const initialState: { tempPost: IPostData } = {
+  tempPost: postInitialData,
 };
 
 export const tempPostSlice = createSlice({

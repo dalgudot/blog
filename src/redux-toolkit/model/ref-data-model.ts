@@ -4,12 +4,6 @@ export interface IRefDataModel {
   createNewRefData: () => IRefData;
 }
 
-export interface IRefData {
-  blockId: string;
-  title: string;
-  url: string;
-}
-
 export class RefDataModel implements IRefDataModel {
   private blockId: string;
   private title: string;
@@ -29,4 +23,10 @@ export class RefDataModel implements IRefDataModel {
       url: this.url,
     };
   }
+}
+
+export interface IRefData {
+  blockId: string;
+  title: string;
+  url: string;
 }

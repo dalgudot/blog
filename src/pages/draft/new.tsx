@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import Post from '../../components/post/post';
 import { useGetClientPostData } from '../../lib/hooks/useGetClientPostData';
 import { useGetClientTempPostData } from '../../lib/hooks/useGetClientTempPostData';
-import { postInitialState } from '../../redux-toolkit/common/initial-state';
+import { postInitialData } from '../../redux-toolkit/model/post-data-model';
 import { setPostData } from '../../redux-toolkit/slices/post-slice';
 import { setTempPostData } from '../../redux-toolkit/slices/temp-post-slice';
 import { useAppDispatch } from '../../redux-toolkit/store';
@@ -28,8 +28,8 @@ const NewDraft: NextPage = () => {
 
   useEffect(() => {
     const initializeClientData = () => {
-      dispatch(setPostData(postInitialState));
-      dispatch(setTempPostData(postInitialState));
+      dispatch(setPostData(postInitialData));
+      dispatch(setTempPostData(postInitialData));
     };
     contentEditable && initializeClientData();
   }, []);
@@ -46,6 +46,8 @@ const NewDraft: NextPage = () => {
 
     router.push('/draft/[order]', `/draft/${newPathOrder}`);
   };
+
+  console.log('tempPost', tempPost);
 
   return (
     <>

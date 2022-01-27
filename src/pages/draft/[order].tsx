@@ -44,7 +44,7 @@ const DraftWriting: NextPage = () => {
   };
 
   // console.log('post', post);
-  console.log('tempPost', tempPost);
+  // console.log('tempPost', tempPost);
   return (
     <>
       {draftOrder && <Post contentEditable={contentEditable} postData={post} />}
