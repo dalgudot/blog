@@ -2,6 +2,7 @@ import { useMounted } from '@dalgu/react-utility-hooks';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import SelectCategory from '../../components/draft/select-category';
 import Post from '../../components/post/post';
 import { useGetClientPostData } from '../../lib/hooks/useGetClientPostData';
 import { useGetClientTempPostData } from '../../lib/hooks/useGetClientTempPostData';
@@ -53,6 +54,7 @@ const NewDraft: NextPage = () => {
     <>
       {isAdmin && mounted && (
         <>
+          <SelectCategory />
           <Post contentEditable={contentEditable} postData={post} />
           <button
             onClick={saveNewDraftToFireStoreDB}

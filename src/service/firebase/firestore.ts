@@ -10,17 +10,12 @@ import {
   WithFieldValue,
 } from 'firebase/firestore';
 import { getDB } from './config';
-import { IRefData } from '../../redux-toolkit/model/ref-data-model';
+import { IPostData } from '../../redux-toolkit/model/post-data-model';
 
 const db = getDB();
-const devCollectionRefName = 'dev';
-const designCollectionRefName = 'design';
+export const devCollectionRefName = 'dev';
+export const designCollectionRefName = 'design';
 const draftCollectionRefName = 'draft';
-
-export interface IPostData {
-  // articleDataObj: Object
-  refDataArray: IRefData[];
-}
 
 const getEachAllCollectionDataArray = async (collectionRefName: string) => {
   // 컬렉션 전체 데이터 받아오는 'getDoc's''
@@ -28,21 +23,19 @@ const getEachAllCollectionDataArray = async (collectionRefName: string) => {
     collection(db, collectionRefName)
   );
 
-  const dataArray: {
-    category: string;
-    order: string;
-    // dateTime: string,
-    title: string;
-    refDataArray: IRefData[];
-  }[] = [];
+  const dataArray: IPostData[] = [];
 
   querySnapshot.forEach((doc) => {
     dataArray.push({
       category: collectionRefName,
       order: doc.id,
-      // dateTime: string,
+      series: doc.data().series,
+      dateTime: doc.data().dateTime,
       title: doc.data().title,
+      tagDataArray: doc.data().tagDataArray,
+      paragraphDataArray: doc.data().paragraphDataArray,
       refDataArray: doc.data().refDataArray,
+      status: doc.data().status,
     });
   });
 

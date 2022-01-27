@@ -1,3 +1,4 @@
+import { devCollectionRefName } from '../../service/firebase/firestore';
 import {
   IParagraphData,
   IParagraphDataModel,
@@ -9,7 +10,7 @@ const refData: IRefDataModel = new RefDataModel();
 const paragraphData: IParagraphDataModel = new ParagraphDataModel();
 
 export const postInitialData: IPostData = {
-  category: '',
+  category: devCollectionRefName,
   order: '',
   series: '',
   dateTime: '',

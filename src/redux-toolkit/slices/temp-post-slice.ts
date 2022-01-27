@@ -10,8 +10,12 @@ export const tempPostSlice = createSlice({
   name: 'tempPost',
   initialState,
   reducers: {
-    setTempPostData: (state, action: PayloadAction<any>) => {
+    setTempPostData: (state, action: PayloadAction<IPostData>) => {
       state.tempPost = action.payload;
+    },
+
+    setTempPostCategory: (state, action: PayloadAction<string>) => {
+      state.tempPost.category = action.payload;
     },
 
     setTempArticleTitleData: (
@@ -67,6 +71,7 @@ export const tempPostSlice = createSlice({
 
 export const {
   setTempPostData,
+  setTempPostCategory,
   setTempArticleTitleData,
   setTempRefTitleData,
   setTempRefUrlData,
