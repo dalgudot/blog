@@ -9,9 +9,10 @@ import {
   updateDoc,
   WithFieldValue,
 } from 'firebase/firestore';
-import { getDB } from './config';
+import { getDB, initializeFirebaseApp } from './config';
 import { IPostData } from '../../redux-toolkit/model/post-data-model';
 
+initializeFirebaseApp();
 const db = getDB();
 export const devCollectionRefName = 'dev';
 export const designCollectionRefName = 'design';
