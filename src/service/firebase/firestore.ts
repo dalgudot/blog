@@ -9,13 +9,13 @@ import {
   updateDoc,
   WithFieldValue,
 } from 'firebase/firestore';
-import { objectToArray } from '../../lib/utils/data';
 import { getDB } from './config';
 import { IRefData } from '../../redux-toolkit/model/ref-data-model';
 
 const db = getDB();
 const devCollectionRefName = 'dev';
 const designCollectionRefName = 'design';
+const draftCollectionRefName = 'draft';
 
 export interface IPostData {
   // articleDataObj: Object
@@ -79,6 +79,40 @@ export const getPostByCategoryOrder = async (
     return post;
   } else {
     throw new Error('No such document!');
+  }
+};
+
+export const getDraftList = async () => {
+  const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
+    collection(db, draftCollectionRefName)
+  );
+
+  const dataArray: {
+    order: string;
+    dateTime: string;
+    title: string;
+  }[] = [];
+
+  querySnapshot.forEach((doc) => {
+    dataArray.push({
+      order: doc.id,
+      dateTime: doc.data().dateTime,
+      title: doc.data().title,
+    });
+  });
+
+  return dataArray;
+};
+
+export const getDraftByOrder = async (order: string) => {
+  const docRef = doc(db, draftCollectionRefName, order);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    const draft = docSnap.data();
+    return draft;
+  } else {
+    throw new Error('No such draft!');
   }
 };
 
