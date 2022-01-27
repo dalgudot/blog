@@ -1,21 +1,33 @@
-import { InferGetStaticPropsType, NextPage } from 'next';
+import { NextPage } from 'next';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import NavLists from '../components/navigation/article/nav-lists';
 import { getAllCollectionDataArray } from '../service/firebase/firestore';
 
+type Props = {
+  allKoPostsListData: {
+    category: string;
+    order: string;
+    title: string;
+  }[];
+
+  allEnPostsListData: {
+    category: string;
+    order: string;
+    title: string;
+  }[];
+};
+
 // rule: 페이지 컴포넌트에서는 데이터를 전달하기만 한다 -> 나만의 리액트 클린 아키텍처 만들기
-const Index: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
-  props
-) => {
-  const listDatas = props.allPosts.sort((a, b) =>
-    a.order > b.order ? -1 : a.order < b.order ? 1 : 0
-  );
+const Index: NextPage<Props> = ({ allKoPostsListData, allEnPostsListData }) => {
+  const router = useRouter();
+  const locale = router.locale;
+  const allPostsListData =
+    locale === 'ko' ? allKoPostsListData : allEnPostsListData;
 
   return (
     <>
-      <main>
-        <NavLists datas={listDatas} />
-      </main>
+      {/* 404 방지 위해 개발과 디자인 각각 파일 만들어주는 게 좋음. */}
       <Link href='/'>
         <a>전체</a>
       </Link>
@@ -25,6 +37,9 @@ const Index: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
       <Link href='/' as='/design'>
         <a>디자인</a>
       </Link>
+      <main>
+        <NavLists allPostsListData={allPostsListData} />
+      </main>
     </>
   );
 };
@@ -36,9 +51,35 @@ export const getStaticProps = async () => {
   // firestore db에서 List를 그릴 title 데이터, seo 데이터(로컬) 받아옴.
   const allPosts = await getAllCollectionDataArray();
 
-  // [변경] 필요한 부분만 props로 return!
+  const allKoPostsListData = allPosts
+    .map((post) => {
+      const isEn: boolean = post.order.includes('-en');
+      return (
+        !isEn && {
+          category: post.category,
+          order: post.order,
+          title: post.title,
+        }
+      );
+    })
+    .filter((data) => data !== false);
+
+  const allEnPostsListData = allPosts
+    .map((post) => {
+      const isEn: boolean = post.order.includes('-en');
+      return (
+        isEn && {
+          category: post.category,
+          order: post.order.replace('-en', ''),
+          title: post.title,
+        }
+      );
+    })
+    .filter((data) => data !== false);
+
+  // 리스트 디자인이 끝난 뒤 브런치 링크 넣기
 
   return {
-    props: { allPosts },
+    props: { allKoPostsListData, allEnPostsListData },
   };
 };

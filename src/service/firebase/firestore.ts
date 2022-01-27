@@ -6,20 +6,17 @@ import {
   getDocs,
   QuerySnapshot,
   setDoc,
+  updateDoc,
   WithFieldValue,
 } from 'firebase/firestore';
-import { objectToArray } from '../../lib/utils/data';
-import { getDB } from './config';
-import { IRefData } from '../../redux-toolkit/model/ref-data-model';
+import { getDB, initializeFirebaseApp } from './config';
+import { IPostData } from '../../redux-toolkit/model/post-data-model';
 
+initializeFirebaseApp();
 const db = getDB();
-const devCollectionRefName = 'dev';
-const designCollectionRefName = 'design';
-
-export interface IPostData {
-  // articleDataObj: Object
-  refDataArray: IRefData[];
-}
+export const devCollectionRefName = 'dev';
+export const designCollectionRefName = 'design';
+const draftCollectionRefName = 'draft';
 
 const getEachAllCollectionDataArray = async (collectionRefName: string) => {
   // 컬렉션 전체 데이터 받아오는 'getDoc's''
@@ -27,17 +24,19 @@ const getEachAllCollectionDataArray = async (collectionRefName: string) => {
     collection(db, collectionRefName)
   );
 
-  const dataArray: {
-    category: string;
-    order: string;
-    refDataArray: IRefData[];
-  }[] = [];
+  const dataArray: IPostData[] = [];
 
   querySnapshot.forEach((doc) => {
     dataArray.push({
       category: collectionRefName,
       order: doc.id,
-      refDataArray: doc.data() as IRefData[],
+      series: doc.data().series,
+      dateTime: doc.data().dateTime,
+      title: doc.data().title,
+      tagDataArray: doc.data().tagDataArray,
+      paragraphDataArray: doc.data().paragraphDataArray,
+      refDataArray: doc.data().refDataArray,
+      status: doc.data().status,
     });
   });
 
@@ -54,7 +53,6 @@ export const getAllCollectionDataArray = async () => {
   );
 
   const allCollectionDataArray = devDataArray.concat(designDataArray);
-  console.log(allCollectionDataArray);
 
   return allCollectionDataArray;
 };
@@ -70,8 +68,6 @@ export const getPostByCategoryOrder = async (
   const docRef = doc(db, params.category, ref);
   const docSnap = await getDoc(docRef);
 
-  // console.log('docSnap.data()', docSnap.data());
-
   if (docSnap.exists()) {
     const post = docSnap.data();
     return post;
@@ -80,26 +76,56 @@ export const getPostByCategoryOrder = async (
   }
 };
 
-///////////////////////////////
-///////////////////////////////
-///////////////////////////////
-///////////////////////////////
-///////////////////////////////
-// const devCollectionRef = collection(db, 'dev');
-// const devDocWritingRef = doc(db, 'dev', 'writing');
-const devDocPublishRef = doc(db, 'dev', 'publish');
+export const getDraftList = async () => {
+  const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
+    collection(db, draftCollectionRefName)
+  );
 
-export const setDocument = async (
-  data: WithFieldValue<IPostData> | undefined,
-  path: string,
-  ...pathSegments: string[]
-) => {
-  await setDoc(doc(db, path, ...pathSegments), data);
-};
+  const dataArray: {
+    order: string;
+    dateTime: string;
+    title: string;
+  }[] = [];
 
-export const getAllArticles = async () => {
-  const docSnap = await getDoc(devDocPublishRef);
-  const dataArray = objectToArray(docSnap.data() as object);
+  querySnapshot.forEach((doc) => {
+    dataArray.push({
+      order: doc.id,
+      dateTime: doc.data().dateTime,
+      title: doc.data().title,
+    });
+  });
 
   return dataArray;
+};
+
+export const getDraftByOrder = async (order: string) => {
+  const docRef = doc(db, draftCollectionRefName, order);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    const draft = docSnap.data();
+    return draft;
+  } else {
+    throw new Error('No such draft!');
+  }
+};
+
+///////////////////////////////
+///////////////////////////////
+///////////////////////////////
+///////////////////////////////
+///////////////////////////////
+
+export const saveDataToFireStoreDB = async (
+  data: WithFieldValue<IPostData> | undefined,
+  path: string
+  // ...pathSegments: string[]
+) => {
+  await setDoc(doc(db, path), data);
+};
+
+export const changeToPublish = async (path: string) => {
+  await updateDoc(doc(db, path), {
+    publish: true,
+  });
 };

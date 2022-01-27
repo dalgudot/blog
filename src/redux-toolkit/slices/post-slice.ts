@@ -1,23 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IRefData, IRefDataModel, RefDataModel } from '../model/ref-data-model';
+import { IRefData } from '../model/ref-data-model';
+import { IPostData, postInitialData } from '../model/post-data-model';
 
-const refData: IRefDataModel = new RefDataModel();
-
-// const initialState: IPostData = {
-const initialState = {
-  post: {
-    dateTime: '',
-    title: '',
-    refDataArray: [refData.createNewRefData()],
-  },
+const initialState: { post: IPostData } = {
+  post: postInitialData,
 };
 
 export const postSlice = createSlice({
   name: 'post',
   initialState,
   reducers: {
-    setPostData: (state, action: PayloadAction<any>) => {
+    setPostData: (state, action: PayloadAction<IPostData>) => {
       state.post = action.payload;
+    },
+
+    setPostCategory: (state, action: PayloadAction<string>) => {
+      state.post.category = action.payload;
     },
 
     setArticleTitleData: (
@@ -65,6 +63,7 @@ export const postSlice = createSlice({
 
 export const {
   setPostData,
+  setPostCategory,
   setArticleTitleData,
   setRefTitleData,
   addLinkBlock,
