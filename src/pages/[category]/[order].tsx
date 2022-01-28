@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import { useToast } from '@dalgu/react-toast';
 import {
-  changeToPublish,
+  changeToPublished,
   getAllCollectionDataArray,
   getPostByCategoryOrder,
   saveDataToFireStoreDB,
@@ -51,7 +51,7 @@ const CategoryOrderPost: NextPage<any> = (props) => {
 
   const publishPost = async () => {
     await saveDataToFireStoreDB(tempPost, dbPath);
-    await changeToPublish(dbPath); // 서버 데이터 바꾸기
+    await changeToPublished(dbPath);
     showToast('발행 완료');
   };
 

@@ -33,6 +33,10 @@ const NewDraft: NextPage = () => {
       dispatch(setTempPostData(postInitialData));
     };
     contentEditable && initializeClientData();
+
+    return () => {
+      contentEditable && initializeClientData();
+    };
   }, []);
 
   const saveNewDraftToFireStoreDB = async () => {

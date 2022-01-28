@@ -18,7 +18,9 @@ export const devCollectionRefName = 'dev';
 export const designCollectionRefName = 'design';
 const draftCollectionRefName = 'draft';
 
-const getEachAllCollectionDataArray = async (collectionRefName: string) => {
+export const getEachAllCollectionDataArray = async (
+  collectionRefName: string
+) => {
   // 컬렉션 전체 데이터 받아오는 'getDoc's''
   const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
     collection(db, collectionRefName)
@@ -28,6 +30,7 @@ const getEachAllCollectionDataArray = async (collectionRefName: string) => {
 
   querySnapshot.forEach((doc) => {
     dataArray.push({
+      postId: doc.data().postId,
       category: collectionRefName,
       order: doc.id,
       series: doc.data().series,
@@ -124,8 +127,8 @@ export const saveDataToFireStoreDB = async (
   await setDoc(doc(db, path), data);
 };
 
-export const changeToPublish = async (path: string) => {
+export const changeToPublished = async (path: string) => {
   await updateDoc(doc(db, path), {
-    publish: true,
+    status: 'published',
   });
 };
