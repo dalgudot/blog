@@ -6,6 +6,7 @@ import SelectCategory from '../../components/draft/select-category';
 import Post from '../../components/post/post';
 import { useGetClientPostData } from '../../lib/hooks/useGetClientPostData';
 import { useGetClientTempPostData } from '../../lib/hooks/useGetClientTempPostData';
+import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
 import { postInitialData } from '../../redux-toolkit/model/post-data-model';
 import { setPostData } from '../../redux-toolkit/slices/post-slice';
 import { setTempPostData } from '../../redux-toolkit/slices/temp-post-slice';
@@ -16,9 +17,8 @@ import {
 } from '../../service/firebase/firestore';
 
 const NewDraft: NextPage = () => {
-  // const { isAdmin } = useIsAdmin();
-  const isAdmin = true;
-  const contentEditable = true;
+  const { isAdmin } = useIsAdmin();
+
   const mounted = useMounted();
   const router = useRouter();
 
@@ -32,7 +32,11 @@ const NewDraft: NextPage = () => {
       dispatch(setPostData(postInitialData));
       dispatch(setTempPostData(postInitialData));
     };
-    contentEditable && initializeClientData();
+    isAdmin && initializeClientData();
+
+    return () => {
+      isAdmin && initializeClientData();
+    };
   }, []);
 
   const saveNewDraftToFireStoreDB = async () => {
@@ -55,7 +59,7 @@ const NewDraft: NextPage = () => {
       {isAdmin && mounted && (
         <>
           <SelectCategory />
-          <Post contentEditable={contentEditable} postData={post} />
+          <Post contentEditable={isAdmin} postData={post} />
           <button
             onClick={saveNewDraftToFireStoreDB}
             style={{ marginTop: 48, marginLeft: 24 }}

@@ -2,6 +2,7 @@ import { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import NavLists from '../components/navigation/article/nav-lists';
+import { useIsAdmin } from '../lib/hooks/useIsAdmin';
 import { getAllCollectionDataArray } from '../service/firebase/firestore';
 
 type Props = {
@@ -20,6 +21,7 @@ type Props = {
 
 // rule: 페이지 컴포넌트에서는 데이터를 전달하기만 한다 -> 나만의 리액트 클린 아키텍처 만들기
 const Index: NextPage<Props> = ({ allKoPostsListData, allEnPostsListData }) => {
+  const { isAdmin } = useIsAdmin();
   const router = useRouter();
   const locale = router.locale;
   const allPostsListData =
@@ -40,6 +42,16 @@ const Index: NextPage<Props> = ({ allKoPostsListData, allEnPostsListData }) => {
       <main>
         <NavLists allPostsListData={allPostsListData} />
       </main>
+      {isAdmin && (
+        <>
+          <Link href='/draft'>
+            <a>초고 목록 보기</a>
+          </Link>
+          <Link href='/draft/new'>
+            <a>글쓰기</a>
+          </Link>
+        </>
+      )}
     </>
   );
 };

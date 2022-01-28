@@ -1,12 +1,12 @@
 import { NextPage } from 'next';
 import { useToast } from '@dalgu/react-toast';
 import {
-  changeToPublish,
+  changeToPublished,
   getAllCollectionDataArray,
   getPostByCategoryOrder,
   saveDataToFireStoreDB,
 } from '../../service/firebase/firestore';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAppDispatch } from '../../redux-toolkit/store';
 import { useRouter } from 'next/router';
 import { setPostData } from '../../redux-toolkit/slices/post-slice';
@@ -15,10 +15,10 @@ import { useMounted } from '@dalgu/react-utility-hooks';
 import Post from '../../components/post/post';
 import { useGetClientPostData } from '../../lib/hooks/useGetClientPostData';
 import { useGetClientTempPostData } from '../../lib/hooks/useGetClientTempPostData';
+import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
 
 const CategoryOrderPost: NextPage<any> = (props) => {
-  // const { isAdmin } = useIsAdmin();
-  const [contentEditable, setContentEditable] = useState<boolean>(true); // 임시 불변 변수
+  const { isAdmin } = useIsAdmin();
   const { showToast } = useToast();
   const router = useRouter();
   const locale = router.locale;
@@ -30,17 +30,14 @@ const CategoryOrderPost: NextPage<any> = (props) => {
       dispatch(setPostData(props.post)); // 초기화 및 map() 상태 관리(새로운 블럭 그리는 일 등)
       dispatch(setTempPostData(props.post)); // 데이터 저장 위해(contentEditable 요소가 매번 렌더링될 때마다 생기는 문제 방지)
     };
-    contentEditable && initializeClientData();
-  }, [locale]);
+    isAdmin && initializeClientData();
+  }, [isAdmin]);
 
   const { post } = useGetClientPostData();
   const { tempPost } = useGetClientTempPostData();
-  // console.log('post', post);
-  // console.log('tempPost.refDataArray', tempPost.refDataArray);
-  // console.log('tempPost', tempPost);
 
-  // saveTempDataToRedux feature is not needed.
-  // const saveTempDataToRedux = () => dispatch(setPostData(tempPost));
+  console.log(props.post);
+  // console.log(tempPost);
 
   const currentCategory = router.query.category;
   const currentOrder = router.query.order;
@@ -51,7 +48,7 @@ const CategoryOrderPost: NextPage<any> = (props) => {
 
   const publishPost = async () => {
     await saveDataToFireStoreDB(tempPost, dbPath);
-    await changeToPublish(dbPath); // 서버 데이터 바꾸기
+    await changeToPublished(dbPath);
     showToast('발행 완료');
   };
 
@@ -62,8 +59,8 @@ const CategoryOrderPost: NextPage<any> = (props) => {
 
   return (
     <>
-      {mounted && <Post contentEditable={contentEditable} postData={post} />}
-      {contentEditable && (
+      {mounted && <Post contentEditable={isAdmin} postData={post} />}
+      {isAdmin && (
         <>
           <button
             onClick={tempSaveDataToFireStoreDB}
@@ -123,5 +120,5 @@ export const getStaticPaths = async () => {
 
 // useEffect(() => {
 //   // local이든 production이든 수정할 때는 수정한 내용 반영되도록, contentEditable이면 클라이언트에서 새로 데이터 받아와서 정렬
-//   contentEditable && fetchDB()
-// }, [contentEditable])
+//   isAdmin && fetchDB()
+// }, [isAdmin])
