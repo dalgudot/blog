@@ -31,10 +31,13 @@ const CategoryOrderPost: NextPage<any> = (props) => {
       dispatch(setTempPostData(props.post)); // 데이터 저장 위해(contentEditable 요소가 매번 렌더링될 때마다 생기는 문제 방지)
     };
     isAdmin && initializeClientData();
-  }, [locale]);
+  }, [isAdmin]);
 
   const { post } = useGetClientPostData();
   const { tempPost } = useGetClientTempPostData();
+
+  console.log(props.post);
+  // console.log(tempPost);
 
   const currentCategory = router.query.category;
   const currentOrder = router.query.order;
