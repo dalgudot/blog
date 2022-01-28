@@ -1,5 +1,7 @@
 import { useToast } from '@dalgu/react-toast';
 import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { useIsAdmin } from '../lib/hooks/useIsAdmin';
 import { setUid } from '../redux-toolkit/slices/user-slice';
 import { useAppDispatch } from '../redux-toolkit/store';
@@ -14,6 +16,7 @@ const Login: NextPage = () => {
   const auth: IAuthentication = new Authentication();
   const dispatch = useAppDispatch();
   const { showToast } = useToast();
+  const router = useRouter();
 
   const onLogIn = (providerName: TproviderName) => {
     auth //
@@ -23,6 +26,8 @@ const Login: NextPage = () => {
         if (data.user.uid !== process.env.NEXT_PUBLIC_ADMIN_UID) {
           onLogOut();
           showToast('관리자가 아니므로 자동으로 로그아웃되었습니다.');
+        } else {
+          router.push('/');
         }
       })
       .catch((error) => {
