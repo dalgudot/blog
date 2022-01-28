@@ -8,6 +8,7 @@ import {
   useRef,
 } from 'react';
 import { focusContentEditableTextToEnd } from '../../lib/utils/focus-content-editable-text-to-end';
+import { TBlockType } from '../../redux-toolkit/model/paragraph-data-model';
 import { IRefData } from '../../redux-toolkit/model/ref-data-model';
 import { setTempRefTitleData } from '../../redux-toolkit/slices/temp-post-slice';
 import { useAppDispatch } from '../../redux-toolkit/store';
@@ -15,13 +16,7 @@ import EditableElement from './editable-element';
 import styles from './editable-element-switch.module.scss';
 
 type Props = {
-  // blockType?:
-  //   | 'Heading1'
-  //   | 'Heading2'
-  //   | 'Heading3'
-  //   | 'Paragraph'
-  //   | 'Code'
-  //   | 'Link';
+  blockType: TBlockType;
   TagName: 'h1' | 'h2' | 'h3' | 'p';
   contentEditable: boolean;
   datas: IRefData[];
@@ -37,7 +32,7 @@ type Props = {
 };
 
 const EditableElementSwitch: FC<Props> = ({
-  // blockType,
+  blockType,
   TagName,
   contentEditable,
   datas,

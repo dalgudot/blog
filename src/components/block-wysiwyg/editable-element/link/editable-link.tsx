@@ -92,6 +92,7 @@ const EditableLink: FC<Props> = ({
       {contentEditable ? (
         <>
           <EditableElementSwitch
+            blockType='Link'
             TagName='p'
             contentEditable={contentEditable}
             datas={datas}
@@ -110,15 +111,16 @@ const EditableLink: FC<Props> = ({
           />
         </>
       ) : (
-        <a href={data.url} target='_blank' rel='noreferrer'>
-          <EditableElementSwitch
-            TagName='p'
-            contentEditable={contentEditable}
-            datas={datas}
-            currentIndex={currentIndex}
-            html={data.title}
-          />
-        </a>
+        <></>
+        // <a href={data.url} target='_blank' rel='noreferrer'>
+        //   <EditableElementSwitch
+        //     TagName='p'
+        //     contentEditable={contentEditable}
+        //     datas={datas}
+        //     currentIndex={currentIndex}
+        //     html={data.title}
+        //   />
+        // </a>
       )}
     </li>
   );

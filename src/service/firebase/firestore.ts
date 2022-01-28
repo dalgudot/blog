@@ -2,6 +2,7 @@ import {
   collection,
   doc,
   DocumentData,
+  FieldValue,
   getDoc,
   getDocs,
   QuerySnapshot,
@@ -30,7 +31,7 @@ export const getEachAllCollectionDataArray = async (
 
   querySnapshot.forEach((doc) => {
     dataArray.push({
-      postId: doc.data().postId,
+      // postId: doc.data().postId,
       category: collectionRefName,
       order: doc.id,
       series: doc.data().series,

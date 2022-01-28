@@ -1,7 +1,6 @@
 import { NextPage } from 'next';
 import { useToast } from '@dalgu/react-toast';
 import {
-  changeToPublished,
   getAllCollectionDataArray,
   getPostByCategoryOrder,
   saveDataToFireStoreDB,
@@ -17,6 +16,7 @@ import { useGetClientPostData } from '../../lib/hooks/useGetClientPostData';
 import { useGetClientTempPostData } from '../../lib/hooks/useGetClientTempPostData';
 import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
 import { IPostData } from '../../redux-toolkit/model/post-data-model';
+import { useInitializeClientData } from '../../lib/hooks/useInitializeClientData';
 
 const CategoryOrderPost: NextPage<{ post: IPostData }> = (props) => {
   const { isAdmin } = useIsAdmin();
@@ -25,13 +25,18 @@ const CategoryOrderPost: NextPage<{ post: IPostData }> = (props) => {
   const locale = router.locale;
   const dispatch = useAppDispatch();
   const mounted = useMounted();
+  const initializeClientData = useInitializeClientData();
 
   useEffect(() => {
-    const initializeClientData = () => {
+    const SyncServerAndClientData = () => {
       dispatch(setPostData(props.post)); // 초기화 및 map() 상태 관리(새로운 블럭 그리는 일 등)
       dispatch(setTempPostData(props.post)); // 데이터 저장 위해(contentEditable 요소가 매번 렌더링될 때마다 생기는 문제 방지)
     };
-    initializeClientData();
+    SyncServerAndClientData();
+
+    return () => {
+      initializeClientData();
+    };
   }, []);
 
   const { post } = useGetClientPostData();
@@ -49,6 +54,8 @@ const CategoryOrderPost: NextPage<{ post: IPostData }> = (props) => {
     );
     showToast('서버에 임시 저장 완료');
   };
+
+  console.log(tempPost);
 
   return (
     <>

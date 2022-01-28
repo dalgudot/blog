@@ -1,3 +1,4 @@
+import { FieldValue, serverTimestamp } from 'firebase/firestore';
 import { devCollectionRefName } from '../../service/firebase/firestore';
 import {
   IParagraphData,
@@ -12,7 +13,7 @@ const paragraphData: IParagraphDataModel = new ParagraphDataModel();
 const newPostId: IPostId = new PostId();
 
 export const postInitialData: IPostData = {
-  postId: newPostId.createPostId(),
+  // postId: newPostId.createPostId(),
   category: devCollectionRefName,
   order: '',
   series: '',
@@ -25,7 +26,7 @@ export const postInitialData: IPostData = {
 };
 
 export interface IPostData {
-  postId: string;
+  // postId: string;
   category: string;
   order: string;
   series: string;

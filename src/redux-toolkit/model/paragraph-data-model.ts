@@ -1,18 +1,20 @@
 import { uuid } from '../../lib/utils/id';
 
+export type TBlockType =
+  | 'Heading1'
+  | 'Heading2'
+  | 'Heading3'
+  | 'Paragraph'
+  | 'Code'
+  | 'Link';
+
 export interface IParagraphDataModel {
   createNewParagraphData: () => IParagraphData;
 }
 
 export class ParagraphDataModel implements IParagraphDataModel {
   private blockId: string;
-  private blockType:
-    | 'Heading1'
-    | 'Heading2'
-    | 'Heading3'
-    | 'Paragraph'
-    | 'Code'
-    | 'Link';
+  private blockType: TBlockType;
   private html: string;
 
   constructor() {
@@ -33,12 +35,6 @@ export class ParagraphDataModel implements IParagraphDataModel {
 
 export interface IParagraphData {
   blockId: string;
-  blockType:
-    | 'Heading1'
-    | 'Heading2'
-    | 'Heading3'
-    | 'Paragraph'
-    | 'Code'
-    | 'Link';
+  blockType: TBlockType;
   html: string;
 }
