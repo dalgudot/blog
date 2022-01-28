@@ -38,20 +38,15 @@ const CategoryOrderPost: NextPage<{ post: IPostData }> = (props) => {
   const { tempPost } = useGetClientTempPostData();
 
   const currentCategory = router.query.category;
-  const currentOrder = router.query.order;
-  const dbPath =
-    locale === 'ko'
-      ? `${currentCategory}/${currentOrder}`
-      : `${currentCategory}/${currentOrder}-en`;
-
-  const publishPost = async () => {
-    await saveDataToFireStoreDB(tempPost, dbPath);
-    await changeToPublished(dbPath);
-    showToast('발행 완료');
-  };
+  const currentOrder =
+    locale === 'ko' ? router.query.order : `${router.query.order}-en`;
 
   const tempSaveDataToFireStoreDB = async () => {
-    await saveDataToFireStoreDB(tempPost, dbPath);
+    await saveDataToFireStoreDB(
+      currentCategory as string,
+      currentOrder as string,
+      tempPost
+    );
     showToast('서버에 임시 저장 완료');
   };
 
@@ -64,14 +59,7 @@ const CategoryOrderPost: NextPage<{ post: IPostData }> = (props) => {
             onClick={tempSaveDataToFireStoreDB}
             style={{ marginTop: 48, marginLeft: 24 }}
           >
-            <code>Save to DB</code>
-          </button>
-
-          <button
-            onClick={publishPost}
-            style={{ marginTop: 48, marginLeft: 24 }}
-          >
-            <code>발행하기</code>
+            Save to DB
           </button>
         </>
       )}

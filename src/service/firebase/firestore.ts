@@ -16,7 +16,7 @@ initializeFirebaseApp();
 const db = getDB();
 export const devCollectionRefName = 'dev';
 export const designCollectionRefName = 'design';
-const draftCollectionRefName = 'draft';
+export const draftCollectionRefName = 'draft';
 
 export const getEachAllCollectionDataArray = async (
   collectionRefName: string
@@ -120,15 +120,21 @@ export const getDraftByOrder = async (order: string) => {
 ///////////////////////////////
 
 export const saveDataToFireStoreDB = async (
-  data: WithFieldValue<IPostData> | undefined,
-  path: string
-  // ...pathSegments: string[]
+  dbCollection: string,
+  dbDocument: string,
+  data: WithFieldValue<IPostData>
+  // | undefined
 ) => {
-  await setDoc(doc(db, path), data);
+  // setDoc() - 새로 만들거나 덮어쓸 때 쓰는 API
+  await setDoc(doc(db, dbCollection, dbDocument), data, { merge: true });
 };
 
-export const changeToPublished = async (path: string) => {
-  await updateDoc(doc(db, path), {
+export const changeToPublished = async (
+  dbCollection: string,
+  dbDocument: string
+) => {
+  // updateDoc() - 문서의 일부만 업데이트하는 API
+  await updateDoc(doc(db, dbCollection, dbDocument), {
     status: 'published',
   });
 };

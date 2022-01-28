@@ -12,6 +12,7 @@ import { setPostData } from '../../redux-toolkit/slices/post-slice';
 import { setTempPostData } from '../../redux-toolkit/slices/temp-post-slice';
 import { useAppDispatch } from '../../redux-toolkit/store';
 import {
+  draftCollectionRefName,
   getDraftList,
   saveDataToFireStoreDB,
 } from '../../service/firebase/firestore';
@@ -46,8 +47,8 @@ const NewDraft: NextPage = () => {
       0
     );
     const newPathOrder = maxValueOfOrder + 1;
-    const dbPath = `draft/${newPathOrder}`;
-    await saveDataToFireStoreDB(tempPost, dbPath);
+    const dbDocument = `${newPathOrder}`;
+    await saveDataToFireStoreDB(draftCollectionRefName, dbDocument, tempPost);
 
     router.push('/draft/[order]', `/draft/${newPathOrder}`);
   };

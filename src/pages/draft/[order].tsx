@@ -13,6 +13,7 @@ import { setTempPostData } from '../../redux-toolkit/slices/temp-post-slice';
 import { useAppDispatch } from '../../redux-toolkit/store';
 import {
   changeToPublished,
+  draftCollectionRefName,
   getDraftByOrder,
   getEachAllCollectionDataArray,
   saveDataToFireStoreDB,
@@ -24,11 +25,9 @@ const DraftWriting: NextPage = () => {
   const { showToast } = useToast();
   const { post } = useGetClientPostData();
   const { tempPost } = useGetClientTempPostData();
-  // const mounted = useMounted();
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const draftOrder = router.query.order;
-  const draftDbPath = `draft/${draftOrder}`;
+  const draftOrder = router.query.order as string;
 
   useEffect(() => {
     draftOrder &&
@@ -43,8 +42,7 @@ const DraftWriting: NextPage = () => {
   }, [draftOrder]);
 
   const tempSaveDataToFireStoreDB = async () => {
-    await saveDataToFireStoreDB(tempPost, draftDbPath);
-    showToast('서버에 Draft 임시 저장');
+    await saveDataToFireStoreDB(draftCollectionRefName, draftOrder, tempPost);
   };
 
   const publishPost = async () => {
@@ -54,20 +52,17 @@ const DraftWriting: NextPage = () => {
       ...categoryList.map((list) => Number(list.order)),
       0
     );
-    const newPathOrder = maxValueOfOrder + 1;
-    const dbPath = `${category}/${newPathOrder}`;
-    await saveDataToFireStoreDB(tempPost, draftDbPath); // draft에도 저장
-    await saveDataToFireStoreDB(tempPost, dbPath);
-    await changeToPublished(dbPath); // change status to 'published'
+    const newPathOrder = String(maxValueOfOrder + 1);
+    await tempSaveDataToFireStoreDB(); // draft에도 저장
+    await saveDataToFireStoreDB(category, newPathOrder, tempPost);
+    await changeToPublished(category, newPathOrder); // change status to 'published'
 
     // [환경 변수 설정] production인 경우 toast, localhost의 경우 만들어진 경로로 바로 이동.
     process.env.NODE_ENV === 'production'
       ? showToast('발행 완료')
-      : router.push('/[category]/[order]', `/${dbPath}`);
+      : router.push('/[category]/[order]', `/${category}/${newPathOrder}`);
   };
 
-  // console.log('post', post);
-  // console.log('tempPost', tempPost);
   return (
     <>
       {draftOrder && (

@@ -1,7 +1,6 @@
 import { useToast } from '@dalgu/react-toast';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import { useIsAdmin } from '../lib/hooks/useIsAdmin';
 import { setUid } from '../redux-toolkit/slices/user-slice';
 import { useAppDispatch } from '../redux-toolkit/store';
