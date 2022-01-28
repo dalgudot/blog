@@ -1,10 +1,9 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { setuid } from 'process';
 import { useEffect, useState } from 'react';
 import List from '../components/navigation/article/nav-lists';
-import { setUid, setUser } from '../redux-toolkit/slices/user-slice';
+import { setUid } from '../redux-toolkit/slices/user-slice';
 import {
   RootState,
   useAppDispatch,
@@ -20,8 +19,9 @@ const Login: NextPage = () => {
   const router = useRouter();
   const auth: IAuthentication = new Authentication();
   // const [user, seTFirebaseUser] = useState<TFirebaseUser>();
-  // const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const { user, uid } = useAppSelector((state: RootState) => state.user);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
+  const { uid } = useAppSelector((state: RootState) => state.user);
   const dispatch = useAppDispatch();
 
   // useEffect(() => {
@@ -35,14 +35,15 @@ const Login: NextPage = () => {
   //     : setIsAdmin(false);
   // }, [uid]);
 
-  console.log('redux-user', uid);
+  useEffect(() => {}, []);
 
   const onLogIn = (providerName: TproviderName) => {
     auth //
       .logIn(providerName)
       .then((data) => {
         dispatch(setUid(data.user.uid));
-        if (data.user.uid === process.env.NEXT_PUBLIC_ADMIN_UID) {
+        if (uid === process.env.NEXT_PUBLIC_ADMIN_UID) {
+          router.push('/', '/admin');
         }
       })
       .catch((error) => {
@@ -54,15 +55,15 @@ const Login: NextPage = () => {
     auth //
       .logOut()
       .then(() => {
-        setUid(null);
-        dispatch(setUid(null));
+        setUid(undefined);
+        dispatch(setUid(undefined));
       })
       .catch((error) => {
         throw new Error(error);
       });
   };
 
-  if (user) {
+  if (isAdmin) {
     return (
       <>
         <button onClick={onLogOut}>로그아웃</button>

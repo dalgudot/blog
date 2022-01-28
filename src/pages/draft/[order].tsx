@@ -6,6 +6,7 @@ import SelectCategory from '../../components/draft/select-category';
 import Post from '../../components/post/post';
 import { useGetClientPostData } from '../../lib/hooks/useGetClientPostData';
 import { useGetClientTempPostData } from '../../lib/hooks/useGetClientTempPostData';
+import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
 import { IPostData } from '../../redux-toolkit/model/post-data-model';
 import { setPostData } from '../../redux-toolkit/slices/post-slice';
 import { setTempPostData } from '../../redux-toolkit/slices/temp-post-slice';
@@ -18,8 +19,8 @@ import {
 } from '../../service/firebase/firestore';
 
 const DraftWriting: NextPage = () => {
-  // const { isAdmin } = useIsAdmin();
-  const contentEditable = true;
+  const { isAdmin } = useIsAdmin();
+
   const { showToast } = useToast();
   const { post } = useGetClientPostData();
   const { tempPost } = useGetClientTempPostData();
@@ -37,7 +38,7 @@ const DraftWriting: NextPage = () => {
             dispatch(setPostData(draftData as IPostData)); // 초기화 및 map() 상태 관리(새로운 블럭 그리는 일 등)
             dispatch(setTempPostData(draftData as IPostData)); // 데이터 저장 위해(contentEditable 요소가 매번 렌더링될 때마다 생기는 문제 방지)
           };
-          contentEditable && initializeClientData();
+          isAdmin && initializeClientData();
         });
   }, [draftOrder]);
 
@@ -72,7 +73,7 @@ const DraftWriting: NextPage = () => {
       {draftOrder && (
         <>
           <SelectCategory />
-          <Post contentEditable={contentEditable} postData={post} />
+          <Post contentEditable={isAdmin} postData={post} />
         </>
       )}
 

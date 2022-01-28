@@ -2,11 +2,12 @@ import { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
 import { getDraftList } from '../../service/firebase/firestore';
 
 const Draft: NextPage = () => {
-  // const { isAdmin } = useIsAdmin();
-  const isAdmin = true;
+  const { isAdmin } = useIsAdmin();
+
   const [draftList, setDraftList] = useState<
     {
       order: string;

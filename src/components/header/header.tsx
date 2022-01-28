@@ -1,14 +1,9 @@
 import { useRouter } from 'next/router';
-import { useCheckAdminPage } from '../../lib/hooks/useCheckAdminPage';
 import ThemeToggle from './theme-toggle';
 
 const Header: React.FC = () => {
-  // useCheckAdminPage();
-
   const router = useRouter();
   const { locale, pathname, asPath, query } = router;
-
-  // console.log(locale, pathname, asPath, query);
 
   const setLanguage = () => {
     locale === 'ko'
@@ -20,9 +15,9 @@ const Header: React.FC = () => {
     <>
       <h1>Header</h1>
       {/* <ThemeToggle /> */}
-      <button onClick={setLanguage}>
+      {/* <button onClick={setLanguage}>
         {locale === 'ko' ? '영어로' : '한글로'}
-      </button>
+      </button> */}
     </>
   );
 };
