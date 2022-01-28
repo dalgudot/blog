@@ -16,8 +16,9 @@ import Post from '../../components/post/post';
 import { useGetClientPostData } from '../../lib/hooks/useGetClientPostData';
 import { useGetClientTempPostData } from '../../lib/hooks/useGetClientTempPostData';
 import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
+import { IPostData } from '../../redux-toolkit/model/post-data-model';
 
-const CategoryOrderPost: NextPage<any> = (props) => {
+const CategoryOrderPost: NextPage<{ post: IPostData }> = (props) => {
   const { isAdmin } = useIsAdmin();
   const { showToast } = useToast();
   const router = useRouter();
@@ -30,14 +31,11 @@ const CategoryOrderPost: NextPage<any> = (props) => {
       dispatch(setPostData(props.post)); // 초기화 및 map() 상태 관리(새로운 블럭 그리는 일 등)
       dispatch(setTempPostData(props.post)); // 데이터 저장 위해(contentEditable 요소가 매번 렌더링될 때마다 생기는 문제 방지)
     };
-    isAdmin && initializeClientData();
-  }, [isAdmin]);
+    initializeClientData();
+  }, []);
 
   const { post } = useGetClientPostData();
   const { tempPost } = useGetClientTempPostData();
-
-  console.log(props.post);
-  // console.log(tempPost);
 
   const currentCategory = router.query.category;
   const currentOrder = router.query.order;
