@@ -6,9 +6,11 @@ import {
   Auth,
   UserCredential,
   User,
+  setPersistence,
+  browserSessionPersistence,
 } from 'firebase/auth';
 
-export type TproviderName = 'Google' | 'Github' | 'Apple';
+export type TproviderName = 'Google';
 
 export interface IAuthentication {
   logIn: (providerName: TproviderName) => Promise<UserCredential>;
@@ -19,12 +21,10 @@ export interface IAuthentication {
 export class Authentication implements IAuthentication {
   private auth: Auth;
   private googleAuthProvider: GoogleAuthProvider;
-  private githubAuthProvider: GithubAuthProvider;
 
   constructor() {
     this.auth = getAuth();
     this.googleAuthProvider = new GoogleAuthProvider();
-    this.githubAuthProvider = new GithubAuthProvider();
   }
 
   logIn(providerName: TproviderName) {
@@ -36,13 +36,20 @@ export class Authentication implements IAuthentication {
     return this.auth.signOut();
   }
 
+  // setPersistenceSession() {
+  //   setPersistence(this.auth, browserSessionPersistence).then(() => {
+  //     return signInWithPopup(this.auth, this.googleAuthProvide);
+  //   });
+  // }
+
   onAuthChange(onUserChanged: (user: User) => void) {
     this.auth.onAuthStateChanged((user) => {
       if (user) {
         onUserChanged(user);
+        console.log('Signed In');
       } else {
+        console.log('Signed Out');
         // User is signed out
-        // ...
       }
     });
   }
@@ -51,8 +58,8 @@ export class Authentication implements IAuthentication {
     switch (providerName) {
       case 'Google':
         return this.googleAuthProvider;
-      case 'Github':
-        return this.githubAuthProvider;
+      // case 'Github':
+      //   return this.githubAuthProvider;
       default:
         throw new Error(`not supported provider: ${providerName}`);
     }

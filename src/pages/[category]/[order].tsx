@@ -1,61 +1,122 @@
-import Article from '../../components/article/article';
-import { getAllArticles } from '../../service/firebase/firestore-db';
-import { InferGetStaticPropsType, NextPage } from 'next';
+import { NextPage } from 'next';
+import { useToast } from '@dalgu/react-toast';
+import {
+  changeToPublished,
+  getAllCollectionDataArray,
+  getPostByCategoryOrder,
+  saveDataToFireStoreDB,
+} from '../../service/firebase/firestore';
+import { useEffect } from 'react';
+import { useAppDispatch } from '../../redux-toolkit/store';
+import { useRouter } from 'next/router';
+import { setPostData } from '../../redux-toolkit/slices/post-slice';
+import { setTempPostData } from '../../redux-toolkit/slices/temp-post-slice';
+import { useMounted } from '@dalgu/react-utility-hooks';
+import Post from '../../components/post/post';
+import { useGetClientPostData } from '../../lib/hooks/useGetClientPostData';
+import { useGetClientTempPostData } from '../../lib/hooks/useGetClientTempPostData';
 import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
-import BlockWYSIWYG from '../../components/article/block-wysiwyg/block-wysiwyg';
-import Response from '../../components/article/response/response';
+import { IPostData } from '../../redux-toolkit/model/post-data-model';
 
-const CategoryOrderPost: NextPage<
-  InferGetStaticPropsType<typeof getStaticProps>
-> = (props) => {
+const CategoryOrderPost: NextPage<{ post: IPostData }> = (props) => {
   const { isAdmin } = useIsAdmin();
-  const contentEditable: boolean = isAdmin;
-  // CRUD
-  // 올린 후 '수정' 기능
-  // 올리기 전 '저장', '게시'
+  const { showToast } = useToast();
+  const router = useRouter();
+  const locale = router.locale;
+  const dispatch = useAppDispatch();
+  const mounted = useMounted();
+
+  useEffect(() => {
+    const initializeClientData = () => {
+      dispatch(setPostData(props.post)); // 초기화 및 map() 상태 관리(새로운 블럭 그리는 일 등)
+      dispatch(setTempPostData(props.post)); // 데이터 저장 위해(contentEditable 요소가 매번 렌더링될 때마다 생기는 문제 방지)
+    };
+    initializeClientData();
+  }, []);
+
+  const { post } = useGetClientPostData();
+  const { tempPost } = useGetClientTempPostData();
+
+  const currentCategory = router.query.category;
+  const currentOrder = router.query.order;
+  const dbPath =
+    locale === 'ko'
+      ? `${currentCategory}/${currentOrder}`
+      : `${currentCategory}/${currentOrder}-en`;
+
+  const publishPost = async () => {
+    await saveDataToFireStoreDB(tempPost, dbPath);
+    await changeToPublished(dbPath);
+    showToast('발행 완료');
+  };
+
+  const tempSaveDataToFireStoreDB = async () => {
+    await saveDataToFireStoreDB(tempPost, dbPath);
+    showToast('서버에 임시 저장 완료');
+  };
 
   return (
     <>
-      <main>
-        <Article contentEditable={contentEditable} />
-      </main>
-      <Response />
-      <BlockWYSIWYG contentEditable={contentEditable} />
-      {/* 레퍼런스  <BlockWYSIWYG /> */}
+      {mounted && <Post contentEditable={isAdmin} postData={post} />}
+      {isAdmin && (
+        <>
+          <button
+            onClick={tempSaveDataToFireStoreDB}
+            style={{ marginTop: 48, marginLeft: 24 }}
+          >
+            <code>Save to DB</code>
+          </button>
+
+          <button
+            onClick={publishPost}
+            style={{ marginTop: 48, marginLeft: 24 }}
+          >
+            <code>발행하기</code>
+          </button>
+        </>
+      )}
     </>
   );
 };
 
 export default CategoryOrderPost;
 
-type Params = {
+type Context = {
   params: {
     category: string;
     order: string;
   };
+  locale: 'ko' | 'en';
 };
 
-// https://yceffort.kr/2020/03/nextjs-02-data-fetching
-// [API Docs] yarn dev(next dev)에서는 매번 호출!
-// GitHub repo에서 Vercel 프론트 서버로 푸시한 뒤에 하는 '빌드'에서만 호출! -> 사용자는 파이어스토어 호출하지 않음.
-// This also gets called at build time
-export const getStaticProps = async ({ params }: Params) => {
-  // const posts = await getAllArticles();
-  const category = params.category;
-  const order = params.order;
-
-  return { props: { category, order } };
+export const getStaticProps = async ({ params, locale }: Context) => {
+  // 동적으로 만들어진 각 페이지의 [category]와 [order]를 매개변수 params로 전달
+  const post = await getPostByCategoryOrder(params, locale);
+  return { props: { post } };
 };
 
 export const getStaticPaths = async () => {
-  const posts = await getAllArticles();
+  const allPosts = await getAllCollectionDataArray();
 
-  // Get the paths we want to pre-render based on posts
-  const paths = posts.map((post) => ({
-    params: { category: post.category, order: String(post.order) }, // number -> string,
-  }));
+  const paths = allPosts.map((post) =>
+    post.order.includes('en')
+      ? {
+          params: {
+            category: post.category,
+            order: post.order.replace('-en', ''),
+          },
+          locale: 'en',
+        }
+      : {
+          params: { category: post.category, order: post.order },
+          locale: 'ko',
+        }
+  );
 
-  // We'll pre-render only these paths at build time.
-  // { fallback: false } means other routes should 404.
   return { paths, fallback: false };
 };
+
+// useEffect(() => {
+//   // local이든 production이든 수정할 때는 수정한 내용 반영되도록, contentEditable이면 클라이언트에서 새로 데이터 받아와서 정렬
+//   isAdmin && fetchDB()
+// }, [isAdmin])
