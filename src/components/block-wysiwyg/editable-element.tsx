@@ -1,7 +1,6 @@
 import DOMPurify from 'dompurify';
 import { ChangeEvent, FC, KeyboardEvent, useEffect, useRef } from 'react';
 import { focusContentEditableTextToEnd } from '../../lib/utils/focus-content-editable-text-to-end';
-import styles from './editable-element.module.scss';
 
 type Props = {
   TagName: 'h1' | 'h2' | 'h3' | 'p' | 'code';
@@ -10,9 +9,9 @@ type Props = {
   onInput?: (e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>) => void;
   onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
-  syncPasteText: (newInnerPurePasteText: string) => void;
+  syncTempPostWithPasteText: (newInnerPurePasteText: string) => void;
   placeholder?: string;
-  customClassName: string;
+  customClassName?: string;
 };
 
 // 개별로 쓸 수 있도록 만들거나, map()으로 블록 만들 때도 쓸 수 있도록 만든 컴포넌트 > 아마 텍스트에만 쓰일 듯.
@@ -23,7 +22,7 @@ const EditableElement: FC<Props> = ({
   onInput,
   onKeyPress,
   onKeyDown,
-  syncPasteText,
+  syncTempPostWithPasteText,
   placeholder = '',
   customClassName,
 }) => {
@@ -40,12 +39,13 @@ const EditableElement: FC<Props> = ({
       // contentEditable의 innerHtml, TempRef, setText 모두 동기화!
       if (ref.current) {
         // (TODO) 가장 뒤에 붙여넣기가 되므로 고칠 필요가 있음. -> 셀렉션 커서 혹은 영역을 찾아서 각각 대응해줘야 함.
-        const newInnerPurePasteText = DOMPurify.sanitize(
-          `${ref.current.innerHTML}${textData}`
-        );
+        // const newInnerPurePasteText = DOMPurify.sanitize(
+        //   `${ref.current.innerHTML}${textData}`
+        // );
+        const newInnerPurePasteText = `${ref.current.innerHTML}${textData}`;
         ref.current.innerHTML = newInnerPurePasteText;
 
-        syncPasteText(newInnerPurePasteText); // 데이터 싱크를 위해 dispatch 및 setText 함수를 받아와 실행
+        syncTempPostWithPasteText(newInnerPurePasteText); // 데이터 싱크를 위해 dispatch 및 setText(EditableElementSwitch 이용하는 경우 onKeyDown에서 text useState() 필요) 함수를 받아와 실행
         focusContentEditableTextToEnd(ref.current);
       }
     };
@@ -64,7 +64,8 @@ const EditableElement: FC<Props> = ({
       ref={ref}
       contentEditable={contentEditable}
       suppressContentEditableWarning={contentEditable}
-      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }}
+      // dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }}
+      dangerouslySetInnerHTML={{ __html: html }}
       onInput={onInput}
       onKeyPress={onKeyPress} // optional, 블록 추가
       onKeyDown={onKeyDown} // optional, 블록 삭제

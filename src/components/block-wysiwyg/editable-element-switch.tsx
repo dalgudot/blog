@@ -26,7 +26,6 @@ type Props = {
   onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
   setText?: Dispatch<SetStateAction<string>>;
-  spellCheck?: boolean;
   placeholder?: string;
   customClassName?: string;
 };
@@ -42,7 +41,6 @@ const EditableElementSwitch: FC<Props> = ({
   onKeyPress,
   onKeyDown,
   setText,
-  spellCheck = false,
   placeholder = '',
   customClassName = styles.editable__element,
 }) => {
@@ -60,7 +58,7 @@ const EditableElementSwitch: FC<Props> = ({
 
   const dispatch = useAppDispatch();
 
-  const syncPasteText = (newInnerPurePasteText: string) => {
+  const syncTempPostWithPasteText = (newInnerPurePasteText: string) => {
     dispatch(
       setTempRefTitleData({
         inputPureHtml: newInnerPurePasteText,
@@ -79,7 +77,7 @@ const EditableElementSwitch: FC<Props> = ({
         onInput={onInput} // 필수
         onKeyPress={onKeyPress} // 블록 추가
         onKeyDown={onKeyDown} // 블록 삭제
-        syncPasteText={syncPasteText}
+        syncTempPostWithPasteText={syncTempPostWithPasteText}
         placeholder={placeholder}
         customClassName={customClassName}
       />

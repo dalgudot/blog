@@ -1,12 +1,8 @@
 import { uuid } from '../../lib/utils/id';
 
-export type TBlockType =
-  | 'Heading1'
-  | 'Heading2'
-  | 'Heading3'
-  | 'Paragraph'
-  | 'Code'
-  | 'Link';
+export type TBlockTextType = 'Heading1' | 'Heading2' | 'Heading3' | 'Paragraph';
+
+export type TBlockType = TBlockTextType | 'Code' | 'Link';
 
 export interface IParagraphDataModel {
   createNewParagraphData: () => IParagraphData;

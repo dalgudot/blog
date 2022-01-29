@@ -18,11 +18,11 @@ import {
   getDraftByOrder,
   getEachAllCollectionDataArray,
   saveDataToFireStoreDB,
+  updateTimestamp,
 } from '../../service/firebase/firestore';
 
 const DraftWriting: NextPage = () => {
   const { isAdmin } = useIsAdmin();
-
   const { showToast } = useToast();
   const { post } = useGetClientPostData();
   const { tempPost } = useGetClientTempPostData();
@@ -49,6 +49,7 @@ const DraftWriting: NextPage = () => {
 
   const tempSaveDataToFireStoreDB = async () => {
     await saveDataToFireStoreDB(draftCollectionRefName, draftOrder, tempPost);
+    showToast('임시 저장 완료');
   };
 
   const publishPost = async () => {
@@ -69,6 +70,8 @@ const DraftWriting: NextPage = () => {
       : router.push('/[category]/[order]', `/${category}/${newPathOrder}`);
   };
 
+  console.log(tempPost);
+
   return (
     <>
       {isAdmin && (
@@ -82,7 +85,7 @@ const DraftWriting: NextPage = () => {
         onClick={tempSaveDataToFireStoreDB}
         style={{ marginTop: 48, marginLeft: 24 }}
       >
-        Save to DB
+        임시 저장
       </button>
 
       <button onClick={publishPost} style={{ marginTop: 48, marginLeft: 24 }}>

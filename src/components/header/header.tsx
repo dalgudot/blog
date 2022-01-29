@@ -1,23 +1,15 @@
-import { useRouter } from 'next/router';
+import { useGetClientTempPostData } from '../../lib/hooks/useGetClientTempPostData';
 import ThemeToggle from './theme-toggle';
 
 const Header: React.FC = () => {
-  const router = useRouter();
-  const { locale, pathname, asPath, query } = router;
-
-  const setLanguage = () => {
-    locale === 'ko'
-      ? router.push({ pathname, query }, asPath, { locale: 'en' })
-      : router.push({ pathname, query }, asPath, { locale: 'ko' });
-  };
+  const { tempPost } = useGetClientTempPostData();
+  // console.log('tempPost', tempPost);
+  // 어디서든 tempPost 변화 보기 위해서
 
   return (
     <>
-      <h1>Header</h1>
+      {/* <h1>Header</h1> */}
       {/* <ThemeToggle /> */}
-      {/* <button onClick={setLanguage}>
-        {locale === 'ko' ? '영어로' : '한글로'}
-      </button> */}
     </>
   );
 };

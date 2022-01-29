@@ -1,10 +1,11 @@
 import { FC } from 'react';
 import ReferenceBlockWYSIWYG from '../../components/post/reference/reference-block-wysiwyg';
 import Article from '../../components/post/article/article';
+import { IPostData } from '../../redux-toolkit/model/post-data-model';
 
 type Props = {
   contentEditable: boolean;
-  postData: any;
+  postData: IPostData;
 };
 
 const Post: FC<Props> = ({ contentEditable, postData }) => {
@@ -14,16 +15,16 @@ const Post: FC<Props> = ({ contentEditable, postData }) => {
         <Article
           contentEditable={contentEditable}
           title={postData.title}
-          dateTime='2022-01-25'
-          publish={postData.publish}
+          dateTime={postData.dateTime}
+          status={postData.status}
         />
       </main>
       {/* <Contact /> */}
       {/* <Response /> */}
-      <ReferenceBlockWYSIWYG
+      {/* <ReferenceBlockWYSIWYG
         contentEditable={contentEditable}
         refDataArray={postData.refDataArray}
-      />
+      /> */}
     </>
   );
 };

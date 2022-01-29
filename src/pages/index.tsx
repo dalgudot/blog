@@ -44,7 +44,7 @@ const Index: NextPage<Props> = ({ allPostsListData }) => {
       </main>
       {isAdmin && (
         <>
-          <Link href='/draft'>
+          <Link href='/draft/list'>
             <a>초고 목록 보기</a>
           </Link>
           <Link href='/draft/new'>

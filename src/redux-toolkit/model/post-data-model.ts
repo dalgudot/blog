@@ -1,4 +1,4 @@
-import { FieldValue, serverTimestamp } from 'firebase/firestore';
+import { FieldValue } from 'firebase/firestore';
 import { devCollectionRefName } from '../../service/firebase/firestore';
 import {
   IParagraphData,
@@ -23,6 +23,7 @@ export const postInitialData: IPostData = {
   paragraphDataArray: [paragraphData.createNewParagraphData()],
   refDataArray: [refData.createNewRefData()],
   status: 'draft',
+  // serverTimestamp: '',
 };
 
 export interface IPostData {
@@ -35,5 +36,8 @@ export interface IPostData {
   title: string;
   paragraphDataArray: IParagraphData[];
   refDataArray: IRefData[];
-  status: 'draft' | 'published' | 'unPublished';
+  status: TStatus;
+  // serverTimestamp: any;
 }
+
+export type TStatus = 'draft' | 'published' | 'unPublished';

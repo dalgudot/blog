@@ -25,6 +25,13 @@ export const tempPostSlice = createSlice({
       state.tempPost.title = action.payload.inputPureHtml;
     },
 
+    setTempArticleDateTimeData: (
+      state,
+      action: PayloadAction<{ seoDate: string }>
+    ) => {
+      state.tempPost.dateTime = action.payload.seoDate;
+    },
+
     setTempRefTitleData: (
       state,
       action: PayloadAction<{ inputPureHtml: string; currentIndex: number }>
@@ -73,6 +80,7 @@ export const {
   setTempPostData,
   setTempPostCategory,
   setTempArticleTitleData,
+  setTempArticleDateTimeData,
   setTempRefTitleData,
   setTempRefUrlData,
   addTempLinkBlock,

@@ -1,0 +1,8 @@
+.editable__text__block {
+  /* placeholder */
+  &:empty:before {
+    content: attr(placeholder);
+    color: grey;
+    display: inline-block;
+  }
+}

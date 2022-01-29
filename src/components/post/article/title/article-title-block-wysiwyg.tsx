@@ -1,6 +1,13 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { getDate } from '../../../../lib/utils/get-date';
-import EditableText from '../../../block-wysiwyg/editable-element/text/editable-text';
+import { TStatus } from '../../../../redux-toolkit/model/post-data-model';
+import { setArticleTitleData } from '../../../../redux-toolkit/slices/post-slice';
+import {
+  setTempArticleDateTimeData,
+  setTempArticleTitleData,
+} from '../../../../redux-toolkit/slices/temp-post-slice';
+import { useAppDispatch } from '../../../../redux-toolkit/store';
+import EditableText from '../../../block-wysiwyg/editable-element/text/editable-text-block';
 import styles from './article-title-block-wysiwyg.module.scss';
 import Profile from './profile';
 
@@ -8,23 +15,31 @@ type Props = {
   contentEditable: boolean;
   title: string;
   dateTime: string;
-  publish?: boolean;
+  status: TStatus;
 };
 
 const ArticleTitleBlockWYSIWYG: FC<Props> = ({
   contentEditable,
   title,
   dateTime,
-  publish,
+  status,
 }) => {
-  const { year, month, date } = getDate();
+  // status에 따라 날짜를 갱신할지 하지 않을지 결정
+  // published 상태일 때는 갱신하지 않음
+  const { dateForSEO, dateForDisplay } = getDate(dateTime);
+  const isStatusPublished = status === 'published';
   const displayDateTime = dateTime.replaceAll('-', '.');
-  const seoDate: string = publish ? dateTime : `${year}-${month}-${date}`;
-  const displayDate: string = publish
+  const seoDate: string = isStatusPublished ? dateTime : dateForSEO;
+  const displayDate: string = isStatusPublished
     ? displayDateTime
-    : `${year}.${month}.${date}`;
+    : dateForDisplay;
 
-  const syncPasteText = (newInnerPurePasteText: string) => {};
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    // 렌더링 시마다 dateTime 저장
+    dispatch(setTempArticleDateTimeData({ seoDate }));
+  });
 
   return (
     <>
@@ -36,7 +51,8 @@ const ArticleTitleBlockWYSIWYG: FC<Props> = ({
           blockType='Heading1'
           contentEditable={contentEditable}
           html={title}
-          syncPasteText={syncPasteText}
+          setTempPostData={setTempArticleTitleData}
+          setPostData={setArticleTitleData}
           placeholder='글의 제목을 입력해주세요'
         />
         <Profile />

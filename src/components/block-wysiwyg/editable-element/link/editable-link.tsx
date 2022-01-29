@@ -40,7 +40,7 @@ const EditableLink: FC<Props> = ({
   const [text, setText] = useState<string>(data.title);
 
   const onInput = (e: ChangeEvent<HTMLParagraphElement>) => {
-    onInputChange(e, setTempData, updateBlock);
+    onInputChange(e, setTempData, updateInlineBlock);
   };
 
   const setTempData = (inputPureHtml: string) => {
@@ -48,7 +48,7 @@ const EditableLink: FC<Props> = ({
     setText(inputPureHtml); // onKeyDown의 removeBlock() 조건 + 렌더링 성능 위해
   };
 
-  const updateBlock = (inputPureHtml: string) => {
+  const updateInlineBlock = (inputPureHtml: string) => {
     dispatch(
       setRefTitleData({
         inputPureHtml,

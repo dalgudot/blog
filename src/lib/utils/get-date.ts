@@ -1,4 +1,4 @@
-export const getDate = () => {
+export const getDate = (dateTime: string) => {
   const today = new Date();
   const year = String(today.getFullYear());
   // 한 자리 숫자일 경우 앞에 0을 붙여줘 순서대로 데이터가 나올 수 있도록
@@ -11,5 +11,8 @@ export const getDate = () => {
       ? '0' + String(today.getDate())
       : String(today.getDate());
 
-  return { today, year, month, date };
+  const dateForSEO: string = `${year}-${month}-${date}`;
+  const dateForDisplay: string = `${year}.${month}.${date}`;
+
+  return { today, year, month, date, dateForSEO, dateForDisplay };
 };

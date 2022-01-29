@@ -6,6 +6,7 @@ import {
   getDoc,
   getDocs,
   QuerySnapshot,
+  serverTimestamp,
   setDoc,
   updateDoc,
   WithFieldValue,
@@ -131,7 +132,19 @@ export const changeToPublished = async (
   dbDocument: string
 ) => {
   // updateDoc() - 문서의 일부만 업데이트하는 API
-  await updateDoc(doc(db, dbCollection, dbDocument), {
+  const docRef = doc(db, dbCollection, dbDocument);
+  await updateDoc(docRef, {
     status: 'published',
+  });
+};
+
+// Update the timestamp field with the value from the server
+export const updateTimestamp = async (
+  dbCollection: string,
+  dbDocument: string
+) => {
+  const docRef = doc(db, dbCollection, dbDocument);
+  await updateDoc(docRef, {
+    serverTimestamp: serverTimestamp(),
   });
 };

@@ -1,4 +1,5 @@
 import { FC, memo } from 'react';
+import { TStatus } from '../../../redux-toolkit/model/post-data-model';
 import ArticleParagraphBlockWYSIWYG from './paragraph/article-paragraph-block-wysiwyg';
 import ArticleTitleBlockWYSIWYG from './title/article-title-block-wysiwyg';
 
@@ -6,19 +7,19 @@ type Props = {
   contentEditable: boolean;
   title: string;
   dateTime: string;
-  publish?: boolean;
+  status: TStatus;
 };
 
-const Article: FC<Props> = ({ contentEditable, title, dateTime, publish }) => {
+const Article: FC<Props> = ({ contentEditable, title, dateTime, status }) => {
   return (
     <article>
       <ArticleTitleBlockWYSIWYG
         contentEditable={contentEditable}
         title={title}
         dateTime={dateTime}
-        publish={publish}
+        status={status}
       />
-      <ArticleParagraphBlockWYSIWYG contentEditable={contentEditable} />
+      {/* <ArticleParagraphBlockWYSIWYG contentEditable={contentEditable} /> */}
     </article>
   );
 };
