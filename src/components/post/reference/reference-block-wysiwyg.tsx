@@ -1,6 +1,6 @@
 import { FC, memo } from 'react';
 import { IRefData } from '../../../redux-toolkit/model/ref-data-model';
-import EditableLink from '../../block-wysiwyg/editable-element/link/editable-link';
+import EditableLinkBlock from '../../block-wysiwyg/editable-element/link/editable-link-block';
 import styles from './reference-block-wysiwyg.module.scss';
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
   refDataArray: IRefData[];
 };
 
-// <EditableLink />을 활용한 Block WYSIWYG을 만드는 컴포넌트!
+// <EditableLinkBlock />을 활용한 Block WYSIWYG을 만드는 컴포넌트!
 const ReferenceBlockWYSIWYG: FC<Props> = ({
   contentEditable,
   refDataArray,
@@ -22,7 +22,7 @@ const ReferenceBlockWYSIWYG: FC<Props> = ({
         <h2>참고 자료</h2>
         <ul>
           {refDataArray.map((data, idx) => (
-            <EditableLink
+            <EditableLinkBlock
               key={data.blockId}
               contentEditable={contentEditable}
               datas={refDataArray}

@@ -59,7 +59,10 @@ const DraftWriting: NextPage = () => {
       ...categoryList.map((list) => Number(list.order)),
       0
     );
-    const newPathOrder = String(maxValueOfOrder + 1);
+    const newPathOrder = String(
+      maxValueOfOrder !== NaN ? maxValueOfOrder + 1 : 1
+    );
+
     await tempSaveDataToFireStoreDB(); // draft에도 저장
     await saveDataToFireStoreDB(category, newPathOrder, tempPost);
     await changeToPublished(category, newPathOrder); // change status to 'published'

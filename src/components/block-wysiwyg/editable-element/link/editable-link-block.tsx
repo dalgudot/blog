@@ -17,7 +17,7 @@ import {
 } from '../../../../redux-toolkit/slices/temp-post-slice';
 import { useAppDispatch } from '../../../../redux-toolkit/store';
 import EditableElementSwitch from '../../editable-element-switch';
-import styles from './editable-link.module.scss';
+import styles from './editable-link-block.module.scss';
 import UrlInput from './url-input';
 
 type Props = {
@@ -28,7 +28,7 @@ type Props = {
   refDatasLength: number;
 };
 
-const EditableLink: FC<Props> = ({
+const EditableLinkBlock: FC<Props> = ({
   contentEditable,
   datas,
   data,
@@ -126,4 +126,4 @@ const EditableLink: FC<Props> = ({
   );
 };
 
-export default EditableLink;
+export default EditableLinkBlock;

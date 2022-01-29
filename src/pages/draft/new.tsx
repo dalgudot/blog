@@ -35,7 +35,7 @@ const NewDraft: NextPage = () => {
       ...draftList.map((list) => Number(list.order)),
       0
     );
-    const newPathOrder = maxValueOfOrder + 1;
+    const newPathOrder = maxValueOfOrder !== NaN ? maxValueOfOrder + 1 : 1;
     const dbDocument = `${newPathOrder}`;
     await saveDataToFireStoreDB(draftCollectionRefName, dbDocument, tempPost);
 

@@ -26,7 +26,7 @@ const ArticleTitleBlockWYSIWYG: FC<Props> = ({
 }) => {
   // status에 따라 날짜를 갱신할지 하지 않을지 결정
   // published 상태일 때는 갱신하지 않음
-  const { dateForSEO, dateForDisplay } = getDate(dateTime);
+  const { dateForSEO, dateForDisplay } = getDate();
   const isStatusPublished = status === 'published';
   const displayDateTime = dateTime.replaceAll('-', '.');
   const seoDate: string = isStatusPublished ? dateTime : dateForSEO;
@@ -37,9 +37,8 @@ const ArticleTitleBlockWYSIWYG: FC<Props> = ({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // 렌더링 시마다 dateTime 저장
     dispatch(setTempArticleDateTimeData({ seoDate }));
-  });
+  }, []);
 
   return (
     <>

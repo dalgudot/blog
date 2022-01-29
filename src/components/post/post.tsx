@@ -21,10 +21,10 @@ const Post: FC<Props> = ({ contentEditable, postData }) => {
       </main>
       {/* <Contact /> */}
       {/* <Response /> */}
-      {/* <ReferenceBlockWYSIWYG
+      <ReferenceBlockWYSIWYG
         contentEditable={contentEditable}
         refDataArray={postData.refDataArray}
-      /> */}
+      />
     </>
   );
 };

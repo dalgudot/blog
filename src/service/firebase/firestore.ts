@@ -13,6 +13,7 @@ import {
 } from 'firebase/firestore';
 import { getDB, initializeFirebaseApp } from './config';
 import { IPostData } from '../../redux-toolkit/model/post-data-model';
+import { getDate } from '../../lib/utils/get-date';
 
 initializeFirebaseApp();
 const db = getDB();
@@ -124,7 +125,9 @@ export const saveDataToFireStoreDB = async (
   // | undefined
 ) => {
   // setDoc() - 새로 만들거나 덮어쓸 때 쓰는 API
-  await setDoc(doc(db, dbCollection, dbDocument), data, { merge: true });
+  await setDoc(doc(db, dbCollection, dbDocument), data, {
+    merge: true,
+  });
 };
 
 export const changeToPublished = async (
