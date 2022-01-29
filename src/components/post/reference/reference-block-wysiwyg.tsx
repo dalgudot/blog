@@ -8,13 +8,11 @@ type Props = {
   refDataArray: IRefData[];
 };
 
-// <EditableLinkBlock />을 활용한 Block WYSIWYG을 만드는 컴포넌트!
 const ReferenceBlockWYSIWYG: FC<Props> = ({
   contentEditable,
   refDataArray,
 }) => {
   // 데이터는 2가지: 제목(클라이언트에서 한줄 다 차면 ...으로 표시), 링크
-  const refDatasLength = refDataArray.length;
 
   return (
     <>
@@ -28,7 +26,6 @@ const ReferenceBlockWYSIWYG: FC<Props> = ({
               datas={refDataArray}
               data={data}
               idx={idx}
-              refDatasLength={refDatasLength}
             />
           ))}
         </ul>
@@ -37,5 +34,5 @@ const ReferenceBlockWYSIWYG: FC<Props> = ({
   );
 };
 
-// props는 첫 렌덜이 이후 변하지 않으므로 memo 이용하면 렌더링 성능 극대화
+// props는 첫 렌더링 이후 변하지 않으므로 memo 이용하면 렌더링 성능 극대화
 export default memo(ReferenceBlockWYSIWYG);

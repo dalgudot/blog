@@ -32,7 +32,7 @@ export const tempPostSlice = createSlice({
       state.tempPost.dateTime = action.payload.seoDate;
     },
 
-    setTempRefTitleData: (
+    setTempLinkTitleData: (
       state,
       action: PayloadAction<{ inputPureHtml: string; currentIndex: number }>
     ) => {
@@ -40,7 +40,7 @@ export const tempPostSlice = createSlice({
         action.payload.inputPureHtml;
     },
 
-    setTempRefUrlData: (
+    setTempLinkUrlData: (
       state,
       action: PayloadAction<{ data: string; currentIndex: number }>
     ) => {
@@ -81,8 +81,8 @@ export const {
   setTempPostCategory,
   setTempArticleTitleData,
   setTempArticleDateTimeData,
-  setTempRefTitleData,
-  setTempRefUrlData,
+  setTempLinkTitleData,
+  setTempLinkUrlData,
   addTempLinkBlock,
   removeTempLinkBlock,
 } = tempPostSlice.actions;
