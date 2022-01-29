@@ -61,15 +61,11 @@ export const getAllCollectionDataArray = async () => {
   return allCollectionDataArray;
 };
 
-export const getPostByCategoryOrder = async (
-  params: {
-    category: string;
-    order: string;
-  },
-  locale: 'ko' | 'en'
-) => {
-  const ref = locale === 'ko' ? params.order : `${params.order}-en`;
-  const docRef = doc(db, params.category, ref);
+export const getPostByCategoryOrder = async (params: {
+  category: string;
+  order: string;
+}) => {
+  const docRef = doc(db, params.category, params.order);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {

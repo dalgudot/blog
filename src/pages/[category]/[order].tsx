@@ -22,7 +22,6 @@ const CategoryOrderPost: NextPage<{ post: IPostData }> = (props) => {
   const { isAdmin } = useIsAdmin();
   const { showToast } = useToast();
   const router = useRouter();
-  const locale = router.locale;
   const dispatch = useAppDispatch();
   const mounted = useMounted();
   const initializeClientData = useInitializeClientData();
@@ -43,8 +42,7 @@ const CategoryOrderPost: NextPage<{ post: IPostData }> = (props) => {
   const { tempPost } = useGetClientTempPostData();
 
   const currentCategory = router.query.category;
-  const currentOrder =
-    locale === 'ko' ? router.query.order : `${router.query.order}-en`;
+  const currentOrder = router.query.order;
 
   const tempSaveDataToFireStoreDB = async () => {
     await saveDataToFireStoreDB(
@@ -54,8 +52,6 @@ const CategoryOrderPost: NextPage<{ post: IPostData }> = (props) => {
     );
     showToast('서버에 임시 저장 완료');
   };
-
-  console.log(tempPost);
 
   return (
     <>
@@ -81,32 +77,19 @@ type Context = {
     category: string;
     order: string;
   };
-  locale: 'ko' | 'en';
 };
 
-export const getStaticProps = async ({ params, locale }: Context) => {
+export const getStaticProps = async ({ params }: Context) => {
   // 동적으로 만들어진 각 페이지의 [category]와 [order]를 매개변수 params로 전달
-  const post = await getPostByCategoryOrder(params, locale);
+  const post = await getPostByCategoryOrder(params);
   return { props: { post } };
 };
 
 export const getStaticPaths = async () => {
   const allPosts = await getAllCollectionDataArray();
-
-  const paths = allPosts.map((post) =>
-    post.order.includes('en')
-      ? {
-          params: {
-            category: post.category,
-            order: post.order.replace('-en', ''),
-          },
-          locale: 'en',
-        }
-      : {
-          params: { category: post.category, order: post.order },
-          locale: 'ko',
-        }
-  );
+  const paths = allPosts.map((post) => ({
+    params: { category: post.category, order: post.order },
+  }));
 
   return { paths, fallback: false };
 };
