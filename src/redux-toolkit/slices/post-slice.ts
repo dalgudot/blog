@@ -42,14 +42,7 @@ export const postSlice = createSlice({
         action.payload.newBlockType;
     },
 
-    setLinkTitleData: (
-      state,
-      action: PayloadAction<{ inputHtml: string; currentIndex: number }>
-    ) => {
-      state.post.linkWysiwygDataArray[action.payload.currentIndex].html =
-        action.payload.inputHtml;
-    },
-
+    // 기본 wysiwyg의 초기값은 p 블럭
     addNewBlock: (
       state,
       action: PayloadAction<{
@@ -75,6 +68,40 @@ export const postSlice = createSlice({
     ) => {
       state.post.wysiwygDataArray.splice(action.payload.currentIndex, 1);
     },
+
+    addNewLinkBlock: (
+      state,
+      action: PayloadAction<{
+        newBlock: ILinkData;
+        currentIndex: number;
+        isEnd: boolean;
+      }>
+    ) => {
+      if (action.payload.isEnd) {
+        state.post.linkWysiwygDataArray.push(action.payload.newBlock);
+      } else {
+        state.post.linkWysiwygDataArray.splice(
+          action.payload.currentIndex + 1,
+          0,
+          action.payload.newBlock
+        );
+      }
+    },
+
+    removeLinkBlock: (
+      state,
+      action: PayloadAction<{ currentIndex: number }>
+    ) => {
+      state.post.linkWysiwygDataArray.splice(action.payload.currentIndex, 1);
+    },
+
+    setCurrentLinkBlockHtml: (
+      state,
+      action: PayloadAction<{ inputHtml: string; currentIndex: number }>
+    ) => {
+      state.post.linkWysiwygDataArray[action.payload.currentIndex].html =
+        action.payload.inputHtml;
+    },
   },
 });
 
@@ -84,8 +111,10 @@ export const {
   setPostCategory,
   setArticleTitleData,
   setBlockTypeData,
-  setLinkTitleData,
   addNewBlock,
   removeCurrentBlock,
+  addNewLinkBlock,
+  removeLinkBlock,
+  setCurrentLinkBlockHtml,
 } = postSlice.actions;
 export const postReducer = postSlice.reducer;

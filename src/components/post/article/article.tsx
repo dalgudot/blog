@@ -23,7 +23,6 @@ const Article: FC<Props> = ({
 }) => {
   return (
     <article>
-      {/* 데이터를 Title 데이터 + status 묶어서 전달  */}
       <TitleWYSIWYG
         contentEditable={contentEditable}
         title={articleTitleWysiwygData.title}
