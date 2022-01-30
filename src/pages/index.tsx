@@ -16,6 +16,8 @@ type Props = {
 const Index: NextPage<Props> = ({ allPostsListData }) => {
   const { isAdmin } = useIsAdmin();
 
+  console.log(allPostsListData);
+
   return (
     <>
       {/* 404 방지 위해 개발과 디자인 각각 파일 만들어주는 게 좋음. */}
@@ -62,6 +64,8 @@ export default Index;
 export const getStaticProps = async () => {
   // firestore db에서 List를 그릴 title 데이터, seo 데이터(로컬) 받아옴.
   const allPosts = await getAllCollectionDataArray();
+  console.log('allPost', allPosts);
+
   const allPostsListData = allPosts.map((post) => ({
     category: post.category,
     order: post.order,

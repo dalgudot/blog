@@ -164,7 +164,7 @@ const EditableElementSwitch: FC<Props> = ({
 
   return (
     <>
-      {wysiwygType !== 'Link' && (
+      {contentEditable && wysiwygType !== 'Link' && (
         <select value={type} onChange={changeBlockType}>
           <option value='Paragraph'>Paragraph</option>
           <option value='Heading1'>Heading1</option>
