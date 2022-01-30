@@ -11,7 +11,7 @@ type Props = {
   onInput?: (e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>) => void;
   onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
-  syncTempPostWithPasteText: (newInnerPurePasteText: string) => void;
+  syncTempPostWithPasteText: (newInnerPasteText: string) => void;
   addBlockFocusUseEffectDependency?: IParagraphData;
   removeCurrentBlockFocusUseEffectDependency?: IParagraphData;
   placeholder: string;
@@ -43,13 +43,13 @@ const EditableElement: FC<Props> = ({
       // contentEditable의 innerHtml, TempRef, setText 모두 동기화!
       if (ref.current) {
         // (TODO) 가장 뒤에 붙여넣기가 되므로 고칠 필요가 있음. -> 셀렉션 커서 혹은 영역을 찾아서 각각 대응해줘야 함.
-        // const newInnerPurePasteText = DOMPurify.sanitize(
+        // const newInnerPasteText = DOMPurify.sanitize(
         //   `${ref.current.innerHTML}${textData}`
         // );
-        const newInnerPurePasteText = `${ref.current.innerHTML}${textData}`;
-        ref.current.innerHTML = newInnerPurePasteText;
+        const newInnerPasteText = `${ref.current.innerHTML}${textData}`;
+        ref.current.innerHTML = newInnerPasteText;
 
-        syncTempPostWithPasteText(newInnerPurePasteText); // 데이터 싱크를 위해 dispatch 및 setText(EditableElementSwitch 이용하는 경우 onKeyDown에서 text useState() 필요) 함수를 받아와 실행
+        syncTempPostWithPasteText(newInnerPasteText); // 데이터 싱크를 위해 dispatch 및 setText(EditableElementSwitch 이용하는 경우 onKeyDown에서 text useState() 필요) 함수를 받아와 실행
         focusContentEditableTextToEnd(ref.current);
       }
     };

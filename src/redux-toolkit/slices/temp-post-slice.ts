@@ -1,7 +1,7 @@
-import { ITextData } from '../model/text-data-model';
+import { ITextData, TextDataModel } from '../model/text-data-model';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IPostData, postInitialData } from '../model/post-data-model';
-import { ILinkData } from '../model/link-data-model';
+import { ILinkData, LinkDataModel } from '../model/link-data-model';
 
 const initialState: { tempPost: IPostData } = {
   tempPost: postInitialData,
@@ -49,22 +49,30 @@ export const tempPostSlice = createSlice({
         action.payload.newBlockType;
     },
 
+    setNormalWysiwygCurrentLinkBlockTempLinkUrl: (
+      state,
+      action: PayloadAction<{ data: string; currentIndex: number }>
+    ) => {
+      state.tempPost.wysiwygDataArray[action.payload.currentIndex].url =
+        action.payload.data;
+    },
+
     // 기본 wysiwyg의 초기값은 p 블럭
     addTempNewBlock: (
       state,
       action: PayloadAction<{
-        newBlock: ITextData;
         currentIndex: number;
         isEnd: boolean;
       }>
     ) => {
+      const newTextBlock: ITextData = new TextDataModel().createNewTextData();
       if (action.payload.isEnd) {
-        state.tempPost.wysiwygDataArray.push(action.payload.newBlock);
+        state.tempPost.wysiwygDataArray.push(newTextBlock);
       } else {
         state.tempPost.wysiwygDataArray.splice(
           action.payload.currentIndex + 1,
           0,
-          action.payload.newBlock
+          newTextBlock
         );
       }
     },
@@ -79,18 +87,18 @@ export const tempPostSlice = createSlice({
     addTempNewLinkBlock: (
       state,
       action: PayloadAction<{
-        newBlock: ILinkData;
         currentIndex: number;
         isEnd: boolean;
       }>
     ) => {
+      const newLinkBlock: ILinkData = new LinkDataModel().createNewLinkData();
       if (action.payload.isEnd) {
-        state.tempPost.linkWysiwygDataArray.push(action.payload.newBlock);
+        state.tempPost.linkWysiwygDataArray.push(newLinkBlock);
       } else {
         state.tempPost.linkWysiwygDataArray.splice(
           action.payload.currentIndex + 1,
           0,
-          action.payload.newBlock
+          newLinkBlock
         );
       }
     },
@@ -130,6 +138,7 @@ export const {
   setTempArticleTitleData,
   setTempArticleDateTimeData,
   setTempBlockTypeData,
+  setNormalWysiwygCurrentLinkBlockTempLinkUrl,
   addTempNewBlock,
   removeTempCurrentBlock,
   addTempNewLinkBlock,
