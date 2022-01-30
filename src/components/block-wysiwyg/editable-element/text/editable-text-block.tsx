@@ -79,8 +79,8 @@ const EditableTextBlock: FC<Props> = ({
     setPostHtmlData(inputHtml);
   };
 
-  const syncTempPostWithPasteText = (newInnerPurePasteText: string) => {
-    setTempPostHtmlData(newInnerPurePasteText);
+  const syncTempPostWithPasteText = (newInnerPasteText: string) => {
+    setTempPostHtmlData(newInnerPasteText);
   };
 
   return (

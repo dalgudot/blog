@@ -6,6 +6,7 @@ import styles from './editable-link-block.module.scss';
 import UrlInput from './url-input';
 
 type Props = {
+  wysiwygType: 'Normal' | 'Link';
   contentEditable: boolean;
   data: ILinkData;
   currentIndex: number;
@@ -19,6 +20,7 @@ type Props = {
 };
 
 const EditableLinkBlock: FC<Props> = ({
+  wysiwygType,
   contentEditable,
   data,
   currentIndex,
@@ -35,8 +37,8 @@ const EditableLinkBlock: FC<Props> = ({
     setTempPostHtmlData(inputHtml);
   };
 
-  const syncTempPostWithPasteText = (newInnerPurePasteText: string) => {
-    setTempPostHtmlData(newInnerPurePasteText);
+  const syncTempPostWithPasteText = (newInnerPasteText: string) => {
+    setTempPostHtmlData(newInnerPasteText);
   };
 
   return (
@@ -62,6 +64,7 @@ const EditableLinkBlock: FC<Props> = ({
         />
         {contentEditable && (
           <UrlInput
+            wysiwygType={wysiwygType}
             linkUrl={data.url}
             onKeyPress={onKeyPress}
             currentIndex={currentIndex}

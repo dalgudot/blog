@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ILinkData } from '../model/link-data-model';
+import { ILinkData, LinkDataModel } from '../model/link-data-model';
 import { IPostData, postInitialData } from '../model/post-data-model';
-import { ITextData } from '../model/text-data-model';
+import { ITextData, TextDataModel } from '../model/text-data-model';
 
 const initialState: { post: IPostData } = {
   post: postInitialData,
@@ -46,18 +46,18 @@ export const postSlice = createSlice({
     addNewBlock: (
       state,
       action: PayloadAction<{
-        newBlock: ITextData;
         currentIndex: number;
         isEnd: boolean;
       }>
     ) => {
+      const newTextBlock: ITextData = new TextDataModel().createNewTextData();
       if (action.payload.isEnd) {
-        state.post.wysiwygDataArray.push(action.payload.newBlock);
+        state.post.wysiwygDataArray.push(newTextBlock);
       } else {
         state.post.wysiwygDataArray.splice(
           action.payload.currentIndex + 1,
           0,
-          action.payload.newBlock
+          newTextBlock
         );
       }
     },
@@ -72,18 +72,18 @@ export const postSlice = createSlice({
     addNewLinkBlock: (
       state,
       action: PayloadAction<{
-        newBlock: ILinkData;
         currentIndex: number;
         isEnd: boolean;
       }>
     ) => {
+      const newLinkBlock: ILinkData = new LinkDataModel().createNewLinkData();
       if (action.payload.isEnd) {
-        state.post.linkWysiwygDataArray.push(action.payload.newBlock);
+        state.post.linkWysiwygDataArray.push(newLinkBlock);
       } else {
         state.post.linkWysiwygDataArray.splice(
           action.payload.currentIndex + 1,
           0,
-          action.payload.newBlock
+          newLinkBlock
         );
       }
     },
