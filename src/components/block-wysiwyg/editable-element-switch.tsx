@@ -6,42 +6,52 @@ import {
 } from '../../redux-toolkit/model/text-data-model';
 import {
   addNewBlock,
+  addNewLinkBlock,
   removeCurrentBlock,
+  removeLinkBlock,
   setBlockTypeData,
   setCurrentBlockHtml,
+  setCurrentLinkBlockHtml,
 } from '../../redux-toolkit/slices/post-slice';
 import {
   addTempNewBlock,
+  addTempNewLinkBlock,
   removeTempCurrentBlock,
+  removeTempLinkBlock,
   setCurrentBlockTempHtml,
+  setCurrentLinkBlockTempHtml,
   setTempBlockTypeData,
 } from '../../redux-toolkit/slices/temp-post-slice';
 import { useAppDispatch } from '../../redux-toolkit/store';
 import EditableTextBlock from './editable-element/text/editable-text-block';
 import { IParagraphData } from '../../redux-toolkit/model/post-data-model';
+import EditableLinkBlock from './editable-element/link/editable-link-block';
+import {
+  ILinkData,
+  LinkDataModel,
+} from '../../redux-toolkit/model/link-data-model';
 
 type Props = {
+  wysiwygType: 'Normal' | 'Link';
   blockType: TBlockType;
   contentEditable: boolean;
   data: IParagraphData;
   datas: IParagraphData[];
-  datasLength: number;
   currentIndex: number;
 };
 
 const EditableElementSwitch: FC<Props> = ({
+  wysiwygType,
   blockType,
   contentEditable,
   data,
   datas,
-  datasLength,
   currentIndex,
 }) => {
   const [text, setText] = useState<string>(data.html);
   const [type, setType] = useState<TBlockType>(blockType);
   const dispatch = useAppDispatch();
-
-  console.log('html', data.html);
+  const datasLength = datas.length;
 
   const changeBlockType = (e: ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault();
@@ -56,18 +66,37 @@ const EditableElementSwitch: FC<Props> = ({
   };
 
   const addBlock = () => {
-    const newTextBlock: ITextData = new TextDataModel().createNewTextData();
     const isEnd: boolean = currentIndex === datasLength - 1;
 
-    // 새로운 블럭 그리기 위해
-    dispatch(addNewBlock({ newBlock: newTextBlock, currentIndex, isEnd }));
-    // 데이터 저장하기 위해
-    dispatch(addTempNewBlock({ newBlock: newTextBlock, currentIndex, isEnd }));
+    if (wysiwygType === 'Link') {
+      const newTextBlock: ILinkData = new LinkDataModel().createNewLinkData();
+      dispatch(
+        addNewLinkBlock({ newBlock: newTextBlock, currentIndex, isEnd })
+      );
+
+      dispatch(
+        addTempNewLinkBlock({ newBlock: newTextBlock, currentIndex, isEnd })
+      );
+    } else {
+      // wysiwygType === 'Normal'인 일반적인 경우
+      const newTextBlock: ITextData = new TextDataModel().createNewTextData();
+      // 새로운 블럭 그리기 위해
+      dispatch(addNewBlock({ newBlock: newTextBlock, currentIndex, isEnd }));
+      // 데이터 저장하기 위해
+      dispatch(
+        addTempNewBlock({ newBlock: newTextBlock, currentIndex, isEnd })
+      );
+    }
   };
 
   const removeBlock = () => {
-    dispatch(removeCurrentBlock({ currentIndex }));
-    dispatch(removeTempCurrentBlock({ currentIndex }));
+    if (wysiwygType === 'Link') {
+      dispatch(removeLinkBlock({ currentIndex }));
+      dispatch(removeTempLinkBlock({ currentIndex }));
+    } else {
+      dispatch(removeCurrentBlock({ currentIndex }));
+      dispatch(removeTempCurrentBlock({ currentIndex }));
+    }
   };
 
   const onKeyPress = (e: KeyboardEvent<HTMLElement>) => {
@@ -85,23 +114,47 @@ const EditableElementSwitch: FC<Props> = ({
     }
   };
 
+  // onInput에서 이용
   const setCurrentBlockTempPostHtmlData = (inputHtml: string) => {
     // currentIndex 인자로 넣어 props로 전달
     // map 안 쓰는 block에서는 다른 함수로 props 전달
-    dispatch(setCurrentBlockTempHtml({ inputHtml, currentIndex }));
+    if (wysiwygType === 'Link') {
+      dispatch(setCurrentLinkBlockTempHtml({ inputHtml, currentIndex }));
+    } else {
+      dispatch(setCurrentBlockTempHtml({ inputHtml, currentIndex }));
+    }
+
     setText(inputHtml);
   };
 
+  // updateInlineBlock에서 이용
   const setCurrentBlockPostHtmlData = (inputHtml: string) => {
     // currentIndex 인자로 넣어 props로 전달
     // map 안 쓰는 block에서는 다른 함수로 props 전달
-    dispatch(setCurrentBlockHtml({ inputHtml, currentIndex }));
+    if (wysiwygType === 'Link') {
+      dispatch(setCurrentLinkBlockHtml({ inputHtml, currentIndex }));
+    } else {
+      dispatch(setCurrentBlockHtml({ inputHtml, currentIndex }));
+    }
   };
 
   const switchBlocks = () => {
     switch (type) {
       case 'Link':
-        return <>Link</>;
+        return (
+          <EditableLinkBlock
+            contentEditable={contentEditable}
+            data={data as ILinkData}
+            currentIndex={currentIndex}
+            setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+            // setPostHtmlData={setCurrentBlockPostHtmlData}
+            onKeyPress={onKeyPress}
+            onKeyDown={onKeyDown}
+            addBlockFocusUseEffectDependency={datas[currentIndex]}
+            removeCurrentBlockFocusUseEffectDependency={datas[currentIndex + 1]}
+            placeholder='링크 제목 입력'
+          />
+        );
 
       case 'Code':
         return <>Code</>;
@@ -112,13 +165,13 @@ const EditableElementSwitch: FC<Props> = ({
             blockType={type}
             contentEditable={contentEditable}
             html={data.html}
+            setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+            setPostHtmlData={setCurrentBlockPostHtmlData} // `` 때문에 필요
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
-            setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
-            setPostHtmlData={setCurrentBlockPostHtmlData}
             addBlockFocusUseEffectDependency={datas[currentIndex]}
             removeCurrentBlockFocusUseEffectDependency={datas[currentIndex + 1]}
-            placeholder='입력'
+            placeholder='텍스트 입력'
           />
         );
     }
@@ -126,14 +179,16 @@ const EditableElementSwitch: FC<Props> = ({
 
   return (
     <>
-      <select value={type} onChange={changeBlockType}>
-        <option value='Paragraph'>Paragraph</option>
-        <option value='Heading1'>Heading1</option>
-        <option value='Heading2'>Heading2</option>
-        <option value='Heading3'>Heading3</option>
-        <option value='Code'>Code</option>
-        <option value='Link'>Link</option>
-      </select>
+      {type !== ('Link' || 'Code') && (
+        <select value={type} onChange={changeBlockType}>
+          <option value='Paragraph'>Paragraph</option>
+          <option value='Heading1'>Heading1</option>
+          <option value='Heading2'>Heading2</option>
+          <option value='Heading3'>Heading3</option>
+          <option value='Code'>Code</option>
+          <option value='Link'>Link</option>
+        </select>
+      )}
       {switchBlocks()}
     </>
   );

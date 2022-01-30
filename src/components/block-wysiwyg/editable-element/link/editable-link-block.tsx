@@ -1,87 +1,73 @@
-import { ChangeEvent, FC, useState } from 'react';
-import { onInputChange } from '../../../../lib/utils/content-editable-utils';
+import { ChangeEvent, FC, KeyboardEvent } from 'react';
 import { ILinkData } from '../../../../redux-toolkit/model/link-data-model';
-import { setLinkTitleData } from '../../../../redux-toolkit/slices/post-slice';
-import { setTempLinkTitleData } from '../../../../redux-toolkit/slices/temp-post-slice';
-import { useAppDispatch } from '../../../../redux-toolkit/store';
-import EditableElementSwitch from '../../editable-element-switch';
+import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
+import EditableElement from '../../editable-element';
 import styles from './editable-link-block.module.scss';
 import UrlInput from './url-input';
 
 type Props = {
   contentEditable: boolean;
-  datas: ILinkData[];
   data: ILinkData;
-  idx: number;
+  currentIndex: number;
+  setTempPostHtmlData: (inputHtml: string) => void;
+  // setPostHtmlData: (inputHtml: string) => void;
+  onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
+  onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
+  addBlockFocusUseEffectDependency?: IParagraphData;
+  removeCurrentBlockFocusUseEffectDependency?: IParagraphData;
+  placeholder: string;
 };
 
 const EditableLinkBlock: FC<Props> = ({
   contentEditable,
-  datas,
   data,
-  idx,
+  currentIndex,
+  setTempPostHtmlData,
+  // setPostHtmlData,
+  onKeyPress,
+  onKeyDown,
+  addBlockFocusUseEffectDependency,
+  removeCurrentBlockFocusUseEffectDependency,
+  placeholder,
 }) => {
-  const currentIndex = idx;
-  const dispatch = useAppDispatch();
-  const [text, setText] = useState<string>('');
-
   const onInput = (e: ChangeEvent<HTMLParagraphElement>) => {
-    onInputChange(
-      e,
-      setTempEditableLinkBlockData,
-      updateEditableLinkBlockInlineData
-    );
+    const inputHtml = e.target.innerHTML;
+    setTempPostHtmlData(inputHtml);
   };
 
-  const setTempEditableLinkBlockData = (inputHtml: string) => {
-    dispatch(setTempLinkTitleData({ inputHtml, currentIndex }));
-    setText(inputHtml); // onKeyDown의 removeCurrentBlock() 조건 + 렌더링 성능 위해
-  };
-
-  const updateEditableLinkBlockInlineData = (inputHtml: string) => {
-    dispatch(
-      setLinkTitleData({
-        inputHtml,
-        currentIndex,
-      })
-    );
-    setTempEditableLinkBlockData(inputHtml);
+  const syncTempPostWithPasteText = (newInnerPurePasteText: string) => {
+    setTempPostHtmlData(newInnerPurePasteText);
   };
 
   return (
     <li className={styles.editable__link__li}>
-      {contentEditable ? (
-        <>
-          <EditableElementSwitch
-            blockType='Link'
-            contentEditable={contentEditable}
-            datas={datas}
-            currentIndex={currentIndex}
-            html={data.title}
-            onInput={onInput}
-            text={text}
-            setText={setText}
-            placeholder='어떤 링크인가요?'
-          />
+      <a
+        href={contentEditable ? undefined : data.url}
+        target='_blank'
+        rel='noreferrer'
+      >
+        <EditableElement
+          TagName='p'
+          contentEditable={contentEditable}
+          html={data.html}
+          onInput={onInput} // 필수
+          onKeyPress={onKeyPress} // optional, 블록 추가
+          onKeyDown={onKeyDown} // optional, 블록 삭제
+          syncTempPostWithPasteText={syncTempPostWithPasteText} // 필수
+          addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
+          removeCurrentBlockFocusUseEffectDependency={
+            removeCurrentBlockFocusUseEffectDependency
+          }
+          placeholder={placeholder}
+        />
+        {contentEditable && (
           <UrlInput
             linkUrl={data.url}
-            // onKeyPress={onKeyPress}
+            onKeyPress={onKeyPress}
             currentIndex={currentIndex}
           />
-        </>
-      ) : (
-        <>
-          <a href={data.url} target='_blank' rel='noreferrer'>
-            <EditableElementSwitch
-              blockType='Link'
-              contentEditable={contentEditable}
-              datas={datas}
-              currentIndex={currentIndex}
-              html={data.title}
-            />
-          </a>
-        </>
-      )}
+        )}
+      </a>
     </li>
   );
 };

@@ -8,23 +8,23 @@ type Props = {
   blockType: TBlockTextType;
   contentEditable: boolean;
   html: string;
-  onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
-  onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
   setTempPostHtmlData: (inputHtml: string) => void;
   setPostHtmlData: (inputHtml: string) => void;
+  onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
+  onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
   addBlockFocusUseEffectDependency?: IParagraphData;
   removeCurrentBlockFocusUseEffectDependency?: IParagraphData;
-  placeholder?: string;
+  placeholder: string;
 };
 
 const EditableTextBlock: FC<Props> = ({
   blockType,
   contentEditable,
   html,
-  onKeyPress,
-  onKeyDown,
   setTempPostHtmlData,
   setPostHtmlData,
+  onKeyPress,
+  onKeyDown,
   addBlockFocusUseEffectDependency,
   removeCurrentBlockFocusUseEffectDependency,
   placeholder,
@@ -98,7 +98,6 @@ const EditableTextBlock: FC<Props> = ({
           removeCurrentBlockFocusUseEffectDependency
         }
         placeholder={placeholder}
-        customClassName={styles.editable__text__block}
       />
     </>
   );

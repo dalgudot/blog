@@ -16,16 +16,17 @@ const LinkWYSIWYG: FC<Props> = ({ contentEditable, linkWysiwygDataArray }) => {
       <section className={styles.reference__section}>
         <h2>참고 자료</h2>
         <ul>
-          {/* {linkWysiwygDataArray.map((data, idx) => (
+          {linkWysiwygDataArray.map((data, idx) => (
             <EditableElementSwitch
+              wysiwygType='Link'
               key={data.blockId}
-              blockType='Link'
+              blockType={data.blockType}
               contentEditable={contentEditable}
+              data={data}
               datas={linkWysiwygDataArray}
               currentIndex={idx}
-              html={data.title}
             />
-          ))} */}
+          ))}
         </ul>
       </section>
     </>

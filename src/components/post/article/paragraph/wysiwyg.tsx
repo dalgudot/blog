@@ -14,12 +14,12 @@ const WYSIWYG: FC<Props> = ({ contentEditable, wysiwygDataArray }) => {
       <section className={styles.article__paragraph__section}>
         {wysiwygDataArray.map((data, idx) => (
           <EditableElementSwitch
+            wysiwygType='Normal'
             key={data.blockId}
             blockType={data.blockType}
             contentEditable={contentEditable}
             data={data}
             datas={wysiwygDataArray}
-            datasLength={wysiwygDataArray.length}
             currentIndex={idx}
           />
         ))}
