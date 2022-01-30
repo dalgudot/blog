@@ -23,7 +23,7 @@ const UrlInput: FC<Props> = ({ linkUrl, currentIndex }) => {
       value={text}
       onChange={handleChange}
       // onKeyPress={onKeyPress}
-      placeholder='Enter the URL'
+      placeholder='URL을 입력해주세요'
     />
   );
 };

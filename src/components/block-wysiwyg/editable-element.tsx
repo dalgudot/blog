@@ -1,19 +1,20 @@
 import DOMPurify from 'dompurify';
 import { ChangeEvent, FC, KeyboardEvent, useEffect, useRef } from 'react';
 import { focusContentEditableTextToEnd } from '../../lib/utils/focus-content-editable-text-to-end';
-import { IParagraphData } from '../../redux-toolkit/model/paragraph-data-model';
-import { IRefData } from '../../redux-toolkit/model/ref-data-model';
+import { ITextData } from '../../redux-toolkit/model/text-data-model';
+import { ILinkData } from '../../redux-toolkit/model/link-data-model';
+import { IParagraphData } from '../../redux-toolkit/model/post-data-model';
 
 type Props = {
   TagName: 'h1' | 'h2' | 'h3' | 'p' | 'code';
   contentEditable: boolean;
   html: string;
-  addBlockFocusUseEffectDependency?: IParagraphData | IRefData;
-  removeBlockFocusUseEffectDependency?: IParagraphData | IRefData;
   onInput?: (e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>) => void;
   onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
   syncTempPostWithPasteText: (newInnerPurePasteText: string) => void;
+  addBlockFocusUseEffectDependency?: IParagraphData;
+  removeCurrentBlockFocusUseEffectDependency?: IParagraphData;
   placeholder?: string;
   customClassName?: string;
 };
@@ -23,12 +24,12 @@ const EditableElement: FC<Props> = ({
   TagName,
   contentEditable = false,
   html,
-  addBlockFocusUseEffectDependency,
-  removeBlockFocusUseEffectDependency,
   onInput,
   onKeyPress,
   onKeyDown,
   syncTempPostWithPasteText,
+  addBlockFocusUseEffectDependency,
+  removeCurrentBlockFocusUseEffectDependency,
   placeholder = '',
   customClassName,
 }) => {
@@ -70,7 +71,10 @@ const EditableElement: FC<Props> = ({
     ref.current && focusContentEditableTextToEnd(ref.current);
     // datas[currentIndex]은 `` 등 요소로 리렌더될 때 커서 위치 선정
     // datas[currentIndex + 1]은 다음 블럭 지워진 걸 감지하는 의존성 배열 요소. 여기서 받아온 datas는 초기화 및 블럭의 생성과 삭제만 담당하는 클라이언트 데이터(post), 따라서 삭제된 시점을 정확히 알 수 있음.
-  }, [addBlockFocusUseEffectDependency, removeBlockFocusUseEffectDependency]);
+  }, [
+    addBlockFocusUseEffectDependency,
+    removeCurrentBlockFocusUseEffectDependency,
+  ]);
 
   return (
     <TagName

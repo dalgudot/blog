@@ -8,7 +8,7 @@ import {
 } from '../../../../redux-toolkit/slices/temp-post-slice';
 import { useAppDispatch } from '../../../../redux-toolkit/store';
 import EditableText from '../../../block-wysiwyg/editable-element/text/editable-text-block';
-import styles from './article-title-block-wysiwyg.module.scss';
+import styles from './title-wysiwyg.module.scss';
 import Profile from './profile';
 
 type Props = {
@@ -18,7 +18,7 @@ type Props = {
   status: TStatus;
 };
 
-const ArticleTitleBlockWYSIWYG: FC<Props> = ({
+const TitleWYSIWYG: FC<Props> = ({
   contentEditable,
   title,
   dateTime,
@@ -60,4 +60,4 @@ const ArticleTitleBlockWYSIWYG: FC<Props> = ({
   );
 };
 
-export default ArticleTitleBlockWYSIWYG;
+export default TitleWYSIWYG;

@@ -40,8 +40,8 @@ export const getEachAllCollectionDataArray = async (
       dateTime: doc.data().dateTime,
       title: doc.data().title,
       tagDataArray: doc.data().tagDataArray,
-      paragraphDataArray: doc.data().paragraphDataArray,
-      refDataArray: doc.data().refDataArray,
+      wysiwygDataArray: doc.data().wysiwygDataArray,
+      linkWysiwygDataArray: doc.data().linkWysiwygDataArray,
       status: doc.data().status,
     });
   });

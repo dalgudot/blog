@@ -1,36 +1,36 @@
 import { uuid } from '../../lib/utils/id';
 
-export interface IRefDataModel {
-  createNewRefData: () => IRefData;
+export interface ILinkDataModel {
+  createNewLinkData: () => ILinkData;
 }
 
-export class RefDataModel implements IRefDataModel {
+export class LinkDataModel implements ILinkDataModel {
   private blockId: string;
   private blockType: 'Link';
-  private title: string;
+  private html: string;
   private url: string;
 
   constructor() {
     this.blockId = uuid();
     this.blockType = 'Link';
-    this.title = '';
+    this.html = '';
     this.url = '';
   }
 
   // for Data Serealization
-  createNewRefData(): IRefData {
+  createNewLinkData(): ILinkData {
     return {
       blockId: this.blockId,
       blockType: this.blockType,
-      title: this.title,
+      html: this.html,
       url: this.url,
     };
   }
 }
 
-export interface IRefData {
+export interface ILinkData {
   blockId: string;
   blockType: 'Link';
-  title: string;
+  html: string;
   url: string;
 }

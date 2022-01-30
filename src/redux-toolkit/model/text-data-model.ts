@@ -4,13 +4,13 @@ export type TBlockTextType = 'Heading1' | 'Heading2' | 'Heading3' | 'Paragraph';
 
 export type TBlockType = TBlockTextType | 'Code' | 'Link';
 
-export interface IParagraphDataModel {
-  createNewParagraphData: () => IParagraphData;
+export interface ITextDataModel {
+  createNewTextData: () => ITextData;
 }
 
-export class ParagraphDataModel implements IParagraphDataModel {
+export class TextDataModel implements ITextDataModel {
   private blockId: string;
-  private blockType: TBlockType;
+  private blockType: TBlockTextType;
   private html: string;
 
   constructor() {
@@ -20,7 +20,7 @@ export class ParagraphDataModel implements IParagraphDataModel {
   }
 
   // for Data Serealization
-  createNewParagraphData(): IParagraphData {
+  createNewTextData(): ITextData {
     return {
       blockId: this.blockId,
       blockType: this.blockType,
@@ -29,8 +29,8 @@ export class ParagraphDataModel implements IParagraphDataModel {
   }
 }
 
-export interface IParagraphData {
+export interface ITextData {
   blockId: string;
-  blockType: TBlockType;
+  blockType: TBlockTextType;
   html: string;
 }

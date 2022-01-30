@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import ReferenceBlockWYSIWYG from '../../components/post/reference/reference-block-wysiwyg';
+import LinkWYSIWYG from './reference/link-wysiwyg';
 import Article from '../../components/post/article/article';
 import { IPostData } from '../../redux-toolkit/model/post-data-model';
 
@@ -9,22 +9,27 @@ type Props = {
 };
 
 const Post: FC<Props> = ({ contentEditable, postData }) => {
+  const articleTitleWysiwygData = {
+    title: postData.title,
+    dateTime: postData.dateTime,
+    status: postData.status,
+  };
+
   return (
     <>
       <main>
         <Article
           contentEditable={contentEditable}
-          title={postData.title}
-          dateTime={postData.dateTime}
-          status={postData.status}
+          articleTitleWysiwygData={articleTitleWysiwygData}
+          wysiwygDataArray={postData.wysiwygDataArray}
         />
       </main>
       {/* <Contact /> */}
       {/* <Response /> */}
-      <ReferenceBlockWYSIWYG
+      {/* <LinkWYSIWYG
         contentEditable={contentEditable}
-        refDataArray={postData.refDataArray}
-      />
+        linkWysiwygDataArray={postData.linkWysiwygDataArray}
+      /> */}
     </>
   );
 };

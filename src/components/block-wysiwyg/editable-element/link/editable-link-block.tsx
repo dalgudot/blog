@@ -1,6 +1,6 @@
 import { ChangeEvent, FC, useState } from 'react';
 import { onInputChange } from '../../../../lib/utils/content-editable-utils';
-import { IRefData } from '../../../../redux-toolkit/model/ref-data-model';
+import { ILinkData } from '../../../../redux-toolkit/model/link-data-model';
 import { setLinkTitleData } from '../../../../redux-toolkit/slices/post-slice';
 import { setTempLinkTitleData } from '../../../../redux-toolkit/slices/temp-post-slice';
 import { useAppDispatch } from '../../../../redux-toolkit/store';
@@ -10,8 +10,8 @@ import UrlInput from './url-input';
 
 type Props = {
   contentEditable: boolean;
-  datas: IRefData[];
-  data: IRefData;
+  datas: ILinkData[];
+  data: ILinkData;
   idx: number;
 };
 
@@ -33,19 +33,19 @@ const EditableLinkBlock: FC<Props> = ({
     );
   };
 
-  const setTempEditableLinkBlockData = (inputPureHtml: string) => {
-    dispatch(setTempLinkTitleData({ inputPureHtml, currentIndex }));
-    setText(inputPureHtml); // onKeyDown의 removeBlock() 조건 + 렌더링 성능 위해
+  const setTempEditableLinkBlockData = (inputHtml: string) => {
+    dispatch(setTempLinkTitleData({ inputHtml, currentIndex }));
+    setText(inputHtml); // onKeyDown의 removeCurrentBlock() 조건 + 렌더링 성능 위해
   };
 
-  const updateEditableLinkBlockInlineData = (inputPureHtml: string) => {
+  const updateEditableLinkBlockInlineData = (inputHtml: string) => {
     dispatch(
       setLinkTitleData({
-        inputPureHtml,
+        inputHtml,
         currentIndex,
       })
     );
-    setTempEditableLinkBlockData(inputPureHtml);
+    setTempEditableLinkBlockData(inputHtml);
   };
 
   return (
@@ -61,7 +61,7 @@ const EditableLinkBlock: FC<Props> = ({
             onInput={onInput}
             text={text}
             setText={setText}
-            placeholder='Describe the link'
+            placeholder='어떤 링크인가요?'
           />
           <UrlInput
             linkUrl={data.url}

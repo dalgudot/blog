@@ -38,9 +38,9 @@ export class Authentication implements IAuthentication {
     this.auth.onAuthStateChanged((user) => {
       if (user) {
         onUserChanged(user);
-        console.log('Signed In');
+        // console.log('Signed In');
       } else {
-        console.log('Signed Out');
+        // console.log('Signed Out');
         // User is signed out
       }
     });
