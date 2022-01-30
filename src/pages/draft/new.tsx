@@ -6,36 +6,26 @@ import SelectCategory from '../../components/draft/select-category';
 import Post from '../../components/post/post';
 import { useGetClientPostData } from '../../lib/hooks/useGetClientPostData';
 import { useGetClientTempPostData } from '../../lib/hooks/useGetClientTempPostData';
+import { useInitializeClientData } from '../../lib/hooks/useInitializeClientData';
 import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
-import { postInitialData } from '../../redux-toolkit/model/post-data-model';
-import { setPostData } from '../../redux-toolkit/slices/post-slice';
-import { setTempPostData } from '../../redux-toolkit/slices/temp-post-slice';
-import { useAppDispatch } from '../../redux-toolkit/store';
 import {
+  draftCollectionRefName,
   getDraftList,
   saveDataToFireStoreDB,
 } from '../../service/firebase/firestore';
 
 const NewDraft: NextPage = () => {
   const { isAdmin } = useIsAdmin();
-
   const mounted = useMounted();
   const router = useRouter();
-
   const { post } = useGetClientPostData();
   const { tempPost } = useGetClientTempPostData();
-
-  const dispatch = useAppDispatch();
+  const initializeClientData = useInitializeClientData();
 
   useEffect(() => {
-    const initializeClientData = () => {
-      dispatch(setPostData(postInitialData));
-      dispatch(setTempPostData(postInitialData));
-    };
-    isAdmin && initializeClientData();
-
+    initializeClientData();
     return () => {
-      isAdmin && initializeClientData();
+      initializeClientData();
     };
   }, []);
 
@@ -45,14 +35,14 @@ const NewDraft: NextPage = () => {
       ...draftList.map((list) => Number(list.order)),
       0
     );
-    const newPathOrder = maxValueOfOrder + 1;
-    const dbPath = `draft/${newPathOrder}`;
-    await saveDataToFireStoreDB(tempPost, dbPath);
+    const newPathOrder = maxValueOfOrder !== NaN ? maxValueOfOrder + 1 : 1;
+    const dbDocument = `${newPathOrder}`;
+    await saveDataToFireStoreDB(draftCollectionRefName, dbDocument, tempPost);
 
     router.push('/draft/[order]', `/draft/${newPathOrder}`);
   };
 
-  console.log('tempPost', tempPost);
+  console.log('tempPost', tempPost.wysiwygDataArray);
 
   return (
     <>

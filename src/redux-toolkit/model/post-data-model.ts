@@ -1,38 +1,33 @@
 import { devCollectionRefName } from '../../service/firebase/firestore';
-import {
-  IParagraphData,
-  IParagraphDataModel,
-  ParagraphDataModel,
-} from './paragraph-data-model';
-import { IPostId, PostId } from './post-id';
-import { IRefData, IRefDataModel, RefDataModel } from './ref-data-model';
+import { ITextData, ITextDataModel, TextDataModel } from './text-data-model';
+import { ILinkData, ILinkDataModel, LinkDataModel } from './link-data-model';
 
-const refData: IRefDataModel = new RefDataModel();
-const paragraphData: IParagraphDataModel = new ParagraphDataModel();
-const newPostId: IPostId = new PostId();
+const refData: ILinkDataModel = new LinkDataModel();
+const paragraphData: ITextDataModel = new TextDataModel();
 
 export const postInitialData: IPostData = {
-  postId: newPostId.createPostId(),
   category: devCollectionRefName,
   order: '',
   series: '',
   dateTime: '',
   title: '',
   tagDataArray: [],
-  paragraphDataArray: [paragraphData.createNewParagraphData()],
-  refDataArray: [refData.createNewRefData()],
+  wysiwygDataArray: [paragraphData.createNewTextData()], // 초기화는 paragraph 데이터로
+  linkWysiwygDataArray: [refData.createNewLinkData()],
   status: 'draft',
 };
 
 export interface IPostData {
-  postId: string;
   category: string;
   order: string;
   series: string;
   dateTime: string;
   tagDataArray: [];
   title: string;
-  paragraphDataArray: IParagraphData[];
-  refDataArray: IRefData[];
-  status: 'draft' | 'published' | 'unPublished';
+  wysiwygDataArray: IParagraphData[];
+  linkWysiwygDataArray: ILinkData[];
+  status: TStatus;
 }
+
+export type IParagraphData = ITextData | ILinkData;
+export type TStatus = 'draft' | 'published' | 'unPublished';

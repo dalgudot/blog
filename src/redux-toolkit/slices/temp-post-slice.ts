@@ -1,6 +1,7 @@
+import { ITextData, TBlockType } from '../model/text-data-model';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IPostData, postInitialData } from '../model/post-data-model';
-import { IRefData } from '../model/ref-data-model';
+import { ILinkData } from '../model/link-data-model';
 
 const initialState: { tempPost: IPostData } = {
   tempPost: postInitialData,
@@ -14,68 +15,94 @@ export const tempPostSlice = createSlice({
       state.tempPost = action.payload;
     },
 
+    setCurrentBlockTempHtml: (
+      state,
+      action: PayloadAction<{ inputHtml: string; currentIndex: number }>
+    ) => {
+      state.tempPost.wysiwygDataArray[action.payload.currentIndex].html =
+        action.payload.inputHtml;
+    },
+
     setTempPostCategory: (state, action: PayloadAction<string>) => {
       state.tempPost.category = action.payload;
     },
 
     setTempArticleTitleData: (
       state,
-      action: PayloadAction<{ inputPureHtml: string }>
+      action: PayloadAction<{ inputHtml: string }>
     ) => {
-      state.tempPost.title = action.payload.inputPureHtml;
+      state.tempPost.title = action.payload.inputHtml;
     },
 
-    setTempRefTitleData: (
+    setTempArticleDateTimeData: (
       state,
-      action: PayloadAction<{ inputPureHtml: string; currentIndex: number }>
+      action: PayloadAction<{ seoDate: string }>
     ) => {
-      state.tempPost.refDataArray[action.payload.currentIndex].title =
-        action.payload.inputPureHtml;
+      state.tempPost.dateTime = action.payload.seoDate;
     },
 
-    setTempRefUrlData: (
+    setTempBlockTypeData: (
+      state,
+      action: PayloadAction<{ newBlockType: any; currentIndex: number }>
+    ) => {
+      state.tempPost.wysiwygDataArray[action.payload.currentIndex].blockType =
+        action.payload.newBlockType;
+    },
+
+    setTempLinkTitleData: (
+      state,
+      action: PayloadAction<{ inputHtml: string; currentIndex: number }>
+    ) => {
+      state.tempPost.linkWysiwygDataArray[action.payload.currentIndex].html =
+        action.payload.inputHtml;
+    },
+
+    setTempLinkUrlData: (
       state,
       action: PayloadAction<{ data: string; currentIndex: number }>
     ) => {
-      state.tempPost.refDataArray[action.payload.currentIndex].url =
+      state.tempPost.linkWysiwygDataArray[action.payload.currentIndex].url =
         action.payload.data;
     },
 
-    addTempLinkBlock: (
+    addTempNewBlock: (
       state,
       action: PayloadAction<{
-        newLinkEditableBlock: IRefData;
+        newBlock: ITextData;
         currentIndex: number;
         isEnd: boolean;
       }>
     ) => {
       if (action.payload.isEnd) {
-        state.tempPost.refDataArray.push(action.payload.newLinkEditableBlock);
+        state.tempPost.wysiwygDataArray.push(action.payload.newBlock);
       } else {
-        state.tempPost.refDataArray.splice(
+        state.tempPost.wysiwygDataArray.splice(
           action.payload.currentIndex + 1,
           0,
-          action.payload.newLinkEditableBlock
+          action.payload.newBlock
         );
       }
     },
 
-    removeTempLinkBlock: (
+    removeTempCurrentBlock: (
       state,
       action: PayloadAction<{ currentIndex: number }>
     ) => {
-      state.tempPost.refDataArray.splice(action.payload.currentIndex, 1);
+      state.tempPost.wysiwygDataArray.splice(action.payload.currentIndex, 1);
     },
   },
 });
 
 export const {
   setTempPostData,
+  setCurrentBlockTempHtml,
   setTempPostCategory,
   setTempArticleTitleData,
-  setTempRefTitleData,
-  setTempRefUrlData,
-  addTempLinkBlock,
-  removeTempLinkBlock,
+  setTempArticleDateTimeData,
+  setTempBlockTypeData,
+  setTempLinkTitleData,
+  setTempLinkUrlData,
+  addTempNewBlock,
+  removeTempCurrentBlock,
 } = tempPostSlice.actions;
 export const tempPostReducer = tempPostSlice.reducer;
