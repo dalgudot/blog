@@ -41,7 +41,7 @@ export const tempPostSlice = createSlice({
       state.tempPost.dateTime = action.payload.seoDate;
     },
 
-    setTempSwitchBlockTypeData: (
+    setTempBlockTypeData: (
       state,
       action: PayloadAction<{ newBlockType: any; currentIndex: number }>
     ) => {
@@ -99,7 +99,7 @@ export const {
   setTempPostCategory,
   setTempArticleTitleData,
   setTempArticleDateTimeData,
-  setTempSwitchBlockTypeData,
+  setTempBlockTypeData,
   setTempLinkTitleData,
   setTempLinkUrlData,
   addTempNewBlock,

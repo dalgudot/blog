@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import LinkWYSIWYG from './reference/link-wysiwyg';
 import Article from '../../components/post/article/article';
 import { IPostData } from '../../redux-toolkit/model/post-data-model';
@@ -34,4 +34,4 @@ const Post: FC<Props> = ({ contentEditable, postData }) => {
   );
 };
 
-export default Post;
+export default memo(Post);

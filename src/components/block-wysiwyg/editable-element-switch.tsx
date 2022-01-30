@@ -7,13 +7,14 @@ import {
 import {
   addNewBlock,
   removeCurrentBlock,
+  setBlockTypeData,
   setCurrentBlockHtml,
 } from '../../redux-toolkit/slices/post-slice';
 import {
   addTempNewBlock,
   removeTempCurrentBlock,
   setCurrentBlockTempHtml,
-  setTempSwitchBlockTypeData,
+  setTempBlockTypeData,
 } from '../../redux-toolkit/slices/temp-post-slice';
 import { useAppDispatch } from '../../redux-toolkit/store';
 import EditableTextBlock from './editable-element/text/editable-text-block';
@@ -40,14 +41,18 @@ const EditableElementSwitch: FC<Props> = ({
   const [type, setType] = useState<TBlockType>(blockType);
   const dispatch = useAppDispatch();
 
+  console.log('html', data.html);
+
   const changeBlockType = (e: ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault();
     const newBlockType = e.target.value as TBlockType;
 
     // 해당 blockType만 업데이트하고 렌더링하기 위해
     setType(newBlockType);
-    // post 데이터를 업데이트하는 건 불필요 -> 즉, tempPost 데이터만 업데이트하면 됨
-    dispatch(setTempSwitchBlockTypeData({ newBlockType, currentIndex }));
+    dispatch(setTempBlockTypeData({ newBlockType, currentIndex }));
+    // 다른 업데이트에서 post 데이터에는 html이 업데이트되지 않았기 때문에 여기서는 동기화시켜줘야 타입을 바꿔도 html 유지!
+    dispatch(setCurrentBlockHtml({ inputHtml: text, currentIndex }));
+    dispatch(setBlockTypeData({ newBlockType, currentIndex }));
   };
 
   const addBlock = () => {
@@ -80,14 +85,14 @@ const EditableElementSwitch: FC<Props> = ({
     }
   };
 
-  const setCurrentBlockTempHtmlData = (inputHtml: string) => {
+  const setCurrentBlockTempPostHtmlData = (inputHtml: string) => {
     // currentIndex 인자로 넣어 props로 전달
     // map 안 쓰는 block에서는 다른 함수로 props 전달
     dispatch(setCurrentBlockTempHtml({ inputHtml, currentIndex }));
     setText(inputHtml);
   };
 
-  const setCurrentBlockHtmlData = (inputHtml: string) => {
+  const setCurrentBlockPostHtmlData = (inputHtml: string) => {
     // currentIndex 인자로 넣어 props로 전달
     // map 안 쓰는 block에서는 다른 함수로 props 전달
     dispatch(setCurrentBlockHtml({ inputHtml, currentIndex }));
@@ -109,8 +114,8 @@ const EditableElementSwitch: FC<Props> = ({
             html={data.html}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
-            setTempPostHtmlData={setCurrentBlockTempHtmlData}
-            setPostHtmlData={setCurrentBlockHtmlData}
+            setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+            setPostHtmlData={setCurrentBlockPostHtmlData}
             addBlockFocusUseEffectDependency={datas[currentIndex]}
             removeCurrentBlockFocusUseEffectDependency={datas[currentIndex + 1]}
             placeholder='입력'

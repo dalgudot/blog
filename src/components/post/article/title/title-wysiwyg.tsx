@@ -7,7 +7,7 @@ import {
   setTempArticleTitleData,
 } from '../../../../redux-toolkit/slices/temp-post-slice';
 import { useAppDispatch } from '../../../../redux-toolkit/store';
-import EditableText from '../../../block-wysiwyg/editable-element/text/editable-text-block';
+import EditableTextBlock from '../../../block-wysiwyg/editable-element/text/editable-text-block';
 import styles from './title-wysiwyg.module.scss';
 import Profile from './profile';
 
@@ -40,18 +40,26 @@ const TitleWYSIWYG: FC<Props> = ({
     dispatch(setTempArticleDateTimeData({ seoDate }));
   }, []);
 
+  const setTempPostHtmlData = (inputHtml: string) => {
+    dispatch(setTempArticleTitleData({ inputHtml }));
+  };
+
+  const setPostHtmlData = (inputHtml: string) => {
+    dispatch(setArticleTitleData({ inputHtml }));
+  };
+
   return (
     <>
       <section className={styles.article__title__section}>
         <time dateTime={seoDate}>
           <p>{displayDate}</p>
         </time>
-        <EditableText
+        <EditableTextBlock
           blockType='Heading1'
           contentEditable={contentEditable}
           html={title}
-          setTempPostData={setTempArticleTitleData}
-          setPostData={setArticleTitleData}
+          setTempPostHtmlData={setTempPostHtmlData}
+          setPostHtmlData={setPostHtmlData}
           placeholder='글의 제목을 입력해주세요'
         />
         <Profile />

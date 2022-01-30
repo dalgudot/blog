@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import { FC } from 'react';
 import {
   IParagraphData,
   TStatus,
@@ -24,12 +24,12 @@ const Article: FC<Props> = ({
   return (
     <article>
       {/* 데이터를 Title 데이터 + status 묶어서 전달  */}
-      {/* <TitleWYSIWYG
+      <TitleWYSIWYG
         contentEditable={contentEditable}
         title={articleTitleWysiwygData.title}
         dateTime={articleTitleWysiwygData.dateTime}
         status={articleTitleWysiwygData.status}
-      /> */}
+      />
       <WYSIWYG
         contentEditable={contentEditable}
         wysiwygDataArray={wysiwygDataArray}
@@ -38,4 +38,4 @@ const Article: FC<Props> = ({
   );
 };
 
-export default memo(Article);
+export default Article;

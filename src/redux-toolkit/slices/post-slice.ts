@@ -34,6 +34,14 @@ export const postSlice = createSlice({
       state.post.title = action.payload.inputHtml;
     },
 
+    setBlockTypeData: (
+      state,
+      action: PayloadAction<{ newBlockType: any; currentIndex: number }>
+    ) => {
+      state.post.wysiwygDataArray[action.payload.currentIndex].blockType =
+        action.payload.newBlockType;
+    },
+
     setLinkTitleData: (
       state,
       action: PayloadAction<{ inputHtml: string; currentIndex: number }>
@@ -75,6 +83,7 @@ export const {
   setCurrentBlockHtml,
   setPostCategory,
   setArticleTitleData,
+  setBlockTypeData,
   setLinkTitleData,
   addNewBlock,
   removeCurrentBlock,

@@ -1,4 +1,3 @@
-import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 import { ChangeEvent, FC, KeyboardEvent } from 'react';
 import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
 import { TBlockTextType } from '../../../../redux-toolkit/model/text-data-model';
@@ -12,19 +11,7 @@ type Props = {
   onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
   setTempPostHtmlData: (inputHtml: string) => void;
-  // ActionCreatorWithPayload<
-  //   {
-  //     inputHtml: string;
-  //   },
-  //   string
-  // >;
   setPostHtmlData: (inputHtml: string) => void;
-  // ActionCreatorWithPayload<
-  //   {
-  //     inputHtml: string;
-  //   },
-  //   string
-  // >;
   addBlockFocusUseEffectDependency?: IParagraphData;
   removeCurrentBlockFocusUseEffectDependency?: IParagraphData;
   placeholder?: string;
