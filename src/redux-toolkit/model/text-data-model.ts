@@ -1,7 +1,6 @@
 import { uuid } from '../../lib/utils/id';
 
 export type TBlockTextType = 'Heading1' | 'Heading2' | 'Heading3' | 'Paragraph';
-
 export type TBlockType = TBlockTextType | 'Code' | 'Link';
 
 export interface ITextDataModel {

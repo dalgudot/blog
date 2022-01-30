@@ -42,7 +42,7 @@ const NewDraft: NextPage = () => {
     router.push('/draft/[order]', `/draft/${newPathOrder}`);
   };
 
-  console.log('tempPost', tempPost.linkWysiwygDataArray);
+  console.log('tempPost', tempPost);
   return (
     <>
       {isAdmin && mounted && (
