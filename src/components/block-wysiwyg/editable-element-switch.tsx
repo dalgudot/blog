@@ -1,9 +1,5 @@
 import { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
-import {
-  ITextData,
-  TBlockType,
-  TextDataModel,
-} from '../../redux-toolkit/model/text-data-model';
+import { TBlockType } from '../../redux-toolkit/model/text-data-model';
 import {
   addNewBlock,
   addNewLinkBlock,
@@ -26,10 +22,7 @@ import { useAppDispatch } from '../../redux-toolkit/store';
 import EditableTextBlock from './editable-element/text/editable-text-block';
 import { IParagraphData } from '../../redux-toolkit/model/post-data-model';
 import EditableLinkBlock from './editable-element/link/editable-link-block';
-import {
-  ILinkData,
-  LinkDataModel,
-} from '../../redux-toolkit/model/link-data-model';
+import { ILinkData } from '../../redux-toolkit/model/link-data-model';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
@@ -69,23 +62,14 @@ const EditableElementSwitch: FC<Props> = ({
     const isEnd: boolean = currentIndex === datasLength - 1;
 
     if (wysiwygType === 'Link') {
-      const newTextBlock: ILinkData = new LinkDataModel().createNewLinkData();
-      dispatch(
-        addNewLinkBlock({ newBlock: newTextBlock, currentIndex, isEnd })
-      );
-
-      dispatch(
-        addTempNewLinkBlock({ newBlock: newTextBlock, currentIndex, isEnd })
-      );
+      dispatch(addNewLinkBlock({ currentIndex, isEnd }));
+      dispatch(addTempNewLinkBlock({ currentIndex, isEnd }));
     } else {
       // wysiwygType === 'Normal'인 일반적인 경우
-      const newTextBlock: ITextData = new TextDataModel().createNewTextData();
       // 새로운 블럭 그리기 위해
-      dispatch(addNewBlock({ newBlock: newTextBlock, currentIndex, isEnd }));
+      dispatch(addNewBlock({ currentIndex, isEnd }));
       // 데이터 저장하기 위해
-      dispatch(
-        addTempNewBlock({ newBlock: newTextBlock, currentIndex, isEnd })
-      );
+      dispatch(addTempNewBlock({ currentIndex, isEnd }));
     }
   };
 
@@ -143,6 +127,7 @@ const EditableElementSwitch: FC<Props> = ({
       case 'Link':
         return (
           <EditableLinkBlock
+            wysiwygType={wysiwygType}
             contentEditable={contentEditable}
             data={data as ILinkData}
             currentIndex={currentIndex}
@@ -179,7 +164,7 @@ const EditableElementSwitch: FC<Props> = ({
 
   return (
     <>
-      {type !== ('Link' || 'Code') && (
+      {wysiwygType !== 'Link' && (
         <select value={type} onChange={changeBlockType}>
           <option value='Paragraph'>Paragraph</option>
           <option value='Heading1'>Heading1</option>
@@ -189,6 +174,7 @@ const EditableElementSwitch: FC<Props> = ({
           <option value='Link'>Link</option>
         </select>
       )}
+
       {switchBlocks()}
     </>
   );
