@@ -1,4 +1,7 @@
 import { FC } from 'react';
+
+// contentEditable 요소의 innerHtml 아닌 innerText로 하면 코드 붙여넣기 문제는 해결될 듯
+
 // import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from 'react';
 // import styles from './editable-code-block.module.scss';
 // import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
