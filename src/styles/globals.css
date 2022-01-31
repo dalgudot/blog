@@ -30,11 +30,10 @@ li {
 code {
   font-family: 'SourceCodePro', Menlo, Monaco, Lucida Console, Liberation Mono,
     DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-  padding: 4px;
-  background-color: #bdbdbd;
-  border-radius: 4px;
 }
 
+/* 글 속에만 적용되도록 <code> html 생성 시 class도 지정, <code class="inline__code__block"> */
+/* editable-text-block, editable-link-block */
 /* post-css autoprefix 적용 안 됨. */
 .inline__code__block {
   padding: 4px;

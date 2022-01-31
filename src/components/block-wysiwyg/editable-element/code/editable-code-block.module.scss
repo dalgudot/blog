@@ -1,0 +1,67 @@
+.code__block {
+  pre {
+    background: rgba(33, 37, 41) !important;
+    /* border-radius: 16px; */
+    margin: 0 0 0 !important; // Remove default setting
+    padding: 48px 48px 36px !important;
+    /* max-width: 800px !important; */
+    @media all and (max-width: 767px) {
+      margin: 16px 0 0 !important; // Remove default setting
+      padding: 36px !important;
+      max-width: 91vw !important;
+    }
+    // ::-webkit-scrollbar {
+    //   background-color: var(--bg);
+    // }
+    // ::-webkit-scrollbar-corner {
+    //   background-color: var(--bg);
+    // }
+    // ::-webkit-scrollbar-thumb {
+    //   border-radius: 8px;
+    //   background-color: var(--fg);
+    //   min-height: 24px;
+    //   border: 3px solid var(--bg);
+    // }
+  }
+
+  span {
+    text-align: left;
+    font-family: 'SourceCodePro', Menlo, Monaco, Lucida Console, Liberation Mono,
+      DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+    font-size: 18px;
+
+    // @media all and (max-width: 767px) {
+    //   font-size: 13px;
+    // }
+  }
+}
+
+.code__textarea {
+  -webkit-appearance: none; // remove iOS upper inner shadow
+
+  overflow: hidden;
+  width: 100%;
+  background-color: transparent;
+  border: 1px solid black; // 안드로이드 삼성 인터넷에서 작동 안 해서 !important
+  resize: none; // 늘이고 줄이는 기능 없애기
+  margin-top: 16px;
+
+  /* text */
+  caret-color: gray;
+  color: whitesmoke;
+  font-weight: 400;
+  line-height: 1.7;
+
+  // 바뀌는 속성
+  padding: 24px 36px;
+  font-size: 21px;
+
+  // @media all and (max-width: ${mediaBreakPoint.first}) {
+  //   padding: 24px;
+  //   font-size: 18px;
+  // }
+
+  ::placeholder {
+    color: gray;
+  }
+}

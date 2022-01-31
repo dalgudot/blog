@@ -49,6 +49,10 @@ const EditableTextBlock: FC<Props> = ({
 
   const addInlineCodeBlock = (inputHtml: string) => {
     const countBacktick = inputHtml.match(/`/g)?.length;
+    const updateInlineBlock = (inputHtml: string) => {
+      setTempPostHtmlData(inputHtml);
+      setPostHtmlData(inputHtml);
+    };
 
     if (countBacktick === 2) {
       const isContinuousBacktick: boolean = inputHtml.includes('``');
@@ -63,7 +67,10 @@ const EditableTextBlock: FC<Props> = ({
         updateInlineBlock(emptyCodeInlineBlock);
       } else {
         // 첫 번째 `는 <code>로 두 번째 `는 </code>로!
-        const firstBacktickToTag = inputHtml.replace('`', '&nbsp<code>'); // &nbsp is for design
+        const firstBacktickToTag = inputHtml.replace(
+          '`',
+          '&nbsp<code class="inline__code__block">'
+        ); // &nbsp is for design
         const secondBacktickToTag = firstBacktickToTag.replace(
           '`',
           `</code>&nbsp` // &nbsp로 코드 블럭 벗어나기
@@ -72,11 +79,6 @@ const EditableTextBlock: FC<Props> = ({
         updateInlineBlock(secondBacktickToTag);
       }
     }
-  };
-
-  const updateInlineBlock = (inputHtml: string) => {
-    setTempPostHtmlData(inputHtml);
-    setPostHtmlData(inputHtml);
   };
 
   const syncTempPostWithPasteText = (newInnerPasteText: string) => {

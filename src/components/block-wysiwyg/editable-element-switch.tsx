@@ -23,6 +23,7 @@ import EditableTextBlock from './editable-element/text/editable-text-block';
 import { IParagraphData } from '../../redux-toolkit/model/post-data-model';
 import EditableLinkBlock from './editable-element/link/editable-link-block';
 import { ILinkData } from '../../redux-toolkit/model/link-data-model';
+import EditableCodeBlock from './editable-element/code/editable-code-block';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
@@ -51,6 +52,7 @@ const EditableElementSwitch: FC<Props> = ({
     const newBlockType = e.target.value as TBlockType;
 
     // 해당 blockType만 업데이트하고 렌더링하기 위해
+    // tempPost 데이터의 html 가져오면 모든 블럭이 업데이트됨.
     setType(newBlockType);
     dispatch(setTempBlockTypeData({ newBlockType, currentIndex }));
     // 다른 업데이트에서 post 데이터에는 html이 업데이트되지 않았기 때문에 여기서는 동기화시켜줘야 타입을 바꿔도 html 유지!
@@ -132,7 +134,7 @@ const EditableElementSwitch: FC<Props> = ({
             data={data as ILinkData}
             currentIndex={currentIndex}
             setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
-            // setPostHtmlData={setCurrentBlockPostHtmlData}
+            setPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
             addBlockFocusUseEffectDependency={datas[currentIndex]}
@@ -142,7 +144,20 @@ const EditableElementSwitch: FC<Props> = ({
         );
 
       case 'Code':
-        return <>Code</>;
+        return (
+          <EditableCodeBlock
+            contentEditable={contentEditable}
+            html={data.html}
+            currentIndex={currentIndex}
+            setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+            // setPostHtmlData={setCurrentBlockPostHtmlData}
+            onKeyPress={onKeyPress}
+            onKeyDown={onKeyDown}
+            addBlockFocusUseEffectDependency={datas[currentIndex]}
+            removeCurrentBlockFocusUseEffectDependency={datas[currentIndex + 1]}
+            placeholder='코드 입력'
+          />
+        );
 
       default:
         return (
