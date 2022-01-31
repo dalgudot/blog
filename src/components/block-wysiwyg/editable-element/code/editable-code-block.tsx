@@ -8,7 +8,6 @@ import CodeTextarea from './code-textarea';
 type Props = {
   contentEditable: boolean;
   html: string;
-  currentIndex: number;
   setTempPostHtmlData: (inputHtml: string) => void;
   // setPostHtmlData: (inputHtml: string) => void;
   onKeyPress: (e: KeyboardEvent<HTMLElement>) => void;
@@ -21,7 +20,6 @@ type Props = {
 const EditableCodeBlock: FC<Props> = ({
   contentEditable,
   html,
-  currentIndex,
   setTempPostHtmlData,
   // setPostHtmlData,
   onKeyPress,
@@ -55,7 +53,6 @@ const EditableCodeBlock: FC<Props> = ({
           removeCurrentBlockFocusUseEffectDependency={
             removeCurrentBlockFocusUseEffectDependency
           }
-          currentIndex={currentIndex}
           placeholder={placeholder}
         />
       )}

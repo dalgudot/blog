@@ -148,7 +148,6 @@ const EditableElementSwitch: FC<Props> = ({
           <EditableCodeBlock
             contentEditable={contentEditable}
             html={data.html}
-            currentIndex={currentIndex}
             setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
             // setPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}

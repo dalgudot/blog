@@ -21,7 +21,6 @@ type Props = {
   onKeyDown: (e: KeyboardEvent<HTMLElement>) => void;
   addBlockFocusUseEffectDependency?: IParagraphData;
   removeCurrentBlockFocusUseEffectDependency?: IParagraphData;
-  currentIndex: number;
   placeholder: string;
 };
 
@@ -33,7 +32,6 @@ const CodeTextarea: FC<Props> = ({
   onKeyDown,
   addBlockFocusUseEffectDependency,
   removeCurrentBlockFocusUseEffectDependency,
-  currentIndex,
   placeholder,
 }) => {
   const ref = useRef(null);
