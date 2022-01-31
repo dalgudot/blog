@@ -33,15 +33,6 @@ const EditableCodeBlock: FC<Props> = ({
 
   return (
     <>
-      <SyntaxHighlighter
-        className={styles.code__block}
-        language={language}
-        style={vscDarkPlus}
-        wrapLines={true}
-        wrapLongLines={true}
-      >
-        {codeString}
-      </SyntaxHighlighter>
       {contentEditable && (
         <CodeTextarea
           codeString={codeString}
@@ -56,6 +47,15 @@ const EditableCodeBlock: FC<Props> = ({
           placeholder={placeholder}
         />
       )}
+      <SyntaxHighlighter
+        className={styles.code__block}
+        language={language}
+        style={vscDarkPlus}
+        wrapLines={true}
+        wrapLongLines={true}
+      >
+        {codeString}
+      </SyntaxHighlighter>
     </>
   );
 };

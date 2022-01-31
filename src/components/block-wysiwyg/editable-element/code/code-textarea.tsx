@@ -51,7 +51,7 @@ const CodeTextarea: FC<Props> = ({
 
   return (
     <>
-      <TextareaAutosize
+      <textarea
         className={styles.code__textarea}
         ref={ref}
         value={codeString}
@@ -59,9 +59,9 @@ const CodeTextarea: FC<Props> = ({
         onKeyPress={onKeyPress}
         onKeyDown={onKeyDown}
         placeholder={placeholder}
-        minRows={3}
-        minLength={6}
-        maxLength={3000}
+        // minRows={3}
+        // minLength={6}
+        // maxLength={3000}
       />
     </>
   );
