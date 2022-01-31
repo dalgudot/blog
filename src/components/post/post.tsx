@@ -26,10 +26,10 @@ const Post: FC<Props> = ({ contentEditable, postData }) => {
       </main>
       {/* <Contact /> */}
       {/* <Response /> */}
-      <LinkWYSIWYG
+      {/* <LinkWYSIWYG
         contentEditable={contentEditable}
         linkWysiwygDataArray={postData.linkWysiwygDataArray}
-      />
+      /> */}
     </>
   );
 };
