@@ -16,7 +16,6 @@ const WYSIWYG: FC<Props> = ({ contentEditable, wysiwygDataArray }) => {
           <EditableElementSwitch
             wysiwygType='Normal'
             key={data.blockId}
-            blockType={data.blockType}
             contentEditable={contentEditable}
             data={data}
             datas={wysiwygDataArray}

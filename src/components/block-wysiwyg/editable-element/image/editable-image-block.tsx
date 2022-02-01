@@ -64,7 +64,8 @@ const EditableImageBlock: FC<Props> = ({
       setImage(blobUrl); // [UX Logic] 서버 저장 전 로컬에서 빠르게 보여주기 위해
 
       // images 폴더 안에 저장해두고 draft나 발행된 글 모두에서 고유한 URL로 접근!
-      // 이미지 파일명의 규칙 만들기!
+      // 이미지 파일명의 규칙 -> `${category}${order}-숫자'
+      // thumbnail은 thumbnail이라 이름지음
       const storageRef = `images/${file.name}`;
 
       if (process.env.NODE_ENV === 'production') {

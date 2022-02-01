@@ -30,8 +30,6 @@ const DraftWriting: NextPage = () => {
   const draftOrder = router.query.order as string;
   const initializeClientData = useInitializeClientData();
 
-  console.log('draftOrder', draftOrder);
-
   useEffect(() => {
     draftOrder &&
       getDraftByOrder(draftOrder) //
@@ -74,8 +72,8 @@ const DraftWriting: NextPage = () => {
       : router.push('/[category]/[order]', `/${category}/${newPathOrder}`);
   };
 
-  // console.log('post', post.wysiwygDataArray);
-  console.log('tempPost', tempPost.wysiwygDataArray);
+  console.log('post', post.wysiwygDataArray);
+  // console.log('tempPost', tempPost.wysiwygDataArray);
 
   return (
     <>
