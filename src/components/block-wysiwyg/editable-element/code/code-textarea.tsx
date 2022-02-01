@@ -10,7 +10,6 @@ import {
 import TextareaAutosize from 'react-textarea-autosize';
 import { focusContentEditableTextToEnd } from '../../../../lib/utils/focus-content-editable-text-to-end';
 import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
-import { useAppDispatch } from '../../../../redux-toolkit/store';
 import styles from './editable-code-block.module.scss';
 
 type Props = {
@@ -35,7 +34,6 @@ const CodeTextarea: FC<Props> = ({
   placeholder,
 }) => {
   const ref = useRef(null);
-  const dispatch = useAppDispatch();
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setCodeString(e.target.value);

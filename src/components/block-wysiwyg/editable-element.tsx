@@ -5,7 +5,7 @@ import { IParagraphData } from '../../redux-toolkit/model/post-data-model';
 import styles from './editable-element.module.scss';
 
 type Props = {
-  TagName: 'h1' | 'h2' | 'h3' | 'p' | 'code';
+  TagName: 'h1' | 'h2' | 'h3' | 'p' | 'code' | 'figcaption';
   contentEditable: boolean;
   html: string;
   onInput?: (e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>) => void;

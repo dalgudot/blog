@@ -1,6 +1,7 @@
 import { devCollectionRefName } from '../../service/firebase/firestore';
 import { ITextData, ITextDataModel, TextDataModel } from './text-data-model';
 import { ILinkData, ILinkDataModel, LinkDataModel } from './link-data-model';
+import { IImageData } from './image-data-model';
 
 const refData: ILinkDataModel = new LinkDataModel();
 const paragraphData: ITextDataModel = new TextDataModel();
@@ -29,5 +30,5 @@ export interface IPostData {
   status: TStatus;
 }
 
-export type IParagraphData = ITextData | ILinkData;
+export type IParagraphData = ITextData | ILinkData | IImageData;
 export type TStatus = 'draft' | 'published' | 'unPublished';

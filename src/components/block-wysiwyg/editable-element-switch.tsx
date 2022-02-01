@@ -24,6 +24,8 @@ import { IParagraphData } from '../../redux-toolkit/model/post-data-model';
 import EditableLinkBlock from './editable-element/link/editable-link-block';
 import { ILinkData } from '../../redux-toolkit/model/link-data-model';
 import EditableCodeBlock from './editable-element/code/editable-code-block';
+import EditableImageBlock from './editable-element/image/editable-image-block';
+import { IImageData } from '../../redux-toolkit/model/image-data-model';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
@@ -43,7 +45,8 @@ const EditableElementSwitch: FC<Props> = ({
   currentIndex,
 }) => {
   const [text, setText] = useState<string>(data.html);
-  const [type, setType] = useState<TBlockType>(blockType);
+  // const [type, setType] = useState<TBlockType>(blockType);
+  const [type, setType] = useState<TBlockType>('Image');
   const dispatch = useAppDispatch();
   const datasLength = datas.length;
 
@@ -126,6 +129,25 @@ const EditableElementSwitch: FC<Props> = ({
 
   const switchBlocks = () => {
     switch (type) {
+      case 'Image':
+        return (
+          <EditableImageBlock
+            contentEditable={contentEditable}
+            html={data.html}
+            imageDownloadURL={data.url}
+            currentIndex={currentIndex}
+            setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+            // setPostHtmlData={setCurrentBlockPostHtmlData}
+            onKeyPress={onKeyPress}
+            onKeyDown={onKeyDown}
+            addBlockFocusUseEffectDependency={datas[currentIndex]}
+            removeCurrentBlockFocusUseEffectDependency={datas[currentIndex + 1]}
+            placeholder={
+              data.url ? '캡션 입력' : '아래 버튼을 눌러 이미지 업로드'
+            }
+          />
+        );
+
       case 'Link':
         return (
           <EditableLinkBlock
@@ -184,6 +206,7 @@ const EditableElementSwitch: FC<Props> = ({
           <option value='Heading1'>Heading1</option>
           <option value='Heading2'>Heading2</option>
           <option value='Heading3'>Heading3</option>
+          <option value='Image'>Image</option>
           <option value='Code'>Code</option>
           <option value='Link'>Link</option>
         </select>

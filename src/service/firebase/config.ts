@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_PUBLIC_API_KEY,
@@ -8,14 +9,9 @@ const firebaseConfig = {
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
 };
 
-export const initializeFirebaseApp = () => {
-  initializeApp(firebaseConfig);
-};
-
-export const getDB = () => {
-  const db = getFirestore();
-  return db;
-};
+export const initializeFirebaseApp = initializeApp(firebaseConfig);
+export const db = getFirestore();
+export const storage = getStorage(initializeFirebaseApp);
 
 // 사용자 관리
 // https://firebase.google.com/docs/auth/web/manage-users?authuser=0
