@@ -73,7 +73,7 @@ const DraftWriting: NextPage = () => {
       : router.push('/[category]/[order]', `/${category}/${newPathOrder}`);
   };
 
-  console.log('tempPost', tempPost);
+  console.log('tempPost', tempPost.wysiwygDataArray);
 
   return (
     <>

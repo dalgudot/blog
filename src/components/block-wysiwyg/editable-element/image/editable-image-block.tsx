@@ -9,11 +9,13 @@ import {
   uploadImageToStorage,
 } from '../../../../service/firebase/storage';
 import { setCurrentBlockTempImageDownloadURL } from '../../../../redux-toolkit/slices/temp-post-slice';
+import { setCurrentBlockImageDownloadURL } from '../../../../redux-toolkit/slices/post-slice';
 
 type Props = {
   contentEditable: boolean;
   html: string;
   imageDownloadURL: string;
+  blockId: string;
   currentIndex: number;
   setTempPostHtmlData: (inputHtml: string) => void;
   // setPostHtmlData: (inputHtml: string) => void;
@@ -28,6 +30,7 @@ const EditableImageBlock: FC<Props> = ({
   contentEditable,
   html,
   imageDownloadURL,
+  blockId,
   currentIndex,
   setTempPostHtmlData, // 캡션 데이터로 활용
   // setPostHtmlData,
@@ -48,17 +51,14 @@ const EditableImageBlock: FC<Props> = ({
     setTempPostHtmlData(newInnerPasteText);
   };
 
-  useEffect(() => {
-    return () => {
-      // URL.revokeObjectURL(blobUrl);
-    };
-  }, [image]);
-
   const dispatch = useAppDispatch();
 
   const fileHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
+    console.log('fileList', fileList);
+
     const file = fileList && fileList[0];
+    // console.log('file', file);
 
     if (file) {
       const blobUrl = URL.createObjectURL(file); // useEffect()의 return에서 revoke
@@ -66,7 +66,6 @@ const EditableImageBlock: FC<Props> = ({
 
       await uploadImageToStorage(file);
       const imageDownloadURL = await getImageDownloadURL();
-      console.log('imageDownloadURL', imageDownloadURL);
 
       dispatch(
         setCurrentBlockTempImageDownloadURL({
@@ -77,10 +76,19 @@ const EditableImageBlock: FC<Props> = ({
     }
   };
 
+  // console.log('currentIndex', currentIndex);
+  console.log('image', `${currentIndex} ${image}`);
+
+  useEffect(() => {
+    return () => {
+      // URL.revokeObjectURL(blobUrl);
+    };
+  }, [image]);
+
   return (
     <>
       <figure className={styles.figure}>
-        {image && <img src={imageDownloadURL} alt={html} />}
+        {image && <img src={image} alt={html} />}
         <EditableElement
           TagName='figcaption'
           contentEditable={contentEditable}
@@ -97,7 +105,9 @@ const EditableImageBlock: FC<Props> = ({
         />
       </figure>
 
-      {contentEditable && <UploadImage fileHandler={fileHandler} />}
+      {contentEditable && (
+        <UploadImage fileHandler={fileHandler} blockId={blockId} />
+      )}
     </>
   );
 };

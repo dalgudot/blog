@@ -27,6 +27,7 @@ export const tempPostSlice = createSlice({
       state,
       action: PayloadAction<{ imageDownloadURL: string; currentIndex: number }>
     ) => {
+      // console.log('redux', action.payload.currentIndex);
       state.tempPost.wysiwygDataArray[action.payload.currentIndex].url =
         action.payload.imageDownloadURL;
     },

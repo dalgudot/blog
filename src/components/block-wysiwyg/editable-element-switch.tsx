@@ -134,6 +134,7 @@ const EditableElementSwitch: FC<Props> = ({
             contentEditable={contentEditable}
             html={data.html}
             imageDownloadURL={data.url}
+            blockId={data.blockId}
             currentIndex={currentIndex}
             setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
             // setPostHtmlData={setCurrentBlockPostHtmlData}
