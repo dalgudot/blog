@@ -17,8 +17,14 @@ import { useGetClientTempPostData } from '../../lib/hooks/useGetClientTempPostDa
 import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
 import { IPostData } from '../../redux-toolkit/model/post-data-model';
 import { useInitializeClientData } from '../../lib/hooks/useInitializeClientData';
+import HeadForSEO, { TInfoForSEO } from '../../SEO/headForSEO';
 
-const CategoryOrderPost: NextPage<{ post: IPostData }> = (props) => {
+type Props = {
+  post: IPostData;
+  infoForSEOByCategoryOrder: TInfoForSEO;
+};
+
+const CategoryOrderPost: NextPage<Props> = (props) => {
   const { isAdmin } = useIsAdmin();
   const { showToast } = useToast();
   const router = useRouter();
@@ -53,9 +59,12 @@ const CategoryOrderPost: NextPage<{ post: IPostData }> = (props) => {
     showToast('서버에 임시 저장 완료');
   };
 
+  console.log('post', post.wysiwygDataArray);
+
   return (
     <>
-      {mounted && <Post contentEditable={isAdmin} postData={post} />}
+      <HeadForSEO info={props.infoForSEOByCategoryOrder.info} />
+      <Post contentEditable={isAdmin} postData={post} />
       {isAdmin && (
         <>
           <button
@@ -81,8 +90,22 @@ type Context = {
 
 export const getStaticProps = async ({ params }: Context) => {
   // 동적으로 만들어진 각 페이지의 [category]와 [order]를 매개변수 params로 전달
-  const post = await getPostByCategoryOrder(params);
-  return { props: { post } };
+  const post = (await getPostByCategoryOrder(params)) as IPostData;
+  const descriptionForSEO = post.wysiwygDataArray.find(
+    (element) => element.blockType === 'Paragraph'
+  );
+
+  const infoForSEOByCategoryOrder = {
+    info: {
+      title: post.title,
+      url: `https://blog.dalgu.app/${params.category}/${params.order}`,
+      type: 'article',
+      thumbnail: `/images/${params.category}${params.order}-thumbnail`,
+      description: descriptionForSEO ? descriptionForSEO.html : null, // for serialize as JSON
+    },
+  };
+
+  return { props: { post, infoForSEOByCategoryOrder } };
 };
 
 export const getStaticPaths = async () => {
