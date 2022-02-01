@@ -37,8 +37,7 @@ const EditableImageBlock: FC<Props> = ({
   removeCurrentBlockFocusUseEffectDependency,
   placeholder,
 }) => {
-  const [image, setImage] = useState<string>('');
-  // const [image, setImage] = useState<string>('');
+  const [image, setImage] = useState<string>(imageDownloadURL);
 
   const onInput = (e: ChangeEvent<HTMLElement>) => {
     const inputHtml = e.target.innerHTML;
@@ -50,19 +49,6 @@ const EditableImageBlock: FC<Props> = ({
   };
 
   useEffect(() => {
-    // imageDownloadURL 받아서 여기서 fetch받아야 함!
-
-    fetch(imageDownloadURL) //
-      .then((res) => {
-        res.blob();
-      })
-      .then((imageBlob) => {
-        if (imageBlob) {
-          const blobUrl = URL.createObjectURL(imageBlob);
-          setImage(blobUrl);
-        }
-      });
-
     return () => {
       // URL.revokeObjectURL(blobUrl);
     };
@@ -94,7 +80,7 @@ const EditableImageBlock: FC<Props> = ({
   return (
     <>
       <figure className={styles.figure}>
-        {image && <img src={image} alt={html} />}
+        {image && <img src={imageDownloadURL} alt={html} />}
         <EditableElement
           TagName='figcaption'
           contentEditable={contentEditable}

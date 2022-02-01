@@ -25,7 +25,6 @@ import EditableLinkBlock from './editable-element/link/editable-link-block';
 import { ILinkData } from '../../redux-toolkit/model/link-data-model';
 import EditableCodeBlock from './editable-element/code/editable-code-block';
 import EditableImageBlock from './editable-element/image/editable-image-block';
-import { IImageData } from '../../redux-toolkit/model/image-data-model';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
@@ -45,8 +44,8 @@ const EditableElementSwitch: FC<Props> = ({
   currentIndex,
 }) => {
   const [text, setText] = useState<string>(data.html);
-  // const [type, setType] = useState<TBlockType>(blockType);
-  const [type, setType] = useState<TBlockType>('Image');
+  const [type, setType] = useState<TBlockType>(blockType);
+  // const [type, setType] = useState<TBlockType>('Image');
   const dispatch = useAppDispatch();
   const datasLength = datas.length;
 
