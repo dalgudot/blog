@@ -19,8 +19,6 @@ export const useEditable = (
       const pastedData = e.clipboardData;
       const textData = pastedData?.getData('Text');
 
-      console.log('textData', textData);
-
       // contentEditable의 innerHtml, TempRef, setText 모두 동기화!
       if (ref.current) {
         // (TODO) 가장 뒤에 붙여넣기가 되므로 고칠 필요가 있음. -> 셀렉션 커서 혹은 영역을 찾아서 각각 대응해줘야 함.
