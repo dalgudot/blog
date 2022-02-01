@@ -9,7 +9,7 @@ import store from '../redux-toolkit/store';
 import { ThemeProvider } from 'next-themes';
 import Header from '../components/header/header';
 
-const ArticlesApp = ({ Component, pageProps }: AppProps) => {
+const BlogApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <Provider store={store}>
@@ -24,4 +24,4 @@ const ArticlesApp = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-export default ArticlesApp;
+export default BlogApp;

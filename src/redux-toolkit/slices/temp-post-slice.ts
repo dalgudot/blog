@@ -1,6 +1,7 @@
+import { ITextData, TextDataModel } from '../model/text-data-model';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IPostData, postInitialData } from '../model/post-data-model';
-import { IRefData } from '../model/ref-data-model';
+import { ILinkData, LinkDataModel } from '../model/link-data-model';
 
 const initialState: { tempPost: IPostData } = {
   tempPost: postInitialData,
@@ -14,48 +15,99 @@ export const tempPostSlice = createSlice({
       state.tempPost = action.payload;
     },
 
+    setCurrentBlockTempHtml: (
+      state,
+      action: PayloadAction<{ inputHtml: string; currentIndex: number }>
+    ) => {
+      state.tempPost.wysiwygDataArray[action.payload.currentIndex].html =
+        action.payload.inputHtml;
+    },
+
+    setCurrentBlockTempImageRef: (
+      state,
+      action: PayloadAction<{ imageRef: string; currentIndex: number }>
+    ) => {
+      // console.log('redux', action.payload.currentIndex);
+      state.tempPost.wysiwygDataArray[action.payload.currentIndex].url =
+        action.payload.imageRef;
+    },
+
     setTempPostCategory: (state, action: PayloadAction<string>) => {
       state.tempPost.category = action.payload;
     },
 
     setTempArticleTitleData: (
       state,
-      action: PayloadAction<{ inputPureHtml: string }>
+      action: PayloadAction<{ inputHtml: string }>
     ) => {
-      state.tempPost.title = action.payload.inputPureHtml;
+      state.tempPost.title = action.payload.inputHtml;
     },
 
-    setTempRefTitleData: (
+    setTempArticleDateTimeData: (
       state,
-      action: PayloadAction<{ inputPureHtml: string; currentIndex: number }>
+      action: PayloadAction<{ seoDate: string }>
     ) => {
-      state.tempPost.refDataArray[action.payload.currentIndex].title =
-        action.payload.inputPureHtml;
+      state.tempPost.dateTime = action.payload.seoDate;
     },
 
-    setTempRefUrlData: (
+    setTempBlockTypeData: (
+      state,
+      action: PayloadAction<{ newBlockType: any; currentIndex: number }>
+    ) => {
+      state.tempPost.wysiwygDataArray[action.payload.currentIndex].blockType =
+        action.payload.newBlockType;
+    },
+
+    setNormalWysiwygCurrentLinkBlockTempLinkUrl: (
       state,
       action: PayloadAction<{ data: string; currentIndex: number }>
     ) => {
-      state.tempPost.refDataArray[action.payload.currentIndex].url =
+      state.tempPost.wysiwygDataArray[action.payload.currentIndex].url =
         action.payload.data;
     },
 
-    addTempLinkBlock: (
+    // 기본 wysiwyg의 초기값은 p 블럭
+    addTempNewBlock: (
       state,
       action: PayloadAction<{
-        newLinkEditableBlock: IRefData;
         currentIndex: number;
         isEnd: boolean;
       }>
     ) => {
+      const newTextBlock: ITextData = new TextDataModel().createNewTextData();
       if (action.payload.isEnd) {
-        state.tempPost.refDataArray.push(action.payload.newLinkEditableBlock);
+        state.tempPost.wysiwygDataArray.push(newTextBlock);
       } else {
-        state.tempPost.refDataArray.splice(
+        state.tempPost.wysiwygDataArray.splice(
           action.payload.currentIndex + 1,
           0,
-          action.payload.newLinkEditableBlock
+          newTextBlock
+        );
+      }
+    },
+
+    removeTempCurrentBlock: (
+      state,
+      action: PayloadAction<{ currentIndex: number }>
+    ) => {
+      state.tempPost.wysiwygDataArray.splice(action.payload.currentIndex, 1);
+    },
+
+    addTempNewLinkBlock: (
+      state,
+      action: PayloadAction<{
+        currentIndex: number;
+        isEnd: boolean;
+      }>
+    ) => {
+      const newLinkBlock: ILinkData = new LinkDataModel().createNewLinkData();
+      if (action.payload.isEnd) {
+        state.tempPost.linkWysiwygDataArray.push(newLinkBlock);
+      } else {
+        state.tempPost.linkWysiwygDataArray.splice(
+          action.payload.currentIndex + 1,
+          0,
+          newLinkBlock
         );
       }
     },
@@ -64,18 +116,44 @@ export const tempPostSlice = createSlice({
       state,
       action: PayloadAction<{ currentIndex: number }>
     ) => {
-      state.tempPost.refDataArray.splice(action.payload.currentIndex, 1);
+      state.tempPost.linkWysiwygDataArray.splice(
+        action.payload.currentIndex,
+        1
+      );
+    },
+
+    setCurrentLinkBlockTempHtml: (
+      state,
+      action: PayloadAction<{ inputHtml: string; currentIndex: number }>
+    ) => {
+      state.tempPost.linkWysiwygDataArray[action.payload.currentIndex].html =
+        action.payload.inputHtml;
+    },
+
+    setCurrentLinkBlockTempLinkUrl: (
+      state,
+      action: PayloadAction<{ data: string; currentIndex: number }>
+    ) => {
+      state.tempPost.linkWysiwygDataArray[action.payload.currentIndex].url =
+        action.payload.data;
     },
   },
 });
 
 export const {
   setTempPostData,
+  setCurrentBlockTempHtml,
+  setCurrentBlockTempImageRef,
   setTempPostCategory,
   setTempArticleTitleData,
-  setTempRefTitleData,
-  setTempRefUrlData,
-  addTempLinkBlock,
+  setTempArticleDateTimeData,
+  setTempBlockTypeData,
+  setNormalWysiwygCurrentLinkBlockTempLinkUrl,
+  addTempNewBlock,
+  removeTempCurrentBlock,
+  addTempNewLinkBlock,
   removeTempLinkBlock,
+  setCurrentLinkBlockTempHtml,
+  setCurrentLinkBlockTempLinkUrl,
 } = tempPostSlice.actions;
 export const tempPostReducer = tempPostSlice.reducer;

@@ -1,7 +1,6 @@
 import { NextPage } from 'next';
 import { useToast } from '@dalgu/react-toast';
 import {
-  changeToPublished,
   getAllCollectionDataArray,
   getPostByCategoryOrder,
   saveDataToFireStoreDB,
@@ -17,21 +16,32 @@ import { useGetClientPostData } from '../../lib/hooks/useGetClientPostData';
 import { useGetClientTempPostData } from '../../lib/hooks/useGetClientTempPostData';
 import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
 import { IPostData } from '../../redux-toolkit/model/post-data-model';
+import { useInitializeClientData } from '../../lib/hooks/useInitializeClientData';
+import HeadForSEO, { TInfoForSEO } from '../../SEO/headForSEO';
 
-const CategoryOrderPost: NextPage<{ post: IPostData }> = (props) => {
+type Props = {
+  post: IPostData;
+  infoForSEOByCategoryOrder: TInfoForSEO;
+};
+
+const CategoryOrderPost: NextPage<Props> = (props) => {
   const { isAdmin } = useIsAdmin();
   const { showToast } = useToast();
   const router = useRouter();
-  const locale = router.locale;
   const dispatch = useAppDispatch();
   const mounted = useMounted();
+  const initializeClientData = useInitializeClientData();
 
   useEffect(() => {
-    const initializeClientData = () => {
+    const SyncServerAndClientData = () => {
       dispatch(setPostData(props.post)); // 초기화 및 map() 상태 관리(새로운 블럭 그리는 일 등)
       dispatch(setTempPostData(props.post)); // 데이터 저장 위해(contentEditable 요소가 매번 렌더링될 때마다 생기는 문제 방지)
     };
-    initializeClientData();
+    SyncServerAndClientData();
+
+    return () => {
+      initializeClientData();
+    };
   }, []);
 
   const { post } = useGetClientPostData();
@@ -39,39 +49,29 @@ const CategoryOrderPost: NextPage<{ post: IPostData }> = (props) => {
 
   const currentCategory = router.query.category;
   const currentOrder = router.query.order;
-  const dbPath =
-    locale === 'ko'
-      ? `${currentCategory}/${currentOrder}`
-      : `${currentCategory}/${currentOrder}-en`;
-
-  const publishPost = async () => {
-    await saveDataToFireStoreDB(tempPost, dbPath);
-    await changeToPublished(dbPath);
-    showToast('발행 완료');
-  };
 
   const tempSaveDataToFireStoreDB = async () => {
-    await saveDataToFireStoreDB(tempPost, dbPath);
+    await saveDataToFireStoreDB(
+      currentCategory as string,
+      currentOrder as string,
+      tempPost
+    );
     showToast('서버에 임시 저장 완료');
   };
 
+  console.log('post', post.wysiwygDataArray);
+
   return (
     <>
-      {mounted && <Post contentEditable={isAdmin} postData={post} />}
+      <HeadForSEO info={props.infoForSEOByCategoryOrder.info} />
+      <Post contentEditable={isAdmin} postData={post} />
       {isAdmin && (
         <>
           <button
             onClick={tempSaveDataToFireStoreDB}
             style={{ marginTop: 48, marginLeft: 24 }}
           >
-            <code>Save to DB</code>
-          </button>
-
-          <button
-            onClick={publishPost}
-            style={{ marginTop: 48, marginLeft: 24 }}
-          >
-            <code>발행하기</code>
+            Save to DB
           </button>
         </>
       )}
@@ -86,32 +86,33 @@ type Context = {
     category: string;
     order: string;
   };
-  locale: 'ko' | 'en';
 };
 
-export const getStaticProps = async ({ params, locale }: Context) => {
+export const getStaticProps = async ({ params }: Context) => {
   // 동적으로 만들어진 각 페이지의 [category]와 [order]를 매개변수 params로 전달
-  const post = await getPostByCategoryOrder(params, locale);
-  return { props: { post } };
+  const post = (await getPostByCategoryOrder(params)) as IPostData;
+  const descriptionForSEO = post.wysiwygDataArray.find(
+    (element) => element.blockType === 'Paragraph'
+  );
+
+  const infoForSEOByCategoryOrder = {
+    info: {
+      title: post.title,
+      url: `https://blog.dalgu.app/${params.category}/${params.order}`,
+      type: 'article',
+      thumbnail: `/images/${params.category}${params.order}-thumbnail`,
+      description: descriptionForSEO ? descriptionForSEO.html : null, // for serialize as JSON
+    },
+  };
+
+  return { props: { post, infoForSEOByCategoryOrder } };
 };
 
 export const getStaticPaths = async () => {
   const allPosts = await getAllCollectionDataArray();
-
-  const paths = allPosts.map((post) =>
-    post.order.includes('en')
-      ? {
-          params: {
-            category: post.category,
-            order: post.order.replace('-en', ''),
-          },
-          locale: 'en',
-        }
-      : {
-          params: { category: post.category, order: post.order },
-          locale: 'ko',
-        }
-  );
+  const paths = allPosts.map((post) => ({
+    params: { category: post.category, order: post.order },
+  }));
 
   return { paths, fallback: false };
 };

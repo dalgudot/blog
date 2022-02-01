@@ -6,8 +6,6 @@ import {
   Auth,
   UserCredential,
   User,
-  setPersistence,
-  browserSessionPersistence,
 } from 'firebase/auth';
 
 export type TproviderName = 'Google';
@@ -36,19 +34,13 @@ export class Authentication implements IAuthentication {
     return this.auth.signOut();
   }
 
-  // setPersistenceSession() {
-  //   setPersistence(this.auth, browserSessionPersistence).then(() => {
-  //     return signInWithPopup(this.auth, this.googleAuthProvide);
-  //   });
-  // }
-
   onAuthChange(onUserChanged: (user: User) => void) {
     this.auth.onAuthStateChanged((user) => {
       if (user) {
         onUserChanged(user);
-        console.log('Signed In');
+        // console.log('Signed In');
       } else {
-        console.log('Signed Out');
+        // console.log('Signed Out');
         // User is signed out
       }
     });

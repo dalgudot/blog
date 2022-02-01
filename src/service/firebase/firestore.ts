@@ -5,18 +5,17 @@ import {
   getDoc,
   getDocs,
   QuerySnapshot,
+  serverTimestamp,
   setDoc,
   updateDoc,
   WithFieldValue,
 } from 'firebase/firestore';
-import { getDB, initializeFirebaseApp } from './config';
 import { IPostData } from '../../redux-toolkit/model/post-data-model';
+import { db } from './config';
 
-initializeFirebaseApp();
-const db = getDB();
 export const devCollectionRefName = 'dev';
 export const designCollectionRefName = 'design';
-const draftCollectionRefName = 'draft';
+export const draftCollectionRefName = 'draft';
 
 export const getEachAllCollectionDataArray = async (
   collectionRefName: string
@@ -30,15 +29,15 @@ export const getEachAllCollectionDataArray = async (
 
   querySnapshot.forEach((doc) => {
     dataArray.push({
-      postId: doc.data().postId,
+      // postId: doc.data().postId,
       category: collectionRefName,
       order: doc.id,
       series: doc.data().series,
       dateTime: doc.data().dateTime,
       title: doc.data().title,
       tagDataArray: doc.data().tagDataArray,
-      paragraphDataArray: doc.data().paragraphDataArray,
-      refDataArray: doc.data().refDataArray,
+      wysiwygDataArray: doc.data().wysiwygDataArray,
+      linkWysiwygDataArray: doc.data().linkWysiwygDataArray,
       status: doc.data().status,
     });
   });
@@ -60,15 +59,11 @@ export const getAllCollectionDataArray = async () => {
   return allCollectionDataArray;
 };
 
-export const getPostByCategoryOrder = async (
-  params: {
-    category: string;
-    order: string;
-  },
-  locale: 'ko' | 'en'
-) => {
-  const ref = locale === 'ko' ? params.order : `${params.order}-en`;
-  const docRef = doc(db, params.category, ref);
+export const getPostByCategoryOrder = async (params: {
+  category: string;
+  order: string;
+}) => {
+  const docRef = doc(db, params.category, params.order);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
@@ -120,15 +115,35 @@ export const getDraftByOrder = async (order: string) => {
 ///////////////////////////////
 
 export const saveDataToFireStoreDB = async (
-  data: WithFieldValue<IPostData> | undefined,
-  path: string
-  // ...pathSegments: string[]
+  dbCollection: string,
+  dbDocument: string,
+  data: WithFieldValue<IPostData>
+  // | undefined
 ) => {
-  await setDoc(doc(db, path), data);
+  // setDoc() - 새로 만들거나 덮어쓸 때 쓰는 API
+  await setDoc(doc(db, dbCollection, dbDocument), data, {
+    merge: true,
+  });
 };
 
-export const changeToPublished = async (path: string) => {
-  await updateDoc(doc(db, path), {
+export const changeToPublished = async (
+  dbCollection: string,
+  dbDocument: string
+) => {
+  // updateDoc() - 문서의 일부만 업데이트하는 API
+  const docRef = doc(db, dbCollection, dbDocument);
+  await updateDoc(docRef, {
     status: 'published',
+  });
+};
+
+// Update the timestamp field with the value from the server
+export const updateTimestamp = async (
+  dbCollection: string,
+  dbDocument: string
+) => {
+  const docRef = doc(db, dbCollection, dbDocument);
+  await updateDoc(docRef, {
+    serverTimestamp: serverTimestamp(),
   });
 };

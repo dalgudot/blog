@@ -1,93 +1,225 @@
+import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from 'react';
+import { TBlockType } from '../../redux-toolkit/model/text-data-model';
 import {
-  ChangeEvent,
-  Dispatch,
-  FC,
-  KeyboardEvent,
-  SetStateAction,
-  useEffect,
-  useRef,
-} from 'react';
-import { focusContentEditableTextToEnd } from '../../lib/utils/focus-content-editable-text-to-end';
-import { IRefData } from '../../redux-toolkit/model/ref-data-model';
-import { setTempRefTitleData } from '../../redux-toolkit/slices/temp-post-slice';
+  addNewBlock,
+  addNewLinkBlock,
+  removeCurrentBlock,
+  removeLinkBlock,
+  setBlockTypeData,
+  setCurrentBlockHtml,
+  setCurrentLinkBlockHtml,
+} from '../../redux-toolkit/slices/post-slice';
+import {
+  addTempNewBlock,
+  addTempNewLinkBlock,
+  removeTempCurrentBlock,
+  removeTempLinkBlock,
+  setCurrentBlockTempHtml,
+  setCurrentLinkBlockTempHtml,
+  setTempBlockTypeData,
+} from '../../redux-toolkit/slices/temp-post-slice';
 import { useAppDispatch } from '../../redux-toolkit/store';
-import EditableElement from './editable-element';
-import styles from './editable-element-switch.module.scss';
+import EditableTextBlock from './editable-element/text/editable-text-block';
+import { IParagraphData } from '../../redux-toolkit/model/post-data-model';
+import EditableLinkBlock from './editable-element/link/editable-link-block';
+import { ILinkData } from '../../redux-toolkit/model/link-data-model';
+import EditableCodeBlock from './editable-element/code/editable-code-block';
+import EditableImageBlock from './editable-element/image/editable-image-block';
 
 type Props = {
-  // blockType?:
-  //   | 'Heading1'
-  //   | 'Heading2'
-  //   | 'Heading3'
-  //   | 'Paragraph'
-  //   | 'Code'
-  //   | 'Link';
-  TagName: 'h1' | 'h2' | 'h3' | 'p';
+  wysiwygType: 'Normal' | 'Link';
   contentEditable: boolean;
-  datas: IRefData[];
+  data: IParagraphData;
+  datas: IParagraphData[];
   currentIndex: number;
-  html: string;
-  onInput?: (e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>) => void;
-  onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
-  onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
-  setText?: Dispatch<SetStateAction<string>>;
-  spellCheck?: boolean;
-  placeholder?: string;
-  customClassName?: string;
 };
 
 const EditableElementSwitch: FC<Props> = ({
-  // blockType,
-  TagName,
+  wysiwygType,
   contentEditable,
+  data,
   datas,
   currentIndex,
-  html,
-  onInput,
-  onKeyPress,
-  onKeyDown,
-  setText,
-  spellCheck = false,
-  placeholder = '',
-  customClassName = styles.editable__element,
 }) => {
-  const ref = useRef<HTMLHeadingElement | HTMLParagraphElement>(null);
-
-  // 새로 생성된 블럭의 커서 위치, 다음 블럭이 지워졌을 때 focus()
-  useEffect(() => {
-    contentEditable &&
-      ref.current &&
-      focusContentEditableTextToEnd(ref.current);
-
-    // datas[currentIndex]은 `` 등 요소로 리렌더될 때 커서 위치 선정
-    // datas[currentIndex + 1]은 다음 블럭 지워진 걸 감지하는 의존성 배열 요소. 여기서 받아온 datas는 초기화 및 블럭의 생성과 삭제만 담당하는 클라이언트 데이터, 따라서 삭제된 시점을 정확히 알 수 있음.
-  }, [datas[currentIndex], datas[currentIndex + 1]]);
+  const [type, setType] = useState<TBlockType>('Paragraph');
+  const [text, setText] = useState<string>('');
 
   const dispatch = useAppDispatch();
+  const datasLength = datas.length;
 
-  const syncPasteText = (newInnerPurePasteText: string) => {
-    dispatch(
-      setTempRefTitleData({
-        inputPureHtml: newInnerPurePasteText,
-        currentIndex,
-      })
-    );
-    setText && setText(newInnerPurePasteText); // onKeyDown의 removeBlock() 조건 + 렌더링 성능 위해
+  // new -> draft로 이동 시 첫 번째 블럭이 paragraph로 남는 현상 해결
+  useEffect(() => {
+    setType(data.blockType);
+  }, [data.blockType]);
+
+  useEffect(() => {
+    setText(data.html);
+  }, [data.html]);
+
+  const changeBlockType = (e: ChangeEvent<HTMLSelectElement>) => {
+    e.preventDefault();
+    const newBlockType = e.target.value as TBlockType;
+
+    // 해당 blockType만 업데이트하고 렌더링하기 위해
+    // tempPost 데이터의 html 가져오면 모든 블럭이 업데이트됨.
+    setType(newBlockType);
+    dispatch(setTempBlockTypeData({ newBlockType, currentIndex }));
+    // 다른 업데이트에서 post 데이터에는 html이 업데이트되지 않았기 때문에 여기서는 동기화시켜줘야 타입을 바꿔도 html 유지!
+    dispatch(setCurrentBlockHtml({ inputHtml: text, currentIndex }));
+    dispatch(setBlockTypeData({ newBlockType, currentIndex }));
+  };
+
+  const addBlock = () => {
+    const isEnd: boolean = currentIndex === datasLength - 1;
+
+    if (wysiwygType === 'Link') {
+      dispatch(addNewLinkBlock({ currentIndex, isEnd }));
+      dispatch(addTempNewLinkBlock({ currentIndex, isEnd }));
+    } else {
+      // wysiwygType === 'Normal'인 일반적인 경우
+      // 새로운 블럭 그리기 위해
+      dispatch(addNewBlock({ currentIndex, isEnd }));
+      // 데이터 저장하기 위해
+      dispatch(addTempNewBlock({ currentIndex, isEnd }));
+    }
+  };
+
+  const removeBlock = () => {
+    if (wysiwygType === 'Link') {
+      dispatch(removeLinkBlock({ currentIndex }));
+      dispatch(removeTempLinkBlock({ currentIndex }));
+    } else {
+      dispatch(removeCurrentBlock({ currentIndex }));
+      dispatch(removeTempCurrentBlock({ currentIndex }));
+    }
+  };
+
+  const onKeyPress = (e: KeyboardEvent<HTMLElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addBlock();
+    }
+  };
+
+  const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
+    // html 텍스트가 없고, 블록이 2개 이상이고, Backspace를 누른 경우
+    if (text === '' && datasLength > 1 && e.key === 'Backspace') {
+      e.preventDefault();
+      removeBlock();
+    }
+  };
+
+  // onInput에서 이용
+  const setCurrentBlockTempPostHtmlData = (inputHtml: string) => {
+    // currentIndex 인자로 넣어 props로 전달
+    // map 안 쓰는 block에서는 다른 함수로 props 전달
+    if (wysiwygType === 'Link') {
+      dispatch(setCurrentLinkBlockTempHtml({ inputHtml, currentIndex }));
+    } else {
+      dispatch(setCurrentBlockTempHtml({ inputHtml, currentIndex }));
+    }
+
+    setText(inputHtml);
+  };
+
+  // updateInlineBlock에서 이용
+  const setCurrentBlockPostHtmlData = (inputHtml: string) => {
+    // currentIndex 인자로 넣어 props로 전달
+    // map 안 쓰는 block에서는 다른 함수로 props 전달
+    if (wysiwygType === 'Link') {
+      dispatch(setCurrentLinkBlockHtml({ inputHtml, currentIndex }));
+    } else {
+      dispatch(setCurrentBlockHtml({ inputHtml, currentIndex }));
+    }
+  };
+
+  const switchBlocks = () => {
+    switch (type) {
+      case 'Image':
+        return (
+          <EditableImageBlock
+            contentEditable={contentEditable}
+            html={data.html}
+            imageDownloadURL={data.url}
+            blockId={data.blockId}
+            currentIndex={currentIndex}
+            setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+            // setPostHtmlData={setCurrentBlockPostHtmlData}
+            onKeyPress={onKeyPress}
+            onKeyDown={onKeyDown}
+            addBlockFocusUseEffectDependency={datas[currentIndex]}
+            removeCurrentBlockFocusUseEffectDependency={datas[currentIndex + 1]}
+            placeholder={
+              data.url ? '캡션 입력' : '아래 버튼을 눌러 이미지 업로드'
+            }
+          />
+        );
+
+      case 'Link':
+        return (
+          <EditableLinkBlock
+            wysiwygType={wysiwygType}
+            contentEditable={contentEditable}
+            data={data as ILinkData}
+            currentIndex={currentIndex}
+            setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+            setPostHtmlData={setCurrentBlockPostHtmlData}
+            onKeyPress={onKeyPress}
+            onKeyDown={onKeyDown}
+            addBlockFocusUseEffectDependency={datas[currentIndex]}
+            removeCurrentBlockFocusUseEffectDependency={datas[currentIndex + 1]}
+            placeholder='링크 제목 입력'
+          />
+        );
+
+      case 'Code':
+        return (
+          <EditableCodeBlock
+            contentEditable={contentEditable}
+            html={data.html}
+            setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+            // setPostHtmlData={setCurrentBlockPostHtmlData}
+            onKeyPress={onKeyPress}
+            onKeyDown={onKeyDown}
+            addBlockFocusUseEffectDependency={datas[currentIndex]}
+            removeCurrentBlockFocusUseEffectDependency={datas[currentIndex + 1]}
+            placeholder='코드 입력'
+          />
+        );
+
+      default:
+        return (
+          <EditableTextBlock
+            blockType={type}
+            contentEditable={contentEditable}
+            html={data.html}
+            setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+            setPostHtmlData={setCurrentBlockPostHtmlData} // `` 때문에 필요
+            onKeyPress={onKeyPress}
+            onKeyDown={onKeyDown}
+            addBlockFocusUseEffectDependency={datas[currentIndex]}
+            removeCurrentBlockFocusUseEffectDependency={datas[currentIndex + 1]}
+            placeholder='텍스트 입력'
+          />
+        );
+    }
   };
 
   return (
     <>
-      <EditableElement
-        TagName={TagName}
-        contentEditable={contentEditable}
-        html={html}
-        onInput={onInput} // 필수
-        onKeyPress={onKeyPress} // 블록 추가
-        onKeyDown={onKeyDown} // 블록 삭제
-        syncPasteText={syncPasteText}
-        placeholder={placeholder}
-        customClassName={customClassName}
-      />
+      {contentEditable && wysiwygType !== 'Link' && (
+        <select value={type} onChange={changeBlockType}>
+          <option value='Paragraph'>Paragraph</option>
+          <option value='Heading1'>Heading1</option>
+          <option value='Heading2'>Heading2</option>
+          <option value='Heading3'>Heading3</option>
+          <option value='Image'>Image</option>
+          <option value='Code'>Code</option>
+          <option value='Link'>Link</option>
+        </select>
+      )}
+
+      {switchBlocks()}
     </>
   );
 };

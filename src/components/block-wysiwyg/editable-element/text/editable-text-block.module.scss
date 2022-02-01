@@ -1,4 +1,4 @@
-.editable__element {
+.editable__text__block {
   /* placeholder */
   &:empty:before {
     content: attr(placeholder);

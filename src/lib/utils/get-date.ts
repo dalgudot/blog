@@ -11,5 +11,8 @@ export const getDate = () => {
       ? '0' + String(today.getDate())
       : String(today.getDate());
 
-  return { today, year, month, date };
+  const dateForSEO: string = `${year}-${month}-${date}`;
+  const dateForDisplay: string = `${year}.${month}.${date}`;
+
+  return { today, year, month, date, dateForSEO, dateForDisplay };
 };

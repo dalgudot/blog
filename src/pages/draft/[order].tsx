@@ -6,6 +6,7 @@ import SelectCategory from '../../components/draft/select-category';
 import Post from '../../components/post/post';
 import { useGetClientPostData } from '../../lib/hooks/useGetClientPostData';
 import { useGetClientTempPostData } from '../../lib/hooks/useGetClientTempPostData';
+import { useInitializeClientData } from '../../lib/hooks/useInitializeClientData';
 import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
 import { IPostData } from '../../redux-toolkit/model/post-data-model';
 import { setPostData } from '../../redux-toolkit/slices/post-slice';
@@ -13,6 +14,7 @@ import { setTempPostData } from '../../redux-toolkit/slices/temp-post-slice';
 import { useAppDispatch } from '../../redux-toolkit/store';
 import {
   changeToPublished,
+  draftCollectionRefName,
   getDraftByOrder,
   getEachAllCollectionDataArray,
   saveDataToFireStoreDB,
@@ -20,31 +22,33 @@ import {
 
 const DraftWriting: NextPage = () => {
   const { isAdmin } = useIsAdmin();
-
   const { showToast } = useToast();
   const { post } = useGetClientPostData();
   const { tempPost } = useGetClientTempPostData();
-  // const mounted = useMounted();
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const draftOrder = router.query.order;
-  const draftDbPath = `draft/${draftOrder}`;
+  const draftOrder = router.query.order as string;
+  const initializeClientData = useInitializeClientData();
 
   useEffect(() => {
     draftOrder &&
-      getDraftByOrder(draftOrder as string) //
+      getDraftByOrder(draftOrder) //
         .then((draftData) => {
-          const initializeClientData = () => {
+          const initializeDraftData = () => {
             dispatch(setPostData(draftData as IPostData)); // 초기화 및 map() 상태 관리(새로운 블럭 그리는 일 등)
             dispatch(setTempPostData(draftData as IPostData)); // 데이터 저장 위해(contentEditable 요소가 매번 렌더링될 때마다 생기는 문제 방지)
           };
-          isAdmin && initializeClientData();
+          initializeDraftData();
         });
+
+    return () => {
+      initializeClientData();
+    };
   }, [draftOrder]);
 
   const tempSaveDataToFireStoreDB = async () => {
-    await saveDataToFireStoreDB(tempPost, draftDbPath);
-    showToast('서버에 Draft 임시 저장');
+    await saveDataToFireStoreDB(draftCollectionRefName, draftOrder, tempPost);
+    showToast('서버에 저장 완료');
   };
 
   const publishPost = async () => {
@@ -54,23 +58,26 @@ const DraftWriting: NextPage = () => {
       ...categoryList.map((list) => Number(list.order)),
       0
     );
-    const newPathOrder = maxValueOfOrder + 1;
-    const dbPath = `${category}/${newPathOrder}`;
-    await saveDataToFireStoreDB(tempPost, draftDbPath); // draft에도 저장
-    await saveDataToFireStoreDB(tempPost, dbPath);
-    await changeToPublished(dbPath); // change status to 'published'
+    const newPathOrder = String(
+      maxValueOfOrder !== NaN ? maxValueOfOrder + 1 : 1
+    );
+
+    await tempSaveDataToFireStoreDB(); // draft에도 저장
+    await saveDataToFireStoreDB(category, newPathOrder, tempPost);
+    await changeToPublished(category, newPathOrder); // change status to 'published'
 
     // [환경 변수 설정] production인 경우 toast, localhost의 경우 만들어진 경로로 바로 이동.
     process.env.NODE_ENV === 'production'
-      ? showToast('발행 완료')
-      : router.push('/[category]/[order]', `/${dbPath}`);
+      ? showToast('발행 완료') // getStaticProps로 만들어진 페이지라 빌드 후 페이지가 생기기 때문
+      : router.push('/[category]/[order]', `/${category}/${newPathOrder}`);
   };
 
-  // console.log('post', post);
-  // console.log('tempPost', tempPost);
+  console.log('post', post.wysiwygDataArray);
+  // console.log('tempPost', tempPost.wysiwygDataArray);
+
   return (
     <>
-      {draftOrder && (
+      {isAdmin && (
         <>
           <SelectCategory />
           <Post contentEditable={isAdmin} postData={post} />
@@ -81,7 +88,7 @@ const DraftWriting: NextPage = () => {
         onClick={tempSaveDataToFireStoreDB}
         style={{ marginTop: 48, marginLeft: 24 }}
       >
-        Save to DB
+        임시 저장
       </button>
 
       <button onClick={publishPost} style={{ marginTop: 48, marginLeft: 24 }}>

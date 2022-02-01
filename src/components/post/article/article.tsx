@@ -1,26 +1,40 @@
-import { FC, memo } from 'react';
-import ArticleParagraphBlockWYSIWYG from './paragraph/article-paragraph-block-wysiwyg';
-import ArticleTitleBlockWYSIWYG from './title/article-title-block-wysiwyg';
+import { FC } from 'react';
+import {
+  IParagraphData,
+  TStatus,
+} from '../../../redux-toolkit/model/post-data-model';
+import WYSIWYG from './paragraph/wysiwyg';
+import TitleWYSIWYG from './title/title-wysiwyg';
 
 type Props = {
   contentEditable: boolean;
-  title: string;
-  dateTime: string;
-  publish?: boolean;
+  articleTitleWysiwygData: {
+    title: string;
+    dateTime: string;
+    status: TStatus;
+  };
+  wysiwygDataArray: IParagraphData[];
 };
 
-const Article: FC<Props> = ({ contentEditable, title, dateTime, publish }) => {
+const Article: FC<Props> = ({
+  contentEditable,
+  articleTitleWysiwygData,
+  wysiwygDataArray,
+}) => {
   return (
     <article>
-      <ArticleTitleBlockWYSIWYG
+      <TitleWYSIWYG
         contentEditable={contentEditable}
-        title={title}
-        dateTime={dateTime}
-        publish={publish}
+        title={articleTitleWysiwygData.title}
+        dateTime={articleTitleWysiwygData.dateTime}
+        status={articleTitleWysiwygData.status}
       />
-      <ArticleParagraphBlockWYSIWYG contentEditable={contentEditable} />
+      <WYSIWYG
+        contentEditable={contentEditable}
+        wysiwygDataArray={wysiwygDataArray}
+      />
     </article>
   );
 };
 
-export default memo(Article);
+export default Article;
