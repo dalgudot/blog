@@ -48,6 +48,7 @@ const EditableElementSwitch: FC<Props> = ({
   const dispatch = useAppDispatch();
   const datasLength = datas.length;
 
+  // new -> draft로 이동 시 첫 번째 블럭이 paragraph로 남는 현상 해결
   useEffect(() => {
     setType(blockType);
   }, [blockType]);
