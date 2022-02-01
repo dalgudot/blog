@@ -20,7 +20,6 @@ const LinkWYSIWYG: FC<Props> = ({ contentEditable, linkWysiwygDataArray }) => {
             <EditableElementSwitch
               wysiwygType='Link'
               key={data.blockId}
-              blockType={data.blockType}
               contentEditable={contentEditable}
               data={data}
               datas={linkWysiwygDataArray}

@@ -23,15 +23,6 @@ export const postSlice = createSlice({
         action.payload.inputHtml;
     },
 
-    setCurrentBlockImageDownloadURL: (
-      state,
-      action: PayloadAction<{ imageDownloadURL: string; currentIndex: number }>
-    ) => {
-      console.log('redux', action.payload.currentIndex);
-      state.post.wysiwygDataArray[action.payload.currentIndex].url =
-        action.payload.imageDownloadURL;
-    },
-
     setPostCategory: (state, action: PayloadAction<string>) => {
       state.post.category = action.payload;
     },
@@ -117,7 +108,6 @@ export const postSlice = createSlice({
 export const {
   setPostData,
   setCurrentBlockHtml,
-  setCurrentBlockImageDownloadURL,
   setPostCategory,
   setArticleTitleData,
   setBlockTypeData,

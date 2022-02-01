@@ -30,8 +30,6 @@ const DraftWriting: NextPage = () => {
   const draftOrder = router.query.order as string;
   const initializeClientData = useInitializeClientData();
 
-  console.log('draftOrder', draftOrder);
-
   useEffect(() => {
     draftOrder &&
       getDraftByOrder(draftOrder) //

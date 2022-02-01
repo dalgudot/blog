@@ -28,7 +28,6 @@ import EditableImageBlock from './editable-element/image/editable-image-block';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
-  blockType: TBlockType;
   contentEditable: boolean;
   data: IParagraphData;
   datas: IParagraphData[];
@@ -37,21 +36,25 @@ type Props = {
 
 const EditableElementSwitch: FC<Props> = ({
   wysiwygType,
-  blockType,
   contentEditable,
   data,
   datas,
   currentIndex,
 }) => {
-  const [text, setText] = useState<string>(data.html);
   const [type, setType] = useState<TBlockType>('Paragraph');
+  const [text, setText] = useState<string>('');
+
   const dispatch = useAppDispatch();
   const datasLength = datas.length;
 
   // new -> draft로 이동 시 첫 번째 블럭이 paragraph로 남는 현상 해결
   useEffect(() => {
-    setType(blockType);
-  }, [blockType]);
+    setType(data.blockType);
+  }, [data.blockType]);
+
+  useEffect(() => {
+    setText(data.html);
+  }, [data.html]);
 
   const changeBlockType = (e: ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault();
