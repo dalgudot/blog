@@ -25,7 +25,6 @@ const HeadForSEO: FC<TInfoForSEO> = ({ info }) => {
         name='viewport'
         content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover'
       /> */}
-
       {/* 기본 내장 */}
       {/* <meta charSet='utf-8' /> */}
 
