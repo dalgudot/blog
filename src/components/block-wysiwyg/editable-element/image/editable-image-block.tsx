@@ -9,7 +9,7 @@ import {
   uploadImageToStorage,
 } from '../../../../service/firebase/storage';
 import { setCurrentBlockTempImageDownloadURL } from '../../../../redux-toolkit/slices/temp-post-slice';
-import { setCurrentBlockImageDownloadURL } from '../../../../redux-toolkit/slices/post-slice';
+import { useToast } from '@dalgu/react-toast';
 
 type Props = {
   contentEditable: boolean;
@@ -41,6 +41,7 @@ const EditableImageBlock: FC<Props> = ({
   placeholder,
 }) => {
   const [image, setImage] = useState<string>(imageDownloadURL);
+  const { showToast } = useToast();
 
   const onInput = (e: ChangeEvent<HTMLElement>) => {
     const inputHtml = e.target.innerHTML;
@@ -55,17 +56,18 @@ const EditableImageBlock: FC<Props> = ({
 
   const fileHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
-    console.log('fileList', fileList);
-
     const file = fileList && fileList[0];
-    // console.log('file', file);
 
     if (file) {
       const blobUrl = URL.createObjectURL(file); // useEffect()의 return에서 revoke
       setImage(blobUrl); // 서버 저장 전 로컬에서 보여주기 위해
 
-      await uploadImageToStorage(file);
-      const imageDownloadURL = await getImageDownloadURL();
+      // images 폴더 안에 저장해두고 draft나 발행된 글 모두에서 고유한 URL로 접근!
+      // 이미지 파일명의 규칙 만들기!
+      const storageRef = `images/${file.name}`;
+      await uploadImageToStorage(file, storageRef);
+      showToast('서버 업로드 완료');
+      const imageDownloadURL = await getImageDownloadURL(storageRef);
 
       dispatch(
         setCurrentBlockTempImageDownloadURL({
@@ -73,15 +75,14 @@ const EditableImageBlock: FC<Props> = ({
           currentIndex,
         })
       );
+
+      showToast('URL 저장 완료');
     }
   };
 
-  // console.log('currentIndex', currentIndex);
-  console.log('image', `${currentIndex} ${image}`);
-
   useEffect(() => {
     return () => {
-      // URL.revokeObjectURL(blobUrl);
+      URL.revokeObjectURL(image);
     };
   }, [image]);
 

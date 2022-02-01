@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
+import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from 'react';
 import { TBlockType } from '../../redux-toolkit/model/text-data-model';
 import {
   addNewBlock,
@@ -44,10 +44,13 @@ const EditableElementSwitch: FC<Props> = ({
   currentIndex,
 }) => {
   const [text, setText] = useState<string>(data.html);
-  const [type, setType] = useState<TBlockType>(blockType);
-  // const [type, setType] = useState<TBlockType>('Image');
+  const [type, setType] = useState<TBlockType>('Paragraph');
   const dispatch = useAppDispatch();
   const datasLength = datas.length;
+
+  useEffect(() => {
+    setType(blockType);
+  }, [blockType]);
 
   const changeBlockType = (e: ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault();
