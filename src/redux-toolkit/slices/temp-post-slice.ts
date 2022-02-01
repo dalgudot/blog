@@ -23,6 +23,15 @@ export const tempPostSlice = createSlice({
         action.payload.inputHtml;
     },
 
+    setCurrentBlockTempImageDownloadURL: (
+      state,
+      action: PayloadAction<{ imageDownloadURL: string; currentIndex: number }>
+    ) => {
+      // console.log('redux', action.payload.currentIndex);
+      state.tempPost.wysiwygDataArray[action.payload.currentIndex].url =
+        action.payload.imageDownloadURL;
+    },
+
     setTempPostCategory: (state, action: PayloadAction<string>) => {
       state.tempPost.category = action.payload;
     },
@@ -134,6 +143,7 @@ export const tempPostSlice = createSlice({
 export const {
   setTempPostData,
   setCurrentBlockTempHtml,
+  setCurrentBlockTempImageDownloadURL,
   setTempPostCategory,
   setTempArticleTitleData,
   setTempArticleDateTimeData,

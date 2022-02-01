@@ -18,7 +18,6 @@ import {
   getDraftByOrder,
   getEachAllCollectionDataArray,
   saveDataToFireStoreDB,
-  updateTimestamp,
 } from '../../service/firebase/firestore';
 
 const DraftWriting: NextPage = () => {
@@ -31,9 +30,11 @@ const DraftWriting: NextPage = () => {
   const draftOrder = router.query.order as string;
   const initializeClientData = useInitializeClientData();
 
+  console.log('draftOrder', draftOrder);
+
   useEffect(() => {
     draftOrder &&
-      getDraftByOrder(draftOrder as string) //
+      getDraftByOrder(draftOrder) //
         .then((draftData) => {
           const initializeDraftData = () => {
             dispatch(setPostData(draftData as IPostData)); // 초기화 및 map() 상태 관리(새로운 블럭 그리는 일 등)
@@ -49,7 +50,7 @@ const DraftWriting: NextPage = () => {
 
   const tempSaveDataToFireStoreDB = async () => {
     await saveDataToFireStoreDB(draftCollectionRefName, draftOrder, tempPost);
-    showToast('임시 저장 완료');
+    showToast('서버에 저장 완료');
   };
 
   const publishPost = async () => {
@@ -69,11 +70,12 @@ const DraftWriting: NextPage = () => {
 
     // [환경 변수 설정] production인 경우 toast, localhost의 경우 만들어진 경로로 바로 이동.
     process.env.NODE_ENV === 'production'
-      ? showToast('발행 완료')
+      ? showToast('발행 완료') // getStaticProps로 만들어진 페이지라 빌드 후 페이지가 생기기 때문
       : router.push('/[category]/[order]', `/${category}/${newPathOrder}`);
   };
 
-  // console.log(tempPost);
+  console.log('post', post.wysiwygDataArray);
+  // console.log('tempPost', tempPost.wysiwygDataArray);
 
   return (
     <>

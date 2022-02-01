@@ -2,7 +2,6 @@ import {
   collection,
   doc,
   DocumentData,
-  FieldValue,
   getDoc,
   getDocs,
   QuerySnapshot,
@@ -11,12 +10,9 @@ import {
   updateDoc,
   WithFieldValue,
 } from 'firebase/firestore';
-import { getDB, initializeFirebaseApp } from './config';
 import { IPostData } from '../../redux-toolkit/model/post-data-model';
-import { getDate } from '../../lib/utils/get-date';
+import { db } from './config';
 
-initializeFirebaseApp();
-const db = getDB();
 export const devCollectionRefName = 'dev';
 export const designCollectionRefName = 'design';
 export const draftCollectionRefName = 'draft';
