@@ -2,6 +2,8 @@ import { NextPage } from 'next';
 import Link from 'next/link';
 import List from '../components/navigation/post/list';
 import { useIsAdmin } from '../lib/hooks/useIsAdmin';
+import HeadForSEO, { TInfoForSEO } from '../SEO/headForSEO';
+import { indexInfo } from '../SEO/index/index-info';
 import { getAllCollectionDataArray } from '../service/firebase/firestore';
 
 type Props = {
@@ -10,16 +12,17 @@ type Props = {
     order: string;
     title: string;
   }[];
+
+  indexInfoForSEO: TInfoForSEO;
 };
 
 // rule: 페이지 컴포넌트에서는 데이터를 전달하기만 한다 -> 나만의 리액트 클린 아키텍처 만들기
-const Index: NextPage<Props> = ({ allPostsListData }) => {
+const Index: NextPage<Props> = ({ allPostsListData, indexInfoForSEO }) => {
   const { isAdmin } = useIsAdmin();
-
-  console.log(allPostsListData);
 
   return (
     <>
+      <HeadForSEO info={indexInfoForSEO.info} />
       {/* 404 방지 위해 개발과 디자인 각각 파일 만들어주는 게 좋음. */}
       <Link href='/'>
         <a>전체</a>
@@ -64,17 +67,17 @@ export default Index;
 export const getStaticProps = async () => {
   // firestore db에서 List를 그릴 title 데이터, seo 데이터(로컬) 받아옴.
   const allPosts = await getAllCollectionDataArray();
-  console.log('allPost', allPosts);
-
   const allPostsListData = allPosts.map((post) => ({
     category: post.category,
     order: post.order,
     title: post.title,
   }));
 
+  const indexInfoForSEO = indexInfo;
+
   // 리스트 디자인이 끝난 뒤 브런치 링크 넣기
 
   return {
-    props: { allPostsListData },
+    props: { allPostsListData, indexInfoForSEO },
   };
 };

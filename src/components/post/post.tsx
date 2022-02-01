@@ -34,4 +34,4 @@ const Post: FC<Props> = ({ contentEditable, postData }) => {
   );
 };
 
-export default Post;
+export default memo(Post);
