@@ -21,8 +21,8 @@ const BlogApp = ({ Component, pageProps }: AppProps) => {
       {!isPost && <HeadForSEO info={indexInfo.info} />}
       <Provider store={store}>
         <ThemeProvider>
+          <Header />
           <ToastProvider>
-            <Header />
             <Component {...pageProps} />
           </ToastProvider>
         </ThemeProvider>
