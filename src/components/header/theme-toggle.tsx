@@ -8,6 +8,7 @@ import { FC, useEffect, useRef, useState } from 'react';
 const ThemeToggle: FC = () => {
   const mounted = useMounted();
   const { theme, setTheme } = useTheme();
+
   const themeHandler = () => {
     theme === 'dark' ? setTheme('light') : setTheme('dark');
   };
@@ -31,8 +32,6 @@ type Props = {
 const RotateButton: FC<Props> = ({ themeHandler, children }) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [isRotate, setIsRotate] = useState<boolean | null>(null);
-
-  console.log(isRotate);
 
   useEffect(() => {
     const animate = () => {
@@ -67,13 +66,6 @@ const RotateButton: FC<Props> = ({ themeHandler, children }) => {
       >
         {children}
       </button>
-
-      <style jsx>{`
-        button {
-          padding: 12px;
-          margin: 0 -12px;
-        }
-      `}</style>
     </>
   );
 };

@@ -7,6 +7,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 .blog__name {
@@ -21,6 +25,8 @@
   button {
     display: flex;
     align-items: center;
+    padding: 12px;
+    margin: 0 -12px;
   }
 }
 
