@@ -8,10 +8,17 @@ import { Provider } from 'react-redux';
 import store from '../redux-toolkit/store';
 import { ThemeProvider } from 'next-themes';
 import Header from '../components/header/header';
+import HeadForSEO from '../SEO/headForSEO';
+import { indexInfo } from '../SEO/index/index-info';
+import { useRouter } from 'next/router';
 
 const BlogApp = ({ Component, pageProps }: AppProps) => {
+  const router = useRouter();
+  const isPost = router.pathname === '/[category]/[order]';
+
   return (
     <>
+      {!isPost && <HeadForSEO info={indexInfo.info} />}
       <Provider store={store}>
         <ThemeProvider>
           <ToastProvider>
