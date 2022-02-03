@@ -28,7 +28,7 @@ const TitleWYSIWYG: FC<Props> = ({
   // published 상태일 때는 갱신하지 않음
   const { dateForSEO, dateForDisplay } = getDate();
   const isStatusPublished = status === 'published';
-  const displayDateTime = dateTime.replaceAll('-', '.');
+  const displayDateTime = dateTime && dateTime.replaceAll('-', '.');
   const seoDate: string = isStatusPublished ? dateTime : dateForSEO;
   const displayDate: string = isStatusPublished
     ? displayDateTime
