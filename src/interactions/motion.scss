@@ -1,9 +1,5 @@
 $bezier-1: cubic-bezier(0.2, 0.6, 0.35, 1);
 
-// :export {
-//   bezier-1: $bezier-1;
-// }
-
 @mixin rotate__hover {
   transform: rotateZ(0turn);
   transition: transform 0.4s $bezier-1;
