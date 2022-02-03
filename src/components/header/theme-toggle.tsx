@@ -1,8 +1,7 @@
 import { useMounted } from '@dalgu/react-utility-hooks';
 import { useTheme } from 'next-themes';
 import IconTheme24 from '../../svg/icon-theme-24';
-import motion from '../../interactions/motion.module.scss';
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC } from 'react';
 import { useHoverRotate } from '../../interactions/hooks/useHoverRotate';
 
 // https://github.com/pacocoursey/next-themes
