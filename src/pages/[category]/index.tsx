@@ -1,16 +1,11 @@
 import { NextPage } from 'next';
-import HomeList from '../components/navigation/post/home-list';
+import { TListData } from '..';
+import HomeList from '../../components/navigation/post/home-list';
 import {
   designCollectionRefName,
   devCollectionRefName,
   getEachAllCollectionDataArray,
-} from '../service/firebase/firestore';
-
-export type TListData = {
-  category: string;
-  order: string;
-  title: string;
-}[];
+} from '../../service/firebase/firestore';
 
 type Props = {
   designPostListData: TListData;
@@ -18,7 +13,7 @@ type Props = {
   allPostsListData: TListData;
 };
 
-const Index: NextPage<Props> = ({
+const Category: NextPage<Props> = ({
   designPostListData,
   devPostListData,
   allPostsListData,
@@ -32,7 +27,7 @@ const Index: NextPage<Props> = ({
   );
 };
 
-export default Index;
+export default Category;
 
 export const getStaticProps = async () => {
   const designPost = await getEachAllCollectionDataArray(
@@ -62,4 +57,13 @@ export const getStaticProps = async () => {
   return {
     props: { designPostListData, devPostListData, allPostsListData },
   };
+};
+
+export const getStaticPaths = async () => {
+  const paths = [
+    { params: { category: 'design' } },
+    { params: { category: 'dev' } },
+  ];
+
+  return { paths, fallback: false };
 };

@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FC } from 'react';
+import { FC, useEffect, useRef } from 'react';
+import { useAfterInitialMount } from '../../lib/hooks/useAfterInitialMount';
 import styles from './header.module.scss';
 
 type TGNBList = {
@@ -51,30 +52,41 @@ type Props = {
 const GNBList: FC<Props> = ({ list }) => {
   const router = useRouter();
   const pathname = router.pathname;
-  const isSelected = pathname === list.href;
+  const currentStatus =
+    pathname === '/' || pathname === '/[category]'
+      ? '기록'
+      : pathname === '/story'
+      ? '이야기'
+      : pathname === '/story'
+      ? '연락처'
+      : null;
+
+  const isSelected = currentStatus === list.label;
   const listClassname = classNames(
     styles.list,
     isSelected && styles.selected__list
   );
+
+  // const afterInitialMount = useAfterInitialMount();
+  // const underLineClassname = classNames(
+  //   styles.under__line,
+  //   afterInitialMount && isSelected && styles.under__line__motion
+  // );
 
   return (
     <>
       <li className={listClassname}>
         {list.target === '_self' ? (
           <Link href={list.href}>
-            <a className='body3__400'>{list.label}</a>
+            <a className='body3__300'>{list.label}</a>
           </Link>
         ) : (
-          <a className='body3__400' href={list.href} target={list.target}>
+          <a className='body3__300' href={list.href} target={list.target}>
             {list.label}
           </a>
         )}
-        {isSelected && <UnderLineMotion />}
+        {isSelected && <div className={styles.under__line} />}
       </li>
     </>
   );
-};
-
-const UnderLineMotion: FC = () => {
-  return <div className={styles.under__line__motion} />;
 };

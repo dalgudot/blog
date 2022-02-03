@@ -28,7 +28,7 @@ const TitleWYSIWYG: FC<Props> = ({
   // published 상태일 때는 갱신하지 않음
   const { dateForSEO, dateForDisplay } = getDate();
   const isStatusPublished = status === 'published';
-  const displayDateTime = dateTime.replaceAll('-', '.');
+  const displayDateTime = dateTime && dateTime.replaceAll('-', '.');
   const seoDate: string = isStatusPublished ? dateTime : dateForSEO;
   const displayDate: string = isStatusPublished
     ? displayDateTime
@@ -51,9 +51,7 @@ const TitleWYSIWYG: FC<Props> = ({
   return (
     <>
       <section className={styles.article__title__section}>
-        <time dateTime={seoDate}>
-          <p>{displayDate}</p>
-        </time>
+        <time dateTime={seoDate}>{displayDate}</time>
         <EditableTextBlock
           blockType='Heading1'
           contentEditable={contentEditable}
