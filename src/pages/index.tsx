@@ -3,6 +3,7 @@ import Link from 'next/link';
 import List from '../components/navigation/post/list';
 import { useIsAdmin } from '../lib/hooks/useIsAdmin';
 import { getAllCollectionDataArray } from '../service/firebase/firestore';
+import styles from '../styles/index.module.scss';
 
 type Props = {
   allPostsListData: {
@@ -27,8 +28,8 @@ const Index: NextPage<Props> = ({ allPostsListData }) => {
       </Link>
       <Link href='/' as='/design'>
         <a>디자인</a>
-      </Link>
-      <main>
+      </Link> */}
+      <main className={styles.main__layout}>
         <nav>
           <ul>
             {allPostsListData.map((listData, idx) => (
@@ -42,7 +43,7 @@ const Index: NextPage<Props> = ({ allPostsListData }) => {
           </ul>
         </nav>
       </main>
-      {isAdmin && (
+      {/* {isAdmin && (
         <>
           <Link href='/draft/list'>
             <a>초고 목록 보기</a>
