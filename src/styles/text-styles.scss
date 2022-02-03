@@ -1,27 +1,27 @@
-h1 {
-  font-size: 34px;
-  font-weight: 400;
+// 하나의 클래스로 반응형까지 대응할 수 있어야 함! -> 지금의 이름은 적절하지 않음.
+.body1__400 {
+  font-size: 20px;
+  font-weight: 500;
+  // line-height: ~;
+
+  @media screen and (max-width: 1350px) {
+  }
 }
 
-h2 {
-  font-size: 29px;
-  font-weight: 400;
+.body1__500 {
+  font-size: 20px;
+  font-weight: 500;
+  // line-height: ~;
+
+  @media screen and (max-width: 1350px) {
+  }
 }
 
-h3 {
-  font-size: 21px;
-  font-weight: 400;
-}
-
-p {
-  font-size: 18px;
-  font-weight: 400;
-}
-
-.fs__16 {
+.body3__400 {
   font-size: 16px;
-}
+  font-weight: 400;
+  // line-height: ~;
 
-// @mixin fs__16 {
-//   font-size: 16px;
-// }
+  @media screen and (max-width: 1350px) {
+  }
+}

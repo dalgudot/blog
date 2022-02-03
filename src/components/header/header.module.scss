@@ -16,8 +16,6 @@
 }
 
 .blog__name {
-  font-size: 20px;
-  font-weight: 500;
   letter-spacing: 0.6px;
 }
 
@@ -45,6 +43,11 @@
       background-color: rgba(var(--p7-rgb), 0.1);
       transition: background-color 0.4s $bezier-1;
     }
+  }
+
+  &:active {
+    background-color: rgba(var(--p7-rgb), 0.2);
+    transition: background-color 0.4s $bezier-1;
   }
 
   a {

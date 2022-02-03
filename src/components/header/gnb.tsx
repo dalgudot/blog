@@ -52,20 +52,20 @@ const GNBList: FC<Props> = ({ list }) => {
   const router = useRouter();
   const pathname = router.pathname;
   const isSelected = pathname === list.href;
-  const listClassName = classNames(
+  const listClassname = classNames(
     styles.list,
     isSelected && styles.selected__list
   );
 
   return (
     <>
-      <li className={listClassName}>
+      <li className={listClassname}>
         {list.target === '_self' ? (
           <Link href={list.href}>
-            <a className='fs__16'>{list.label}</a>
+            <a className='body3__400'>{list.label}</a>
           </Link>
         ) : (
-          <a className='fs__16' href={list.href} target={list.target}>
+          <a className='body3__400' href={list.href} target={list.target}>
             {list.label}
           </a>
         )}
