@@ -1,38 +1,23 @@
-$bezier-1: cubic-bezier(0.21, 0.6, 0.35, 1);
+$bezier-1: cubic-bezier(0.2, 0.6, 0.35, 1);
 
-.rotate {
-  animation: 0.4s $bezier-1 rotate;
-  animation-fill-mode: forwards;
-}
+@mixin rotate__hover() {
+  transform: rotateZ(0turn);
+  transition: transform 0.4s $bezier-1;
 
-.rotate__reverse {
-  animation: 0.4s $bezier-1 rotate__reverse;
-  animation-fill-mode: forwards;
-}
-
-@keyframes rotate {
-  from {
-    transform: rotateZ(0turn);
+  @media (hover: hover) {
+    &:hover {
+      transform: rotateZ(0.5turn);
+      transition: transform 0.4s $bezier-1;
+    }
   }
 
-  to {
-    transform: rotateZ(0.5turn);
-  }
+  @include scale__avtive();
 }
 
-@keyframes rotate__reverse {
-  from {
-    transform: rotateZ(0.5turn);
-  }
-
-  to {
-    transform: rotateZ(0turn);
-  }
-}
-
-.hover__rotate {
-  :hover {
-    transform: rotateZ(0.5turn);
-    // transition: transform 0.4s $bezier-1;
+@mixin scale__avtive() {
+  &:active {
+    transform: scale(0.8);
+    opacity: 0.9;
+    transition: transform 0.4s, opacity 0.3s $bezier-1;
   }
 }

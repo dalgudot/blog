@@ -39,7 +39,6 @@ a:link,
 a:visited,
 a:hover,
 a:active {
-  /* color: transparent; */
   -webkit-tap-highlight-color: transparent;
 }
 
