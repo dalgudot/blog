@@ -1,6 +1,7 @@
 import { NextPage } from 'next';
-import { TListData } from '..';
+import { TBrunchListData, TListData } from '..';
 import HomeList from '../../components/navigation/post/home-list';
+import { brunchList } from '../../data/brunch-list';
 import {
   designCollectionRefName,
   devCollectionRefName,
@@ -11,18 +12,21 @@ type Props = {
   designPostListData: TListData;
   devPostListData: TListData;
   allPostsListData: TListData;
+  brunchListData: TBrunchListData;
 };
 
 const Category: NextPage<Props> = ({
   designPostListData,
   devPostListData,
   allPostsListData,
+  brunchListData,
 }) => {
   return (
     <HomeList
       designPostListData={designPostListData}
       devPostListData={devPostListData}
       allPostsListData={allPostsListData}
+      brunchListData={brunchListData}
     />
   );
 };
@@ -54,8 +58,15 @@ export const getStaticProps = async () => {
     title: post.title,
   }));
 
+  const brunchListData = brunchList;
+
   return {
-    props: { designPostListData, devPostListData, allPostsListData },
+    props: {
+      designPostListData,
+      devPostListData,
+      allPostsListData,
+      brunchListData,
+    },
   };
 };
 

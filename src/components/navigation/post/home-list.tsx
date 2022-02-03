@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
-import { brunchList } from '../../../data/brunch-list';
 import { useIsAdmin } from '../../../lib/hooks/useIsAdmin';
+import { TBrunchListData } from '../../../pages';
 import BrunchList from './brunch-list';
 import styles from './home-list.module.scss';
 import List from './list';
@@ -18,12 +18,14 @@ type Props = {
   designPostListData: TListData;
   devPostListData: TListData;
   allPostsListData: TListData;
+  brunchListData: TBrunchListData;
 };
 
 const HomeList: FC<Props> = ({
   designPostListData,
   devPostListData,
   allPostsListData,
+  brunchListData,
 }) => {
   const { isAdmin } = useIsAdmin();
   const router = useRouter();
@@ -52,7 +54,7 @@ const HomeList: FC<Props> = ({
               />
             ))}
             {showBrunchList &&
-              brunchList.map((list) => (
+              brunchListData.map((list) => (
                 <BrunchList
                   key={list.title}
                   url={list.url}
