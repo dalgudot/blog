@@ -37,16 +37,53 @@
 }
 
 .list {
-  width: 94px;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 112px;
+  position: relative;
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: rgba(var(--p7-rgb), 0.1);
+      transition: background-color 0.4s $bezier-1;
+    }
+  }
+
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin-top: 1px; // 시각 보정
+  }
 }
 
 .selected__list {
+  position: relative;
+
   a {
-    color: var(--p);
+    color: var(--p8);
+    transition: 0.1s;
+  }
+}
+
+.under__line__motion {
+  width: 100%;
+  height: 1px;
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  display: flex; // key
+  background-color: var(--p7);
+  animation: under__line__animation 0.3s $bezier-1 forwards;
+}
+
+@keyframes under__line__animation {
+  from {
+    width: 0%;
+  }
+
+  to {
+    width: 100%;
   }
 }
 

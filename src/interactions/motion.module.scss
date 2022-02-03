@@ -1,6 +1,10 @@
 $bezier-1: cubic-bezier(0.2, 0.6, 0.35, 1);
 
-@mixin rotate__hover() {
+:export {
+  bezier-1: $bezier-1;
+}
+
+@mixin rotate__hover {
   transform: rotateZ(0turn);
   transition: transform 0.4s $bezier-1;
 
@@ -11,10 +15,10 @@ $bezier-1: cubic-bezier(0.2, 0.6, 0.35, 1);
     }
   }
 
-  @include scale__avtive();
+  @include scale__avtive;
 }
 
-@mixin scale__avtive() {
+@mixin scale__avtive {
   &:active {
     transform: scale(0.8);
     opacity: 0.9;

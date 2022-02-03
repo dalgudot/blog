@@ -51,7 +51,7 @@ type Props = {
 const GNBList: FC<Props> = ({ list }) => {
   const router = useRouter();
   const pathname = router.pathname;
-  const isSelected: boolean = pathname === list.href;
+  const isSelected = pathname === list.href;
   const listClassName = classNames(
     styles.list,
     isSelected && styles.selected__list
@@ -69,7 +69,12 @@ const GNBList: FC<Props> = ({ list }) => {
             {list.label}
           </a>
         )}
+        {isSelected && <UnderLineMotion />}
       </li>
     </>
   );
+};
+
+const UnderLineMotion: FC = () => {
+  return <div className={styles.under__line__motion} />;
 };
