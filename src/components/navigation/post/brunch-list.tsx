@@ -7,14 +7,14 @@ type Props = {
 };
 
 const BrunchList: React.FC<Props> = ({ url, dateTime, title }) => {
-  const displayDateTime = dateTime && dateTime.replaceAll('-', '.');
+  // const displayDateTime = dateTime && dateTime.replaceAll('-', '.');
 
   return (
     <>
       <li className={styles.post__list}>
         <a href={url} target='_blank' rel='noreferrer'>
           <time dateTime={dateTime} className='body4__300'>
-            {displayDateTime}
+            {/* {displayDateTime} */}
           </time>
           <h1 className='title2__500'>{title}</h1>
         </a>
