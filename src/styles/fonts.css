@@ -26,14 +26,14 @@
   unicode-range: U+AC00-D7A3;
 }
 
-/* @font-face {
+@font-face {
   font-family: 'BlogTextStyles';
   font-style: normal;
   font-weight: 500;
   src: url('/fonts/NotoSansKR/NotoSansKR-Medium.woff2') format('woff2'),
     url('/fonts/NotoSansKR/NotoSansKR-Medium.woff') format('woff');
-    unicode-range: U+AC00-D7A3;
-} */
+  unicode-range: U+AC00-D7A3;
+}
 
 @font-face {
   font-family: 'BlogTextStyles';

@@ -1,16 +1,20 @@
-import { useGetClientTempPostData } from '../../lib/hooks/useGetClientTempPostData';
 import ThemeToggle from './theme-toggle';
+import Link from 'next/link';
+import styles from './header.module.scss';
+import GNB from './gnb';
 
 const Header: React.FC = () => {
-  const { tempPost } = useGetClientTempPostData();
-  // console.log('tempPost', tempPost);
-  // 어디서든 tempPost 변화 보기 위해서
-
   return (
-    <>
-      {/* <h1>Header</h1> */}
-      {/* <ThemeToggle /> */}
-    </>
+    <header className={styles.header}>
+      <Link href='/'>
+        <a className={styles.blog__name}>경험의 기록</a>
+      </Link>
+
+      <div className={styles.right}>
+        <GNB />
+        <ThemeToggle />
+      </div>
+    </header>
   );
 };
 

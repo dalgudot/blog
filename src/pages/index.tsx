@@ -19,7 +19,7 @@ const Index: NextPage<Props> = ({ allPostsListData }) => {
   return (
     <>
       {/* 404 방지 위해 개발과 디자인 각각 파일 만들어주는 게 좋음. */}
-      <Link href='/'>
+      {/* <Link href='/'>
         <a>전체</a>
       </Link>
       <Link href='/' as='/dev'>
@@ -51,7 +51,7 @@ const Index: NextPage<Props> = ({ allPostsListData }) => {
             <a>글쓰기</a>
           </Link>
         </>
-      )}
+      )} */}
     </>
   );
 };
