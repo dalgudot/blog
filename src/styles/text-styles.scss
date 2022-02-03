@@ -1,0 +1,27 @@
+// 하나의 클래스로 반응형까지 대응할 수 있어야 함! -> 지금의 이름은 적절하지 않음.
+.body1__400 {
+  font-size: 20px;
+  font-weight: 500;
+  // line-height: ~;
+
+  @media screen and (max-width: 1350px) {
+  }
+}
+
+.body1__500 {
+  font-size: 20px;
+  font-weight: 500;
+  // line-height: ~;
+
+  @media screen and (max-width: 1350px) {
+  }
+}
+
+.body3__400 {
+  font-size: 16px;
+  font-weight: 400;
+  // line-height: ~;
+
+  @media screen and (max-width: 1350px) {
+  }
+}
