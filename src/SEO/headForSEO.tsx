@@ -13,7 +13,7 @@ export type TInfoForSEO = {
 
 const HeadForSEO: FC<TInfoForSEO> = ({ info }) => {
   // Common
-  const icoImage = 'record.ico';
+  const icoImage = '/record.ico';
   const author = '김경환';
   const keywords =
     '김경환, 디자이너, 프로덕트 디자이너, designer, product designer, 디자인, 프로덕트 디자인, 디지털 프로덕트 디자인, design, product design, digital product design, UI, UX, 디자인, UI/UX, UX/UI, UI/UX 디자인, UX/UI 디자인, 블로그, 디자인 블로그, 기술 블로그, 브런치, 디자인 아티클, blog, brunch, Typescript, React, NextJS, HTML, CSS, Javascript';
