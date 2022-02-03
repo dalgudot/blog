@@ -1,13 +1,13 @@
 .post__list {
+  padding-top: 96px;
+  border-bottom: var(--g10) 1px solid;
+
   time {
     color: var(--g7);
-    margin-left: 2px; // 시각 보정
+    padding-left: 2px; // 시각 보정
   }
 
   h1 {
-    margin: 8px 0 56px;
-    margin-left: 1px; // 시각 보정
+    padding: 12px 0 96px; // 터치 영역 위해
   }
-
-  border-bottom: var(--g10) 1px solid;
 }

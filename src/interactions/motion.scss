@@ -1,8 +1,8 @@
 $bezier-1: cubic-bezier(0.2, 0.6, 0.35, 1);
 
-:export {
-  bezier-1: $bezier-1;
-}
+// :export {
+//   bezier-1: $bezier-1;
+// }
 
 @mixin rotate__hover {
   transform: rotateZ(0turn);
@@ -23,5 +23,19 @@ $bezier-1: cubic-bezier(0.2, 0.6, 0.35, 1);
     transform: scale(0.8);
     opacity: 0.9;
     transition: transform 0.4s, opacity 0.3s $bezier-1;
+  }
+}
+
+@mixin opacity__hover {
+  @media (hover: hover) {
+    &:hover {
+      background-color: rgba(var(--p7-rgb), 0.1);
+      transition: background-color 0.4s $bezier-1;
+    }
+  }
+
+  &:active {
+    background-color: rgba(var(--p7-rgb), 0.3);
+    transition: background-color 0.4s $bezier-1;
   }
 }

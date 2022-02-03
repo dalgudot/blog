@@ -51,18 +51,7 @@
 .list {
   width: 120px;
   position: relative;
-
-  @media (hover: hover) {
-    &:hover {
-      background-color: rgba(var(--p7-rgb), 0.1);
-      transition: background-color 0.4s motion.$bezier-1;
-    }
-  }
-
-  &:active {
-    background-color: rgba(var(--p7-rgb), 0.3);
-    transition: background-color 0.4s motion.$bezier-1;
-  }
+  @include motion.opacity__hover;
 
   a {
     display: flex;
@@ -76,7 +65,7 @@
 
 .selected__list {
   a {
-    color: var(--p8);
+    color: var(--p7);
     font-weight: 500;
     transition: 0.1s;
   }

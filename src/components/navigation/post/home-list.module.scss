@@ -1,0 +1,32 @@
+@use '../../../styles/common';
+@use '../../../interactions/motion';
+
+.main__layout {
+  margin: 0 auto 144px;
+  max-width: common.$list__max__width;
+}
+
+.category__filter {
+  margin: 96px auto -16px;
+  max-width: common.$list__max__width;
+
+  a {
+    padding: 8px 12px;
+    border: var(--g10) 1px solid;
+    @include motion.opacity__hover;
+  }
+
+  a:nth-child(2) {
+    margin-left: 12px;
+  }
+
+  a:nth-child(3) {
+    margin-left: 12px;
+  }
+}
+
+.category__filter__selected {
+  color: var(--p7);
+  border: var(--p7) 1px solid !important;
+  font-weight: 500;
+}

@@ -52,17 +52,26 @@ type Props = {
 const GNBList: FC<Props> = ({ list }) => {
   const router = useRouter();
   const pathname = router.pathname;
-  const isSelected = pathname === list.href;
+  const currentStatus =
+    pathname === '/' || pathname === '/[category]'
+      ? '기록'
+      : pathname === '/story'
+      ? '이야기'
+      : pathname === '/story'
+      ? '연락처'
+      : null;
+
+  const isSelected = currentStatus === list.label;
   const listClassname = classNames(
     styles.list,
     isSelected && styles.selected__list
   );
 
-  const afterInitialMount = useAfterInitialMount();
-  const underLineClassname = classNames(
-    styles.under__line,
-    afterInitialMount && isSelected && styles.under__line__motion
-  );
+  // const afterInitialMount = useAfterInitialMount();
+  // const underLineClassname = classNames(
+  //   styles.under__line,
+  //   afterInitialMount && isSelected && styles.under__line__motion
+  // );
 
   return (
     <>
@@ -76,7 +85,7 @@ const GNBList: FC<Props> = ({ list }) => {
             {list.label}
           </a>
         )}
-        {isSelected && <div className={underLineClassname} />}
+        {isSelected && <div className={styles.under__line} />}
       </li>
     </>
   );
