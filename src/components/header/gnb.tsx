@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FC } from 'react';
+import { FC, useEffect, useRef } from 'react';
+import { useAfterInitialMount } from '../../lib/hooks/useAfterInitialMount';
 import styles from './header.module.scss';
 
 type TGNBList = {
@@ -57,24 +58,26 @@ const GNBList: FC<Props> = ({ list }) => {
     isSelected && styles.selected__list
   );
 
+  const afterInitialMount = useAfterInitialMount();
+  const underLineClassname = classNames(
+    styles.under__line,
+    afterInitialMount && isSelected && styles.under__line__motion
+  );
+
   return (
     <>
       <li className={listClassname}>
         {list.target === '_self' ? (
           <Link href={list.href}>
-            <a className='body3__400'>{list.label}</a>
+            <a className='body3__300'>{list.label}</a>
           </Link>
         ) : (
-          <a className='body3__400' href={list.href} target={list.target}>
+          <a className='body3__300' href={list.href} target={list.target}>
             {list.label}
           </a>
         )}
-        {isSelected && <UnderLineMotion />}
+        {isSelected && <div className={underLineClassname} />}
       </li>
     </>
   );
-};
-
-const UnderLineMotion: FC = () => {
-  return <div className={styles.under__line__motion} />;
 };

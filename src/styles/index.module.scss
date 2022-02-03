@@ -1,9 +1,6 @@
 @use 'common';
 
 .main__layout {
-  margin-top: 96px;
+  margin: 96px auto 0;
   max-width: common.$list__max__width;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }

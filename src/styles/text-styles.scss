@@ -1,6 +1,33 @@
-@mixin body1__400 {
-  font-size: 20px;
+@mixin title1__500 {
+  font-size: 43px;
   font-weight: 500;
+  // line-height: ~;
+
+  @media screen and (max-width: 1350px) {
+  }
+}
+
+@mixin title2__500 {
+  font-size: 33px;
+  font-weight: 500;
+  // line-height: ~;
+
+  @media screen and (max-width: 1350px) {
+  }
+}
+
+@mixin title3__500 {
+  font-size: 27px;
+  font-weight: 500;
+  // line-height: ~;
+
+  @media screen and (max-width: 1350px) {
+  }
+}
+
+@mixin body1__300 {
+  font-size: 20px;
+  font-weight: 300;
   // line-height: ~;
 
   @media screen and (max-width: 1350px) {
@@ -16,25 +43,102 @@
   }
 }
 
-@mixin body3__400 {
-  font-size: 16px;
-  font-weight: 400;
+@mixin body2__300 {
+  font-size: 18px;
+  font-weight: 300;
   // line-height: ~;
 
   @media screen and (max-width: 1350px) {
   }
 }
 
-.body1__400 {
-  @include body1__400;
+@mixin body2__500 {
+  font-size: 18px;
+  font-weight: 500;
+  // line-height: ~;
+
+  @media screen and (max-width: 1350px) {
+  }
+}
+
+@mixin body3__300 {
+  font-size: 16px;
+  font-weight: 300;
+  // line-height: ~;
+
+  @media screen and (max-width: 1350px) {
+  }
+}
+
+@mixin body3__500 {
+  font-size: 16px;
+  font-weight: 500;
+  // line-height: ~;
+
+  @media screen and (max-width: 1350px) {
+  }
+}
+
+@mixin body4__300 {
+  font-size: 14px;
+  font-weight: 300;
+  // line-height: ~;
+
+  @media screen and (max-width: 1350px) {
+  }
+}
+
+@mixin body4__500 {
+  font-size: 14px;
+  font-weight: 500;
+  // line-height: ~;
+
+  @media screen and (max-width: 1350px) {
+  }
+}
+
+.title1__500 {
+  @include title1__500;
+}
+
+.title2__500 {
+  @include title2__500;
+}
+
+.title3__500 {
+  @include title3__500;
+}
+
+.body1__300 {
+  @include body1__300;
 }
 
 .body1__500 {
   @include body1__500;
 }
 
-.body3__400 {
-  @include body3__400;
+.body2__300 {
+  @include body2__300;
+}
+
+.body2__500 {
+  @include body2__500;
+}
+
+.body3__300 {
+  @include body3__300;
+}
+
+.body3__500 {
+  @include body3__500;
+}
+
+.body4__300 {
+  @include body4__300;
+}
+
+.body4__500 {
+  @include body4__500;
 }
 
 // h1 {
@@ -50,5 +154,5 @@
 // }
 
 p {
-  @include body1__400;
+  @include body1__300;
 }

@@ -77,18 +77,22 @@
 .selected__list {
   a {
     color: var(--p8);
+    font-weight: 500;
     transition: 0.1s;
   }
 }
 
-.under__line__motion {
-  // width: 100%;
+.under__line {
+  width: 100%;
   height: 1px;
   position: absolute;
   left: 0;
   bottom: -1px;
   display: flex; // key
   background-color: var(--p7);
+}
+
+.under__line__motion {
   animation: under__line__animation 0.3s motion.$bezier-1 forwards;
 }
 
