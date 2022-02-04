@@ -1,3 +1,5 @@
+import { TStatus } from './../../redux-toolkit/model/post-data-model';
+
 export const getDate = () => {
   const today = new Date();
   const year = String(today.getFullYear());
@@ -15,4 +17,18 @@ export const getDate = () => {
   const dateForDisplay: string = `${year}.${month}.${date}`;
 
   return { today, year, month, date, dateForSEO, dateForDisplay };
+};
+
+export const checkPublishedDate = (status: TStatus, dateTime: string) => {
+  // status에 따라 날짜를 갱신할지 하지 않을지 결정
+  // published 상태일 때는 갱신하지 않음
+  const { dateForSEO, dateForDisplay } = getDate();
+  const isStatusPublished = status === 'published';
+  const displayDateTime = dateTime && dateTime.replaceAll('-', '.');
+  const seoDate: string = isStatusPublished ? dateTime : dateForSEO;
+  const displayDate: string = isStatusPublished
+    ? displayDateTime
+    : dateForDisplay;
+
+  return { seoDate, displayDate };
 };

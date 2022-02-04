@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import { getDate } from '../../../../lib/utils/get-date';
+import { checkPublishedDate, getDate } from '../../../../lib/utils/get-date';
 import { TStatus } from '../../../../redux-toolkit/model/post-data-model';
 import { setArticleTitleData } from '../../../../redux-toolkit/slices/post-slice';
 import {
@@ -24,16 +24,7 @@ const TitleWYSIWYG: FC<Props> = ({
   dateTime,
   status,
 }) => {
-  // status에 따라 날짜를 갱신할지 하지 않을지 결정
-  // published 상태일 때는 갱신하지 않음
-  const { dateForSEO, dateForDisplay } = getDate();
-  const isStatusPublished = status === 'published';
-  const displayDateTime = dateTime && dateTime.replaceAll('-', '.');
-  const seoDate: string = isStatusPublished ? dateTime : dateForSEO;
-  const displayDate: string = isStatusPublished
-    ? displayDateTime
-    : dateForDisplay;
-
+  const { seoDate, displayDate } = checkPublishedDate(status, dateTime);
   const dispatch = useAppDispatch();
 
   useEffect(() => {

@@ -43,18 +43,24 @@ export const getStaticProps = async () => {
     category: post.category,
     order: post.order,
     title: post.title,
+    dateTime: post.dateTime,
+    status: post.status,
   }));
 
   const devPostListData = devPost.map((post) => ({
     category: post.category,
     order: post.order,
     title: post.title,
+    dateTime: post.dateTime,
+    status: post.status,
   }));
 
   const allPostsListData = allPosts.map((post) => ({
     category: post.category,
     order: post.order,
     title: post.title,
+    dateTime: post.dateTime,
+    status: post.status,
   }));
 
   return {
