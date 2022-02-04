@@ -35,7 +35,9 @@ const HomeList: FC<Props> = ({
       ? devPostListData
       : allPostsListData;
 
-  // const showBrunchList: boolean = asPath === '/' || asPath === '/design';
+  console.log(asPath);
+  const showBrunchList: boolean = asPath === '/' || asPath === '/design';
+  console.log(showBrunchList);
 
   return (
     <>
@@ -51,7 +53,7 @@ const HomeList: FC<Props> = ({
                 title={list.title}
               />
             ))}
-            {/* {showBrunchList &&
+            {showBrunchList &&
               brunchList.map((list) => (
                 <BrunchList
                   key={list.title}
@@ -59,7 +61,7 @@ const HomeList: FC<Props> = ({
                   dateTime={list.dateTime}
                   title={list.title}
                 />
-              ))} */}
+              ))}
           </ul>
         </nav>
       </main>
