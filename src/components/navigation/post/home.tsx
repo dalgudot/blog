@@ -89,18 +89,6 @@ const Home: FC<Props> = ({
         </nav>
       </main>
       <Footer />
-      {isAdmin && (
-        <>
-          <div style={{ marginTop: 300, textAlign: 'center' }}>
-            <Link href='/draft/list'>
-              <a>초고 목록 보기</a>
-            </Link>
-            <Link href='/draft/new'>
-              <a>글쓰기</a>
-            </Link>
-          </div>
-        </>
-      )}
     </>
   );
 };

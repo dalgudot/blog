@@ -9,6 +9,7 @@ body {
 * {
   padding: 0;
   margin: 0;
+  outline-style: none;
   box-sizing: border-box;
   font-family: 'BlogTextStyles', Apple SD Gothic Neo, Noto Sans KR, Inter,
     system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica,
@@ -38,7 +39,8 @@ a {
 a:visited,
 a:hover,
 a:active {
-  color: transparent;
+  outline-style: none;
+  outline: none;
 } */
 
 button {
@@ -47,6 +49,7 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 
+a,
 button,
 input,
 select,
