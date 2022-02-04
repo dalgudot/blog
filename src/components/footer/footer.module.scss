@@ -1,0 +1,57 @@
+@use '../../styles/text-styles';
+@use '../../styles/common';
+
+.footer {
+  padding: common.$header__footer__padding;
+  display: flex;
+  justify-content: space-between;
+
+  position: fixed;
+  bottom: 56px;
+  left: 0;
+  right: 0;
+}
+
+@mixin divider {
+  &:before {
+    content: '';
+    display: inline-block;
+    background-color: var(--g10);
+    width: 2px;
+    height: 10px;
+    margin: 0 8px;
+  }
+}
+
+.left__side {
+  @include text-styles.body4__500;
+  color: var(--g7);
+  display: flex;
+  align-items: flex-end;
+  margin-left: 2px;
+}
+
+.right__side {
+  text-align: right;
+  margin-right: 2px;
+
+  ul {
+    a:nth-child(2) {
+      @include divider;
+    }
+
+    a:nth-child(3) {
+      @include divider;
+    }
+
+    a:nth-child(4) {
+      @include divider;
+    }
+  }
+}
+
+.right__side__copyright {
+  @include text-styles.body4__300;
+  color: var(--g7);
+  margin-top: 8px;
+}

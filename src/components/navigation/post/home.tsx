@@ -1,12 +1,14 @@
 import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { brunchList } from '../../../data/brunch-list';
 import { useIsAdmin } from '../../../lib/hooks/useIsAdmin';
 import BrunchList from './brunch-list';
-import styles from './home-list.module.scss';
+import styles from './home.module.scss';
+import variables from '../../../interactions/motion.module.scss';
 import List from './list';
+import Footer from '../../footer/footer';
 
 type TListData = {
   category: string;
@@ -20,7 +22,7 @@ type Props = {
   allPostsListData: TListData;
 };
 
-const HomeList: FC<Props> = ({
+const Home: FC<Props> = ({
   designPostListData,
   devPostListData,
   allPostsListData,
@@ -37,10 +39,33 @@ const HomeList: FC<Props> = ({
 
   const showBrunchList: boolean = asPath === '/' || asPath === '/design';
 
+  const [isFadeIn, setIsFadeIn] = useState<boolean>(false);
+  const FADE_IN_DURATION = Number(
+    variables.fade__in__duration.replace('s', '')
+  );
+
+  // Dynamic Routing에서도 Fade-in 실행
+  useEffect(() => {
+    setIsFadeIn(true);
+
+    const timeoutId = setTimeout(() => {
+      setIsFadeIn(false);
+    }, FADE_IN_DURATION * 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [asPath]);
+
+  const mainClassname = classNames(
+    styles.main__layout,
+    isFadeIn && styles.main__fade__in
+  );
+
   return (
     <>
       <CategoryFilter asPath={asPath} />
-      <main className={styles.main__layout}>
+      <main className={mainClassname}>
         <nav>
           <ul>
             {postList.map((list) => (
@@ -63,6 +88,7 @@ const HomeList: FC<Props> = ({
           </ul>
         </nav>
       </main>
+      <Footer />
       {isAdmin && (
         <>
           <div style={{ marginTop: 300, textAlign: 'center' }}>
@@ -79,7 +105,7 @@ const HomeList: FC<Props> = ({
   );
 };
 
-export default HomeList;
+export default Home;
 
 type CategoryFilterProps = {
   asPath: string;

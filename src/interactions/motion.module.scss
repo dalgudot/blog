@@ -1,0 +1,78 @@
+$bezier__1: cubic-bezier(0.2, 0.6, 0.35, 1);
+$bezier__2: cubic-bezier(0.08, 0.56, 0.72, 0.87);
+$fade__in__duration: 0.9s;
+
+:export {
+  bezier__1: $bezier__1;
+  bezier__2: $bezier__2;
+  fade__in__duration: $fade__in__duration;
+}
+
+@mixin rotate__hover {
+  transform: rotateZ(0turn);
+  transition: transform 0.4s $bezier__1;
+
+  @media (hover: hover) {
+    &:hover {
+      transform: rotateZ(0.5turn);
+      transition: transform 0.4s $bezier__1;
+    }
+  }
+
+  @include scale__avtive;
+}
+
+@mixin scale__avtive {
+  &:active {
+    transform: scale(0.8);
+    opacity: 0.9;
+    transition: transform 0.4s, opacity 0.3s $bezier__1;
+  }
+}
+
+@mixin opacity__hover {
+  @media (hover: hover) {
+    &:hover {
+      background-color: rgba(var(--p7-rgb), 0.1);
+      transition: background-color 0.4s $bezier__1;
+    }
+  }
+
+  &:active {
+    background-color: rgba(var(--p7-rgb), 0.3);
+    transition: background-color 0.4s $bezier__1;
+  }
+}
+
+@mixin scale__hover {
+  transform: scale(1);
+  opacity: 1;
+  transition: transform 0.2s $bezier__2, opacity 0.2s $bezier__2;
+
+  @media (hover: hover) {
+    &:hover {
+      transform: scale(1.05);
+      transition: transform 0.2s $bezier__2;
+    }
+  }
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+    transition: transform 0.2s $bezier__2;
+  }
+}
+
+@mixin fade__in {
+  animation: fide__in__animation $fade__in__duration $bezier__2;
+
+  @keyframes fide__in__animation {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+}

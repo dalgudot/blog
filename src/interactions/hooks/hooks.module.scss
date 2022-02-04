@@ -1,12 +1,12 @@
 @use '../motion';
 
 .rotate {
-  animation: 0.4s motion.$bezier-1 rotate;
+  animation: 0.4s motion.$bezier__1 rotate;
   animation-fill-mode: forwards;
 }
 
 .rotate__reverse {
-  animation: 0.4s motion.$bezier-1 rotate__reverse;
+  animation: 0.4s motion.$bezier__1 rotate__reverse;
   animation-fill-mode: forwards;
 }
 

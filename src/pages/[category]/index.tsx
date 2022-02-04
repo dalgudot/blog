@@ -1,6 +1,7 @@
 import { NextPage } from 'next';
 import { TListData } from '..';
-import HomeList from '../../components/navigation/post/home-list';
+import Home from '../../components/navigation/post/home';
+import { useUpdateTotalVisitors } from '../../lib/hooks/useUpdateTotalVisitors';
 import {
   designCollectionRefName,
   devCollectionRefName,
@@ -18,8 +19,10 @@ const Category: NextPage<Props> = ({
   devPostListData,
   allPostsListData,
 }) => {
+  useUpdateTotalVisitors();
+
   return (
-    <HomeList
+    <Home
       designPostListData={designPostListData}
       devPostListData={devPostListData}
       allPostsListData={allPostsListData}
