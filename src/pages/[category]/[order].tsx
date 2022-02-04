@@ -113,7 +113,6 @@ export const getStaticPaths = async () => {
   const paths = allPosts.map((post) => ({
     params: { category: post.category, order: post.order },
   }));
-  console.log(paths);
 
   return { paths, fallback: false };
 };
