@@ -8,7 +8,7 @@ type Props = {
 
 const BrunchList: React.FC<Props> = ({ url, dateTime, title }) => {
   // replaceAll('-', '.') 대신 정규식을 써서 replace(/-/g, '.')로 해야 빌드 에러 안 남
-  const displayDateTime = dateTime && dateTime.replace(/-/g, '.');
+  const displayDateTime = dateTime.replace(/-/g, '.');
 
   return (
     <>

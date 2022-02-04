@@ -16,7 +16,7 @@ const Header: React.FC = () => {
           <a className={blogNameClassname}>경험의 기록</a>
         </Link>
 
-        {isAdmin && (
+        {/* {isAdmin && (
           <div>
             <Link href='/draft/list'>
               <a>초고 목록 보기</a>
@@ -25,7 +25,7 @@ const Header: React.FC = () => {
               <a>글쓰기</a>
             </Link>
           </div>
-        )}
+        )} */}
 
         <div className={styles.right}>
           <GNB />

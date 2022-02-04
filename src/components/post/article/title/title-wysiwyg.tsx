@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import { checkPublishedDate, getDate } from '../../../../lib/utils/get-date';
+import { checkPublishedDate } from '../../../../lib/utils/get-date';
 import { TStatus } from '../../../../redux-toolkit/model/post-data-model';
 import { setArticleTitleData } from '../../../../redux-toolkit/slices/post-slice';
 import {
