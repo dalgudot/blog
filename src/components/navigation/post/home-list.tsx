@@ -35,9 +35,7 @@ const HomeList: FC<Props> = ({
       ? devPostListData
       : allPostsListData;
 
-  console.log(asPath);
   const showBrunchList: boolean = asPath === '/' || asPath === '/design';
-  console.log(showBrunchList);
 
   return (
     <>

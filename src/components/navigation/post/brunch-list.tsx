@@ -7,7 +7,8 @@ type Props = {
 };
 
 const BrunchList: React.FC<Props> = ({ url, dateTime, title }) => {
-  const displayDateTime = dateTime && dateTime.replaceAll('-', '.');
+  // const displayDateTime = dateTime && dateTime.replaceAll('-', '.');
+  const displayDateTime = dateTime && dateTime.replace(/-/g, '.');
 
   return (
     <>
