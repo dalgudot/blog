@@ -1,5 +1,7 @@
 $list__max__width: 640px;
+$header__footer__padding: 0 4.5vw;
 
 :export {
   list__max__width: $list__max__width;
+  header__footer__padding: $header__footer__padding;
 }

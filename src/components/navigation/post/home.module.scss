@@ -1,9 +1,13 @@
 @use '../../../styles/common';
-@use '../../../interactions/motion';
+@use '../../../interactions/motion.module';
 
 .main__layout {
   margin: 0 auto 144px;
   max-width: common.$list__max__width;
+}
+
+.main__fade__in {
+  @include motion.fade__in;
 }
 
 .category__filter__nav {

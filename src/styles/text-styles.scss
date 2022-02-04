@@ -97,6 +97,15 @@
   }
 }
 
+// @mixin body4__700 {
+//   font-size: 14px;
+//   font-weight: 700;
+//   // line-height: ~;
+
+//   @media screen and (max-width: 1350px) {
+//   }
+// }
+
 .title1__500 {
   @include title1__500;
 }
@@ -139,20 +148,4 @@
 
 .body4__500 {
   @include body4__500;
-}
-
-// h1 {
-
-// }
-
-// h2 {
-
-// }
-
-// h3 {
-
-// }
-
-p {
-  @include body1__300;
 }
