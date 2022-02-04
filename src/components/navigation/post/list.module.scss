@@ -1,13 +1,20 @@
 .post__list {
-  padding-top: 96px;
   border-bottom: var(--g10) 1px solid;
+  display: flex;
+
+  a {
+    padding: 72px 0;
+    margin: 24px 0;
+    width: 100%;
+    height: 100%;
+  }
 
   time {
     color: var(--g7);
-    padding-left: 2px; // 시각 보정
+    margin-left: 2px; // 시각 보정
   }
 
   h1 {
-    padding: 12px 0 96px; // 터치 영역 위해
+    margin-top: 12px; // 터치 영역 위해
   }
 }

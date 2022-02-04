@@ -101,7 +101,7 @@ const CategoryFilter: FC<CategoryFilterProps> = ({ asPath }) => {
   };
 
   return (
-    <nav className={styles.category__filter}>
+    <nav className={styles.category__filter__nav}>
       {categoryFilterList.map((list) => (
         <Link key={list.label} href={list.href}>
           <a className={listClassname(list.href)}>{list.label}</a>

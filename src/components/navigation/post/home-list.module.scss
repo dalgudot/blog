@@ -6,9 +6,10 @@
   max-width: common.$list__max__width;
 }
 
-.category__filter {
-  margin: 96px auto -16px;
+.category__filter__nav {
+  margin: 96px auto 0;
   max-width: common.$list__max__width;
+  display: flex;
 
   a {
     padding: 8px 12px;
