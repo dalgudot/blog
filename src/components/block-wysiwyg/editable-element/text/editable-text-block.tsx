@@ -54,8 +54,10 @@ const EditableTextBlock: FC<Props> = ({
     e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>
   ) => {
     // const inputHtml = DOMPurify.sanitize(e.target.innerHTML);
+    const inputText = e.target.innerText;
+    setTempPostHtmlData(inputText);
+
     const inputHtml = e.target.innerHTML;
-    setTempPostHtmlData(inputHtml);
     addInlineCodeBlock(inputHtml);
   };
 
@@ -85,7 +87,9 @@ const EditableTextBlock: FC<Props> = ({
         ); // &nbsp is for design
         const secondBacktickToTag = firstBacktickToTag.replace(
           '`',
-          `</code>&nbsp` // &nbsp로 코드 블럭 벗어나기
+          // `</code>`
+          `</code>&nbsp`
+          // &nbsp로 코드 블럭 벗어나기
         );
 
         updateInlineBlock(secondBacktickToTag);

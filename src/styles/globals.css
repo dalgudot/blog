@@ -33,6 +33,10 @@ h6 {
   word-break: keep-all;
 }
 
+p {
+  word-break: break-all;
+}
+
 a {
   text-decoration: none;
   cursor: pointer;
@@ -73,6 +77,7 @@ li {
 code {
   font-family: 'SourceCodePro', Menlo, Monaco, Lucida Console, Liberation Mono,
     DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+  word-break: keep-all;
 }
 
 /* 글 속에만 적용되도록 <code> html 생성 시 class도 지정, <code class="inline__code__block"> */
@@ -83,5 +88,5 @@ code {
   color: var(--g4);
   padding: 2px 6px;
   border-radius: 4px;
-  /* font-weight: 700; */
+  /* 반응형도 대응해야 함. */
 }

@@ -66,7 +66,8 @@ const CategoryOrderPost: NextPage<Props> = (props) => {
   return (
     <>
       <HeadForSEO info={props.infoForSEOByCategoryOrder.info} />
-      <Post contentEditable={isAdmin} postData={post} />
+      {mounted && <Post contentEditable={isAdmin} postData={post} />}
+
       {isAdmin && (
         <>
           <button
