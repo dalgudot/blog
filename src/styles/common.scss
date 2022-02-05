@@ -11,7 +11,7 @@ $header__footer__padding: 0 4.5vw;
 @mixin placeholder {
   &:empty:before {
     content: attr(placeholder);
-    color: var(--g6);
+    color: var(--g8);
     display: inline-block;
   }
 }

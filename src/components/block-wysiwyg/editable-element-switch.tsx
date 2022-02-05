@@ -28,6 +28,7 @@ import EditableImageBlock from './editable-element/image/editable-image-block';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
+  linkBlockType: 'Paragraph' | 'Reference';
   contentEditable: boolean;
   data: IParagraphData;
   datas: IParagraphData[];
@@ -36,6 +37,7 @@ type Props = {
 
 const EditableElementSwitch: FC<Props> = ({
   wysiwygType,
+  linkBlockType,
   contentEditable,
   data,
   datas,
@@ -159,6 +161,7 @@ const EditableElementSwitch: FC<Props> = ({
         return (
           <EditableLinkBlock
             wysiwygType={wysiwygType}
+            linkBlockType={linkBlockType}
             contentEditable={contentEditable}
             data={data as ILinkData}
             currentIndex={currentIndex}

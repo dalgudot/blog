@@ -1,7 +1,16 @@
+@use '../../../styles/text-styles';
+
 .reference__section {
-  margin-top: 96px;
+  margin-top: 144px;
+
+  h2 {
+    @include text-styles.title2;
+    border-bottom: var(--g5) 4px solid;
+    padding-bottom: 20px;
+    margin-bottom: 6px;
+  }
 
   ul {
-    margin-top: 36px;
+    // margin-top: 16px;
   }
 }
