@@ -1,12 +1,9 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
 import styles from './title-wysiwyg.module.scss';
 
-type Props = {};
-
-const Profile: FC<Props> = () => {
+const Profile: FC = () => {
   const router = useRouter();
   const query = router.query;
   const career =
