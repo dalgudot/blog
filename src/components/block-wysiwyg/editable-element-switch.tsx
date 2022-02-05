@@ -25,6 +25,7 @@ import EditableLinkBlock from './editable-element/link/editable-link-block';
 import { ILinkData } from '../../redux-toolkit/model/link-data-model';
 import EditableCodeBlock from './editable-element/code/editable-code-block';
 import EditableImageBlock from './editable-element/image/editable-image-block';
+import styles from './editable-element.module.scss';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
@@ -210,19 +211,22 @@ const EditableElementSwitch: FC<Props> = ({
 
   return (
     <>
-      {contentEditable && wysiwygType !== 'Link' && (
-        <select value={type} onChange={changeBlockType}>
-          <option value='Paragraph'>Paragraph</option>
-          <option value='Heading1'>Heading1</option>
-          <option value='Heading2'>Heading2</option>
-          <option value='Heading3'>Heading3</option>
-          <option value='Image'>Image</option>
-          <option value='Code'>Code</option>
-          <option value='Link'>Link</option>
-        </select>
+      {contentEditable && wysiwygType !== 'Link' ? (
+        <div className={styles.edit__mode__editable__element__switch}>
+          <select value={type} onChange={changeBlockType}>
+            <option value='Paragraph'>Paragraph</option>
+            <option value='Heading1'>Heading1</option>
+            <option value='Heading2'>Heading2</option>
+            <option value='Heading3'>Heading3</option>
+            <option value='Image'>Image</option>
+            <option value='Code'>Code</option>
+            <option value='Link'>Link</option>
+          </select>
+          {switchBlocks()}
+        </div>
+      ) : (
+        <>{switchBlocks()}</>
       )}
-
-      {switchBlocks()}
     </>
   );
 };

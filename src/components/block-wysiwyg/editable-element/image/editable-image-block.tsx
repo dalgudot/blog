@@ -102,15 +102,7 @@ const EditableImageBlock: FC<Props> = ({
       <figure className={styles.figure}>
         {image && (
           // https://nextjs.org/docs/basic-features/image-optimization
-          <Image
-            src={image}
-            alt={html}
-            width='100%'
-            height='100%'
-            layout='responsive'
-            objectFit='contain'
-            priority
-          />
+          <img src={image} alt={html} className={styles.image} />
         )}
         <EditableElement
           TagName='figcaption'
@@ -126,11 +118,10 @@ const EditableImageBlock: FC<Props> = ({
           }
           placeholder={placeholder}
         />
+        {contentEditable && (
+          <UploadImage fileHandler={fileHandler} blockId={blockId} />
+        )}
       </figure>
-
-      {contentEditable && (
-        <UploadImage fileHandler={fileHandler} blockId={blockId} />
-      )}
     </>
   );
 };

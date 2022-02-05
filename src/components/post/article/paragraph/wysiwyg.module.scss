@@ -1,8 +1,15 @@
 .article__paragraph__section {
   margin-top: 48px;
-  margin-bottom: 48px;
 
   p {
-    color: var(--g5);
+    color: var(--g6);
+    line-height: 1.7;
+  }
+
+  h2 {
+    // margin-top: 96px;
+  }
+
+  h3 {
   }
 }

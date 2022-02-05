@@ -71,7 +71,7 @@ const CategoryOrderPost: NextPage<Props> = (props) => {
         <>
           <button
             onClick={tempSaveDataToFireStoreDB}
-            style={{ marginTop: 48, marginLeft: 24 }}
+            style={{ position: 'fixed', bottom: 48, left: 48 }}
           >
             Save to DB
           </button>

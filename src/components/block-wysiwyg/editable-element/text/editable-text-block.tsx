@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { ChangeEvent, FC, KeyboardEvent } from 'react';
 import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
 import { TBlockTextType } from '../../../../redux-toolkit/model/text-data-model';
@@ -42,12 +43,12 @@ const EditableTextBlock: FC<Props> = ({
 
   const customClassName =
     blockType === 'Heading1'
-      ? 'title1__700'
+      ? classNames('title1__700')
       : blockType === 'Heading2'
-      ? 'title2__700'
+      ? classNames('title2__700', styles.heading2)
       : blockType === 'Heading3'
-      ? 'title3__700'
-      : 'body1__400';
+      ? classNames('title3__700', styles.heading3)
+      : classNames('body1__400', styles.paragraph);
 
   const onInput = (
     e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>
@@ -72,7 +73,7 @@ const EditableTextBlock: FC<Props> = ({
         // 2개 연속(``)이면 빈 inline Code Block 생성
         const emptyCodeInlineBlock = inputHtml.replace(
           '``',
-          '&nbsp<code>&nbsp</code>&nbsp'
+          '<code>&nbsp</code>&nbsp'
         );
 
         updateInlineBlock(emptyCodeInlineBlock);
@@ -80,7 +81,7 @@ const EditableTextBlock: FC<Props> = ({
         // 첫 번째 `는 <code>로 두 번째 `는 </code>로!
         const firstBacktickToTag = inputHtml.replace(
           '`',
-          '&nbsp<code class="inline__code__block">'
+          '<code class="inline__code__block">'
         ); // &nbsp is for design
         const secondBacktickToTag = firstBacktickToTag.replace(
           '`',
