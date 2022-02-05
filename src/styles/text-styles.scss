@@ -1,151 +1,140 @@
-@mixin title1__500 {
+/**
+*
+* Title 500, 700
+*
+**/
+@mixin title1($weight: 700) {
   font-size: 43px;
-  font-weight: 500;
+  font-weight: $weight;
   // line-height: ~;
 
   @media screen and (max-width: 1350px) {
   }
 }
 
-@mixin title2__500 {
-  font-size: 33px;
-  font-weight: 500;
-  // line-height: ~;
-
-  @media screen and (max-width: 1350px) {
-  }
+.title1__700 {
+  @include title1;
 }
-
-@mixin title3__500 {
-  font-size: 27px;
-  font-weight: 500;
-  // line-height: ~;
-
-  @media screen and (max-width: 1350px) {
-  }
-}
-
-@mixin body1__300 {
-  font-size: 20px;
-  font-weight: 300;
-  // line-height: ~;
-
-  @media screen and (max-width: 1350px) {
-  }
-}
-
-@mixin body1__500 {
-  font-size: 20px;
-  font-weight: 500;
-  // line-height: ~;
-
-  @media screen and (max-width: 1350px) {
-  }
-}
-
-@mixin body2__300 {
-  font-size: 18px;
-  font-weight: 300;
-  // line-height: ~;
-
-  @media screen and (max-width: 1350px) {
-  }
-}
-
-@mixin body2__500 {
-  font-size: 18px;
-  font-weight: 500;
-  // line-height: ~;
-
-  @media screen and (max-width: 1350px) {
-  }
-}
-
-@mixin body3__300 {
-  font-size: 16px;
-  font-weight: 300;
-  // line-height: ~;
-
-  @media screen and (max-width: 1350px) {
-  }
-}
-
-@mixin body3__500 {
-  font-size: 16px;
-  font-weight: 500;
-  // line-height: ~;
-
-  @media screen and (max-width: 1350px) {
-  }
-}
-
-@mixin body4__300 {
-  font-size: 14px;
-  font-weight: 300;
-  // line-height: ~;
-
-  @media screen and (max-width: 1350px) {
-  }
-}
-
-@mixin body4__500 {
-  font-size: 14px;
-  font-weight: 500;
-  // line-height: ~;
-
-  @media screen and (max-width: 1350px) {
-  }
-}
-
-// @mixin body4__700 {
-//   font-size: 14px;
-//   font-weight: 700;
-//   // line-height: ~;
-
-//   @media screen and (max-width: 1350px) {
-//   }
-// }
 
 .title1__500 {
-  @include title1__500;
+  @include title1(500);
+}
+
+@mixin title2($weight: 700) {
+  font-size: 33px;
+  font-weight: $weight;
+  // line-height: ~;
+
+  @media screen and (max-width: 1350px) {
+  }
+}
+
+.title2__700 {
+  @include title2;
 }
 
 .title2__500 {
-  @include title2__500;
+  @include title2(500);
+}
+
+@mixin title3($weight: 700) {
+  font-size: 27px;
+  font-weight: $weight;
+  // line-height: ~;
+
+  @media screen and (max-width: 1350px) {
+  }
+}
+
+.title3__700 {
+  @include title3;
 }
 
 .title3__500 {
-  @include title3__500;
+  @include title3(500);
+}
+/**
+*
+* Title
+*
+**/
+/****************************************************************
+****************************************************************
+****************************************************************/
+/**
+*
+* Body 400, 500
+*
+**/
+@mixin body1($weight: 400) {
+  font-size: 21px;
+  font-weight: $weight;
+  // line-height: ~;
+
+  @media screen and (max-width: 1350px) {
+  }
 }
 
-.body1__300 {
-  @include body1__300;
+.body1__400 {
+  @include body1;
 }
 
 .body1__500 {
-  @include body1__500;
+  @include body1($weight: 500);
 }
 
-.body2__300 {
-  @include body2__300;
+@mixin body2($weight: 400) {
+  font-size: 19px;
+  font-weight: $weight;
+  // line-height: ~;
+
+  @media screen and (max-width: 1350px) {
+  }
+}
+
+.body2__400 {
+  @include body2;
 }
 
 .body2__500 {
-  @include body2__500;
+  @include body2($weight: 500);
 }
 
-.body3__300 {
-  @include body3__300;
+@mixin body3($weight: 400) {
+  font-size: 17px;
+  font-weight: $weight;
+  // line-height: ~;
+
+  @media screen and (max-width: 1350px) {
+  }
+}
+
+.body3__400 {
+  @include body3;
 }
 
 .body3__500 {
-  @include body3__500;
+  @include body3($weight: 500);
 }
 
-.body4__300 {
-  @include body4__300;
+@mixin body4($weight: 400) {
+  font-size: 14px;
+  font-weight: $weight;
+  // line-height: ~;
+
+  @media screen and (max-width: 1350px) {
+  }
+}
+
+.body4__400 {
+  @include body4;
 }
 
 .body4__500 {
-  @include body4__500;
+  @include body4($weight: 500);
 }
+/**
+*
+* Body
+*
+**/

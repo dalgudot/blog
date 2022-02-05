@@ -15,6 +15,7 @@ const WYSIWYG: FC<Props> = ({ contentEditable, wysiwygDataArray }) => {
         {wysiwygDataArray.map((data, idx) => (
           <EditableElementSwitch
             wysiwygType='Normal'
+            linkBlockType='Paragraph'
             key={data.blockId}
             contentEditable={contentEditable}
             data={data}

@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import { FC } from 'react';
 import { ILinkData } from '../../../redux-toolkit/model/link-data-model';
 import EditableElementSwitch from '../../block-wysiwyg/editable-element-switch';
 import styles from './link-wysiwyg.module.scss';
@@ -19,6 +19,7 @@ const LinkWYSIWYG: FC<Props> = ({ contentEditable, linkWysiwygDataArray }) => {
           {linkWysiwygDataArray.map((data, idx) => (
             <EditableElementSwitch
               wysiwygType='Link'
+              linkBlockType='Reference'
               key={data.blockId}
               contentEditable={contentEditable}
               data={data}
@@ -33,4 +34,4 @@ const LinkWYSIWYG: FC<Props> = ({ contentEditable, linkWysiwygDataArray }) => {
 };
 
 // props는 첫 렌더링 이후 변하지 않으므로 memo 이용하면 렌더링 성능 극대화
-export default memo(LinkWYSIWYG);
+export default LinkWYSIWYG;

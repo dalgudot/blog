@@ -51,7 +51,7 @@ $fade__in__duration: 0.9s;
 
   @media (hover: hover) {
     &:hover {
-      transform: scale(1.05);
+      transform: scale(1.02);
       transition: transform 0.2s $bezier__2;
     }
   }

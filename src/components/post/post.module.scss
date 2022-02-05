@@ -1,0 +1,6 @@
+@use '../../styles/common';
+
+.main {
+  max-width: common.$post__max__width;
+  margin: 144px auto 240px;
+}

@@ -3,18 +3,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC, useEffect, useState } from 'react';
 import { brunchList } from '../../../data/brunch-list';
-import { useIsAdmin } from '../../../lib/hooks/useIsAdmin';
 import BrunchList from './brunch-list';
 import styles from './home.module.scss';
 import variables from '../../../interactions/motion.module.scss';
 import List from './list';
 import Footer from '../../footer/footer';
-
-type TListData = {
-  category: string;
-  order: string;
-  title: string;
-}[];
+import { TListData } from '../../../pages';
 
 type Props = {
   designPostListData: TListData;
@@ -27,7 +21,6 @@ const Home: FC<Props> = ({
   devPostListData,
   allPostsListData,
 }) => {
-  const { isAdmin } = useIsAdmin();
   const router = useRouter();
   const asPath = router.asPath;
   const postList =
@@ -74,6 +67,8 @@ const Home: FC<Props> = ({
                 category={list.category}
                 order={list.order}
                 title={list.title}
+                dateTime={list.dateTime}
+                status={list.status}
               />
             ))}
             {showBrunchList &&
@@ -89,18 +84,6 @@ const Home: FC<Props> = ({
         </nav>
       </main>
       <Footer />
-      {isAdmin && (
-        <>
-          <div style={{ marginTop: 300, textAlign: 'center' }}>
-            <Link href='/draft/list'>
-              <a>초고 목록 보기</a>
-            </Link>
-            <Link href='/draft/new'>
-              <a>글쓰기</a>
-            </Link>
-          </div>
-        </>
-      )}
     </>
   );
 };
@@ -119,7 +102,7 @@ const CategoryFilter: FC<CategoryFilterProps> = ({ asPath }) => {
   ];
   const listClassname = (href: string) => {
     return classNames(
-      'body3__300',
+      'body3__400',
       asPath === href && styles.category__filter__selected
     );
   };

@@ -24,7 +24,7 @@
 }
 
 .left__side {
-  @include text-styles.body4__500;
+  @include text-styles.body4(500);
   color: var(--g7);
   display: flex;
   align-items: flex-end;
@@ -36,6 +36,8 @@
   margin-right: 2px;
 
   ul {
+    @include text-styles.body4(500);
+
     a:nth-child(2) {
       @include divider;
     }
@@ -51,7 +53,7 @@
 }
 
 .right__side__copyright {
-  @include text-styles.body4__300;
+  @include text-styles.body4;
   color: var(--g7);
   margin-top: 8px;
 }

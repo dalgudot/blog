@@ -7,7 +7,6 @@ import { getDraftList } from '../../service/firebase/firestore';
 
 const Draft: NextPage = () => {
   const { isAdmin } = useIsAdmin();
-
   const [draftList, setDraftList] = useState<
     {
       order: string;
@@ -15,7 +14,6 @@ const Draft: NextPage = () => {
       title: string;
     }[]
   >([]);
-  const router = useRouter();
 
   useEffect(() => {
     getDraftList() //
@@ -24,6 +22,7 @@ const Draft: NextPage = () => {
       });
   }, []);
 
+  const router = useRouter();
   const createNewDraft = () => {
     router.push('/draft/new');
   };

@@ -1,8 +1,15 @@
+@use '../../styles/common';
+
 .editable__element {
-  /* placeholder */
-  &:empty:before {
-    content: attr(placeholder);
-    color: grey;
-    display: inline-block;
+  @include common.placeholder;
+}
+
+.edit__mode__editable__element__switch {
+  position: relative;
+
+  select {
+    position: absolute;
+    top: 5px;
+    left: -120px;
   }
 }

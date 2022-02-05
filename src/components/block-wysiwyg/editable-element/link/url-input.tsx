@@ -4,6 +4,7 @@ import {
   setNormalWysiwygCurrentLinkBlockTempLinkUrl,
 } from '../../../../redux-toolkit/slices/temp-post-slice';
 import { useAppDispatch } from '../../../../redux-toolkit/store';
+import styles from './editable-link-block.module.scss';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
@@ -45,6 +46,7 @@ const UrlInput: FC<Props> = ({
       onChange={handleChange}
       onKeyPress={onKeyPress}
       placeholder='URL을 입력해주세요'
+      className={styles.input}
     />
   );
 };

@@ -1,0 +1,21 @@
+@use '../../../../styles/text-styles';
+
+.message {
+  margin-top: 96px;
+  display: flex;
+  align-items: center;
+
+  span {
+    width: 4px;
+    height: 24px;
+    background-color: var(--g5);
+    margin-right: 10px;
+  }
+
+  p {
+    @include text-styles.body1;
+    margin-top: 1px;
+    color: var(--g5);
+    width: 100%;
+  }
+}

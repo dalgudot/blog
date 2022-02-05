@@ -1,12 +1,15 @@
+import classNames from 'classnames';
 import { ChangeEvent, FC, KeyboardEvent } from 'react';
 import { ILinkData } from '../../../../redux-toolkit/model/link-data-model';
 import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
+import IconNewTap24 from '../../../../svg/icon-new-tap-24';
 import EditableElement from '../../editable-element';
 import styles from './editable-link-block.module.scss';
 import UrlInput from './url-input';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
+  linkBlockType: 'Paragraph' | 'Reference';
   contentEditable: boolean;
   data: ILinkData;
   currentIndex: number;
@@ -21,6 +24,7 @@ type Props = {
 
 const EditableLinkBlock: FC<Props> = ({
   wysiwygType,
+  linkBlockType,
   contentEditable,
   data,
   currentIndex,
@@ -77,36 +81,46 @@ const EditableLinkBlock: FC<Props> = ({
   };
 
   return (
-    <li className={styles.editable__link__li}>
-      <a
-        href={contentEditable ? undefined : data.url}
-        target='_blank'
-        rel='noreferrer'
-      >
-        <EditableElement
-          TagName='p'
-          contentEditable={contentEditable}
-          html={data.html}
-          onInput={onInput} // 필수
-          onKeyPress={onKeyPress} // optional, 블록 추가
-          onKeyDown={onKeyDown} // optional, 블록 삭제
-          syncTempPostWithPasteText={syncTempPostWithPasteText} // 필수
-          addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
-          removeCurrentBlockFocusUseEffectDependency={
-            removeCurrentBlockFocusUseEffectDependency
-          }
-          placeholder={placeholder}
-        />
-        {contentEditable && (
-          <UrlInput
-            wysiwygType={wysiwygType}
-            linkUrl={data.url}
-            onKeyPress={onKeyPress}
-            currentIndex={currentIndex}
-          />
+    <>
+      <li
+        className={classNames(
+          styles.editable__link__block__li,
+          linkBlockType === 'Reference'
+            ? styles.border__bottom__for__Reference__list__type
+            : styles.box__for__Paragraph__list__type
         )}
-      </a>
-    </li>
+      >
+        <a
+          href={contentEditable ? undefined : data.url}
+          target='_blank'
+          rel='noreferrer'
+        >
+          <EditableElement
+            TagName='p'
+            contentEditable={contentEditable}
+            html={data.html}
+            onInput={onInput} // 필수
+            onKeyPress={onKeyPress} // optional, 블록 추가
+            onKeyDown={onKeyDown} // optional, 블록 삭제
+            syncTempPostWithPasteText={syncTempPostWithPasteText} // 필수
+            addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
+            removeCurrentBlockFocusUseEffectDependency={
+              removeCurrentBlockFocusUseEffectDependency
+            }
+            placeholder={placeholder}
+          />
+          <IconNewTap24 color='var(--g4)' />
+        </a>
+      </li>
+      {contentEditable && (
+        <UrlInput
+          wysiwygType={wysiwygType}
+          linkUrl={data.url}
+          onKeyPress={onKeyPress}
+          currentIndex={currentIndex}
+        />
+      )}
+    </>
   );
 };
 

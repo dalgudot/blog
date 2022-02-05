@@ -66,12 +66,13 @@ const CategoryOrderPost: NextPage<Props> = (props) => {
   return (
     <>
       <HeadForSEO info={props.infoForSEOByCategoryOrder.info} />
-      <Post contentEditable={isAdmin} postData={post} />
+      {mounted && <Post contentEditable={isAdmin} postData={post} />}
+
       {isAdmin && (
         <>
           <button
             onClick={tempSaveDataToFireStoreDB}
-            style={{ marginTop: 48, marginLeft: 24 }}
+            style={{ position: 'fixed', bottom: 48, left: 48 }}
           >
             Save to DB
           </button>

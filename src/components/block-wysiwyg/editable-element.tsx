@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import DOMPurify from 'dompurify';
 import { ChangeEvent, FC, KeyboardEvent, useEffect, useRef } from 'react';
 import { useEditable } from '../../lib/hooks/useEditable';
 import { IParagraphData } from '../../redux-toolkit/model/post-data-model';
@@ -38,22 +39,39 @@ const EditableElement: FC<Props> = ({
     addBlockFocusUseEffectDependency,
     removeCurrentBlockFocusUseEffectDependency
   );
-  // code 블럭 등 라이브러리를 쓰는 editable element에서도 로직 재사용하기 위해 훅으로 !
-
-  return (
+  // 특정 코드만 html로 변환하기 위해, 나중에 <b> 등도 추가
+  const hasCodeElement = html.includes('</code>');
+  const switchHtml = hasCodeElement ? (
     <TagName
       ref={ref}
       contentEditable={contentEditable}
       suppressContentEditableWarning={contentEditable}
-      dangerouslySetInnerHTML={{ __html: html }}
+      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }}
       onInput={onInput}
       onKeyPress={onKeyPress} // optional, 블록 추가
       onKeyDown={onKeyDown} // optional, 블록 삭제
       spellCheck={false}
-      placeholder={placeholder}
+      placeholder={contentEditable ? placeholder : undefined}
       className={classNames(styles.editable__element, customClassName)}
     />
+  ) : (
+    <TagName
+      ref={ref}
+      contentEditable={contentEditable}
+      suppressContentEditableWarning={contentEditable}
+      // dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }}
+      onInput={onInput}
+      onKeyPress={onKeyPress} // optional, 블록 추가
+      onKeyDown={onKeyDown} // optional, 블록 삭제
+      spellCheck={false}
+      placeholder={contentEditable ? placeholder : undefined}
+      className={classNames(styles.editable__element, customClassName)}
+    >
+      {html}
+    </TagName>
   );
+
+  return <>{switchHtml}</>;
 };
 
 export default EditableElement;

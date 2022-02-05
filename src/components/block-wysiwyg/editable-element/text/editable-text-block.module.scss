@@ -1,8 +1,13 @@
-.editable__text__block {
-  /* placeholder */
-  &:empty:before {
-    content: attr(placeholder);
-    color: grey;
-    display: inline-block;
-  }
+.heading2 {
+  margin-top: 144px;
+}
+
+.heading3 {
+  margin-top: 96px;
+}
+
+.paragraph {
+  color: var(--g6);
+  line-height: 1.7;
+  margin-top: 36px;
 }

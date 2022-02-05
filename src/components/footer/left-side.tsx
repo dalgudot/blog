@@ -8,6 +8,10 @@ const LeftSide: FC = () => {
   );
   useEffect(() => {
     getTotalVisitors(setTotalVisitors); // 데이터 보여주기 위한
+
+    return () => {
+      setTotalVisitors('Loading');
+    };
   }, []);
 
   return (
@@ -16,7 +20,7 @@ const LeftSide: FC = () => {
         {totalVisitors === 'Loading' ? (
           <>Loading...</>
         ) : (
-          <>Total Visitors {totalVisitors}</>
+          <>Total {totalVisitors}</>
         )}
       </p>
     </>

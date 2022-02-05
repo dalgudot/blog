@@ -26,7 +26,7 @@ export const useEditable = (
         //   `${ref.current.innerHTML}${textData}`
         // );
         const newInnerPasteText = `${ref.current.innerHTML}${textData}`;
-        ref.current.innerHTML = newInnerPasteText;
+        ref.current.innerText = newInnerPasteText;
 
         syncTempPostWithPasteText(newInnerPasteText); // 데이터 싱크를 위해 dispatch 및 setText(EditableElementSwitch 이용하는 경우 onKeyDown에서 text useState() 필요) 함수를 받아와 실행
         focusContentEditableTextToEnd(ref.current);
