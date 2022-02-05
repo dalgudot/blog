@@ -25,10 +25,8 @@ const List: React.FC<Props> = ({
       <li className={styles.post__list}>
         <Link href={`/${category}/${order}`}>
           <a>
-            <time dateTime={seoDate} className='body4__300'>
-              {displayDate}
-            </time>
-            <h1 className='title2__500'>{title}</h1>
+            <time dateTime={seoDate}>{displayDate}</time>
+            <h1>{title}</h1>
           </a>
         </Link>
       </li>

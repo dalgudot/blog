@@ -50,7 +50,7 @@ const EditableElement: FC<Props> = ({
       onKeyPress={onKeyPress} // optional, 블록 추가
       onKeyDown={onKeyDown} // optional, 블록 삭제
       spellCheck={false}
-      placeholder={placeholder}
+      placeholder={contentEditable ? placeholder : undefined}
       className={classNames(styles.editable__element, customClassName)}
     />
   );

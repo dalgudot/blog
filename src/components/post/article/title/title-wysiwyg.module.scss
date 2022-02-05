@@ -1,3 +1,41 @@
+@use '../../../../styles/common';
+@use '../../../../styles/text-styles';
+
 .article__title__section {
-  margin-top: 36px;
+  time {
+    color: var(--g7);
+    margin-left: 2px; // 시각 보정
+    @include text-styles.body3;
+  }
+
+  h1 {
+    margin-top: 8px;
+  }
+}
+
+.profile__a {
+  margin-top: 16px;
+  margin-left: 1px; // 시각 보정
+  display: flex;
+  align-items: center;
+
+  p {
+    @include text-styles.body3;
+  }
+
+  p:nth-child(2) {
+    margin-left: 12px;
+  }
+}
+
+.profile__image {
+  border-radius: 50%;
+}
+
+.circle__divider {
+  border-radius: 50%;
+  width: 2px;
+  height: 2px;
+  background-color: var(--g4);
+  margin: 0 6px;
 }

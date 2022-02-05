@@ -20,7 +20,7 @@ const LeftSide: FC = () => {
         {totalVisitors === 'Loading' ? (
           <>Loading...</>
         ) : (
-          <>Total Visitors {totalVisitors}</>
+          <>Total {totalVisitors}</>
         )}
       </p>
     </>

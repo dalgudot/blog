@@ -1,7 +1,17 @@
 $list__max__width: 640px;
+$post__max__width: 740px;
 $header__footer__padding: 0 4.5vw;
 
 :export {
   list__max__width: $list__max__width;
+  post__max__width: $post__max__width;
   header__footer__padding: $header__footer__padding;
+}
+
+@mixin placeholder {
+  &:empty:before {
+    content: attr(placeholder);
+    color: var(--g6);
+    display: inline-block;
+  }
 }

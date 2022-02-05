@@ -1,4 +1,5 @@
 @use '../../../interactions/motion.module';
+@use '../../../styles/text-styles';
 
 .post__list {
   border-bottom: var(--g10) 1px solid;
@@ -16,9 +17,11 @@
   time {
     color: var(--g7);
     margin-left: 2px; // 시각 보정
+    @include text-styles.body4;
   }
 
   h1 {
     margin-top: 12px; // 터치 영역 위해
+    @include text-styles.title2(500);
   }
 }

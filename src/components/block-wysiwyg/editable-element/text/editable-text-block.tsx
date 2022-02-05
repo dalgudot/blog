@@ -15,6 +15,7 @@ type Props = {
   addBlockFocusUseEffectDependency?: IParagraphData;
   removeCurrentBlockFocusUseEffectDependency?: IParagraphData;
   placeholder: string;
+  className?: string;
 };
 
 const EditableTextBlock: FC<Props> = ({
@@ -28,6 +29,7 @@ const EditableTextBlock: FC<Props> = ({
   addBlockFocusUseEffectDependency,
   removeCurrentBlockFocusUseEffectDependency,
   placeholder,
+  className,
 }) => {
   const TagName =
     blockType === 'Heading1'
@@ -37,6 +39,15 @@ const EditableTextBlock: FC<Props> = ({
       : blockType === 'Heading3'
       ? 'h3'
       : 'p';
+
+  const customClassName =
+    blockType === 'Heading1'
+      ? 'title1__700'
+      : blockType === 'Heading2'
+      ? 'title2__700'
+      : blockType === 'Heading3'
+      ? 'title3__700'
+      : 'body1__400';
 
   const onInput = (
     e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>
@@ -100,6 +111,7 @@ const EditableTextBlock: FC<Props> = ({
           removeCurrentBlockFocusUseEffectDependency
         }
         placeholder={placeholder}
+        customClassName={className ? className : customClassName}
       />
     </>
   );

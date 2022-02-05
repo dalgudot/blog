@@ -78,10 +78,10 @@ const GNBList: FC<Props> = ({ list }) => {
       <li className={listClassname}>
         {list.target === '_self' ? (
           <Link href={list.href}>
-            <a className='body3__300'>{list.label}</a>
+            <a>{list.label}</a>
           </Link>
         ) : (
-          <a className='body3__300' href={list.href} target={list.target}>
+          <a href={list.href} target={list.target}>
             {list.label}
           </a>
         )}

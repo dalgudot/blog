@@ -1,43 +1,23 @@
 /* S of Noto Sans KR */
-/* @font-face {
-  font-family: 'BlogTextStyles';
-  font-style: normal;
-  font-weight: 100;
-  src: url('/fonts/NotoSansKR/NotoSansKR-Thin.woff2') format('woff2'),
-    url('/fonts/NotoSansKR/NotoSansKR-Thin.woff') format('woff');
-  unicode-range: U+AC00-D7A3;
-} */
-
 @font-face {
-  font-family: 'BlogTextStyles';
-  font-style: normal;
-  font-weight: 300;
-  src: local(''),
-    url('/fonts/NotoSansKR/NotoSansKR-Light.woff2') format('woff2'),
-    url('/fonts/NotoSansKR/NotoSansKR-Light.woff') format('woff');
-  unicode-range: U+AC00-D7A3;
-}
-
-/* @font-face {
   font-family: 'BlogTextStyles';
   font-style: normal;
   font-weight: 400;
   src: url('/fonts/NotoSansKR/NotoSansKR-Regular.woff2') format('woff2'),
     url('/fonts/NotoSansKR/NotoSansKR-Regular.woff') format('woff');
   unicode-range: U+AC00-D7A3;
-} */
+}
 
 @font-face {
   font-family: 'BlogTextStyles';
   font-style: normal;
   font-weight: 500;
-  src: local(''),
-    url('/fonts/NotoSansKR/NotoSansKR-Medium.woff2') format('woff2'),
+  src: url('/fonts/NotoSansKR/NotoSansKR-Medium.woff2') format('woff2'),
     url('/fonts/NotoSansKR/NotoSansKR-Medium.woff') format('woff');
   unicode-range: U+AC00-D7A3;
 }
 
-/* @font-face {
+@font-face {
   font-family: 'BlogTextStyles';
   font-style: normal;
   font-weight: 700;
@@ -45,58 +25,35 @@
     url('/fonts/NotoSansKR/NotoSansKR-Bold.woff') format('woff');
   unicode-range: U+AC00-D7A3;
 }
-
-@font-face {
-  font-family: 'BlogTextStyles';
-  font-style: normal;
-  font-weight: 900;
-  src: url('/fonts/NotoSansKR/NotoSansKR-Black.woff2') format('woff2'),
-    url('/fonts/NotoSansKR/NotoSansKR-Black.woff') format('woff');
-  unicode-range: U+AC00-D7A3;
-} */
 /* E of Noto Sans KR */
 
 /* S of Open Sans */
 @font-face {
   font-family: 'BlogTextStyles';
   font-style: normal;
-  font-weight: 300;
-  src: local(''),
-    url('/fonts/OpenSans/open-sans-v27-latin-300.woff2') format('woff2'),
-    url('/fonts/OpenSans/open-sans-v27-latin-300.woff') format('woff');
+  font-weight: 400;
+  src: url('/fonts/OpenSans/open-sans-v27-latin-regular.woff2') format('woff2'),
+    url('/fonts/OpenSans/open-sans-v27-latin-regular.woff') format('woff');
 }
 
 @font-face {
   font-family: 'BlogTextStyles';
   font-style: normal;
   font-weight: 500;
-  src: local(''),
-    url('/fonts/OpenSans/open-sans-v27-latin-500.woff2') format('woff2'),
+  src: url('/fonts/OpenSans/open-sans-v27-latin-500.woff2') format('woff2'),
     url('/fonts/OpenSans/open-sans-v27-latin-500.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'BlogTextStyles';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/fonts/OpenSans/open-sans-v27-latin-700.woff2') format('woff2'),
+    url('/fonts/OpenSans/open-sans-v27-latin-700.woff') format('woff');
 }
 /* E of Open Sans */
 
 /* S of Source Code Pro */
-@font-face {
-  font-family: 'SourceCodePro';
-  font-style: normal;
-  font-weight: 200;
-  src: url('/fonts/SourceCodePro/source-code-pro-v18-latin-200.woff2')
-      format('woff2'),
-    url('/fonts/SourceCodePro/source-code-pro-v18-latin-200.woff')
-      format('woff');
-}
-
-@font-face {
-  font-family: 'SourceCodePro';
-  font-style: normal;
-  font-weight: 300;
-  src: url('/fonts/SourceCodePro/source-code-pro-v18-latin-300.woff2')
-      format('woff2'),
-    url('/fonts/SourceCodePro/source-code-pro-v18-latin-300.woff')
-      format('woff');
-}
-
 @font-face {
   font-family: 'SourceCodePro';
   font-style: normal;
@@ -120,40 +77,10 @@
 @font-face {
   font-family: 'SourceCodePro';
   font-style: normal;
-  font-weight: 600;
-  src: url('/fonts/SourceCodePro/source-code-pro-v18-latin-600.woff2')
-      format('woff2'),
-    url('/fonts/SourceCodePro/source-code-pro-v18-latin-600.woff')
-      format('woff');
-}
-
-@font-face {
-  font-family: 'SourceCodePro';
-  font-style: normal;
   font-weight: 700;
   src: url('/fonts/SourceCodePro/source-code-pro-v18-latin-700.woff2')
       format('woff2'),
     url('/fonts/SourceCodePro/source-code-pro-v18-latin-700.woff')
-      format('woff');
-}
-
-@font-face {
-  font-family: 'SourceCodePro';
-  font-style: normal;
-  font-weight: 800;
-  src: url('/fonts/SourceCodePro/source-code-pro-v18-latin-800.woff2')
-      format('woff2'),
-    url('/fonts/SourceCodePro/source-code-pro-v18-latin-800.woff')
-      format('woff');
-}
-
-@font-face {
-  font-family: 'SourceCodePro';
-  font-style: normal;
-  font-weight: 900;
-  src: url('/fonts/SourceCodePro/source-code-pro-v18-latin-900.woff2')
-      format('woff2'),
-    url('/fonts/SourceCodePro/source-code-pro-v18-latin-900.woff')
       format('woff');
 }
 /* E of Source Code Pro */

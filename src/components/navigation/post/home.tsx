@@ -102,7 +102,7 @@ const CategoryFilter: FC<CategoryFilterProps> = ({ asPath }) => {
   ];
   const listClassname = (href: string) => {
     return classNames(
-      'body3__300',
+      'body3__400',
       asPath === href && styles.category__filter__selected
     );
   };

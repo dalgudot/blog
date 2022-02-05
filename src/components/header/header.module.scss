@@ -1,5 +1,6 @@
 @use '../../interactions/motion.module';
 @use '../../styles/common';
+@use '../../styles/text-styles';
 
 @mixin header__height {
   height: 64px;
@@ -56,6 +57,7 @@
   @include motion.opacity__hover;
 
   a {
+    @include text-styles.body3;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -67,8 +69,8 @@
 
 .selected__list {
   a {
+    @include text-styles.body3(500);
     color: var(--p7);
-    font-weight: 500;
     transition: 0.1s;
   }
 }

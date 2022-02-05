@@ -2,6 +2,7 @@ import { FC, memo } from 'react';
 import LinkWYSIWYG from './reference/link-wysiwyg';
 import Article from '../../components/post/article/article';
 import { IPostData } from '../../redux-toolkit/model/post-data-model';
+import styles from './post.module.scss';
 
 type Props = {
   contentEditable: boolean;
@@ -17,19 +18,19 @@ const Post: FC<Props> = ({ contentEditable, postData }) => {
 
   return (
     <>
-      <main>
+      <main className={styles.main}>
         <Article
           contentEditable={contentEditable}
           articleTitleWysiwygData={articleTitleWysiwygData}
           wysiwygDataArray={postData.wysiwygDataArray}
         />
+        {/* <Contact /> */}
+        {/* <Response /> */}
+        <LinkWYSIWYG
+          contentEditable={contentEditable}
+          linkWysiwygDataArray={postData.linkWysiwygDataArray}
+        />
       </main>
-      {/* <Contact /> */}
-      {/* <Response /> */}
-      <LinkWYSIWYG
-        contentEditable={contentEditable}
-        linkWysiwygDataArray={postData.linkWysiwygDataArray}
-      />
     </>
   );
 };

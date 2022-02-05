@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
 
 const Header: React.FC = () => {
-  const blogNameClassname = classNames(styles.blog__name, 'body1__500');
+  const blogNameClassname = classNames(styles.blog__name, 'body2__500');
   const { isAdmin } = useIsAdmin();
 
   return (
