@@ -9,6 +9,9 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* iOS Safari Momentum Scroll, 버벅임 방지 */
+  -webkit-overflow-scrolling: touch;
 }
 
 * {
@@ -19,7 +22,6 @@ body {
   font-family: 'BlogTextStyles', Apple SD Gothic Neo, Noto Sans KR, Inter,
     system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica,
     Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, sans-serif;
-  color: var(--g4);
 }
 
 h1,
@@ -35,18 +37,18 @@ a {
   text-decoration: none;
   cursor: pointer;
   display: inline-block;
+  color: var(--g3);
 
   /* iOS에서 a tag long touch 시 나오는 모달 막기 */
   -webkit-touch-callout: none;
 }
 
-/* a:link,
+a:link,
 a:visited,
 a:hover,
 a:active {
-  outline-style: none;
-  outline: none;
-} */
+  /* color: var(--g3); */
+}
 
 button {
   all: unset;

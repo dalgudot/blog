@@ -1,34 +1,36 @@
 .code__block {
-  pre {
-    background: rgba(33, 37, 41) !important;
-    /* border-radius: 16px; */
-    margin: 0 0 0 !important; // Remove default setting
-    padding: 48px 48px 36px !important;
-    /* max-width: 800px !important; */
-    @media all and (max-width: 767px) {
-      margin: 16px 0 0 !important; // Remove default setting
-      padding: 36px !important;
-      max-width: 91vw !important;
-    }
-    // ::-webkit-scrollbar {
-    //   background-color: var(--bg);
-    // }
-    // ::-webkit-scrollbar-corner {
-    //   background-color: var(--bg);
-    // }
-    // ::-webkit-scrollbar-thumb {
-    //   border-radius: 8px;
-    //   background-color: var(--fg);
-    //   min-height: 24px;
-    //   border: 3px solid var(--bg);
-    // }
+  background: #191919 !important;
+  margin: 36px 0 !important; // Remove default setting
+  padding: 48px 36px !important;
+
+  code {
+    overflow-x: scroll;
   }
+
+  // @media all and (max-width: 767px) {
+  //   margin: 16px 0 0 !important; // Remove default setting
+  //   padding: 36px !important;
+  //   max-width: 91vw !important;
+  // }
+  // ::-webkit-scrollbar {
+  //   background-color: var(--bg);
+  // }
+  // ::-webkit-scrollbar-corner {
+  //   background-color: var(--bg);
+  // }
+  // ::-webkit-scrollbar-thumb {
+  //   border-radius: 8px;
+  //   background-color: var(--fg);
+  //   min-height: 24px;
+  //   border: 3px solid var(--bg);
+  // }
 
   span {
     text-align: left;
     font-family: 'SourceCodePro', Menlo, Monaco, Lucida Console, Liberation Mono,
       DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
     font-size: 18px;
+    font-weight: 400;
 
     // @media all and (max-width: 767px) {
     //   font-size: 13px;
