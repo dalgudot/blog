@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import DOMPurify from 'dompurify';
-import { ChangeEvent, FC, KeyboardEvent, useEffect, useRef } from 'react';
+import { ChangeEvent, FC, KeyboardEvent } from 'react';
 import { useEditable } from '../../lib/hooks/useEditable';
+import { addInlineCodeBlock } from '../../lib/utils/editable-block/add-inline-code-block';
 import { IParagraphData } from '../../redux-toolkit/model/post-data-model';
 import styles from './editable-element.module.scss';
 
@@ -9,10 +10,10 @@ type Props = {
   TagName: 'h1' | 'h2' | 'h3' | 'p' | 'code' | 'figcaption';
   contentEditable: boolean;
   html: string;
-  onInput?: (e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>) => void;
+  setTempPostHtmlData: (inputHtml: string) => void;
+  setPostHtmlData: (inputHtml: string) => void;
   onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
-  syncTempPostWithPasteText: (newInnerPasteText: string) => void;
   addBlockFocusUseEffectDependency?: IParagraphData;
   removeCurrentBlockFocusUseEffectDependency?: IParagraphData;
   placeholder: string;
@@ -24,21 +25,31 @@ const EditableElement: FC<Props> = ({
   TagName,
   contentEditable = false,
   html,
-  onInput,
+  setTempPostHtmlData,
+  setPostHtmlData,
   onKeyPress,
   onKeyDown,
-  syncTempPostWithPasteText,
   addBlockFocusUseEffectDependency,
   removeCurrentBlockFocusUseEffectDependency,
   placeholder = '',
   customClassName,
 }) => {
+  // setTempPostHtmlData과 setPostHtmlData는 모두 current index와 관련있으므로 switch에서 처리하고 props로 넘겨받음!
+  const onInput = (
+    e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>
+  ) => {
+    const inputHtml = e.target.innerHTML;
+    setTempPostHtmlData(inputHtml);
+    addInlineCodeBlock(inputHtml, setTempPostHtmlData, setPostHtmlData);
+  };
+
   const ref = useEditable(
     html,
-    syncTempPostWithPasteText,
+    setTempPostHtmlData,
     addBlockFocusUseEffectDependency,
     removeCurrentBlockFocusUseEffectDependency
   );
+
   // 특정 코드(<code> 등)만 html로 변환하기 위해, 나중에 <b> 등도 추가
   const hasCodeElement = html.includes('</code>');
   const switchHtml = hasCodeElement ? (

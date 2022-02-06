@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { ChangeEvent, FC, KeyboardEvent } from 'react';
+import { FC, KeyboardEvent } from 'react';
 import { ILinkData } from '../../../../redux-toolkit/model/link-data-model';
 import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
 import IconNewTap24 from '../../../../svg/icon-new-tap-24';
@@ -36,50 +36,6 @@ const EditableLinkBlock: FC<Props> = ({
   removeCurrentBlockFocusUseEffectDependency,
   placeholder,
 }) => {
-  const onInput = (e: ChangeEvent<HTMLParagraphElement>) => {
-    const inputHtml = e.target.innerHTML;
-    setTempPostHtmlData(inputHtml);
-    addInlineCodeBlock(inputHtml);
-  };
-
-  const addInlineCodeBlock = (inputHtml: string) => {
-    const countBacktick = inputHtml.match(/`/g)?.length;
-    const updateInlineBlock = (inputHtml: string) => {
-      setTempPostHtmlData(inputHtml);
-      setPostHtmlData(inputHtml);
-    };
-
-    if (countBacktick === 2) {
-      const isContinuousBacktick: boolean = inputHtml.includes('``');
-
-      if (isContinuousBacktick) {
-        // 2개 연속(``)이면 빈 inline Code Block 생성
-        const emptyCodeInlineBlock = inputHtml.replace(
-          '``',
-          '<code>&nbsp</code>&nbsp'
-        );
-
-        updateInlineBlock(emptyCodeInlineBlock);
-      } else {
-        // 첫 번째 `는 <code>로 두 번째 `는 </code>로!
-        const firstBacktickToTag = inputHtml.replace(
-          '`',
-          '<code class="inline__code__block">'
-        ); // &nbsp is for design
-        const secondBacktickToTag = firstBacktickToTag.replace(
-          '`',
-          `</code>&nbsp` // &nbsp로 코드 블럭 벗어나기
-        );
-
-        updateInlineBlock(secondBacktickToTag);
-      }
-    }
-  };
-
-  const syncTempPostWithPasteText = (newInnerPasteText: string) => {
-    setTempPostHtmlData(newInnerPasteText);
-  };
-
   return (
     <>
       <li
@@ -99,10 +55,10 @@ const EditableLinkBlock: FC<Props> = ({
             TagName='p'
             contentEditable={contentEditable}
             html={data.html}
-            onInput={onInput} // 필수
+            setTempPostHtmlData={setTempPostHtmlData}
+            setPostHtmlData={setPostHtmlData}
             onKeyPress={onKeyPress} // optional, 블록 추가
             onKeyDown={onKeyDown} // optional, 블록 삭제
-            syncTempPostWithPasteText={syncTempPostWithPasteText} // 필수
             addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
             removeCurrentBlockFocusUseEffectDependency={
               removeCurrentBlockFocusUseEffectDependency

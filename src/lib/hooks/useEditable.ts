@@ -5,14 +5,17 @@ import { focusContentEditableTextToEnd } from '../utils/focus-content-editable-t
 
 export const useEditable = (
   html: string,
-  syncTempPostWithPasteText: (newInnerPasteText: string) => void,
+  setTempPostHtmlData: (inputHtml: string) => void,
   addBlockFocusUseEffectDependency?: IParagraphData,
   removeCurrentBlockFocusUseEffectDependency?: IParagraphData
 ) => {
-  const ref = useRef<HTMLHeadingElement | HTMLParagraphElement | any>(null);
-
   // 블록 안에 ``을 추가하거나 블록을 지울 때의 focusing은 여기가 아닌 <EditableElementSwitch />에서 관리해야 함.
+  const ref = useRef<HTMLHeadingElement | HTMLParagraphElement | any>(null);
+  const syncTempPostWithPasteText = (newInnerPasteText: string) => {
+    setTempPostHtmlData(newInnerPasteText);
+  };
 
+  // 'paste' 관리하는 useEffect
   useEffect(() => {
     const getTextDataFromClipboard = (e: ClipboardEvent) => {
       e.preventDefault();
@@ -28,7 +31,8 @@ export const useEditable = (
         const newInnerPasteText = `${ref.current.innerHTML}${textData}`;
         ref.current.innerText = newInnerPasteText;
 
-        syncTempPostWithPasteText(newInnerPasteText); // 데이터 싱크를 위해 dispatch 및 setText(EditableElementSwitch 이용하는 경우 onKeyDown에서 text useState() 필요) 함수를 받아와 실행
+        // 데이터 싱크를 위해 dispatch 및 setText(EditableElementSwitch 이용하는 경우 onKeyDown에서 text useState() 필요) 함수를 받아와 실행
+        syncTempPostWithPasteText(newInnerPasteText);
         focusContentEditableTextToEnd(ref.current);
       }
     };

@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from 'react';
+import { FC, KeyboardEvent, useEffect, useState } from 'react';
 import styles from './editable-image-block.module.scss';
 import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
 import UploadImage from './upload-image';
@@ -19,7 +19,7 @@ type Props = {
   blockId: string;
   currentIndex: number;
   setTempPostHtmlData: (inputHtml: string) => void;
-  // setPostHtmlData: (inputHtml: string) => void;
+  setPostHtmlData: (inputHtml: string) => void;
   onKeyPress: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown: (e: KeyboardEvent<HTMLElement>) => void;
   addBlockFocusUseEffectDependency?: IParagraphData;
@@ -34,7 +34,7 @@ const EditableImageBlock: FC<Props> = ({
   blockId,
   currentIndex,
   setTempPostHtmlData, // 캡션 데이터로 활용
-  // setPostHtmlData,
+  setPostHtmlData,
   onKeyPress,
   onKeyDown,
   addBlockFocusUseEffectDependency,
@@ -43,16 +43,6 @@ const EditableImageBlock: FC<Props> = ({
 }) => {
   const [image, setImage] = useState<string>(imageDownloadURL);
   const { showToast } = useToast();
-
-  const onInput = (e: ChangeEvent<HTMLElement>) => {
-    const inputHtml = e.target.innerHTML;
-    setTempPostHtmlData(inputHtml);
-  };
-
-  const syncTempPostWithPasteText = (newInnerPasteText: string) => {
-    setTempPostHtmlData(newInnerPasteText);
-  };
-
   const dispatch = useAppDispatch();
 
   const fileHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,10 +98,10 @@ const EditableImageBlock: FC<Props> = ({
           TagName='figcaption'
           contentEditable={contentEditable}
           html={html}
-          onInput={onInput} // 필수
+          setTempPostHtmlData={setTempPostHtmlData}
+          setPostHtmlData={setPostHtmlData}
           onKeyPress={onKeyPress} // optional, 블록 추가
           onKeyDown={onKeyDown} // optional, 블록 삭제
-          syncTempPostWithPasteText={syncTempPostWithPasteText} // 필수
           addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
           removeCurrentBlockFocusUseEffectDependency={
             removeCurrentBlockFocusUseEffectDependency
