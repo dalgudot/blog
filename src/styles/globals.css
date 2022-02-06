@@ -3,7 +3,7 @@ body {
   padding: 0;
   margin: 0;
   background-color: var(--g12);
-  user-select: none;
+  /* user-select: none; */
 
   /* 판독성 최적화 */
   text-rendering: optimizeLegibility;
