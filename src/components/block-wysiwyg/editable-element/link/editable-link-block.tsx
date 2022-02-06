@@ -56,7 +56,7 @@ const EditableLinkBlock: FC<Props> = ({
         // 2개 연속(``)이면 빈 inline Code Block 생성
         const emptyCodeInlineBlock = inputHtml.replace(
           '``',
-          '&nbsp<code>&nbsp</code>&nbsp'
+          '<code>&nbsp</code>&nbsp'
         );
 
         updateInlineBlock(emptyCodeInlineBlock);
@@ -64,7 +64,7 @@ const EditableLinkBlock: FC<Props> = ({
         // 첫 번째 `는 <code>로 두 번째 `는 </code>로!
         const firstBacktickToTag = inputHtml.replace(
           '`',
-          '&nbsp<code class="inline__code__block">'
+          '<code class="inline__code__block">'
         ); // &nbsp is for design
         const secondBacktickToTag = firstBacktickToTag.replace(
           '`',

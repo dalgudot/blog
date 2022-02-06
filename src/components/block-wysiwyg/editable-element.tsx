@@ -39,7 +39,7 @@ const EditableElement: FC<Props> = ({
     addBlockFocusUseEffectDependency,
     removeCurrentBlockFocusUseEffectDependency
   );
-  // 특정 코드만 html로 변환하기 위해, 나중에 <b> 등도 추가
+  // 특정 코드(<code> 등)만 html로 변환하기 위해, 나중에 <b> 등도 추가
   const hasCodeElement = html.includes('</code>');
   const switchHtml = hasCodeElement ? (
     <TagName
