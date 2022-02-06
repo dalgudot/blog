@@ -53,8 +53,6 @@ const EditableTextBlock: FC<Props> = ({
   const onInput = (
     e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>
   ) => {
-    // const inputHtml = DOMPurify.sanitize(e.target.innerHTML);
-
     const inputHtml = e.target.innerHTML;
     setTempPostHtmlData(inputHtml);
     addInlineCodeBlock(inputHtml);

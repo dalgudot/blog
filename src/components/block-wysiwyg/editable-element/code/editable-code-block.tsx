@@ -1,4 +1,4 @@
-import { FC, KeyboardEvent, useState } from 'react';
+import { FC, KeyboardEvent, useEffect, useState } from 'react';
 import styles from './editable-code-block.module.scss';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
@@ -28,8 +28,12 @@ const EditableCodeBlock: FC<Props> = ({
   removeCurrentBlockFocusUseEffectDependency,
   placeholder,
 }) => {
-  const [codeString, setCodeString] = useState<string>(html);
+  const [codeString, setCodeString] = useState<string>('');
   const language = 'tsx'; // 랭귀지 셀렉터는 여기서 구현
+
+  useEffect(() => {
+    setCodeString(html);
+  }, [html]);
 
   return (
     <>
