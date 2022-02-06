@@ -20,7 +20,7 @@ export const useEditable = (
     const getTextDataFromClipboard = (e: ClipboardEvent) => {
       e.preventDefault();
       const pastedData = e.clipboardData;
-      const textData = pastedData?.getData('Text');
+      const textData = pastedData?.getData('text');
 
       // contentEditable의 innerHtml, TempRef, setText 모두 동기화!
       if (ref.current) {
