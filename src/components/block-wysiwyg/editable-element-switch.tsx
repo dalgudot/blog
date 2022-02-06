@@ -45,8 +45,7 @@ const EditableElementSwitch: FC<Props> = ({
   currentIndex,
 }) => {
   const [type, setType] = useState<TBlockType>('Paragraph');
-  const [text, setText] = useState<string>('');
-
+  const [text, setText] = useState<string>(''); // block 지울 떄 활용
   const dispatch = useAppDispatch();
   const datasLength = datas.length;
 
@@ -122,6 +121,7 @@ const EditableElementSwitch: FC<Props> = ({
       dispatch(setCurrentBlockTempHtml({ inputHtml, currentIndex }));
     }
 
+    // 리덕스에서 tempHtml을 가져오면 계속 전체 리렌더가 일어나기 때문에 해당 컴포넌트의 state로 관리
     setText(inputHtml);
   };
 
@@ -147,7 +147,7 @@ const EditableElementSwitch: FC<Props> = ({
             blockId={data.blockId}
             currentIndex={currentIndex}
             setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
-            // setPostHtmlData={setCurrentBlockPostHtmlData}
+            setPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
             addBlockFocusUseEffectDependency={datas[currentIndex]}
