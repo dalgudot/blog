@@ -13,6 +13,11 @@ const ResponseList: FC = () => {
 
   useEffect(() => {
     getResponseDataFromRealtimeDB(asPath, setResponseList);
+
+    return () => {
+      getResponseDataFromRealtimeDB(asPath, setResponseList);
+      setResponseList([]);
+    };
   }, []);
 
   return (

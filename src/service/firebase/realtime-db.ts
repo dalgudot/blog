@@ -15,6 +15,7 @@ export const postResponseRealtimeDB = async (
 ) => {
   const dbRef = ref(realtimeDB, `Response/Post${asPath}`);
   const dbRefWithKey = push(dbRef); // 시간순 id 생성
+
   await set(dbRefWithKey, responseData) //
     .catch((error) => {
       throw new Error(error);
@@ -29,8 +30,8 @@ export const getResponseDataFromRealtimeDB = (
 
   onValue(dbRef, (snapshot) => {
     const data = snapshot.val();
-    const dataArray = objectToArray(data);
-    setResponseList(dataArray);
+    const dataArray = data && objectToArray(data);
+    data && setResponseList(dataArray);
   });
   // 새로운 댓글 생성할 때마다 실시간 업데이트
 };

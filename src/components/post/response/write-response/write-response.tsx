@@ -1,7 +1,7 @@
 import { useToast } from '@dalgu/react-toast';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
-import { FC, useEffect, useState } from 'react';
+import { FC, MouseEvent, useEffect, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import { getDate } from '../../../../lib/utils/get-date';
 import { gradientGenerator } from '../../../../lib/utils/gradientGenerator';
@@ -34,14 +34,27 @@ const WriteResponse: FC = () => {
 
   const router = useRouter();
   const asPath = router.asPath;
-  const postResponse = async () => {
-    const responseData = {
-      profileGradient,
-      date,
-      responseText,
-    };
-    await postResponseRealtimeDB(asPath, responseData);
-    showToast('댓글을 등록했습니다 💪');
+  const postResponse = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    const isResponse = sessionStorage.getItem(`Response of ${asPath}`);
+
+    if (isResponse === null) {
+      const responseData = {
+        profileGradient,
+        date,
+        responseText,
+      };
+      await postResponseRealtimeDB(asPath, responseData);
+      showToast('댓글을 등록했습니다 💪');
+      setProfileGradient(gradientGenerator());
+      setResponseText('');
+
+      // 연속으로 댓글 쓰는 일 방지하기 위해 Session Storage 활용
+      sessionStorage.setItem(`Response of ${asPath}`, 'true');
+    } else {
+      showToast('연속으로 댓글을 쓸 수 없어요 😂');
+    }
   };
 
   return (
