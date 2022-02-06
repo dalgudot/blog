@@ -1,3 +1,5 @@
+@use 'text-styles';
+
 $list__max__width: 640px;
 $post__max__width: 760px;
 $header__footer__padding: 0 4.5vw;
@@ -13,5 +15,16 @@ $header__footer__padding: 0 4.5vw;
     content: attr(placeholder);
     color: var(--g8);
     display: inline-block;
+  }
+}
+
+@mixin article__section__title__divider {
+  margin-top: 144px;
+
+  h2 {
+    @include text-styles.title2;
+    border-bottom: var(--g5) 4px solid;
+    padding-bottom: 20px;
+    margin-bottom: 6px;
   }
 }

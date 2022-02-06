@@ -1,0 +1,18 @@
+@use '../response.module';
+@use '../../../../styles/text-styles';
+
+.ul {
+  li {
+    margin-top: 72px;
+  }
+}
+
+.response__text {
+  @include text-styles.body1;
+  color: var(--g6);
+  margin-top: 16px;
+}
+
+.anonymous__profile__left__div {
+  @include response.anonymous__profile__left;
+}
