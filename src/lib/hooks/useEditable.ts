@@ -25,38 +25,35 @@ export const useEditable = (
         .replace(/>/g, '&gt;');
       // .replace(/' '/g, '&nbsp;');
 
-      // console.log('textData', textData);
-      // console.log('htmlData', htmlData);
+      console.log('useEffect');
 
       // contentEditable의 innerHtml, TempRef, setText 모두 동기화!
       if (ref.current) {
+        console.log('paste');
         // (TODO) 가장 뒤에 붙여넣기가 되므로 고칠 필요가 있음. -> 셀렉션 커서 혹은 영역을 찾아서 각각 대응해줘야 함.
         // const newInnerPasteText = DOMPurify.sanitize(
         //   `${ref.current.innerHTML}${textData}`
         // );
         const newInnerPasteText = `${ref.current.innerHTML}${textData}`;
         ref.current.innerText = newInnerPasteText;
-        // textContent는 <script>와 <style> 요소를 포함한 모든 요소의 콘텐츠를 가져옵니다.
-        // 반면 innerText는 "사람이 읽을 수 있는" 요소만 처리합니다.
-        // textContent는 노드의 모든 요소를 반환합니다. 그에 비해 innerText는 스타일링을 고려하며, "숨겨진" 요소의 텍스트는 반환하지 않습니다.
         // https://developer.mozilla.org/ko/docs/Web/API/Node/textContent
-        // ref.current.textContent = newInnerPasteText;
 
         // [syncTempPostWithPasteText] 데이터 싱크를 위해 dispatch 및 setText(EditableElementSwitch 이용하는 경우 onKeyDown에서 text useState() 필요) 함수를 받아와 실행
-        // setTempPostHtmlData(newInnerPasteText);
-        htmlData && setTempPostHtmlData(htmlData); // [중요] 정규식 변환한 값으로 넣어줘야 editable-element에서 innerHtml 렌더링될 떄 코드로 읽히지 않음.
+        htmlData && setTempPostHtmlData(htmlData); // [중요] 정규식 변환한 값으로 넣어줘야 editable-element에서 innerHtml 렌더링될 떄 코드로 읽히지 않음.(마치 onInput에서 이벤트 받아오는 것처럼.)
         focusContentEditableTextToEnd(ref.current);
       }
     };
 
     ref.current?.addEventListener('paste', (e: ClipboardEvent) => {
+      console.log('EventListener');
       getTextDataFromClipboard(e);
     });
 
     return ref.current?.removeEventListener('paste', (e: ClipboardEvent) => {
       getTextDataFromClipboard(e);
     });
-  }, []);
+    // select 변경 시 이벤트 리스너 다시 등록
+  }, [addBlockFocusUseEffectDependency]);
 
   // 새로 생성된 블럭의 커서 위치, 다음 블럭이 지워졌을 때 focus()
   useEffect(() => {

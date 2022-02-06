@@ -60,24 +60,12 @@ const EditableElement: FC<Props> = ({
     removeCurrentBlockFocusUseEffectDependency
   );
 
-  // [mdn] https://developer.mozilla.org/ko/docs/Web/API/Element/innerHTML
-  // [mdn] https://developer.mozilla.org/ko/docs/Web/API/HTMLElement/innerText
-  // 특정 코드(<code> 등)만 html로 변환하기 위해, 나중에 <b> 등도 추가
-  const hasInnerCodeElement =
-    html.includes('<code class="inline__code__block">') &&
-    html.includes('</code>');
-  //   ||
-  // (html.includes('<') && html.includes('>')) ||
-  // (html.includes('&lt;') && html.includes('&gt;'));
-  // console.log(html);
-  // console.log('hasInnerCodeElement', hasInnerCodeElement);
-
-  const switchHtml = true ? (
+  return (
     <TagName
       ref={ref}
       contentEditable={contentEditable}
       suppressContentEditableWarning={contentEditable}
-      // *** [KEY] dangerouslySetInnerHTML로 들어가는 html에서 정규식 변환된 "&amp;", "&lt;" ,"&gt;"는 텍스트로, < > &는 실제 html 요소로 렌더링한다!
+      // *** [KEY] dangerouslySetInnerHTML로 들어가는 html에서 정규식 변환된 "&amp;", "&lt;" ,"&gt;"는 텍스트로, < > &는 html 요소로 렌더링한다!
       dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }}
       // dangerouslySetInnerHTML={{ __html: html }}
       onInput={onInput}
@@ -87,33 +75,7 @@ const EditableElement: FC<Props> = ({
       placeholder={contentEditable ? placeholder : undefined}
       className={classNames(styles.editable__element, customClassName)}
     />
-  ) : (
-    <></>
-    // <TagName
-    //   ref={ref}
-    //   contentEditable={contentEditable}
-    //   suppressContentEditableWarning={contentEditable}
-    //   // dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }}
-    //   onInput={onInput}
-    //   onKeyPress={onKeyPress} // optional, 블록 추가
-    //   onKeyDown={onKeyDown} // optional, 블록 삭제
-    //   spellCheck={false}
-    //   placeholder={contentEditable ? placeholder : undefined}
-    //   className={classNames(styles.editable__element, customClassName)}
-    // >
-    //   {/* https://developer.mozilla.org/ko/docs/Web/API/Element/innerHTML */}
-    //   {
-    //     html
-    //       .replace(/&amp;/g, '&')
-    //       .replace(/&lt;/g, '<')
-    //       .replace(/&gt;/g, '>')
-    //       .replace(/&nbsp;/g, ' ')
-    //     // .replace(/<br>/g, '')
-    //   }
-    // </TagName>
   );
-
-  return <>{switchHtml}</>;
 };
 
 export default EditableElement;
