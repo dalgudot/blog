@@ -25,11 +25,8 @@ export const useEditable = (
         .replace(/>/g, '&gt;');
       // .replace(/' '/g, '&nbsp;');
 
-      console.log('useEffect');
-
       // contentEditable의 innerHtml, TempRef, setText 모두 동기화!
       if (ref.current) {
-        console.log('paste');
         // (TODO) 가장 뒤에 붙여넣기가 되므로 고칠 필요가 있음. -> 셀렉션 커서 혹은 영역을 찾아서 각각 대응해줘야 함.
         // const newInnerPasteText = DOMPurify.sanitize(
         //   `${ref.current.innerHTML}${textData}`
@@ -45,14 +42,13 @@ export const useEditable = (
     };
 
     ref.current?.addEventListener('paste', (e: ClipboardEvent) => {
-      console.log('EventListener');
       getTextDataFromClipboard(e);
     });
 
     return ref.current?.removeEventListener('paste', (e: ClipboardEvent) => {
       getTextDataFromClipboard(e);
     });
-    // select 변경 시 이벤트 리스너 다시 등록
+    // select 변경 시 이벤트 리스너 다시 등록 위해 addBlockFocusUseEffectDependency 의존성 배열에 추가
   }, [addBlockFocusUseEffectDependency]);
 
   // 새로 생성된 블럭의 커서 위치, 다음 블럭이 지워졌을 때 focus()

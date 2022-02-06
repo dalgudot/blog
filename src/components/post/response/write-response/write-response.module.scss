@@ -1,0 +1,67 @@
+@use '../../../../styles/text-styles';
+@use '../response.module';
+
+.write__response {
+  margin-top: 72px;
+
+  textarea {
+    @include text-styles.body1;
+    margin-top: 24px;
+
+    -webkit-appearance: none; // remove iOS upper inner shadow
+    resize: none; // 늘이고 줄이는 기능 없애기
+    line-height: 1.7; // line-height 있어야 글씨 쓰기 시작할 때 네모가 바뀌지 않음.
+
+    overflow: hidden;
+    width: 100%;
+    background-color: transparent;
+    border: 1px solid var(--g8) !important; // 안드로이드 삼성 인터넷에서 작동 안 해서 !important
+
+    // 바뀌는 속성
+    padding: 36px 36px;
+
+    // @media all and (max-width: ${mediaBreakPoint.first}) {
+    //   padding: 24px;
+    //   font-size: 18px;
+    // }
+
+    ::placeholder {
+      @include text-styles.body1;
+      color: var(--g8);
+    }
+  }
+}
+
+.response__submit__button {
+  @include text-styles.body1;
+  width: 100%;
+  padding: 18px 0;
+  margin-top: 16px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: var(--g8);
+  border: 1px solid var(--g8);
+  transition: color 0.4s ease-in-out, border 0.4s ease-in-out;
+}
+
+.active__response__submit__button {
+  color: var(--g3);
+  border: 1px solid var(--g3);
+}
+
+.anonymous__profile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  button {
+    @include text-styles.body2(500);
+  }
+}
+
+.anonymous__profile__left__div {
+  @include response.anonymous__profile__left;
+}
