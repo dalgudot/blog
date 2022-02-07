@@ -51,8 +51,8 @@
 
 @mixin email__section__button {
   @include text-styles.body3;
-  width: 200px;
-  height: 64px;
+  width: 180px;
+  height: 56px;
   text-align: center;
   background-color: var(--g11);
   display: flex;
@@ -79,17 +79,17 @@
   }
 
   .button__area {
-    margin-top: 36px;
+    margin-top: 24px;
     display: flex;
 
     button {
       @include email__section__button;
-      margin-right: 8px;
+      margin-right: 6px;
     }
 
     a {
       @include email__section__button;
-      margin-left: 8px;
+      margin-left: 6px;
     }
   }
 }
@@ -112,13 +112,13 @@
   }
 
   time {
-    @include text-styles.body1(400);
-    color: var(--g5);
+    @include text-styles.body1(500);
+    color: var(--g4);
   }
 
   p {
     @include text-styles.body1;
-    margin-top: 10px;
+    margin-top: 8px;
     margin-bottom: 36px;
     color: var(--g4);
   }

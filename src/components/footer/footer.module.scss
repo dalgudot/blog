@@ -5,11 +5,31 @@
   padding: common.$header__footer__padding;
   display: flex;
   justify-content: space-between;
-
   position: fixed;
   bottom: 56px;
   left: 0;
   right: 0;
+
+  @media screen and (max-width: common.$footer__media__max__width) {
+    padding: common.$header__footer__padding;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    bottom: 0;
+    margin: -72px auto 72px;
+  }
+}
+
+.left__side {
+  @include text-styles.body4(500);
+  color: var(--g7);
+  display: flex;
+  align-items: flex-end;
+  margin-left: 2px;
+
+  @media screen and (max-width: common.$footer__media__max__width) {
+    display: none;
+  }
 }
 
 @mixin divider {
@@ -20,20 +40,23 @@
     width: 2px;
     height: 10px;
     margin: 0 8px;
-  }
-}
 
-.left__side {
-  @include text-styles.body4(500);
-  color: var(--g7);
-  display: flex;
-  align-items: flex-end;
-  margin-left: 2px;
+    @media screen and (max-width: common.$footer__media__max__width) {
+      // width: 0px;
+      height: 12px;
+      margin: 0 36px;
+    }
+  }
 }
 
 .right__side {
   text-align: right;
   margin-right: 2px;
+
+  @media screen and (max-width: common.$footer__media__max__width) {
+    text-align: center;
+    margin-right: 0px;
+  }
 
   ul {
     @include text-styles.body4(500);
@@ -56,4 +79,8 @@
   @include text-styles.body4;
   color: var(--g7);
   margin-top: 8px;
+
+  @media screen and (max-width: common.$footer__media__max__width) {
+    margin-top: 36px;
+  }
 }
