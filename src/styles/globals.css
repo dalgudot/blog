@@ -38,7 +38,21 @@ h3,
 h4,
 h5,
 h6,
-code {
+p,
+a {
+  color: var(--g3);
+}
+
+/* a:hover :active :link :visited {
+  color: var(--g3);
+} */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   word-break: keep-all;
 }
 
@@ -46,11 +60,16 @@ p {
   word-break: break-word;
 }
 
+code {
+  font-family: 'SourceCodePro', Menlo, Monaco, Lucida Console, Liberation Mono,
+    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+  word-break: keep-all;
+}
+
 a {
   text-decoration: none;
   cursor: pointer;
   display: inline-block;
-  color: var(--g3);
 
   /* iOS에서 a tag long touch 시 나오는 모달 막기 */
   -webkit-touch-callout: none;
@@ -74,11 +93,6 @@ ul,
 ol,
 li {
   list-style: none;
-}
-
-code {
-  font-family: 'SourceCodePro', Menlo, Monaco, Lucida Console, Liberation Mono,
-    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
 }
 
 /* 글 속에만 적용되도록 <code> html 생성 시 class도 지정, <code class="inline__code__block"> */

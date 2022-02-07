@@ -3,7 +3,10 @@
 
 .main {
   max-width: common.$post__max__width;
-  margin: 96px auto 0;
+  margin: 96px auto 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .profile__section {
@@ -25,23 +28,101 @@
     margin-top: 12px;
     @include text-styles.title3;
   }
+
+  .right__div {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+
+    p {
+      color: var(--g5);
+    }
+
+    span {
+      display: inline-block;
+      border-radius: 50%;
+      width: 2px;
+      height: 2px;
+      background-color: var(--g5);
+      margin: 1px 6px 0;
+    }
+  }
 }
 
-.right__div {
+@mixin email__section__button {
+  @include text-styles.body3;
+  width: 200px;
+  height: 64px;
+  text-align: center;
+  // padding: 24px 12px;
+  background-color: var(--g11);
   display: flex;
+  justify-content: center;
   align-items: center;
-  margin-top: 8px;
+  border-radius: 16px;
+}
 
-  p {
+@mixin email__career__section__common($marginTop) {
+  width: 100%;
+  margin-top: $marginTop;
+  border: 1px solid var(--g10);
+  padding: 72px;
+}
+
+.email__section {
+  @include email__career__section__common(72px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .email__button {
+    @include text-styles.title2;
+  }
+
+  .button__area {
+    margin-top: 36px;
+    display: flex;
+    // min-width: 400px;
+    // max-width: 480px;
+
+    button {
+      @include email__section__button;
+      margin-right: 8px;
+    }
+
+    a {
+      @include email__section__button;
+      margin-left: 8px;
+    }
+  }
+}
+
+.career__section {
+  @include email__career__section__common(24px);
+
+  h3 {
+    @include text-styles.body1;
+    color: var(--g7);
+    margin-bottom: 18px;
+  }
+
+  li {
+    margin-top: 96px;
+  }
+
+  li:nth-child(1) {
+    margin-top: 0;
+  }
+
+  time {
+    @include text-styles.body1(400);
     color: var(--g5);
   }
 
-  span {
-    display: inline-block;
-    border-radius: 50%;
-    width: 2px;
-    height: 2px;
-    background-color: var(--g5);
-    margin: 0 6px;
+  p {
+    @include text-styles.body1;
+    margin-top: 10px;
+    margin-bottom: 36px;
+    color: var(--g4);
   }
 }

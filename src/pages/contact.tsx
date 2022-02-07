@@ -8,8 +8,8 @@ const Contact: NextPage = () => {
   return (
     <main className={styles.main}>
       <Profile />
-      {/* <Email />
-      <Career /> */}
+      <Email />
+      <Career />
     </main>
   );
 };
