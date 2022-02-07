@@ -9,6 +9,8 @@ import {
   setDoc,
   updateDoc,
   WithFieldValue,
+  query,
+  orderBy,
 } from 'firebase/firestore';
 import { IPostData } from '../../redux-toolkit/model/post-data-model';
 import { db } from './config';
@@ -21,10 +23,16 @@ export const draftCollectionRefName = 'draft';
 export const getEachAllCollectionDataArray = async (
   collectionRefName: string
 ) => {
-  // 컬렉션 전체 데이터 받아오는 'getDoc's''
-  const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
-    collection(db, collectionRefName)
+  // 최신순 정렬 위해 query 이용
+  const q = query(
+    collection(db, collectionRefName),
+    orderBy('dateTime', 'desc')
   );
+  const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(q);
+  // 컬렉션 전체 데이터 받아오는 'getDoc's''
+  // const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
+  //   collection(db, collectionRefName)
+  // );
 
   const dataArray: IPostData[] = [];
 
@@ -59,7 +67,6 @@ export const getAllCollectionDataArray = async () => {
     storyCollectionRefName
   );
 
-  // const allCollectionDataArray = devDataArray.concat(designDataArray);
   const allCollectionDataArray = [
     ...devDataArray,
     ...designDataArray,
@@ -83,29 +90,6 @@ export const getPostByCategoryOrder = async (params: {
     throw new Error('No such document!');
   }
 };
-
-// 추후 삭제
-// export const getDraftList = async () => {
-//   const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
-//     collection(db, draftCollectionRefName)
-//   );
-
-//   const dataArray: {
-//     order: string;
-//     dateTime: string;
-//     title: string;
-//   }[] = [];
-
-//   querySnapshot.forEach((doc) => {
-//     dataArray.push({
-//       order: doc.id,
-//       dateTime: doc.data().dateTime,
-//       title: doc.data().title,
-//     });
-//   });
-
-//   return dataArray;
-// };
 
 export const getDraftByOrder = async (order: string) => {
   const docRef = doc(db, draftCollectionRefName, order);
