@@ -4,8 +4,8 @@ import { useRouter } from 'next/router';
 import { FC, useEffect, useState } from 'react';
 import { brunchList } from '../../../data/brunch-list';
 import BrunchList from './brunch-list';
-import styles from './home.module.scss';
-import variables from '../../../interactions/motion.module.scss';
+import styles from './post-list.module.scss';
+import variables from '../../../styles/motion.module.scss';
 import List from './list';
 import { TListData } from '../../../pages';
 
@@ -15,7 +15,7 @@ type Props = {
   allPostsListData: TListData;
 };
 
-const Home: FC<Props> = ({
+const PostList: FC<Props> = ({
   designPostListData,
   devPostListData,
   allPostsListData,
@@ -86,7 +86,7 @@ const Home: FC<Props> = ({
   );
 };
 
-export default Home;
+export default PostList;
 
 type CategoryFilterProps = {
   asPath: string;

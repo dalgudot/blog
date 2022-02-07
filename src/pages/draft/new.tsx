@@ -10,7 +10,7 @@ import { useInitializeClientData } from '../../lib/hooks/useInitializeClientData
 import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
 import {
   draftCollectionRefName,
-  getDraftList,
+  getEachAllCollectionDataArray,
   saveDataToFireStoreDB,
 } from '../../service/firebase/firestore';
 
@@ -24,13 +24,16 @@ const NewDraft: NextPage = () => {
 
   useEffect(() => {
     initializeClientData();
+
     return () => {
       initializeClientData();
     };
   }, []);
 
   const saveNewDraftToFireStoreDB = async () => {
-    const draftList = await getDraftList();
+    const draftList = await getEachAllCollectionDataArray(
+      draftCollectionRefName
+    );
     const maxValueOfOrder = Math.max(
       ...draftList.map((list) => Number(list.order)),
       0
@@ -42,7 +45,7 @@ const NewDraft: NextPage = () => {
     router.push('/draft/[order]', `/draft/${newPathOrder}`);
   };
 
-  console.log('tempPost', tempPost);
+  // console.log('tempPost', tempPost);
   return (
     <>
       {isAdmin && mounted && (
@@ -51,9 +54,9 @@ const NewDraft: NextPage = () => {
           <Post contentEditable={isAdmin} postData={post} />
           <button
             onClick={saveNewDraftToFireStoreDB}
-            style={{ marginTop: 48, marginLeft: 24 }}
+            className='admin__button__left'
           >
-            Draft에 저장
+            초고 저장
           </button>
         </>
       )}

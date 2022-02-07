@@ -24,7 +24,7 @@ const Login: NextPage = () => {
         dispatch(setUid(data.user.uid));
         if (data.user.uid !== process.env.NEXT_PUBLIC_ADMIN_UID) {
           onLogOut();
-          showToast('관리자가 아니므로 자동으로 로그아웃되었습니다.');
+          showToast('관리자가 아니므로 로그아웃되었습니다.');
         } else {
           // router.push('/');
         }

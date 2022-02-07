@@ -36,7 +36,6 @@ const WriteResponse: FC = () => {
   const asPath = router.asPath;
   const postResponse = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-
     const isResponse = sessionStorage.getItem(`Response of ${asPath}`);
 
     if (isResponse === null) {

@@ -12,11 +12,13 @@ const ResponseList: FC = () => {
   const asPath = router.asPath;
 
   useEffect(() => {
-    getResponseDataFromRealtimeDB(asPath, setResponseList);
+    const unSubscribeOnValueRealtimeDB = getResponseDataFromRealtimeDB(
+      asPath,
+      setResponseList
+    );
 
     return () => {
-      getResponseDataFromRealtimeDB(asPath, setResponseList);
-      setResponseList([]);
+      unSubscribeOnValueRealtimeDB();
     };
   }, []);
 

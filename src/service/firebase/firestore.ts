@@ -15,6 +15,7 @@ import { db } from './config';
 
 export const devCollectionRefName = 'dev';
 export const designCollectionRefName = 'design';
+export const storyCollectionRefName = 'story';
 export const draftCollectionRefName = 'draft';
 
 export const getEachAllCollectionDataArray = async (
@@ -54,7 +55,16 @@ export const getAllCollectionDataArray = async () => {
     designCollectionRefName
   );
 
-  const allCollectionDataArray = devDataArray.concat(designDataArray);
+  const storyDataArray = await getEachAllCollectionDataArray(
+    storyCollectionRefName
+  );
+
+  // const allCollectionDataArray = devDataArray.concat(designDataArray);
+  const allCollectionDataArray = [
+    ...devDataArray,
+    ...designDataArray,
+    ...storyDataArray,
+  ];
 
   return allCollectionDataArray;
 };
@@ -74,27 +84,28 @@ export const getPostByCategoryOrder = async (params: {
   }
 };
 
-export const getDraftList = async () => {
-  const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
-    collection(db, draftCollectionRefName)
-  );
+// 추후 삭제
+// export const getDraftList = async () => {
+//   const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
+//     collection(db, draftCollectionRefName)
+//   );
 
-  const dataArray: {
-    order: string;
-    dateTime: string;
-    title: string;
-  }[] = [];
+//   const dataArray: {
+//     order: string;
+//     dateTime: string;
+//     title: string;
+//   }[] = [];
 
-  querySnapshot.forEach((doc) => {
-    dataArray.push({
-      order: doc.id,
-      dateTime: doc.data().dateTime,
-      title: doc.data().title,
-    });
-  });
+//   querySnapshot.forEach((doc) => {
+//     dataArray.push({
+//       order: doc.id,
+//       dateTime: doc.data().dateTime,
+//       title: doc.data().title,
+//     });
+//   });
 
-  return dataArray;
-};
+//   return dataArray;
+// };
 
 export const getDraftByOrder = async (order: string) => {
   const docRef = doc(db, draftCollectionRefName, order);

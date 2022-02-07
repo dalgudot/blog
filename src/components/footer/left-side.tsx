@@ -7,10 +7,10 @@ const LeftSide: FC = () => {
     'Loading'
   );
   useEffect(() => {
-    getTotalVisitors(setTotalVisitors); // 데이터 보여주기 위한
+    const unSubscribeOnValueRealtimeDB = getTotalVisitors(setTotalVisitors); // 데이터 보여주기 위한
 
     return () => {
-      setTotalVisitors('Loading');
+      unSubscribeOnValueRealtimeDB();
     };
   }, []);
 

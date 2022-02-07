@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import Home from '../components/navigation/post/home';
+import PostList from '../components/navigation/post/post-list';
 import { useUpdateTotalVisitors } from '../lib/hooks/useUpdateTotalVisitors';
 import { TStatus } from '../redux-toolkit/model/post-data-model';
 import {
@@ -30,7 +30,7 @@ const Index: NextPage<Props> = ({
   useUpdateTotalVisitors();
 
   return (
-    <Home
+    <PostList
       designPostListData={designPostListData}
       devPostListData={devPostListData}
       allPostsListData={allPostsListData}

@@ -1,7 +1,6 @@
 import { useToast } from '@dalgu/react-toast';
 import { FC } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
-
 import styles from './contact.module.scss';
 
 const Email: FC = () => {

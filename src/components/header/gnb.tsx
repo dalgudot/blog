@@ -4,13 +4,30 @@ import { useRouter } from 'next/router';
 import { FC } from 'react';
 import styles from './header.module.scss';
 
+type Props = {
+  isAdmin: boolean;
+};
+
 type TGNBList = {
   label: string;
   target: '_self' | '_blank';
   href: string;
 };
 
-const GNB: FC = () => {
+const GNB: FC<Props> = ({ isAdmin }) => {
+  const adminList: TGNBList[] = [
+    {
+      label: '초고 목록',
+      target: '_self',
+      href: '/draft/list',
+    },
+    {
+      label: '새 글 작성',
+      target: '_self',
+      href: '/draft/new',
+    },
+  ];
+
   const gnbList: TGNBList[] = [
     {
       label: '기록',
@@ -36,6 +53,8 @@ const GNB: FC = () => {
           {gnbList.map((list) => (
             <GNBList key={list.href} list={list} />
           ))}
+          {isAdmin &&
+            adminList.map((list) => <GNBList key={list.href} list={list} />)}
         </ul>
       </nav>
     </>
@@ -44,11 +63,11 @@ const GNB: FC = () => {
 
 export default GNB;
 
-type Props = {
+type GNBListProps = {
   list: TGNBList;
 };
 
-const GNBList: FC<Props> = ({ list }) => {
+const GNBList: FC<GNBListProps> = ({ list }) => {
   const router = useRouter();
   const pathname = router.pathname;
   const currentStatus =
@@ -58,6 +77,10 @@ const GNBList: FC<Props> = ({ list }) => {
       ? '이야기'
       : pathname === '/contact'
       ? '연락처'
+      : pathname === '/draft/list'
+      ? '초고 목록'
+      : pathname === '/draft/new'
+      ? '새 글 작성'
       : null;
 
   const isSelected = currentStatus === list.label;

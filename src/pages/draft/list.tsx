@@ -1,57 +1,46 @@
 import { NextPage } from 'next';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import List from '../../components/navigation/post/list';
 import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
-import { getDraftList } from '../../service/firebase/firestore';
+import { IPostData } from '../../redux-toolkit/model/post-data-model';
+import {
+  draftCollectionRefName,
+  getEachAllCollectionDataArray,
+} from '../../service/firebase/firestore';
+import styles from '../../components/navigation/post/post-list.module.scss';
 
 const Draft: NextPage = () => {
   const { isAdmin } = useIsAdmin();
-  const [draftList, setDraftList] = useState<
-    {
-      order: string;
-      dateTime: string;
-      title: string;
-    }[]
-  >([]);
+  const [draftList, setDraftList] = useState<IPostData[]>([]);
 
   useEffect(() => {
-    getDraftList() //
+    getEachAllCollectionDataArray(draftCollectionRefName) //
       .then((list) => {
         setDraftList(list);
       });
   }, []);
 
-  const router = useRouter();
-  const createNewDraft = () => {
-    router.push('/draft/new');
-  };
+  console.log(draftList);
 
   return (
     <>
       {isAdmin && (
-        <>
-          <div style={{ marginTop: 48 }}>
-            {draftList.map((list, idx) => (
-              <Link
-                key={`${list.title}${idx}`}
-                href='/draft/[order]'
-                as={`/draft/${list.order}`}
-              >
-                <a style={{ marginLeft: 24 }}>
-                  {list.dateTime}
-                  {list.title}
-                </a>
-              </Link>
-            ))}
-          </div>
-          <button
-            onClick={createNewDraft}
-            style={{ marginTop: 48, marginLeft: 24 }}
-          >
-            글쓰기
-          </button>
-        </>
+        <main className={styles.main__layout}>
+          <nav>
+            <ul>
+              {draftList.map((list) => (
+                <List
+                  key={list.title}
+                  category={list.category}
+                  order={list.order}
+                  title={list.title}
+                  dateTime={list.dateTime}
+                  status={list.status}
+                />
+              ))}
+            </ul>
+          </nav>
+        </main>
       )}
     </>
   );
