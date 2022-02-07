@@ -2,7 +2,7 @@
 
 $list__max__width: 640px;
 $post__max__width: 760px;
-$header__footer__padding: 0 4.5vw;
+$header__footer__padding: 0 4vw;
 
 :export {
   list__max__width: $list__max__width;
@@ -27,4 +27,23 @@ $header__footer__padding: 0 4.5vw;
     padding-bottom: 20px;
     margin-bottom: 6px;
   }
+}
+
+@mixin admin__button {
+  @include text-styles.body3;
+  position: fixed;
+  bottom: 48px;
+  padding: 12px 24px;
+  background-color: var(--g11);
+  border-radius: 16px;
+}
+
+.admin__button__left {
+  @include admin__button;
+  left: 4vw;
+}
+
+.admin__button__right {
+  @include admin__button;
+  right: 4vw;
 }

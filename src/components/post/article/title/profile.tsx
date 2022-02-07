@@ -8,7 +8,7 @@ const Profile: FC = () => {
   const router = useRouter();
   const query = router.query;
   const career =
-    query.category === 'design' ? '프로덕트 디자이너' : '프론트엔드 개발자';
+    query.category === 'dev' ? '프론트엔드 개발자' : '프로덕트 디자이너';
 
   return (
     <Link href='/contact'>
@@ -20,8 +20,12 @@ const Profile: FC = () => {
           priority
         />
         <p>김경환</p>
-        <span className={styles.circle__divider} />
-        <p>{career}</p>
+        {query.category !== 'story' && (
+          <>
+            <span className={styles.circle__divider} />
+            <p>{career}</p>
+          </>
+        )}
       </a>
     </Link>
   );

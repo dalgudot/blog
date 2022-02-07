@@ -86,13 +86,13 @@ const DraftWriting: NextPage = () => {
 
       <button
         onClick={tempSaveDataToFireStoreDB}
-        style={{ marginTop: 48, marginLeft: 24 }}
+        className='admin__button__left'
       >
-        임시 저장
+        저장
       </button>
 
-      <button onClick={publishPost} style={{ marginTop: 48, marginLeft: 24 }}>
-        발행하기
+      <button onClick={publishPost} className='admin__button__right'>
+        발행
       </button>
     </>
   );

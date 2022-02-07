@@ -54,7 +54,6 @@
   width: 200px;
   height: 64px;
   text-align: center;
-  // padding: 24px 12px;
   background-color: var(--g11);
   display: flex;
   justify-content: center;
@@ -66,7 +65,7 @@
   width: 100%;
   margin-top: $marginTop;
   border: 1px solid var(--g10);
-  padding: 72px;
+  padding: 56px;
 }
 
 .email__section {
@@ -82,8 +81,6 @@
   .button__area {
     margin-top: 36px;
     display: flex;
-    // min-width: 400px;
-    // max-width: 480px;
 
     button {
       @include email__section__button;

@@ -6,6 +6,7 @@ import { useAppDispatch } from '../../redux-toolkit/store';
 import {
   designCollectionRefName,
   devCollectionRefName,
+  storyCollectionRefName,
 } from '../../service/firebase/firestore';
 
 const SelectCategory: FC = () => {
@@ -21,8 +22,9 @@ const SelectCategory: FC = () => {
   return (
     <>
       <select value={tempPost.category} onChange={changeCategory}>
-        <option value={devCollectionRefName}>dev</option>
         <option value={designCollectionRefName}>design</option>
+        <option value={devCollectionRefName}>dev</option>
+        <option value={storyCollectionRefName}>story</option>
       </select>
     </>
   );

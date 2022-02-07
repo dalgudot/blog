@@ -28,12 +28,14 @@ export const getResponseDataFromRealtimeDB = (
 ) => {
   const dbRef = ref(realtimeDB, `Response/Post${asPath}`);
 
-  onValue(dbRef, (snapshot) => {
+  const unSubscribeOnValueRealtimeDB = onValue(dbRef, (snapshot) => {
     const data = snapshot.val();
     const dataArray = data && objectToArray(data);
     data && setResponseList(dataArray);
   });
   // 새로운 댓글 생성할 때마다 실시간 업데이트
+
+  return unSubscribeOnValueRealtimeDB;
 };
 
 /**
@@ -83,8 +85,10 @@ export const getTotalVisitors = (
 ) => {
   const dbRef = ref(realtimeDB, 'Visitors/Total/All');
 
-  onValue(dbRef, (snapshot) => {
+  const unSubscribeOnValueRealtimeDB = onValue(dbRef, (snapshot) => {
     const data = snapshot.val();
     setTotalVisitors(Number(data));
   });
+
+  return unSubscribeOnValueRealtimeDB;
 };

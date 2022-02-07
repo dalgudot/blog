@@ -1,5 +1,5 @@
 @use '../../../../styles/text-styles';
-@use '../../../../interactions/motion.module';
+@use '../../../../styles/motion.module';
 
 .editable__link__block__li {
   @include motion.scale__hover;

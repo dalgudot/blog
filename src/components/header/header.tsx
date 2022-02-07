@@ -17,19 +17,8 @@ const Header: React.FC = () => {
           </a>
         </Link>
 
-        {/* {isAdmin && (
-          <div>
-            <Link href='/draft/list'>
-              <a>초고 목록 보기</a>
-            </Link>
-            <Link href='/draft/new'>
-              <a>글쓰기</a>
-            </Link>
-          </div>
-        )} */}
-
         <div className={styles.right}>
-          <GNB />
+          <GNB isAdmin={isAdmin} />
           <ThemeToggle />
         </div>
       </header>

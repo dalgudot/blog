@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import TestPage from '../src/pages/test-page';
 
-describe('Home', () => {
+describe('PostList', () => {
   it('renders a heading', () => {
     render(<TestPage />);
 
