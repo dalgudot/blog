@@ -1,6 +1,6 @@
-import { FC } from 'react';
+import { NextPage } from 'next';
 
-const Contact: FC = () => {
+const Contact: NextPage = () => {
   return <>Contact</>;
 };
 

@@ -11,10 +11,15 @@ import Header from '../components/header/header';
 import HeadForSEO from '../SEO/headForSEO';
 import { indexInfo } from '../SEO/index/index-info';
 import { useRouter } from 'next/router';
+import Footer from '../components/footer/footer';
 
 const BlogApp = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
   const isPost = router.pathname === '/[category]/[order]';
+  const isFooter =
+    router.pathname === '/' ||
+    router.pathname === '/[category]' ||
+    router.pathname === '/contact';
 
   return (
     <>
@@ -25,6 +30,7 @@ const BlogApp = ({ Component, pageProps }: AppProps) => {
           <ToastProvider>
             <Component {...pageProps} />
           </ToastProvider>
+          {isFooter && <Footer />}
         </ThemeProvider>
       </Provider>
     </>

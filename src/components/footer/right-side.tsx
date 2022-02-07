@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { FC } from 'react';
 import styles from './footer.module.scss';
 
@@ -25,14 +26,11 @@ const RightSide: FC = () => {
           ))}
         </li>
       </ul>
-      <a
-        href='https://share-design.kr/contact'
-        target='_blank'
-        rel='noreferrer'
-        className={styles.right__side__copyright}
-      >
-        ⓒ KyungHwan Kim. All rights reserved
-      </a>
+      <Link href='/contact'>
+        <a className={styles.right__side__copyright}>
+          ⓒ KyungHwan Kim. All rights reserved
+        </a>
+      </Link>
     </div>
   );
 };

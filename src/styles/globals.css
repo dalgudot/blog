@@ -36,7 +36,7 @@ h6 {
 }
 
 p {
-  word-break: break-all;
+  word-break: break-word;
 }
 
 a {
@@ -86,9 +86,10 @@ code {
 /* editable-text-block, editable-link-block */
 /* post-css autoprefix 적용 안 됨. */
 .inline__code__block {
-  background-color: var(--g9);
-  color: var(--g4);
+  background-color: var(--g11);
+  color: var(--g5);
   padding: 2px 6px;
   border-radius: 4px;
+  letter-spacing: -0.7px;
   /* 반응형도 대응해야 함. */
 }

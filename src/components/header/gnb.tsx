@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FC, useEffect, useRef } from 'react';
-import { useAfterInitialMount } from '../../lib/hooks/useAfterInitialMount';
+import { FC } from 'react';
 import styles from './header.module.scss';
 
 type TGNBList = {
@@ -25,8 +24,8 @@ const GNB: FC = () => {
     // },
     {
       label: '연락처',
-      target: '_blank',
-      href: 'https://share-design.kr/contact',
+      target: '_self',
+      href: '/contact',
     },
   ];
 
@@ -57,7 +56,7 @@ const GNBList: FC<Props> = ({ list }) => {
       ? '기록'
       : pathname === '/story'
       ? '이야기'
-      : pathname === '/story'
+      : pathname === '/contact'
       ? '연락처'
       : null;
 
@@ -66,12 +65,6 @@ const GNBList: FC<Props> = ({ list }) => {
     styles.list,
     isSelected && styles.selected__list
   );
-
-  // const afterInitialMount = useAfterInitialMount();
-  // const underLineClassname = classNames(
-  //   styles.under__line,
-  //   afterInitialMount && isSelected && styles.under__line__motion
-  // );
 
   return (
     <>

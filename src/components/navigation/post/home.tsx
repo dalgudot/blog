@@ -7,7 +7,6 @@ import BrunchList from './brunch-list';
 import styles from './home.module.scss';
 import variables from '../../../interactions/motion.module.scss';
 import List from './list';
-import Footer from '../../footer/footer';
 import { TListData } from '../../../pages';
 
 type Props = {
@@ -83,7 +82,6 @@ const Home: FC<Props> = ({
           </ul>
         </nav>
       </main>
-      <Footer />
     </>
   );
 };
