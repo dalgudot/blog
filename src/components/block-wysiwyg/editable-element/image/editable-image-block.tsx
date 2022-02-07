@@ -92,7 +92,7 @@ const EditableImageBlock: FC<Props> = ({
       <figure className={styles.figure}>
         {image && (
           // https://nextjs.org/docs/basic-features/image-optimization
-          <img src={image} alt={html} className={styles.image} />
+          <Image src={image} alt={html} layout='fill' priority />
         )}
         <EditableElement
           TagName='figcaption'
