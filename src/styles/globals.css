@@ -49,13 +49,6 @@ a {
   -webkit-touch-callout: none;
 }
 
-a:link,
-a:visited,
-a:hover,
-a:active {
-  /* color: var(--g3); */
-}
-
 button {
   all: unset;
   cursor: pointer;

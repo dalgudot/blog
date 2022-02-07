@@ -2,18 +2,19 @@ import ThemeToggle from './theme-toggle';
 import Link from 'next/link';
 import styles from './header.module.scss';
 import GNB from './gnb';
-import classNames from 'classnames';
 import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
 
 const Header: React.FC = () => {
-  const blogNameClassname = classNames(styles.blog__name, 'body2__500');
   const { isAdmin } = useIsAdmin();
 
   return (
     <>
       <header className={styles.header}>
         <Link href='/'>
-          <a className={blogNameClassname}>경험의 기록</a>
+          <a className={styles.blog__name}>
+            경험의 기록
+            {isAdmin && <p className={styles.admin___text}> Admin</p>}
+          </a>
         </Link>
 
         {/* {isAdmin && (

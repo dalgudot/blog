@@ -33,7 +33,15 @@
 }
 
 .blog__name {
+  @include text-styles.body2(500);
   letter-spacing: 0.6px;
+  display: flex;
+}
+
+.admin___text {
+  @include text-styles.body2(500);
+  color: var(--g8);
+  margin-left: 8px;
 }
 
 .right {
