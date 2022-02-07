@@ -19,11 +19,12 @@ const BlogApp = ({ Component, pageProps }: AppProps) => {
   const isFooter =
     router.pathname === '/' ||
     router.pathname === '/[category]' ||
+    router.pathname === '/story' ||
     router.pathname === '/contact';
 
   return (
     <>
-      {!isPost && <HeadForSEO info={indexInfo.info} />}
+      {!isPost && <HeadForSEO info={indexInfo(router)} />}
       <Provider store={store}>
         <ThemeProvider defaultTheme='dark' enableSystem={false}>
           <Header />

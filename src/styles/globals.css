@@ -13,12 +13,18 @@ body {
   /* iOS Safari Momentum Scroll, 버벅임 방지 */
   -webkit-overflow-scrolling: touch;
 
-  caret-color: var(--g3);
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 * {
   padding: 0;
   margin: 0;
+  caret-color: var(--g3);
   outline-style: none;
   box-sizing: border-box;
   font-family: 'BlogTextStyles', Apple SD Gothic Neo, Noto Sans KR, Inter,
@@ -31,7 +37,8 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+code {
   word-break: keep-all;
 }
 
@@ -72,7 +79,6 @@ li {
 code {
   font-family: 'SourceCodePro', Menlo, Monaco, Lucida Console, Liberation Mono,
     DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-  word-break: keep-all;
 }
 
 /* 글 속에만 적용되도록 <code> html 생성 시 class도 지정, <code class="inline__code__block"> */
@@ -80,7 +86,6 @@ code {
 /* post-css autoprefix 적용 안 됨. */
 .inline__code__block {
   background-color: var(--g11);
-  color: var(--g5);
   padding: 2px 6px;
   border-radius: 4px;
   letter-spacing: -0.7px;
