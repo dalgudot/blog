@@ -16,10 +16,8 @@ const Profile: FC = () => {
         <Image
           src='/common/profile-photo.jpg'
           alt='김경환의 프로필 사진'
-          width={36}
-          height={36}
+          layout='fill'
           priority
-          className={styles.profile__image}
         />
         <p>김경환</p>
         <span className={styles.circle__divider} />
