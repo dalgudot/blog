@@ -20,18 +20,6 @@
   }
 }
 
-.left__side {
-  @include text-styles.body4(500);
-  color: var(--g7);
-  display: flex;
-  align-items: flex-end;
-  margin-left: 2px;
-
-  @media screen and (max-width: common.$footer__media__max__width) {
-    display: none;
-  }
-}
-
 @mixin divider {
   &:before {
     content: '';
@@ -46,6 +34,25 @@
       height: 12px;
       margin: 0 36px;
     }
+  }
+}
+
+.left__side {
+  @include text-styles.body4(500);
+  display: flex;
+  align-items: flex-end;
+  margin-left: 2px;
+
+  p {
+    color: var(--g7);
+  }
+
+  .total {
+    @include divider;
+  }
+
+  @media screen and (max-width: common.$footer__media__max__width) {
+    display: none;
   }
 }
 

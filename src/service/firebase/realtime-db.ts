@@ -1,6 +1,7 @@
-import { ref, set, onValue, push } from 'firebase/database';
+import { ref, set, onValue, push, Unsubscribe } from 'firebase/database';
 import { Dispatch, SetStateAction } from 'react';
 import { objectToArray } from '../../lib/utils/data';
+import { getDate } from '../../lib/utils/get-date';
 import { realtimeDB } from './config';
 
 export type TResponseData = {
@@ -28,11 +29,14 @@ export const getResponseDataFromRealtimeDB = (
 ) => {
   const dbRef = ref(realtimeDB, `Response/Post${asPath}`);
 
-  const unSubscribeOnValueRealtimeDB = onValue(dbRef, (snapshot) => {
-    const data = snapshot.val();
-    const dataArray = data && objectToArray(data);
-    data && setResponseList(dataArray);
-  });
+  const unSubscribeOnValueRealtimeDB: Unsubscribe = onValue(
+    dbRef,
+    (snapshot) => {
+      const data = snapshot.val();
+      const dataArray = data && objectToArray(data);
+      data && setResponseList(dataArray);
+    }
+  );
   // 새로운 댓글 생성할 때마다 실시간 업데이트
 
   return unSubscribeOnValueRealtimeDB;
@@ -40,12 +44,14 @@ export const getResponseDataFromRealtimeDB = (
 
 /**
  *
- * 재사용 함수
+ * updateNumberRealtimeDB()
+ * 통계 재사용 함수
+ *
  */
 export const updateNumberRealtimeDB = (path: string) => {
   const dbRef = ref(realtimeDB, path);
 
-  const unSubscribeOnValueRealtimeDB = onValue(
+  const unSubscribeOnValueRealtimeDB: Unsubscribe = onValue(
     dbRef,
     (snapshot) => {
       const data = snapshot.val();
@@ -59,34 +65,59 @@ export const updateNumberRealtimeDB = (path: string) => {
 
   return unSubscribeOnValueRealtimeDB;
 };
-/**
- *
- * 재사용 함수
- */
+
+const { year, month, date } = getDate();
+const totalVisitorsRef = 'Visitors/Total/All';
+const visitorsByYear = `Visitors/Total/All on ${year}`;
+const visitorsByMonth = `Visitors/${year}/${month}/All`;
+const visitorsByDay = `Visitors/${year}/${month}/${date}`;
 
 export const updateTotalVisitors = () => {
   const visited = sessionStorage.getItem('visitDuringSession');
 
   if (process.env.NODE_ENV === 'production' && !visited) {
-    const updateNumberOfTotalVisitors = () => {
-      const totalVisitorsRef = 'Visitors/Total/All';
-      const unSubscribeOnValueRealtimeDB =
-        updateNumberRealtimeDB(totalVisitorsRef);
+    const unSubscribeOnValueTotalVisitors: Unsubscribe =
+      updateNumberRealtimeDB(totalVisitorsRef);
 
-      sessionStorage.setItem('visitDuringSession', 'yes');
+    const unSubscribeOnValueVisitorsByYear: Unsubscribe =
+      updateNumberRealtimeDB(visitorsByYear);
 
-      return unSubscribeOnValueRealtimeDB;
+    const unSubscribeOnValueVisitorsByMonth: Unsubscribe =
+      updateNumberRealtimeDB(visitorsByMonth);
+
+    const unSubscribeOnValueVisitorsByDay: Unsubscribe =
+      updateNumberRealtimeDB(visitorsByDay);
+
+    sessionStorage.setItem('visitDuringSession', 'yes');
+
+    const unSubscribeOnValueRealtimeDB = () => {
+      unSubscribeOnValueTotalVisitors();
+      unSubscribeOnValueVisitorsByYear();
+      unSubscribeOnValueVisitorsByMonth();
+      unSubscribeOnValueVisitorsByDay();
     };
 
-    return updateNumberOfTotalVisitors();
+    return unSubscribeOnValueRealtimeDB;
   }
-  // updateNumberOfTotalVisitors();
+};
+
+export const getTodayVisitors = (
+  setTodayVisitors: Dispatch<SetStateAction<number | 'Loading'>>
+) => {
+  const dbRef = ref(realtimeDB, visitorsByDay);
+
+  const unSubscribeOnValueRealtimeDB = onValue(dbRef, (snapshot) => {
+    const data = snapshot.val();
+    setTodayVisitors(Number(data));
+  });
+
+  return unSubscribeOnValueRealtimeDB;
 };
 
 export const getTotalVisitors = (
   setTotalVisitors: Dispatch<SetStateAction<number | 'Loading'>>
 ) => {
-  const dbRef = ref(realtimeDB, 'Visitors/Total/All');
+  const dbRef = ref(realtimeDB, totalVisitorsRef);
 
   const unSubscribeOnValueRealtimeDB = onValue(dbRef, (snapshot) => {
     const data = snapshot.val();
