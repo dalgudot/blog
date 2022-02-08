@@ -3,10 +3,16 @@
 }
 
 .heading3 {
-  margin-top: 96px;
+  margin-top: 144px;
 }
 
 .paragraph {
-  line-height: 1.7;
-  margin-top: 36px;
+  color: var(--g3);
+  line-height: 1.75;
+  letter-spacing: -0.1px;
+  margin-top: 24px;
+
+  code {
+    font-weight: 500;
+  }
 }
