@@ -35,7 +35,7 @@
     margin-top: 8px;
 
     p {
-      color: var(--g5);
+      color: var(--g2);
     }
 
     span {
@@ -43,7 +43,7 @@
       border-radius: 50%;
       width: 2px;
       height: 2px;
-      background-color: var(--g5);
+      background-color: var(--g2);
       margin: 1px 6px 0;
     }
   }
@@ -54,7 +54,7 @@
   width: 180px;
   height: 56px;
   text-align: center;
-  background-color: var(--g11);
+  background-color: var(--g7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -64,7 +64,7 @@
 @mixin email__career__section__common($marginTop) {
   width: 100%;
   margin-top: $marginTop;
-  border: 1px solid var(--g10);
+  border: 1px solid var(--g6);
   padding: 56px;
 }
 
@@ -99,7 +99,7 @@
 
   h3 {
     @include text-styles.body1;
-    color: var(--g7);
+    color: var(--g4);
     margin-bottom: 18px;
   }
 
@@ -113,13 +113,13 @@
 
   time {
     @include text-styles.body1(500);
-    color: var(--g4);
+    color: var(--g1);
   }
 
   p {
     @include text-styles.body1;
     margin-top: 8px;
     margin-bottom: 36px;
-    color: var(--g4);
+    color: var(--g1);
   }
 }

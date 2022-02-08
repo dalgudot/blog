@@ -10,7 +10,7 @@
   figcaption {
     @include text-styles.body3;
     margin-top: 8px;
-    color: var(--g7);
+    color: var(--g4);
   }
 
   // NextJs Image
@@ -32,10 +32,10 @@
 
   @include text-styles.body3;
   padding: 12px 24px;
-  background-color: var(--g11);
+  background-color: var(--g7);
   border-radius: 16px;
 
   p {
-    color: var(--g4);
+    color: var(--g1);
   }
 }

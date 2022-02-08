@@ -14,7 +14,7 @@ $header__footer__padding: 0 4vw;
 @mixin placeholder {
   &:empty:before {
     content: attr(placeholder);
-    color: var(--g8);
+    color: var(--g5);
     display: inline-block;
   }
 }
@@ -24,7 +24,7 @@ $header__footer__padding: 0 4vw;
 
   h2 {
     @include text-styles.title2;
-    border-bottom: var(--g5) 4px solid;
+    border-bottom: var(--g2) 4px solid;
     padding-bottom: 20px;
     margin-bottom: 6px;
   }
@@ -35,7 +35,7 @@ $header__footer__padding: 0 4vw;
   position: fixed;
   bottom: 48px;
   padding: 12px 24px;
-  background-color: var(--g11);
+  background-color: var(--g7);
   border-radius: 16px;
 }
 

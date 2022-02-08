@@ -65,7 +65,7 @@ const EditableLinkBlock: FC<Props> = ({
             }
             placeholder={placeholder}
           />
-          <IconNewTap24 color='var(--g4)' />
+          <IconNewTap24 color='var(--g1)' />
         </a>
       </li>
       {contentEditable && (

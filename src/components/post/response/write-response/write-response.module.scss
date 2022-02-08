@@ -7,7 +7,7 @@
   textarea {
     @include text-styles.body1;
     margin-top: 24px;
-    color: var(--g4);
+    color: var(--g1);
 
     -webkit-appearance: none; // remove iOS upper inner shadow
     resize: none; // 늘이고 줄이는 기능 없애기
@@ -16,7 +16,7 @@
     overflow: hidden;
     width: 100%;
     background-color: transparent;
-    border: 1px solid var(--g8) !important; // 안드로이드 삼성 인터넷에서 작동 안 해서 !important
+    border: 1px solid var(--g5) !important; // 안드로이드 삼성 인터넷에서 작동 안 해서 !important
 
     // 바뀌는 속성
     padding: 36px 36px;
@@ -28,7 +28,7 @@
 
     ::placeholder {
       @include text-styles.body1;
-      color: var(--g8);
+      color: var(--g5);
     }
   }
 }
@@ -43,14 +43,14 @@
   justify-content: center;
   align-items: center;
 
-  color: var(--g8);
-  border: 1px solid var(--g8);
+  color: var(--g5);
+  border: 1px solid var(--g5);
   transition: color 0.4s ease-in-out, border 0.4s ease-in-out;
 }
 
 .active__response__submit__button {
-  color: var(--g4);
-  border: 1px solid var(--g4);
+  color: var(--g1);
+  border: 1px solid var(--g1);
 }
 
 .anonymous__profile {

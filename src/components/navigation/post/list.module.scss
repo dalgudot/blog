@@ -2,7 +2,7 @@
 @use '../../../styles/text-styles';
 
 .post__list {
-  border-bottom: var(--g10) 1px solid;
+  border-bottom: var(--g6) 1px solid;
   display: flex;
   height: 100%;
   cursor: pointer;
@@ -15,7 +15,7 @@
   }
 
   time {
-    color: var(--g7);
+    color: var(--g4);
     margin-left: 2px; // 시각 보정
     @include text-styles.body4;
   }

@@ -3,7 +3,7 @@
 
 .article__title__section {
   time {
-    color: var(--g7);
+    color: var(--g4);
     margin-left: 2px; // 시각 보정
     @include text-styles.body3;
   }
@@ -31,7 +31,7 @@
 
   p {
     @include text-styles.body3;
-    color: var(--g5);
+    color: var(--g2);
   }
 
   p:nth-child(2) {
@@ -42,7 +42,7 @@
     border-radius: 50%;
     width: 2px;
     height: 2px;
-    background-color: var(--g5);
+    background-color: var(--g2);
     margin: 0 6px;
   }
 }

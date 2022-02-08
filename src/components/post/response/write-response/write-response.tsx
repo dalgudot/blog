@@ -120,7 +120,7 @@ const AnonymousProfile: FC<AnonymousProfileProps> = ({
         }
 
         button {
-          color: var(--g4);
+          color: var(--g1);
         }
       `}</style>
     </>

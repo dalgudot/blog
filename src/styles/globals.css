@@ -2,7 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  background-color: var(--g12);
+  background-color: var(--g8);
   user-select: none;
 
   /* 판독성 최적화 */
@@ -24,7 +24,7 @@ body {
 * {
   padding: 0;
   margin: 0;
-  caret-color: var(--g4);
+  caret-color: var(--g1);
   outline-style: none;
   box-sizing: border-box;
   font-family: 'BlogTextStyles', Apple SD Gothic Neo, Noto Sans KR, Inter,
@@ -42,7 +42,7 @@ p,
 a,
 button,
 li {
-  color: var(--g4);
+  color: var(--g1);
 }
 
 h1,
@@ -97,7 +97,7 @@ li {
 /* editable-text-block, editable-link-block */
 /* post-css autoprefix 적용 안 됨. */
 .inline__code__block {
-  background-color: var(--g11);
+  background-color: var(--g7);
   padding: 2px 6px;
   border-radius: 4px;
   letter-spacing: -0.7px;

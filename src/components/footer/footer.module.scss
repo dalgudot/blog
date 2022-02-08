@@ -24,7 +24,7 @@
   &:before {
     content: '';
     display: inline-block;
-    background-color: var(--g10);
+    background-color: var(--g6);
     width: 2px;
     height: 10px;
     margin: 0 8px;
@@ -44,7 +44,7 @@
   margin-left: 2px;
 
   p {
-    color: var(--g7);
+    color: var(--g4);
   }
 
   .total {
@@ -84,7 +84,7 @@
 
 .right__side__copyright {
   @include text-styles.body4;
-  color: var(--g7);
+  color: var(--g4);
   margin-top: 8px;
 
   @media screen and (max-width: common.$footer__media__max__width) {
