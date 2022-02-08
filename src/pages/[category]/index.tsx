@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import { TListData } from '..';
 import PostList from '../../components/navigation/post/post-list';
-import { useUpdateTotalVisitors } from '../../lib/hooks/useUpdateTotalVisitors';
+import { useUpdateVisitors } from '../../lib/hooks/useUpdateVisitors';
 import {
   designCollectionRefName,
   devCollectionRefName,
@@ -19,7 +19,7 @@ const Category: NextPage<Props> = ({
   devPostListData,
   allPostsListData,
 }) => {
-  useUpdateTotalVisitors();
+  useUpdateVisitors();
 
   return (
     <PostList

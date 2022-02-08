@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import { TListData } from '.';
-import { useUpdateTotalVisitors } from '../lib/hooks/useUpdateTotalVisitors';
+import { useUpdateVisitors } from '../lib/hooks/useUpdateVisitors';
 import {
   getEachAllCollectionDataArray,
   storyCollectionRefName,
@@ -13,7 +13,7 @@ type Props = {
 };
 
 const Story: NextPage<Props> = ({ storyPostListData }) => {
-  useUpdateTotalVisitors();
+  useUpdateVisitors();
 
   return (
     <>

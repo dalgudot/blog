@@ -45,7 +45,7 @@ export const getResponseDataFromRealtimeDB = (
 export const updateNumberRealtimeDB = (path: string) => {
   const dbRef = ref(realtimeDB, path);
 
-  onValue(
+  const unSubscribeOnValueRealtimeDB = onValue(
     dbRef,
     (snapshot) => {
       const data = snapshot.val();
@@ -56,6 +56,8 @@ export const updateNumberRealtimeDB = (path: string) => {
       onlyOnce: true,
     }
   );
+
+  return unSubscribeOnValueRealtimeDB;
 };
 /**
  *
@@ -65,18 +67,19 @@ export const updateNumberRealtimeDB = (path: string) => {
 export const updateTotalVisitors = () => {
   const visited = sessionStorage.getItem('visitDuringSession');
 
-  const updateNumberOfTotalVisitors = () => {
-    const totalVisitorsRef = 'Visitors/Total/All';
-    const updateNumber = updateNumberRealtimeDB(totalVisitorsRef);
+  if (process.env.NODE_ENV === 'production' && !visited) {
+    const updateNumberOfTotalVisitors = () => {
+      const totalVisitorsRef = 'Visitors/Total/All';
+      const unSubscribeOnValueRealtimeDB =
+        updateNumberRealtimeDB(totalVisitorsRef);
 
-    sessionStorage.setItem('visitDuringSession', 'yes');
+      sessionStorage.setItem('visitDuringSession', 'yes');
 
-    return updateNumber;
-  };
+      return unSubscribeOnValueRealtimeDB;
+    };
 
-  process.env.NODE_ENV === 'production' &&
-    !visited &&
-    updateNumberOfTotalVisitors();
+    return updateNumberOfTotalVisitors();
+  }
   // updateNumberOfTotalVisitors();
 };
 
