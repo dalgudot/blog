@@ -77,6 +77,16 @@
 @font-face {
   font-family: 'SourceCodePro';
   font-style: normal;
+  font-weight: 600;
+  src: url('/fonts/SourceCodePro/source-code-pro-v20-latin-600.woff2')
+      format('woff2'),
+    url('/fonts/SourceCodePro/source-code-pro-v20-latin-600.woff')
+      format('woff');
+}
+
+@font-face {
+  font-family: 'SourceCodePro';
+  font-style: normal;
   font-weight: 700;
   src: url('/fonts/SourceCodePro/source-code-pro-v18-latin-700.woff2')
       format('woff2'),

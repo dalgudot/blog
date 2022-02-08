@@ -1,3 +1,5 @@
+@use '../../../../styles/text-styles';
+
 .article__paragraph__section {
   margin-top: 48px;
 
@@ -5,5 +7,10 @@
     color: var(--g3);
     line-height: 1.75;
     letter-spacing: -0.1px;
+
+    code {
+      font-weight: 500;
+      // @include text-styles.body2(500);
+    }
   }
 }

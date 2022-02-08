@@ -33,13 +33,13 @@ $fade__in__duration: 0.9s;
 @mixin opacity__hover {
   @media (hover: hover) {
     &:hover {
-      background-color: rgba(var(--p7-rgb), 0.1);
+      background-color: rgba(var(--p1-rgb), 0.1);
       transition: background-color 0.4s $bezier__1;
     }
   }
 
   &:active {
-    background-color: rgba(var(--p7-rgb), 0.3);
+    background-color: rgba(var(--p1-rgb), 0.3);
     transition: background-color 0.4s $bezier__1;
   }
 }

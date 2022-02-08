@@ -9,7 +9,7 @@
 
   figcaption {
     @include text-styles.body3;
-    margin-top: 8px;
+    margin: 12px 2px 0; // + 시각 보정
     color: var(--g4);
   }
 
@@ -34,8 +34,4 @@
   padding: 12px 24px;
   background-color: var(--g7);
   border-radius: 16px;
-
-  p {
-    color: var(--g1);
-  }
 }

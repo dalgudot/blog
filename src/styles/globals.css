@@ -32,6 +32,12 @@ body {
     Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, sans-serif;
 }
 
+button {
+  all: unset;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
 h1,
 h2,
 h3,
@@ -73,12 +79,6 @@ a {
   -webkit-touch-callout: none;
 }
 
-button {
-  all: unset;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
 a,
 button,
 input,
@@ -98,8 +98,9 @@ li {
 /* post-css autoprefix 적용 안 됨. */
 .inline__code__block {
   background-color: var(--g7);
-  padding: 2px 6px;
-  border-radius: 4px;
-  letter-spacing: -0.7px;
+  padding: 2px 5px;
+  border-radius: 6px;
+  letter-spacing: -0.2px;
+  font-size: 94%;
   /* 반응형도 대응해야 함. */
 }

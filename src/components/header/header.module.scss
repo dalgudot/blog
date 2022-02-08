@@ -33,7 +33,7 @@
 }
 
 .blog__name {
-  @include text-styles.body2(500);
+  @include text-styles.body2(700);
   letter-spacing: 0.6px;
   display: flex;
 }
@@ -78,7 +78,7 @@
 .selected__list {
   a {
     @include text-styles.body3(500);
-    color: var(--p7);
+    color: var(--p2);
     transition: 0.1s;
   }
 }
@@ -90,7 +90,7 @@
   left: 0;
   bottom: -1px;
   display: flex; // key
-  background-color: var(--p7);
+  background-color: var(--p1);
 }
 
 .under__line__motion {

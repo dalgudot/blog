@@ -25,7 +25,7 @@
   }
 
   h1 {
-    margin-top: 12px;
+    margin-top: 16px;
     @include text-styles.title3;
   }
 
@@ -50,7 +50,7 @@
 }
 
 @mixin email__section__button {
-  @include text-styles.body3;
+  @include text-styles.body3(500);
   width: 180px;
   height: 56px;
   text-align: center;
@@ -112,14 +112,14 @@
   }
 
   time {
-    @include text-styles.body1(500);
-    color: var(--g1);
+    @include text-styles.body1(700);
+    color: var(--g2);
   }
 
   p {
     @include text-styles.body1;
     margin-top: 8px;
     margin-bottom: 36px;
-    color: var(--g1);
+    color: var(--g2);
   }
 }
