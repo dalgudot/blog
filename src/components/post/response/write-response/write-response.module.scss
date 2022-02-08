@@ -7,6 +7,7 @@
   textarea {
     @include text-styles.body1;
     margin-top: 24px;
+    color: var(--g4);
 
     -webkit-appearance: none; // remove iOS upper inner shadow
     resize: none; // 늘이고 줄이는 기능 없애기
@@ -48,8 +49,8 @@
 }
 
 .active__response__submit__button {
-  color: var(--g3);
-  border: 1px solid var(--g3);
+  color: var(--g4);
+  border: 1px solid var(--g4);
 }
 
 .anonymous__profile {

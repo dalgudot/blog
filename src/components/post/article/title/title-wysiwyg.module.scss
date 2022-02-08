@@ -31,17 +31,18 @@
 
   p {
     @include text-styles.body3;
+    color: var(--g5);
   }
 
   p:nth-child(2) {
     margin-left: 12px;
   }
-}
 
-.circle__divider {
-  border-radius: 50%;
-  width: 2px;
-  height: 2px;
-  background-color: var(--g5);
-  margin: 0 6px;
+  .circle__divider {
+    border-radius: 50%;
+    width: 2px;
+    height: 2px;
+    background-color: var(--g5);
+    margin: 0 6px;
+  }
 }

@@ -118,6 +118,10 @@ const AnonymousProfile: FC<AnonymousProfileProps> = ({
         .gradient__profile {
           background: linear-gradient(${profileGradient});
         }
+
+        button {
+          color: var(--g4);
+        }
       `}</style>
     </>
   );

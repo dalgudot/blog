@@ -25,21 +25,17 @@
   }
 }
 
-.label {
+.upload__image__label {
   position: absolute;
   top: 2px;
   right: -164px;
+
   @include text-styles.body3;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 160px;
-  background-color: var(--g3);
-  padding: 12px 18px;
+  padding: 12px 24px;
+  background-color: var(--g11);
+  border-radius: 16px;
 
   p {
-    margin-top: 0 !important;
-    color: var(--g12) !important;
+    color: var(--g4);
   }
 }

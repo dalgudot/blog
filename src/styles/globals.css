@@ -24,7 +24,7 @@ body {
 * {
   padding: 0;
   margin: 0;
-  caret-color: var(--g3);
+  caret-color: var(--g4);
   outline-style: none;
   box-sizing: border-box;
   font-family: 'BlogTextStyles', Apple SD Gothic Neo, Noto Sans KR, Inter,
@@ -39,13 +39,11 @@ h4,
 h5,
 h6,
 p,
-a {
-  color: var(--g3);
+a,
+button,
+li {
+  color: var(--g4);
 }
-
-/* a:hover :active :link :visited {
-  color: var(--g3);
-} */
 
 h1,
 h2,
