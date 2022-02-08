@@ -1,5 +1,5 @@
 @use '../../../styles/motion.module';
-@use '../../../styles/text-styles';
+@use '../../../styles/text-styles.module';
 
 .post__list {
   border-bottom: var(--g6) 1px solid;

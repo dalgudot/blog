@@ -7,12 +7,12 @@ type Props = {};
 const Message: FC<Props> = () => {
   const router = useRouter();
   const query = router.query;
-  const field = query.category === 'design' ? '디자인' : '개발';
+  const field = query.category === 'dev' ? '개발' : '디자인';
 
   return (
     <div className={styles.message}>
       <span />
-      <p>{field} 경험을 공유합니다.</p>
+      <p>{query.category !== 'story' && field} 경험을 공유합니다.</p>
     </div>
   );
 };

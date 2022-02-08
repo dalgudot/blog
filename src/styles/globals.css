@@ -74,6 +74,7 @@ a {
   text-decoration: none;
   cursor: pointer;
   display: inline-block;
+  -webkit-tap-highlight-color: transparent;
 
   /* iOS에서 a tag long touch 시 나오는 모달 막기 */
   -webkit-touch-callout: none;
@@ -91,16 +92,4 @@ ul,
 ol,
 li {
   list-style: none;
-}
-
-/* 글 속에만 적용되도록 <code> html 생성 시 class도 지정, <code class="inline__code__block"> */
-/* editable-text-block, editable-link-block */
-/* post-css autoprefix 적용 안 됨. */
-.inline__code__block {
-  background-color: var(--g7);
-  padding: 2px 5px;
-  border-radius: 6px;
-  letter-spacing: -0.2px;
-  font-size: 94%;
-  /* 반응형도 대응해야 함. */
 }

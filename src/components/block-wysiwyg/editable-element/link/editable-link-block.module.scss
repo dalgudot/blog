@@ -1,4 +1,4 @@
-@use '../../../../styles/text-styles';
+@use '../../../../styles/text-styles.module';
 @use '../../../../styles/motion.module';
 
 .editable__link__block__li {
@@ -33,7 +33,7 @@
 
 .box__for__Paragraph__list__type {
   border: var(--g6) 1px solid;
-  margin: 36px 0 96px;
+  margin: 36px 0 72px;
 
   a {
     padding: 48px 36px;

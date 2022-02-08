@@ -1,5 +1,5 @@
 @use '../../../styles/common';
-@use '../../../styles/text-styles';
+@use '../../../styles/text-styles.module';
 
 .response__section {
   @include common.article__section__title__divider;

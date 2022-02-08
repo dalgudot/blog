@@ -17,7 +17,7 @@ const Story: NextPage<Props> = ({ storyPostListData }) => {
 
   return (
     <>
-      <main className={styles.main__layout}>
+      <main className={styles.post__list__main__layout}>
         <nav>
           <ul>
             {storyPostListData.map((list) => (

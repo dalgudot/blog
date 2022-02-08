@@ -1,0 +1,19 @@
+@use '../../../styles/common';
+@use '../../../styles/text-styles.module';
+
+.author__section {
+  @include common.article__section__title__divider;
+}
+
+.author__contents {
+  position: relative; // NextJs Image 경고 제거
+
+  // NextJs Image
+  span:nth-child(1) {
+    width: 144px !important;
+    height: 144px !important;
+    position: relative !important;
+    border-radius: 50%;
+    // object-fit: contain;
+  }
+}

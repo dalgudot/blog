@@ -1,5 +1,5 @@
 @use '../../styles/common';
-@use '../../styles/text-styles';
+@use '../../styles/text-styles.module';
 
 .main {
   max-width: common.$post__max__width;

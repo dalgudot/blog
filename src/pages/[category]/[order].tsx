@@ -58,7 +58,7 @@ const CategoryOrderPost: NextPage<Props> = (props) => {
       currentOrder as string,
       tempPost
     );
-    showToast('서버에 임시 저장 완료');
+    showToast('저장 완료');
   };
 
   // console.log('tempPost', tempPost.wysiwygDataArray);

@@ -48,7 +48,7 @@ const GNB: FC<Props> = ({ isAdmin }) => {
 
   return (
     <>
-      <nav className={styles.nav}>
+      <nav className={styles.gnb__list__nav}>
         <ul>
           {gnbList.map((list) => (
             <GNBList key={list.href} list={list} />
@@ -85,7 +85,7 @@ const GNBList: FC<GNBListProps> = ({ list }) => {
 
   const isSelected = currentStatus === list.label;
   const listClassname = classNames(
-    styles.list,
+    styles.gnb__list__nav__list,
     isSelected && styles.selected__list
   );
 

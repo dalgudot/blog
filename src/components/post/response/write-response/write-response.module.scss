@@ -1,4 +1,4 @@
-@use '../../../../styles/text-styles';
+@use '../../../../styles/text-styles.module';
 @use '../response.module';
 
 .write__response {
@@ -49,6 +49,7 @@
 }
 
 .active__response__submit__button {
+  font-weight: 500;
   color: var(--g1);
   border: 1px solid var(--g1);
 }

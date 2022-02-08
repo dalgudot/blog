@@ -88,7 +88,7 @@ export const updateTotalVisitors = () => {
     const unSubscribeOnValueVisitorsByDay: Unsubscribe =
       updateNumberRealtimeDB(visitorsByDay);
 
-    sessionStorage.setItem('visitDuringSession', 'yes');
+    sessionStorage.setItem('visitDuringSession', 'true');
 
     const unSubscribeOnValueRealtimeDB = () => {
       unSubscribeOnValueTotalVisitors();

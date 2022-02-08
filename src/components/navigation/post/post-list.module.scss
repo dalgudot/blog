@@ -1,9 +1,13 @@
 @use '../../../styles/common';
 @use '../../../styles/motion.module';
 
-.main__layout {
+.post__list__main__layout {
   margin: 0 auto 180px;
   max-width: common.$list__max__width;
+
+  @media screen and (max-width: common.$post__list__media__max__width) {
+    padding: common.$main__layout__padding;
+  }
 }
 
 .main__fade__in {

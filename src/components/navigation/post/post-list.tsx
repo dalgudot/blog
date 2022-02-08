@@ -50,14 +50,14 @@ const PostList: FC<Props> = ({
   }, [asPath]);
 
   const mainClassname = classNames(
-    styles.main__layout,
+    styles.post__list__main__layout,
     isFadeIn && styles.main__fade__in
   );
 
   return (
     <>
-      <CategoryFilter asPath={asPath} />
       <main className={mainClassname}>
+        <CategoryFilter asPath={asPath} />
         <nav>
           <ul>
             {postList.map((list) => (

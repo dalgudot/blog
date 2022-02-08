@@ -3,9 +3,16 @@ import Link from 'next/link';
 import styles from './header.module.scss';
 import GNB from './gnb';
 import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
+import variables from '../../styles/text-styles.module.scss';
+import { useWindowInnerWidthHeight } from '../../lib/hooks/useWindowInnerWidthHeight';
+import IconMenu24 from '../../svg/icon-menu-24';
 
 const Header: React.FC = () => {
   const { isAdmin } = useIsAdmin();
+  const windowInner = useWindowInnerWidthHeight();
+  const isMobile =
+    windowInner.width <=
+    Number(variables.text__second__max__width.replace('px', ''));
 
   return (
     <>
@@ -17,8 +24,14 @@ const Header: React.FC = () => {
           </a>
         </Link>
 
-        <div className={styles.right}>
-          <GNB isAdmin={isAdmin} />
+        <div className={styles.header__right}>
+          {isMobile ? (
+            <button className={styles.header__right__menu__button}>
+              <IconMenu24 color='var(--g1)' />
+            </button>
+          ) : (
+            <GNB isAdmin={isAdmin} />
+          )}
           <ThemeToggle />
         </div>
       </header>
