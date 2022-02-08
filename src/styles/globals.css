@@ -2,7 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  background-color: var(--g12);
+  background-color: var(--g8);
   user-select: none;
 
   /* 판독성 최적화 */
@@ -24,12 +24,18 @@ body {
 * {
   padding: 0;
   margin: 0;
-  caret-color: var(--g3);
+  caret-color: var(--g1);
   outline-style: none;
   box-sizing: border-box;
   font-family: 'BlogTextStyles', Apple SD Gothic Neo, Noto Sans KR, Inter,
     system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica,
     Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, sans-serif;
+}
+
+button {
+  all: unset;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 h1,
@@ -39,13 +45,11 @@ h4,
 h5,
 h6,
 p,
-a {
-  color: var(--g3);
+a,
+button,
+li {
+  color: var(--g1);
 }
-
-/* a:hover :active :link :visited {
-  color: var(--g3);
-} */
 
 h1,
 h2,
@@ -75,12 +79,6 @@ a {
   -webkit-touch-callout: none;
 }
 
-button {
-  all: unset;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
 a,
 button,
 input,
@@ -99,9 +97,10 @@ li {
 /* editable-text-block, editable-link-block */
 /* post-css autoprefix 적용 안 됨. */
 .inline__code__block {
-  background-color: var(--g11);
-  padding: 2px 6px;
-  border-radius: 4px;
-  letter-spacing: -0.7px;
+  background-color: var(--g7);
+  padding: 2px 5px;
+  border-radius: 6px;
+  letter-spacing: -0.2px;
+  font-size: 94%;
   /* 반응형도 대응해야 함. */
 }

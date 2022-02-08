@@ -8,12 +8,7 @@ type TColor =
   | '--g5'
   | '--g6'
   | '--g7'
-  | '--g8'
-  | '--g9'
-  | '--g10'
-  | '--g11'
-  | '--g12'
-  | '--g13';
+  | '--g8';
 type TSVGColor =
   | 'var(--g1)'
   | 'var(--g2)'
@@ -22,9 +17,4 @@ type TSVGColor =
   | 'var(--g5)'
   | 'var(--g6)'
   | 'var(--g7)'
-  | 'var(--g8)'
-  | 'var(--g9)'
-  | 'var(--g10)'
-  | 'var(--g11)'
-  | 'var(--g12)'
-  | 'var(--g13)';
+  | 'var(--g8)';

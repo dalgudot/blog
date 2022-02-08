@@ -17,7 +17,7 @@ const ThemeToggle: FC = () => {
 
   return (
     <RotateButton themeHandler={themeHandler}>
-      <IconTheme24 color='var(--g4)' />
+      <IconTheme24 color='var(--g1)' />
     </RotateButton>
   );
 };

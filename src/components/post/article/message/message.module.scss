@@ -8,14 +8,14 @@
   span {
     width: 4px;
     height: 24px;
-    background-color: var(--g5);
+    background-color: var(--g3);
     margin-right: 10px;
   }
 
   p {
     @include text-styles.body1;
-    margin-top: 1px;
-    color: var(--g5);
+    margin-top: 2px; // 시각 보정
+    color: var(--g3);
     width: 100%;
   }
 }
