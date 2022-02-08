@@ -1,29 +1,38 @@
 import { FC, useEffect, useState } from 'react';
-import { getTotalVisitors } from '../../service/firebase/realtime-db';
+import {
+  getTodayVisitors,
+  getTotalVisitors,
+} from '../../service/firebase/realtime-db';
 import styles from './footer.module.scss';
 
 const LeftSide: FC = () => {
+  const [todayVisitors, setTodayVisitors] = useState<number | 'Loading'>(
+    'Loading'
+  );
   const [totalVisitors, setTotalVisitors] = useState<number | 'Loading'>(
     'Loading'
   );
   useEffect(() => {
-    const unSubscribeOnValueRealtimeDB = getTotalVisitors(setTotalVisitors); // 데이터 보여주기 위한
+    const unSubscribeOnValueTodayVisitors = getTodayVisitors(setTodayVisitors);
+    const unSubscribeOnValueTotalVisitors = getTotalVisitors(setTotalVisitors);
 
     return () => {
-      unSubscribeOnValueRealtimeDB();
+      unSubscribeOnValueTodayVisitors();
+      unSubscribeOnValueTotalVisitors();
     };
   }, []);
 
   return (
-    <>
-      <p className={styles.left__side}>
-        {totalVisitors === 'Loading' ? (
-          <>Loading...</>
-        ) : (
-          <>Total {totalVisitors}</>
-        )}
-      </p>
-    </>
+    <div className={styles.left__side}>
+      {totalVisitors === 'Loading' ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          <p>TODAY {todayVisitors}</p>
+          <p className={styles.total}>TOTAL {totalVisitors}</p>
+        </>
+      )}
+    </div>
   );
 };
 

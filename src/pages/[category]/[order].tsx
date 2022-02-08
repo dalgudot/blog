@@ -18,7 +18,7 @@ import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
 import { IPostData } from '../../redux-toolkit/model/post-data-model';
 import { useInitializeClientData } from '../../lib/hooks/useInitializeClientData';
 import HeadForSEO, { TInfoForSEO } from '../../SEO/headForSEO';
-import { useUpdateTotalVisitors } from '../../lib/hooks/useUpdateTotalVisitors';
+import { useUpdateVisitors } from '../../lib/hooks/useUpdateVisitors';
 
 type Props = {
   post: IPostData;
@@ -26,8 +26,8 @@ type Props = {
 };
 
 const CategoryOrderPost: NextPage<Props> = (props) => {
+  useUpdateVisitors();
   const { isAdmin } = useIsAdmin();
-  useUpdateTotalVisitors();
   const { showToast } = useToast();
   const router = useRouter();
   const dispatch = useAppDispatch();
