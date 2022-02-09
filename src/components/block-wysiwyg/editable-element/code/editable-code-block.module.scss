@@ -5,8 +5,13 @@
   margin: 24px 0 24px !important; // Remove default setting
   padding: 36px !important;
 
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    margin: 16px 0 24px !important; // Remove default setting
+    padding: 24px !important;
+  }
+
   @media all and (max-width: text-styles.$text__second__max__width) {
-    margin: 16px 0 36px !important; // Remove default setting
+    margin: 16px 0 24px !important; // Remove default setting
     padding: 16px !important;
   }
 
@@ -15,6 +20,10 @@
     font-family: 'SourceCodePro', Menlo, Monaco, Lucida Console, Liberation Mono,
       DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
     font-size: 16px;
+
+    @media screen and (max-width: text-styles.$text__first__max__width) {
+      font-size: 14px;
+    }
 
     @media all and (max-width: text-styles.$text__second__max__width) {
       font-size: 12px;

@@ -59,10 +59,6 @@
       margin-top: 6px;
     }
 
-    @media screen and (max-width: text-styles.$text__second__max__width) {
-      margin-top: 5px;
-    }
-
     p {
       @include text-styles.body3;
       color: var(--g2);

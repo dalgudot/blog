@@ -1,12 +1,13 @@
 :root {
   --g1: #3c3c42;
   --g2: #434246;
-  --g3: #545057;
+  --g3: #4f4e53;
   --g4: #94949c;
   --g5: #aeacb3;
-  --g6: #d0ccd6;
+  --g6: #d0ced4;
   --g7: #e7e6eb;
-  --g8: #fbfbfe;
+  /* --g8: #fbfbfe; */
+  --g8: #fff;
 
   /* 라이트 모드는 베이지 톤으로 */
   /* primary */
@@ -21,9 +22,9 @@
 }
 
 [data-theme='dark'] {
-  --g1: #e1dce7;
+  --g1: #e1dee6;
   --g2: #bdbac3;
-  --g3: #acaab4;
+  --g3: #afadb8;
   --g4: #7e7e85;
   --g5: #737075;
   --g6: #4c4b4e;
@@ -39,6 +40,11 @@
 
   /* common */
   --bw: #000;
+}
+
+::selection {
+  color: var(--g8);
+  background-color: var(--g1);
 }
 
 /* --g1: 제목 색, 기본 색 */

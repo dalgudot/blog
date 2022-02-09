@@ -1,16 +1,42 @@
+@use '../../../../styles/text-styles.module';
+
 .heading2 {
   margin-top: 144px;
+
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    margin-top: 120px;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    margin-top: 96px;
+  }
 }
 
 .heading3 {
   margin-top: 144px;
+
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    margin-top: 120px;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    margin-top: 72px;
+  }
 }
 
 .paragraph {
   color: var(--g3);
-  line-height: 1.75;
+  line-height: 1.78;
   letter-spacing: -0.1px;
   margin-top: 24px;
+
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    line-height: 1.7;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    line-height: 1.65;
+  }
 
   code {
     font-weight: 500;

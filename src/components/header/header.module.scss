@@ -8,7 +8,7 @@
 
   // story GNB까지 고려한 media query
   @media screen and (max-width: text-styles.$text__second__max__width) {
-    height: 48px;
+    height: 52px;
   }
 }
 
@@ -40,7 +40,7 @@
   letter-spacing: 0.6px;
   display: flex;
 
-  @media screen and (max-width: text-styles.$text__second__max__width) {
+  @media screen and (max-width: text-styles.$text__first__max__width) {
     @include text-styles.body1(700);
   }
 }
@@ -68,7 +68,7 @@
 }
 
 .gnb__list__nav {
-  margin-right: 36px;
+  margin-right: 38px;
   height: 100%;
 
   @media screen and (max-width: text-styles.$text__second__max__width) {
@@ -146,8 +146,6 @@
 
   @media screen and (max-width: text-styles.$text__second__max__width) {
     display: none;
-    // height: 8px;
-    // bottom: -24px;
   }
 }
 

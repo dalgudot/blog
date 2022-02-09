@@ -19,6 +19,14 @@
       width: 100%;
       max-width: 24px;
       height: 24px;
+
+      @media screen and (max-width: text-styles.$text__first__max__width) {
+        height: 22px;
+      }
+
+      @media screen and (max-width: text-styles.$text__second__max__width) {
+        height: 20px;
+      }
     }
   }
 }
@@ -28,6 +36,10 @@
 
   a {
     padding: 72px 0;
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      padding: 48px 0;
+    }
   }
 }
 
@@ -37,6 +49,14 @@
 
   a {
     padding: 48px 36px;
+
+    @media screen and (max-width: text-styles.$text__first__max__width) {
+      padding: 44px 32px;
+    }
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      padding: 32px 24px;
+    }
   }
 }
 
