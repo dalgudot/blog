@@ -118,6 +118,7 @@
     @media screen and (max-width: text-styles.$text__second__max__width) {
       @include text-styles.mobile__gnb__list__modal;
       margin-top: 24px;
+      width: 100vw; // 터치 영역
     }
   }
 }

@@ -16,7 +16,7 @@
     justify-content: center;
     position: relative;
     bottom: 0;
-    margin: -72px auto 72px;
+    margin: -96px auto 72px;
   }
 }
 
@@ -31,7 +31,12 @@
 
     @media screen and (max-width: common.$footer__media__max__width) {
       height: 12px;
-      margin: 0 36px;
+      margin: 0 24px;
+    }
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      height: 10px;
+      margin: 0 12px;
     }
   }
 }
@@ -87,6 +92,10 @@
   margin-top: 8px;
 
   @media screen and (max-width: common.$footer__media__max__width) {
-    margin-top: 36px;
+    margin-top: 24px;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    margin-top: 16px;
   }
 }

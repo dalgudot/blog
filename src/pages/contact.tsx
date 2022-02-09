@@ -9,7 +9,7 @@ const Contact: NextPage = () => {
   useUpdateVisitors();
 
   return (
-    <main className={styles.main}>
+    <main className={styles.contact__main}>
       <Profile />
       <Email />
       <Career />

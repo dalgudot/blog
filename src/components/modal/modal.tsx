@@ -77,8 +77,6 @@ const Modal: FC = () => {
               styles.modal__open__background__transition,
               !isModal.open && styles.modal__close__background__transition
             )}
-            // Mobile GNB은 모바일에서 쓰는 네비게이션이기 때문에 Dim을 눌렀을 때 모달이 꺼지면 좋지 않은 경험을 만듦.
-            // onClick={() => isModal.type !== 'Mobile GNB' && closeModal()}
             onClick={() => closeModal()}
           />
         </>

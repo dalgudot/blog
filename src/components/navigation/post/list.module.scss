@@ -9,9 +9,12 @@
   @include motion.scale__hover;
 
   a {
-    padding: 36px 0;
-    margin: 60px 0;
+    padding: 96px 0;
     width: 100%;
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      padding: 48px 0;
+    }
   }
 
   time {
@@ -21,7 +24,11 @@
   }
 
   h1 {
-    margin-top: 12px; // 터치 영역 위해
+    margin-top: 12px;
     @include text-styles.title2(500);
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      margin-top: 8px;
+    }
   }
 }

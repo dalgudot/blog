@@ -56,8 +56,8 @@ const PostList: FC<Props> = ({
 
   return (
     <>
+      <CategoryFilter asPath={asPath} />
       <main className={mainClassname}>
-        <CategoryFilter asPath={asPath} />
         <nav>
           <ul>
             {postList.map((list) => (

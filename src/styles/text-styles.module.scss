@@ -89,7 +89,7 @@ $text__second__max__width: 640px;
   font-weight: $weight;
 
   @media screen and (max-width: $text__first__max__width) {
-    font-size: 18px;
+    font-size: 19px;
   }
   @media screen and (max-width: $text__second__max__width) {
     font-size: 17px;
@@ -129,6 +129,10 @@ $text__second__max__width: 640px;
   font-weight: $weight;
 
   @media screen and (max-width: $text__first__max__width) {
+    font-size: 16px;
+  }
+
+  @media screen and (max-width: $text__first__max__width) {
     font-size: 15px;
   }
 }
@@ -144,6 +148,14 @@ $text__second__max__width: 640px;
 @mixin body4($weight: 400) {
   font-size: 14px;
   font-weight: $weight;
+
+  @media screen and (max-width: $text__first__max__width) {
+    font-size: 13px;
+  }
+
+  @media screen and (max-width: $text__second__max__width) {
+    font-size: 12px;
+  }
 }
 
 .body4__400 {

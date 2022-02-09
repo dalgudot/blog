@@ -1,12 +1,12 @@
 @use 'text-styles.module';
 
 $list__max__width: 640px;
-$post__max__width: 760px;
+$post__max__width: 740px;
 
 // for responsive design
 $post__list__media__max__width: 704px; // 640 + 32 + 32
 $post__media__max__width: 824px; // 760 + 32 + 32 - 상하단 마진 위해
-$footer__media__max__width: 1500px;
+$footer__media__max__width: 1540px;
 
 $main__layout__padding: 0 4vw;
 
@@ -22,8 +22,6 @@ $modal__z__index: 11;
 //   post__media__max__width: $post__media__max__width;
 //   footer__media__max__width: $footer__media__max__width;
 
-//   text__first__max__width: $text__first__max__width;
-//   text__second__max__width: $text__second__max__width;
 //   main__layout__padding: $main__layout__padding;
 // }
 

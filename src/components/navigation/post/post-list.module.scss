@@ -1,5 +1,6 @@
 @use '../../../styles/common';
 @use '../../../styles/motion.module';
+@use '../../../styles/text-styles.module';
 
 .post__list__main__layout {
   margin: 0 auto 180px;
@@ -11,7 +12,7 @@
 }
 
 .main__fade__in {
-  // @include motion.fade__in;
+  @include motion.fade__in;
 }
 
 .category__filter__nav {
@@ -19,10 +20,22 @@
   max-width: common.$list__max__width;
   display: flex;
 
+  @media screen and (max-width: common.$post__list__media__max__width) {
+    padding: common.$main__layout__padding;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    margin: 24px auto 0;
+  }
+
   a {
     padding: 8px 12px;
     border: 1px solid var(--g6);
     @include motion.opacity__hover;
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      padding: 6px 10px;
+    }
   }
 
   a:nth-child(2) {
