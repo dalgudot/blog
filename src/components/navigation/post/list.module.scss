@@ -1,0 +1,34 @@
+@use '../../../styles/motion.module';
+@use '../../../styles/text-styles.module';
+
+.post__list {
+  border-bottom: var(--g6) 1px solid;
+  display: flex;
+  height: 100%;
+  cursor: pointer;
+  @include motion.scale__hover;
+
+  a {
+    padding: 96px 0;
+    width: 100%;
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      padding: 48px 0;
+    }
+  }
+
+  time {
+    color: var(--g4);
+    margin-left: 2px; // 시각 보정
+    @include text-styles.body4;
+  }
+
+  h1 {
+    margin-top: 12px;
+    @include text-styles.title2(500);
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      margin-top: 8px;
+    }
+  }
+}

@@ -1,83 +1,87 @@
 import { NextPage } from 'next';
-import Link from 'next/link';
-import List from '../components/navigation/post/list';
-import { useIsAdmin } from '../lib/hooks/useIsAdmin';
-import HeadForSEO, { TInfoForSEO } from '../SEO/headForSEO';
-import { indexInfo } from '../SEO/index/index-info';
-import { getAllCollectionDataArray } from '../service/firebase/firestore';
+import PostList from '../components/navigation/post/post-list';
+import { useUpdateVisitors } from '../lib/hooks/useUpdateVisitors';
+import { TStatus } from '../redux-toolkit/model/post-data-model';
+import {
+  designCollectionRefName,
+  devCollectionRefName,
+  getEachAllCollectionDataArray,
+} from '../service/firebase/firestore';
+
+export type TListData = {
+  category: string;
+  order: string;
+  title: string;
+  dateTime: string;
+  status: TStatus;
+}[];
 
 type Props = {
-  allPostsListData: {
-    category: string;
-    order: string;
-    title: string;
-  }[];
-
-  indexInfoForSEO: TInfoForSEO;
+  designPostListData: TListData;
+  devPostListData: TListData;
+  allPostsListData: TListData;
 };
 
-// rule: 페이지 컴포넌트에서는 데이터를 전달하기만 한다 -> 나만의 리액트 클린 아키텍처 만들기
-const Index: NextPage<Props> = ({ allPostsListData, indexInfoForSEO }) => {
-  const { isAdmin } = useIsAdmin();
+const Index: NextPage<Props> = ({
+  designPostListData,
+  devPostListData,
+  allPostsListData,
+}) => {
+  useUpdateVisitors();
 
   return (
-    <>
-      <HeadForSEO info={indexInfoForSEO.info} />
-      {/* 404 방지 위해 개발과 디자인 각각 파일 만들어주는 게 좋음. */}
-      <Link href='/'>
-        <a>전체</a>
-      </Link>
-      <Link href='/' as='/dev'>
-        <a>개발</a>
-      </Link>
-      <Link href='/' as='/design'>
-        <a>디자인</a>
-      </Link>
-      <main>
-        <nav>
-          <ul>
-            {allPostsListData.map((listData, idx) => (
-              <List
-                key={idx}
-                category={listData.category}
-                order={listData.order}
-                title={listData.title}
-              />
-            ))}
-          </ul>
-        </nav>
-      </main>
-      {isAdmin && (
-        <>
-          <Link href='/draft/list'>
-            <a>초고 목록 보기</a>
-          </Link>
-          <Link href='/draft/new'>
-            <a>글쓰기</a>
-          </Link>
-        </>
-      )}
-    </>
+    <PostList
+      designPostListData={designPostListData}
+      devPostListData={devPostListData}
+      allPostsListData={allPostsListData}
+    />
   );
 };
 
 export default Index;
 
-// https://yceffort.kr/2020/03/nextjs-02-data-fetching
 export const getStaticProps = async () => {
-  // firestore db에서 List를 그릴 title 데이터, seo 데이터(로컬) 받아옴.
-  const allPosts = await getAllCollectionDataArray();
-  const allPostsListData = allPosts.map((post) => ({
+  const designPost = await getEachAllCollectionDataArray(
+    designCollectionRefName
+  );
+  const devPost = await getEachAllCollectionDataArray(devCollectionRefName);
+  const allPosts = designPost.concat(devPost);
+
+  const designPostListData = designPost.map((post) => ({
     category: post.category,
     order: post.order,
     title: post.title,
+    dateTime: post.dateTime,
+    status: post.status,
   }));
 
-  const indexInfoForSEO = indexInfo;
+  const devPostListData = devPost.map((post) => ({
+    category: post.category,
+    order: post.order,
+    title: post.title,
+    dateTime: post.dateTime,
+    status: post.status,
+  }));
 
-  // 리스트 디자인이 끝난 뒤 브런치 링크 넣기
+  const allPostsListData = allPosts
+    .map((post) => ({
+      category: post.category,
+      order: post.order,
+      title: post.title,
+      dateTime: post.dateTime,
+      status: post.status,
+    }))
+    .sort((a, b) => +new Date(b.dateTime) - +new Date(a.dateTime));
+  // Dev와 Design 모든 리스트 보여줄 때 정렬하기.(컬렉션이 다르므로 Firestore에서 할 수 없음)
+  // https://dkmqflx.github.io/frontend/2021/04/21/javascript-sortbydate/
+  // 단항 연산자 (Unary operator)인 +를 new 앞에 추가
+  // http://ccambo.github.io/Dev/Typescript/1.typescript-problem-solving-and-tips/
 
   return {
-    props: { allPostsListData, indexInfoForSEO },
+    props: {
+      designPostListData,
+      devPostListData,
+      allPostsListData,
+    },
   };
 };

@@ -5,21 +5,25 @@ import { focusContentEditableTextToEnd } from '../utils/focus-content-editable-t
 
 export const useEditable = (
   html: string,
-  syncTempPostWithPasteText: (newInnerPasteText: string) => void,
+  setTempPostHtmlData: (inputHtml: string) => void,
   addBlockFocusUseEffectDependency?: IParagraphData,
   removeCurrentBlockFocusUseEffectDependency?: IParagraphData
 ) => {
+  // 블록 안에 ``을 추가하거나 블록을 지울 때의 focusing은 여기가 아닌 <EditableElementSwitch />에서 관리해야 함.
   const ref = useRef<HTMLHeadingElement | HTMLParagraphElement | any>(null);
 
-  // 블록 안에 ``을 추가하거나 블록을 지울 때의 focusing은 여기가 아닌 <EditableElementSwitch />에서 관리해야 함.
-
+  // 'paste' 관리하는 useEffect
   useEffect(() => {
     const getTextDataFromClipboard = (e: ClipboardEvent) => {
       e.preventDefault();
       const pastedData = e.clipboardData;
-      const textData = pastedData?.getData('Text');
-
-      console.log('textData', textData);
+      const textData = pastedData?.getData('text');
+      const htmlData = pastedData
+        ?.getData('text')
+        .replace(/&/g, '&amp;') // &부터 해야 뒤쪽 replace에 영향 없음!
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+      // .replace(/' '/g, '&nbsp;');
 
       // contentEditable의 innerHtml, TempRef, setText 모두 동기화!
       if (ref.current) {
@@ -28,9 +32,11 @@ export const useEditable = (
         //   `${ref.current.innerHTML}${textData}`
         // );
         const newInnerPasteText = `${ref.current.innerHTML}${textData}`;
-        ref.current.innerHTML = newInnerPasteText;
+        ref.current.innerText = newInnerPasteText;
+        // https://developer.mozilla.org/ko/docs/Web/API/Node/textContent
 
-        syncTempPostWithPasteText(newInnerPasteText); // 데이터 싱크를 위해 dispatch 및 setText(EditableElementSwitch 이용하는 경우 onKeyDown에서 text useState() 필요) 함수를 받아와 실행
+        // [syncTempPostWithPasteText] 데이터 싱크를 위해 dispatch 및 setText(EditableElementSwitch 이용하는 경우 onKeyDown에서 text useState() 필요) 함수를 받아와 실행
+        htmlData && setTempPostHtmlData(htmlData); // [중요] 정규식 변환한 값으로 넣어줘야 editable-element에서 innerHtml 렌더링될 떄 코드로 읽히지 않음.(마치 onInput에서 이벤트 받아오는 것처럼.)
         focusContentEditableTextToEnd(ref.current);
       }
     };
@@ -42,7 +48,8 @@ export const useEditable = (
     return ref.current?.removeEventListener('paste', (e: ClipboardEvent) => {
       getTextDataFromClipboard(e);
     });
-  }, []);
+    // select 변경 시 이벤트 리스너 다시 등록 위해 addBlockFocusUseEffectDependency 의존성 배열에 추가
+  }, [addBlockFocusUseEffectDependency]);
 
   // 새로 생성된 블럭의 커서 위치, 다음 블럭이 지워졌을 때 focus()
   useEffect(() => {

@@ -18,6 +18,7 @@ import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
 import { IPostData } from '../../redux-toolkit/model/post-data-model';
 import { useInitializeClientData } from '../../lib/hooks/useInitializeClientData';
 import HeadForSEO, { TInfoForSEO } from '../../SEO/headForSEO';
+import { useUpdateVisitors } from '../../lib/hooks/useUpdateVisitors';
 
 type Props = {
   post: IPostData;
@@ -25,6 +26,7 @@ type Props = {
 };
 
 const CategoryOrderPost: NextPage<Props> = (props) => {
+  useUpdateVisitors();
   const { isAdmin } = useIsAdmin();
   const { showToast } = useToast();
   const router = useRouter();
@@ -56,22 +58,23 @@ const CategoryOrderPost: NextPage<Props> = (props) => {
       currentOrder as string,
       tempPost
     );
-    showToast('서버에 임시 저장 완료');
+    showToast('저장 완료');
   };
 
-  console.log('post', post.wysiwygDataArray);
+  // console.log('tempPost', tempPost.wysiwygDataArray);
 
   return (
     <>
       <HeadForSEO info={props.infoForSEOByCategoryOrder.info} />
-      <Post contentEditable={isAdmin} postData={post} />
+      {mounted && <Post contentEditable={isAdmin} postData={post} />}
+
       {isAdmin && (
         <>
           <button
             onClick={tempSaveDataToFireStoreDB}
-            style={{ marginTop: 48, marginLeft: 24 }}
+            className='admin__button__left'
           >
-            Save to DB
+            저장
           </button>
         </>
       )}

@@ -1,0 +1,188 @@
+@use '../../styles/motion.module';
+@use '../../styles/common';
+@use '../../styles/text-styles.module';
+@use '../modal/modal.module';
+
+@mixin header__height {
+  height: 64px;
+
+  // story GNB까지 고려한 media query
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    height: 52px;
+  }
+}
+
+.header {
+  @include header__height;
+  padding: common.$main__layout__padding;
+  z-index: 2;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: var(--g8);
+  border-bottom: var(--g6) 1px solid;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__height__for__layout__under__fixed__header {
+  @include header__height;
+  position: relative;
+  width: 100%;
+  z-index: -1;
+}
+
+.blog__name {
+  @include text-styles.body2(700);
+  letter-spacing: 0.6px;
+  display: flex;
+
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    @include text-styles.body1(700);
+  }
+}
+
+.admin___text {
+  @include text-styles.body2(500);
+  color: var(--g5);
+  margin-left: 6px;
+}
+
+.header__right {
+  display: flex;
+  height: 100%;
+}
+
+.header__right__menu__button {
+  display: flex;
+  align-items: center;
+
+  svg {
+    padding: 12px;
+    margin-top: 1px; // 시각 보정
+    margin-right: 16px;
+  }
+}
+
+.gnb__list__nav {
+  margin-right: 38px;
+  height: 100%;
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    margin-right: 0;
+    display: flex;
+    justify-content: center;
+    z-index: common.$modal__z__index;
+    position: fixed;
+    top: 50%;
+    transform: translateY(-25%);
+    padding: common.$main__layout__padding;
+    width: 100%;
+  }
+
+  ul {
+    display: flex;
+    height: 100%;
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      flex-direction: column;
+    }
+  }
+}
+
+.gnb__list__nav__list {
+  width: 120px;
+  position: relative;
+  @include motion.opacity__hover;
+
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    width: 108px;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    width: 100%;
+  }
+
+  a {
+    @include text-styles.body3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin-top: 1px; // 시각 보정
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      @include text-styles.mobile__gnb__list__modal;
+      margin-top: 24px;
+      width: 100vw; // 터치 영역
+    }
+  }
+}
+
+.selected__list {
+  a {
+    @include text-styles.body3(500);
+    color: var(--p2);
+    transition: 0.1s;
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      @include text-styles.mobile__gnb__list__modal;
+    }
+  }
+}
+
+.under__line {
+  width: 100%;
+  height: 1px;
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  display: flex; // key
+  background-color: var(--p1);
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    display: none;
+  }
+}
+
+.under__line__motion {
+  animation: under__line__animation 0.3s motion.$bezier__1 forwards;
+}
+
+@keyframes under__line__animation {
+  from {
+    width: 0%;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+.theme__toggle {
+  display: flex;
+  align-items: center;
+
+  svg {
+    // padding으로 터치 영역, 클릭 영역, 애니메이션 활성화 영역 설정 -> SVG에서도 width, height 설정
+    padding: 12px;
+    margin: 0 -12px;
+    @include motion.rotate__hover;
+  }
+}
+
+.gnb__mobile__modal__close__button {
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    @include text-styles.body1;
+    z-index: common.$modal__z__index;
+    position: fixed;
+    top: 24px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+  }
+}

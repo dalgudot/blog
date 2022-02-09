@@ -2,41 +2,99 @@ html,
 body {
   padding: 0;
   margin: 0;
-  background-color: var(--bg);
-  color: var(--fg);
+  background-color: var(--g8);
+  user-select: none;
+
+  /* 판독성 최적화 */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* iOS Safari Momentum Scroll, 버벅임 방지 */
+  -webkit-overflow-scrolling: touch;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+::-webkit-scrollbar {
+  display: none;
 }
 
 * {
   padding: 0;
   margin: 0;
+  caret-color: var(--g1);
   outline-style: none;
   box-sizing: border-box;
   font-family: 'BlogTextStyles', Apple SD Gothic Neo, Noto Sans KR, Inter,
     system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica,
     Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+input:focus {
+  outline: none;
+}
+
+button {
+  all: unset;
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+button,
+li {
+  color: var(--g1);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  word-break: keep-all;
+}
+
+p {
+  word-break: break-word;
+}
+
+code {
+  font-family: 'SourceCodePro', Menlo, Monaco, Lucida Console, Liberation Mono,
+    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+  word-break: keep-all;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-block;
+
+  text-decoration: none;
+
+  /* iOS에서 a tag long touch 시 나오는 모달 막기 */
+  -webkit-touch-callout: none;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  outline-style: none;
 }
 
 ul,
 ol,
 li {
   list-style: none;
-}
-
-code {
-  font-family: 'SourceCodePro', Menlo, Monaco, Lucida Console, Liberation Mono,
-    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-}
-
-/* 글 속에만 적용되도록 <code> html 생성 시 class도 지정, <code class="inline__code__block"> */
-/* editable-text-block, editable-link-block */
-/* post-css autoprefix 적용 안 됨. */
-.inline__code__block {
-  padding: 4px;
-  background-color: #bdbdbd;
-  border-radius: 4px;
 }

@@ -1,0 +1,19 @@
+@use '../../styles/common';
+@use '../../styles/text-styles.module';
+
+.post__main {
+  max-width: common.$post__max__width;
+  margin: 144px auto 240px;
+
+  @media screen and (max-width: common.$post__media__max__width) {
+    padding: common.$main__layout__padding;
+  }
+
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    margin: 72px auto 144px;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    margin: 36px auto 96px;
+  }
+}

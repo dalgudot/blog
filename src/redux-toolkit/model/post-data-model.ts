@@ -1,4 +1,4 @@
-import { devCollectionRefName } from '../../service/firebase/firestore';
+import { designCollectionRefName } from '../../service/firebase/firestore';
 import { ITextData, ITextDataModel, TextDataModel } from './text-data-model';
 import { ILinkData, ILinkDataModel, LinkDataModel } from './link-data-model';
 import { IImageData } from './image-data-model';
@@ -7,7 +7,7 @@ const refData: ILinkDataModel = new LinkDataModel();
 const paragraphData: ITextDataModel = new TextDataModel();
 
 export const postInitialData: IPostData = {
-  category: devCollectionRefName,
+  category: designCollectionRefName,
   order: '',
   series: '',
   dateTime: '',

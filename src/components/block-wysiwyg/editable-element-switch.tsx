@@ -25,9 +25,11 @@ import EditableLinkBlock from './editable-element/link/editable-link-block';
 import { ILinkData } from '../../redux-toolkit/model/link-data-model';
 import EditableCodeBlock from './editable-element/code/editable-code-block';
 import EditableImageBlock from './editable-element/image/editable-image-block';
+import styles from './editable-element.module.scss';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
+  linkBlockType: 'Paragraph' | 'Reference';
   contentEditable: boolean;
   data: IParagraphData;
   datas: IParagraphData[];
@@ -36,14 +38,14 @@ type Props = {
 
 const EditableElementSwitch: FC<Props> = ({
   wysiwygType,
+  linkBlockType,
   contentEditable,
   data,
   datas,
   currentIndex,
 }) => {
   const [type, setType] = useState<TBlockType>('Paragraph');
-  const [text, setText] = useState<string>('');
-
+  const [text, setText] = useState<string>(''); // block 지울 떄 활용
   const dispatch = useAppDispatch();
   const datasLength = datas.length;
 
@@ -119,6 +121,7 @@ const EditableElementSwitch: FC<Props> = ({
       dispatch(setCurrentBlockTempHtml({ inputHtml, currentIndex }));
     }
 
+    // 리덕스에서 tempHtml을 가져오면 계속 전체 리렌더가 일어나기 때문에 해당 컴포넌트의 state로 관리
     setText(inputHtml);
   };
 
@@ -144,7 +147,7 @@ const EditableElementSwitch: FC<Props> = ({
             blockId={data.blockId}
             currentIndex={currentIndex}
             setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
-            // setPostHtmlData={setCurrentBlockPostHtmlData}
+            setPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
             addBlockFocusUseEffectDependency={datas[currentIndex]}
@@ -159,6 +162,7 @@ const EditableElementSwitch: FC<Props> = ({
         return (
           <EditableLinkBlock
             wysiwygType={wysiwygType}
+            linkBlockType={linkBlockType}
             contentEditable={contentEditable}
             data={data as ILinkData}
             currentIndex={currentIndex}
@@ -207,19 +211,22 @@ const EditableElementSwitch: FC<Props> = ({
 
   return (
     <>
-      {contentEditable && wysiwygType !== 'Link' && (
-        <select value={type} onChange={changeBlockType}>
-          <option value='Paragraph'>Paragraph</option>
-          <option value='Heading1'>Heading1</option>
-          <option value='Heading2'>Heading2</option>
-          <option value='Heading3'>Heading3</option>
-          <option value='Image'>Image</option>
-          <option value='Code'>Code</option>
-          <option value='Link'>Link</option>
-        </select>
+      {contentEditable && wysiwygType !== 'Link' ? (
+        <div className={styles.edit__mode__editable__element__switch}>
+          <select value={type} onChange={changeBlockType}>
+            <option value='Paragraph'>Paragraph</option>
+            <option value='Heading1'>Heading1</option>
+            <option value='Heading2'>Heading2</option>
+            <option value='Heading3'>Heading3</option>
+            <option value='Image'>Image</option>
+            <option value='Code'>Code</option>
+            <option value='Link'>Link</option>
+          </select>
+          {switchBlocks()}
+        </div>
+      ) : (
+        <>{switchBlocks()}</>
       )}
-
-      {switchBlocks()}
     </>
   );
 };

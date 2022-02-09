@@ -1,7 +1,5 @@
-.reference__section {
-  margin-top: 96px;
+@use '../../../styles/common';
 
-  ul {
-    margin-top: 36px;
-  }
+.reference__section {
+  @include common.article__section__title__divider;
 }

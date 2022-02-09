@@ -1,0 +1,195 @@
+$text__first__max__width: 1000px;
+$text__second__max__width: 640px;
+
+:export {
+  text__first__max__width: $text__first__max__width;
+  text__second__max__width: $text__second__max__width;
+}
+
+/**
+*
+* Title 500, 700
+*
+**/
+@mixin title1($weight: 700) {
+  font-size: 43px;
+  font-weight: $weight;
+
+  @media screen and (max-width: $text__first__max__width) {
+    font-size: 39px;
+  }
+
+  @media screen and (max-width: $text__second__max__width) {
+    font-size: 27px;
+  }
+}
+
+.title1__700 {
+  @include title1;
+}
+
+.title1__500 {
+  @include title1(500);
+}
+
+@mixin title2($weight: 700) {
+  font-size: 33px;
+  font-weight: $weight;
+
+  @media screen and (max-width: $text__first__max__width) {
+    font-size: 29px;
+  }
+  @media screen and (max-width: $text__second__max__width) {
+    font-size: 23px;
+  }
+}
+
+.title2__700 {
+  @include title2;
+}
+
+.title2__500 {
+  @include title2(500);
+}
+
+@mixin title3($weight: 700) {
+  font-size: 27px;
+  font-weight: $weight;
+
+  @media screen and (max-width: $text__first__max__width) {
+    font-size: 25px;
+  }
+  @media screen and (max-width: $text__second__max__width) {
+    font-size: 22px;
+  }
+}
+
+.title3__700 {
+  @include title3;
+}
+
+.title3__500 {
+  @include title3(500);
+}
+/**
+*
+* Title
+*
+**/
+/****************************************************************
+****************************************************************
+****************************************************************/
+/**
+*
+* Body 400, 500, 700
+*
+**/
+@mixin body1($weight: 400) {
+  font-size: 21px;
+  font-weight: $weight;
+
+  @media screen and (max-width: $text__first__max__width) {
+    font-size: 19px;
+  }
+  @media screen and (max-width: $text__second__max__width) {
+    font-size: 17px;
+  }
+}
+
+.body1__400 {
+  @include body1;
+}
+
+.body1__500 {
+  @include body1($weight: 500);
+}
+
+@mixin body2($weight: 400) {
+  font-size: 19px;
+  font-weight: $weight;
+
+  @media screen and (max-width: $text__first__max__width) {
+    font-size: 17px;
+  }
+  @media screen and (max-width: $text__second__max__width) {
+    font-size: 16px;
+  }
+}
+
+.body2__400 {
+  @include body2;
+}
+
+.body2__500 {
+  @include body2($weight: 500);
+}
+
+@mixin body3($weight: 400) {
+  font-size: 17px;
+  font-weight: $weight;
+
+  @media screen and (max-width: $text__first__max__width) {
+    font-size: 16px;
+  }
+
+  @media screen and (max-width: $text__first__max__width) {
+    font-size: 15px;
+  }
+}
+
+.body3__400 {
+  @include body3;
+}
+
+.body3__500 {
+  @include body3($weight: 500);
+}
+
+@mixin body4($weight: 400) {
+  font-size: 14px;
+  font-weight: $weight;
+
+  @media screen and (max-width: $text__first__max__width) {
+    font-size: 13px;
+  }
+
+  @media screen and (max-width: $text__second__max__width) {
+    font-size: 12px;
+  }
+}
+
+.body4__400 {
+  @include body4;
+}
+
+.body4__500 {
+  @include body4($weight: 500);
+}
+/**
+*
+* Body
+*
+**/
+
+/* 글 속에만 적용되도록 <code> html 생성 시 class도 지정, <code class="inline__code__block"> */
+/* editable-text-block, editable-link-block */
+/* post-css autoprefix 적용 안 됨. */
+.inline__code__block {
+  background-color: var(--g7);
+  padding: 2px 5px;
+  border-radius: 6px;
+  letter-spacing: -0.2px;
+  font-size: 94%;
+  margin: 0 1px;
+
+  @media screen and (max-width: $text__second__max__width) {
+    padding: 0px 3px;
+    border-radius: 4px;
+    margin: 0 1px 0 2px;
+  }
+}
+
+@mixin mobile__gnb__list__modal {
+  font-size: 15vw;
+  font-weight: 700;
+}

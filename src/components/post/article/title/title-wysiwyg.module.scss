@@ -1,3 +1,73 @@
+@use '../../../../styles/common';
+@use '../../../../styles/text-styles.module';
+
 .article__title__section {
-  margin-top: 36px;
+  time {
+    color: var(--g4);
+    margin-left: 2px; // 시각 보정
+    @include text-styles.body3;
+  }
+
+  h1 {
+    margin-top: 6px;
+  }
+}
+
+.profile__a {
+  margin-top: 24px;
+  margin-left: 1px; // 시각 보정
+  display: flex;
+  align-items: center;
+  position: relative; // NextJs Image 경고 제거
+
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    margin-top: 20px;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    margin-top: 16px;
+  }
+
+  // NextJs Image
+  span:nth-child(1) {
+    width: 36px !important;
+    height: 36px !important;
+    position: relative !important;
+    border-radius: 50%;
+
+    @media screen and (max-width: text-styles.$text__first__max__width) {
+      width: 33px !important;
+      height: 33px !important;
+    }
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      width: 30px !important;
+      height: 30px !important;
+    }
+  }
+
+  p {
+    @include text-styles.body3;
+    color: var(--g2);
+  }
+
+  p:nth-child(2) {
+    margin-left: 12px;
+
+    @media screen and (max-width: text-styles.$text__first__max__width) {
+      margin-left: 11px;
+    }
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      margin-left: 10px;
+    }
+  }
+
+  .circle__divider {
+    border-radius: 50%;
+    width: 2px;
+    height: 2px;
+    background-color: var(--g2);
+    margin: 0 6px;
+  }
 }
