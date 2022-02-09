@@ -11,11 +11,21 @@
 
   span {
     border-radius: 50%;
-
-    /* 바뀌는 요소 */
     width: 32px;
     height: 32px;
-    margin-right: 8px;
+    margin-right: 9px;
+
+    @media screen and (max-width: text-styles.$text__first__max__width) {
+      width: 30px;
+      height: 30px;
+      margin-right: 8px;
+    }
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      width: 30px;
+      height: 30px;
+      margin-right: 8px;
+    }
   }
 
   p {
