@@ -174,3 +174,8 @@ $text__second__max__width: 640px;
     padding: 0px 3px;
   }
 }
+
+@mixin mobile__gnb__list__modal {
+  font-size: 15vw;
+  font-weight: 700;
+}

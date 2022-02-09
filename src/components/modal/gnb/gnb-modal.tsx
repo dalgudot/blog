@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import styles from './gnb-modal.module.scss';
 
 type Props = {
@@ -9,4 +9,4 @@ const GNBModal: FC<Props> = ({ closeModal }) => {
   return <>GNBModal</>;
 };
 
-export default GNBModal;
+export default memo(GNBModal);

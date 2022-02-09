@@ -1,6 +1,7 @@
 @use '../../styles/motion.module';
 @use '../../styles/common';
 @use '../../styles/text-styles.module';
+@use '../modal/modal.module';
 
 @mixin header__height {
   height: 64px;
@@ -70,9 +71,25 @@
   margin-right: 36px;
   height: 100%;
 
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    margin-right: 0;
+    display: flex;
+    justify-content: center;
+    z-index: common.$modal__z__index;
+    position: fixed;
+    top: 50%;
+    transform: translateY(-25%);
+    padding: common.$main__layout__padding;
+    width: 100%;
+  }
+
   ul {
     display: flex;
     height: 100%;
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      flex-direction: column;
+    }
   }
 }
 
@@ -85,6 +102,10 @@
     width: 108px;
   }
 
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    width: 100%;
+  }
+
   a {
     @include text-styles.body3;
     display: flex;
@@ -93,6 +114,11 @@
     width: 100%;
     height: 100%;
     margin-top: 1px; // 시각 보정
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      @include text-styles.mobile__gnb__list__modal;
+      margin-top: 24px;
+    }
   }
 }
 
@@ -101,6 +127,10 @@
     @include text-styles.body3(500);
     color: var(--p2);
     transition: 0.1s;
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      @include text-styles.mobile__gnb__list__modal;
+    }
   }
 }
 
@@ -112,6 +142,12 @@
   bottom: -1px;
   display: flex; // key
   background-color: var(--p1);
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    display: none;
+    // height: 8px;
+    // bottom: -24px;
+  }
 }
 
 .under__line__motion {
@@ -137,5 +173,17 @@
     padding: 12px;
     margin: 0 -12px;
     @include motion.rotate__hover;
+  }
+}
+
+.gnb__mobile__modal__close__button {
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    @include text-styles.body1;
+    z-index: common.$modal__z__index;
+    position: fixed;
+    top: 24px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
   }
 }

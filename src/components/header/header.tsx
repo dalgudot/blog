@@ -25,7 +25,7 @@ const Header: React.FC = () => {
         </Link>
 
         <div className={styles.header__right}>
-          {isMobile ? <MobileMenuButton /> : <GNB isAdmin={isAdmin} />}
+          {isMobile ? <MobileMenuButton /> : <GNB />}
           <ThemeToggle />
         </div>
       </header>
