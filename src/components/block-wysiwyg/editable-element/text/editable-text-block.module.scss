@@ -32,10 +32,12 @@
 
   @media screen and (max-width: text-styles.$text__first__max__width) {
     line-height: 1.7;
+    margin-top: 20px;
   }
 
   @media screen and (max-width: text-styles.$text__second__max__width) {
     line-height: 1.65;
+    margin-top: 16px;
   }
 
   code {

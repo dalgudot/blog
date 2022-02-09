@@ -7,6 +7,14 @@
   height: 100%;
   display: block;
 
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    margin: 20px 0 48px;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    margin: 16px 0 48px;
+  }
+
   figcaption {
     @include text-styles.body3;
     margin: 12px 2px 0; // + 시각 보정

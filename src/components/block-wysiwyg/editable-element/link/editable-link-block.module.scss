@@ -45,14 +45,14 @@
 
 .box__for__Paragraph__list__type {
   border: var(--g6) 1px solid;
-  margin: 36px 0 72px;
+  margin: 28px 0 72px;
 
   @media screen and (max-width: text-styles.$text__first__max__width) {
-    margin: 30px 0 72px;
+    margin: 24px 0 64px;
   }
 
   @media screen and (max-width: text-styles.$text__second__max__width) {
-    margin: 24px 0 72px;
+    margin: 20px 0 56px;
   }
 
   a {
