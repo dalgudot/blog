@@ -103,7 +103,7 @@ export const getStaticProps = async ({ params }: Context) => {
       title: post.title,
       url: `https://blog.dalgu.app/${params.category}/${params.order}`,
       type: 'article',
-      thumbnail: `/images/${params.category}${params.order}-thumbnail`,
+      thumbnail: `/images/${params.category}${params.order}-thumbnail.png`,
       description: descriptionForSEO ? descriptionForSEO.html : null, // for serialize as JSON
     },
   };
