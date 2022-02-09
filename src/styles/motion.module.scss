@@ -1,11 +1,15 @@
+@use 'text-styles.module';
+
 $bezier__1: cubic-bezier(0.2, 0.6, 0.35, 1);
 $bezier__2: cubic-bezier(0.08, 0.56, 0.72, 0.87);
-$fade__in__duration: 0.9s;
+$fade__in__duration: 0.7s;
+$fade__out__duration: 0.4s;
 
 :export {
   bezier__1: $bezier__1;
   bezier__2: $bezier__2;
   fade__in__duration: $fade__in__duration;
+  fade__out__duration: $fade__out__duration;
 }
 
 @mixin rotate__hover {
@@ -35,12 +39,22 @@ $fade__in__duration: 0.9s;
     &:hover {
       background-color: rgba(var(--p1-rgb), 0.1);
       transition: background-color 0.4s $bezier__1;
+
+      @media screen and (max-width: text-styles.$text__second__max__width) {
+        background-color: unset;
+        transition: unset;
+      }
     }
   }
 
   &:active {
     background-color: rgba(var(--p1-rgb), 0.3);
     transition: background-color 0.4s $bezier__1;
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      background-color: unset;
+      transition: unset;
+    }
   }
 }
 

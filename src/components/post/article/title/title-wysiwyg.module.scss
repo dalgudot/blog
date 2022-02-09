@@ -1,5 +1,5 @@
 @use '../../../../styles/common';
-@use '../../../../styles/text-styles';
+@use '../../../../styles/text-styles.module';
 
 .article__title__section {
   time {
@@ -20,13 +20,30 @@
   align-items: center;
   position: relative; // NextJs Image 경고 제거
 
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    margin-top: 20px;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    margin-top: 16px;
+  }
+
   // NextJs Image
   span:nth-child(1) {
     width: 36px !important;
     height: 36px !important;
     position: relative !important;
     border-radius: 50%;
-    // object-fit: contain;
+
+    @media screen and (max-width: text-styles.$text__first__max__width) {
+      width: 33px !important;
+      height: 33px !important;
+    }
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      width: 30px !important;
+      height: 30px !important;
+    }
   }
 
   p {
@@ -36,6 +53,14 @@
 
   p:nth-child(2) {
     margin-left: 12px;
+
+    @media screen and (max-width: text-styles.$text__first__max__width) {
+      margin-left: 11px;
+    }
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      margin-left: 10px;
+    }
   }
 
   .circle__divider {

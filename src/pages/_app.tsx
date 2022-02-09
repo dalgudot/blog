@@ -1,6 +1,5 @@
 import '../styles/fonts.css';
 import '../styles/colors.css';
-import '../styles/text-styles.scss';
 import '../styles/common.scss';
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
@@ -13,6 +12,9 @@ import HeadForSEO from '../SEO/headForSEO';
 import { indexInfo } from '../SEO/index/index-info';
 import { useRouter } from 'next/router';
 import Footer from '../components/footer/footer';
+import React from 'react';
+import { RecoilRoot } from 'recoil';
+import Modal from '../components/modal/modal';
 
 const BlogApp = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
@@ -26,15 +28,18 @@ const BlogApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       {!isPost && <HeadForSEO info={indexInfo(router)} />}
-      <Provider store={store}>
-        <ThemeProvider defaultTheme='dark' enableSystem={false}>
-          <Header />
-          <ToastProvider>
-            <Component {...pageProps} />
-          </ToastProvider>
-          {isFooter && <Footer />}
-        </ThemeProvider>
-      </Provider>
+      <RecoilRoot>
+        <Provider store={store}>
+          <ThemeProvider defaultTheme='dark' enableSystem={false}>
+            <Header />
+            <ToastProvider>
+              <Component {...pageProps} />
+            </ToastProvider>
+            {isFooter && <Footer />}
+            <Modal />
+          </ThemeProvider>
+        </Provider>
+      </RecoilRoot>
     </>
   );
 };

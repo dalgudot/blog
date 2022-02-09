@@ -1,70 +1,53 @@
+@use '../../../../styles/text-styles.module';
+
 .code__block {
   background: #191919 !important;
-  margin: 36px 0 !important; // Remove default setting
-  padding: 48px 36px !important;
+  margin: 24px 0 24px !important; // Remove default setting
+  padding: 36px !important;
 
-  code {
-    overflow-x: scroll;
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    margin: 16px 0 24px !important; // Remove default setting
+    padding: 24px !important;
   }
 
-  // @media all and (max-width: 767px) {
-  //   margin: 16px 0 0 !important; // Remove default setting
-  //   padding: 36px !important;
-  //   max-width: 91vw !important;
-  // }
-  // ::-webkit-scrollbar {
-  //   background-color: var(--bg);
-  // }
-  // ::-webkit-scrollbar-corner {
-  //   background-color: var(--bg);
-  // }
-  // ::-webkit-scrollbar-thumb {
-  //   border-radius: 8px;
-  //   background-color: var(--fg);
-  //   min-height: 24px;
-  //   border: 3px solid var(--bg);
-  // }
+  @media all and (max-width: text-styles.$text__second__max__width) {
+    margin: 16px 0 24px !important; // Remove default setting
+    padding: 16px !important;
+  }
 
   span {
     text-align: left;
     font-family: 'SourceCodePro', Menlo, Monaco, Lucida Console, Liberation Mono,
       DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-    font-size: 18px;
-    font-weight: 400;
+    font-size: 16px;
 
-    // @media all and (max-width: 767px) {
-    //   font-size: 13px;
-    // }
+    @media screen and (max-width: text-styles.$text__first__max__width) {
+      font-size: 14px;
+    }
+
+    @media all and (max-width: text-styles.$text__second__max__width) {
+      font-size: 12px;
+    }
   }
 }
 
 .code__textarea {
   -webkit-appearance: none; // remove iOS upper inner shadow
-
   overflow: hidden;
   width: 100%;
   height: 48px;
   background-color: transparent;
-  border: 1px solid gray; // 안드로이드 삼성 인터넷에서 작동 안 해서 !important
+  border: 1px solid var(--g6); // 안드로이드 삼성 인터넷에서 작동 안 해서 !important
   resize: none; // 늘이고 줄이는 기능 없애기
   margin-top: 16px;
-
-  /* text */
-  caret-color: gray;
-  color: whitesmoke;
-  font-weight: 400;
-  line-height: 1.7;
-
-  // 바뀌는 속성
   padding: 12px 24px;
   font-size: 13px;
 
-  // @media all and (max-width: ${mediaBreakPoint.first}) {
-  //   padding: 24px;
-  //   font-size: 18px;
-  // }
+  /* text */
+  font-weight: 400;
+  line-height: 1.7;
 
   ::placeholder {
-    color: gray;
+    color: var(--g5);
   }
 }

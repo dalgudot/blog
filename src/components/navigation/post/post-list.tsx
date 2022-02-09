@@ -50,7 +50,7 @@ const PostList: FC<Props> = ({
   }, [asPath]);
 
   const mainClassname = classNames(
-    styles.main__layout,
+    styles.post__list__main__layout,
     isFadeIn && styles.main__fade__in
   );
 

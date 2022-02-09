@@ -1,12 +1,20 @@
 @use '../../styles/common';
-@use '../../styles/text-styles';
+@use '../../styles/text-styles.module';
 
-.main {
+.contact__main {
   max-width: common.$post__max__width;
   margin: 96px auto 180px;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media screen and (max-width: common.$post__media__max__width) {
+    padding: common.$main__layout__padding;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    margin: 72px auto 144px;
+  }
 }
 
 .profile__section {
@@ -21,20 +29,38 @@
     height: 96px !important;
     position: relative !important;
     border-radius: 50%;
-    // object-fit: contain;
+
+    @media screen and (max-width: text-styles.$text__first__max__width) {
+      width: 88px !important;
+      height: 88px !important;
+    }
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      width: 82px !important;
+      height: 82px !important;
+    }
   }
 
   h1 {
-    margin-top: 16px;
+    margin-top: 12px;
     @include text-styles.title3;
+
+    @media screen and (max-width: text-styles.$text__first__max__width) {
+      margin-top: 10px;
+    }
   }
 
-  .right__div {
+  .career__div {
     display: flex;
     align-items: center;
     margin-top: 8px;
 
+    @media screen and (max-width: text-styles.$text__first__max__width) {
+      margin-top: 6px;
+    }
+
     p {
+      @include text-styles.body3;
       color: var(--g2);
     }
 
@@ -49,9 +75,24 @@
   }
 }
 
+@mixin email__section__common($marginTop) {
+  width: 100%;
+  margin-top: $marginTop;
+  border: 1px solid var(--g6);
+  padding: 56px;
+
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    padding: 48px;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    padding: 36px;
+  }
+}
+
 @mixin email__section__button {
   @include text-styles.body3(500);
-  width: 180px;
+  width: 188px;
   height: 56px;
   text-align: center;
   background-color: var(--g7);
@@ -59,20 +100,32 @@
   justify-content: center;
   align-items: center;
   border-radius: 16px;
-}
 
-@mixin email__career__section__common($marginTop) {
-  width: 100%;
-  margin-top: $marginTop;
-  border: 1px solid var(--g6);
-  padding: 56px;
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    width: 168px;
+    height: 54px;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    width: 128px;
+    height: 48px;
+    border-radius: 13px;
+  }
 }
 
 .email__section {
-  @include email__career__section__common(72px);
+  @include email__section__common(48px);
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    @include email__section__common(42px);
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    @include email__section__common(36px);
+  }
 
   .email__button {
     @include text-styles.title2;
@@ -82,29 +135,68 @@
     margin-top: 24px;
     display: flex;
 
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      margin-top: 16px;
+    }
+
     button {
       @include email__section__button;
       margin-right: 6px;
+
+      @media screen and (max-width: text-styles.$text__second__max__width) {
+        margin-right: 4px;
+      }
     }
 
     a {
       @include email__section__button;
       margin-left: 6px;
+
+      @media screen and (max-width: text-styles.$text__second__max__width) {
+        margin-left: 4px;
+      }
     }
   }
 }
 
 .career__section {
-  @include email__career__section__common(24px);
+  width: 100%;
+  margin-top: 24px;
+  border: 1px solid var(--g6);
+  padding: 56px 48px;
+
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    padding: 48px 36px;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    padding: 36px 24px;
+  }
 
   h3 {
     @include text-styles.body1;
     color: var(--g4);
-    margin-bottom: 18px;
+    margin-bottom: 20px;
+
+    @media screen and (max-width: text-styles.$text__first__max__width) {
+      margin-bottom: 18px;
+    }
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      margin-bottom: 16px;
+    }
   }
 
   li {
     margin-top: 96px;
+
+    @media screen and (max-width: text-styles.$text__first__max__width) {
+      margin-top: 72px;
+    }
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      margin-top: 64px;
+    }
   }
 
   li:nth-child(1) {
@@ -113,13 +205,21 @@
 
   time {
     @include text-styles.body1(700);
-    color: var(--g2);
   }
 
   p {
     @include text-styles.body1;
     margin-top: 8px;
-    margin-bottom: 36px;
-    color: var(--g2);
+    margin-bottom: 24px;
+
+    @media screen and (max-width: text-styles.$text__first__max__width) {
+      margin-top: 6px;
+      margin-bottom: 20px;
+    }
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      margin-top: 4px;
+      margin-bottom: 16px;
+    }
   }
 }

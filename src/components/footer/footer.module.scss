@@ -1,8 +1,8 @@
-@use '../../styles/text-styles';
+@use '../../styles/text-styles.module';
 @use '../../styles/common';
 
 .footer {
-  padding: common.$header__footer__padding;
+  padding: common.$main__layout__padding;
   display: flex;
   justify-content: space-between;
   position: fixed;
@@ -11,12 +11,12 @@
   right: 0;
 
   @media screen and (max-width: common.$footer__media__max__width) {
-    padding: common.$header__footer__padding;
+    padding: common.$main__layout__padding;
     display: flex;
     justify-content: center;
     position: relative;
     bottom: 0;
-    margin: -72px auto 72px;
+    margin: -96px auto 72px;
   }
 }
 
@@ -25,14 +25,18 @@
     content: '';
     display: inline-block;
     background-color: var(--g6);
-    width: 2px;
+    width: 1px;
     height: 10px;
     margin: 0 8px;
 
     @media screen and (max-width: common.$footer__media__max__width) {
-      // width: 0px;
       height: 12px;
-      margin: 0 36px;
+      margin: 0 24px;
+    }
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      height: 10px;
+      margin: 0 12px;
     }
   }
 }
@@ -88,6 +92,10 @@
   margin-top: 8px;
 
   @media screen and (max-width: common.$footer__media__max__width) {
-    margin-top: 36px;
+    margin-top: 24px;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    margin-top: 16px;
   }
 }

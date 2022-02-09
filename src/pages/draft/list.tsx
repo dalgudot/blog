@@ -25,7 +25,7 @@ const Draft: NextPage = () => {
   return (
     <>
       {isAdmin && (
-        <main className={styles.main__layout}>
+        <main className={styles.post__list__main__layout}>
           <nav>
             <ul>
               {draftList.map((list) => (

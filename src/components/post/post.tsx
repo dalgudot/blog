@@ -6,6 +6,7 @@ import styles from './post.module.scss';
 import Response from './response/response';
 import Share from './share/share';
 import { useRouter } from 'next/router';
+import Author from './author/author';
 
 type Props = {
   contentEditable: boolean;
@@ -22,10 +23,11 @@ const Post: FC<Props> = ({ contentEditable, postData }) => {
   const router = useRouter();
   const pathname = router.pathname;
   const isPublishedPost = pathname === '/[category]/[order]';
+  const query = router.query;
 
   return (
     <>
-      <main className={styles.main}>
+      <main className={styles.post__main}>
         <Article
           contentEditable={contentEditable}
           articleTitleWysiwygData={articleTitleWysiwygData}
@@ -33,11 +35,14 @@ const Post: FC<Props> = ({ contentEditable, postData }) => {
         />
         {/* 3개의 박스가 정렬돼 있고, 호버하면 커지는 버튼 */}
         {/* <Share /> */}
+        {/* <Author /> */}
         {isPublishedPost && <Response />}
-        <LinkWYSIWYG
-          contentEditable={contentEditable}
-          linkWysiwygDataArray={postData.linkWysiwygDataArray}
-        />
+        {query.category !== 'story' && (
+          <LinkWYSIWYG
+            contentEditable={contentEditable}
+            linkWysiwygDataArray={postData.linkWysiwygDataArray}
+          />
+        )}
       </main>
     </>
   );

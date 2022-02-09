@@ -1,13 +1,22 @@
-@use '../../../../styles/text-styles';
+@use '../../../../styles/text-styles.module';
 @use '../response.module';
 
 .write__response {
   margin-top: 72px;
 
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    margin-top: 64px;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    margin-top: 56px;
+  }
+
   textarea {
     @include text-styles.body1;
     margin-top: 24px;
     color: var(--g1);
+    border-radius: 0; // 초기화
 
     -webkit-appearance: none; // remove iOS upper inner shadow
     resize: none; // 늘이고 줄이는 기능 없애기
@@ -16,20 +25,23 @@
     overflow: hidden;
     width: 100%;
     background-color: transparent;
-    border: 1px solid var(--g5) !important; // 안드로이드 삼성 인터넷에서 작동 안 해서 !important
+    border: 1px solid var(--g6) !important; // 안드로이드 삼성 인터넷에서 작동 안 해서 !important
+    padding: 32px;
 
-    // 바뀌는 속성
-    padding: 36px 36px;
-
-    // @media all and (max-width: ${mediaBreakPoint.first}) {
-    //   padding: 24px;
-    //   font-size: 18px;
-    // }
-
-    ::placeholder {
-      @include text-styles.body1;
-      color: var(--g5);
+    @media screen and (max-width: text-styles.$text__first__max__width) {
+      margin-top: 20px;
+      padding: 24px;
     }
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      margin-top: 16px;
+      padding: 20px;
+    }
+  }
+
+  textarea::placeholder {
+    // @include text-styles.body1;
+    color: var(--g5);
   }
 }
 
@@ -44,11 +56,22 @@
   align-items: center;
 
   color: var(--g5);
-  border: 1px solid var(--g5);
+  border: 1px solid var(--g6);
   transition: color 0.4s ease-in-out, border 0.4s ease-in-out;
+
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    padding: 16px 0;
+    margin-top: 12px;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    padding: 14px 0;
+    margin-top: 8px;
+  }
 }
 
 .active__response__submit__button {
+  font-weight: 500;
   color: var(--g1);
   border: 1px solid var(--g1);
 }
@@ -60,6 +83,7 @@
 
   button {
     @include text-styles.body2(500);
+    padding-right: 2px; // 시각 보정 + 터치 영역
   }
 }
 
