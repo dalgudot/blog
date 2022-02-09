@@ -24,6 +24,7 @@ const Post: FC<Props> = ({ contentEditable, postData }) => {
   const pathname = router.pathname;
   const isPublishedPost = pathname === '/[category]/[order]';
   const query = router.query;
+
   return (
     <>
       <main className={styles.post__main}>
