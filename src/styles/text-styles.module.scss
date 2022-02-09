@@ -180,11 +180,12 @@ $text__second__max__width: 640px;
   border-radius: 6px;
   letter-spacing: -0.2px;
   font-size: 94%;
-  /* 반응형도 대응해야 함. */
+  margin: 0 1px;
 
   @media screen and (max-width: $text__second__max__width) {
     padding: 0px 3px;
     border-radius: 4px;
+    margin: 0 1px 0 2px;
   }
 }
 
