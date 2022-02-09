@@ -1,0 +1,41 @@
+@use '../../styles/common';
+@use '../../styles/motion.module';
+
+.modal__common__background {
+  z-index: common.$modal__common__background__z__index;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--black);
+}
+
+.modal__open__background__transition {
+  animation: open__background__transition 0.7s motion.$bezier__1 forwards;
+}
+
+.modal__close__background__transition {
+  animation: close__background__transition
+    motion.$modal__close__background__transition motion.$bezier__1 forwards;
+}
+
+@keyframes open__background__transition {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.9;
+  }
+}
+
+@keyframes close__background__transition {
+  from {
+    opacity: 0.9;
+  }
+
+  to {
+    opacity: 0;
+  }
+}

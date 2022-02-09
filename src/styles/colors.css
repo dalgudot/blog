@@ -15,6 +15,10 @@
 
   /* rgb */
   --p1-rgb: 253, 76, 129;
+
+  /* common */
+  --black: #000;
+  --black-rgb: 0, 0, 0;
 }
 
 [data-theme='dark'] {
@@ -33,6 +37,10 @@
 
   /* rgb */
   --p1-rgb: 151, 151, 255;
+
+  /* common */
+  --black: #000;
+  --black-rgb: 0, 0, 0;
 }
 
 /* --g1: 제목 색, 기본 색 */

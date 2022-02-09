@@ -1,30 +1,22 @@
-// import { useEffect } from 'react';
+import { atom, useRecoilState } from 'recoil';
 
-// export const useModal = () => {
-//   // const dispatch = useDispatch();
-//   // const { modalOn, modalProps } = useSelector(
-//   //   (state: RootState) => state.modal
-//   // );
+type modalType = 'Mobile GNB';
 
-//   useEffect(() => {
-//     if (modalOn) {
-//       document.body.style.cssText = `overflow: hidden; touch-action: none; -ms-touch-action: none;`;
-//     }
+export const modalState = atom<{
+  type: modalType;
+  open: boolean;
+}>({
+  key: 'modal',
+  default: { type: 'Mobile GNB', open: false },
+});
 
-//     return () => {
-//       document.body.style.cssText = ``;
-//       modalOn && closeModal();
-//     };
-//   }, [modalOn]);
+export const useModal = (type: modalType) => {
+  const [isModal, setIsModal] = useRecoilState(modalState);
+  const openModal = () => {
+    isModal.open === false && setIsModal({ type, open: true });
+  };
 
-//   const showModal = () => {};
-
-//   const closeModal = () => {};
-
-//   return {
-//     modalOn,
-//     showModal,
-//     closeModal,
-//     modalProps,
-//   };
-// };
+  return {
+    openModal,
+  };
+};

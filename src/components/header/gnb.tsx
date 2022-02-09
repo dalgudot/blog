@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import styles from './header.module.scss';
 
 type Props = {
@@ -15,6 +15,24 @@ type TGNBList = {
 };
 
 const GNB: FC<Props> = ({ isAdmin }) => {
+  const gnbList: TGNBList[] = [
+    {
+      label: '기록',
+      target: '_self',
+      href: '/',
+    },
+    // {
+    //   label: '이야기',
+    //   target: '_self',
+    //   href: '/story',
+    // },
+    {
+      label: '연락처',
+      target: '_self',
+      href: '/contact',
+    },
+  ];
+
   const adminList: TGNBList[] = [
     {
       label: '초고 목록',
@@ -25,24 +43,6 @@ const GNB: FC<Props> = ({ isAdmin }) => {
       label: '새 글 작성',
       target: '_self',
       href: '/draft/new',
-    },
-  ];
-
-  const gnbList: TGNBList[] = [
-    {
-      label: '기록',
-      target: '_self',
-      href: '/',
-    },
-    {
-      label: '이야기',
-      target: '_self',
-      href: '/story',
-    },
-    {
-      label: '연락처',
-      target: '_self',
-      href: '/contact',
     },
   ];
 
@@ -61,7 +61,7 @@ const GNB: FC<Props> = ({ isAdmin }) => {
   );
 };
 
-export default GNB;
+export default memo(GNB);
 
 type GNBListProps = {
   list: TGNBList;

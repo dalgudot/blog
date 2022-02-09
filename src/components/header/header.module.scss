@@ -5,6 +5,7 @@
 @mixin header__height {
   height: 64px;
 
+  // story GNB까지 고려한 media query
   @media screen and (max-width: text-styles.$text__second__max__width) {
     height: 48px;
   }
@@ -39,7 +40,7 @@
   display: flex;
 
   @media screen and (max-width: text-styles.$text__second__max__width) {
-    font-size: 18px;
+    @include text-styles.body1(700);
   }
 }
 

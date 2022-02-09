@@ -5,7 +5,7 @@ import GNB from './gnb';
 import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
 import variables from '../../styles/text-styles.module.scss';
 import { useWindowInnerWidthHeight } from '../../lib/hooks/useWindowInnerWidthHeight';
-import IconMenu24 from '../../svg/icon-menu-24';
+import MobileMenuButton from './mobile-menu-button';
 
 const Header: React.FC = () => {
   const { isAdmin } = useIsAdmin();
@@ -25,13 +25,7 @@ const Header: React.FC = () => {
         </Link>
 
         <div className={styles.header__right}>
-          {isMobile ? (
-            <button className={styles.header__right__menu__button}>
-              <IconMenu24 color='var(--g1)' />
-            </button>
-          ) : (
-            <GNB isAdmin={isAdmin} />
-          )}
+          {isMobile ? <MobileMenuButton /> : <GNB isAdmin={isAdmin} />}
           <ThemeToggle />
         </div>
       </header>
