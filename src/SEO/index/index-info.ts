@@ -20,7 +20,7 @@ export const indexInfo = (router: NextRouter) => {
 
     thumbnail: '/images/default-thumbnail.jpg',
 
-    description: '디지털 프로덕트 디자인과 개발 경험을 기록하고 공유합니다.',
+    description: '디자인과 개발 경험을 기록하고 공유합니다.',
   };
 
   return info;
