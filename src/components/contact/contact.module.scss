@@ -92,7 +92,7 @@
 
 @mixin email__section__button {
   @include text-styles.body3(500);
-  width: 188px;
+  width: 180px;
   height: 56px;
   text-align: center;
   background-color: var(--g7);
@@ -102,8 +102,8 @@
   border-radius: 16px;
 
   @media screen and (max-width: text-styles.$text__first__max__width) {
-    width: 168px;
-    height: 54px;
+    width: 156px;
+    height: 52px;
   }
 
   @media screen and (max-width: text-styles.$text__second__max__width) {

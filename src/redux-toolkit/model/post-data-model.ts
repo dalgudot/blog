@@ -1,7 +1,15 @@
+import { ICodeData } from './code-data-model';
 import { designCollectionRefName } from '../../service/firebase/firestore';
-import { ITextData, ITextDataModel, TextDataModel } from './text-data-model';
+import {
+  ITextData,
+  ITextDataModel,
+  TBlockTextType,
+  TextDataModel,
+} from './text-data-model';
 import { ILinkData, ILinkDataModel, LinkDataModel } from './link-data-model';
 import { IImageData } from './image-data-model';
+
+export type TBlockType = TBlockTextType | 'Image' | 'Code' | 'Link';
 
 const refData: ILinkDataModel = new LinkDataModel();
 const paragraphData: ITextDataModel = new TextDataModel();
@@ -13,7 +21,7 @@ export const postInitialData: IPostData = {
   dateTime: '',
   title: '',
   tagDataArray: [],
-  wysiwygDataArray: [paragraphData.createNewTextData()], // 초기화는 paragraph 데이터로
+  wysiwygDataArray: [paragraphData.createNewTextData()],
   linkWysiwygDataArray: [refData.createNewLinkData()],
   status: 'draft',
 };
@@ -30,5 +38,5 @@ export interface IPostData {
   status: TStatus;
 }
 
-export type IParagraphData = ITextData | ILinkData | IImageData;
+export type IParagraphData = ITextData | ILinkData | IImageData | ICodeData;
 export type TStatus = 'draft' | 'published' | 'unPublished';
