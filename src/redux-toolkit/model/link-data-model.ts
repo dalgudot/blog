@@ -1,4 +1,5 @@
 import { uuid } from '../../lib/utils/id';
+import { TCodeLanguage } from './code-data-model';
 
 export interface ILinkDataModel {
   createNewLinkData: () => ILinkData;
@@ -9,12 +10,14 @@ export class LinkDataModel implements ILinkDataModel {
   private blockType: 'Link';
   private html: string;
   private url: string;
+  private codeLanguage: TCodeLanguage;
 
   constructor() {
     this.blockId = uuid();
     this.blockType = 'Link';
     this.html = '';
     this.url = '';
+    this.codeLanguage = 'tsx';
   }
 
   // for Data Serealization
@@ -24,6 +27,7 @@ export class LinkDataModel implements ILinkDataModel {
       blockType: this.blockType,
       html: this.html,
       url: this.url,
+      codeLanguage: this.codeLanguage,
     };
   }
 }
@@ -33,4 +37,5 @@ export interface ILinkData {
   blockType: 'Link';
   html: string;
   url: string;
+  codeLanguage: TCodeLanguage;
 }

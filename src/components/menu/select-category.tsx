@@ -15,7 +15,7 @@ const SelectCategory: FC = () => {
 
   const changeCategory = (e: ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault();
-    dispatch(setPostCategory(e.target.value));
+    // dispatch(setPostCategory(e.target.value));
     dispatch(setTempPostCategory(e.target.value));
   };
 
@@ -26,6 +26,12 @@ const SelectCategory: FC = () => {
         <option value={devCollectionRefName}>dev</option>
         <option value={storyCollectionRefName}>story</option>
       </select>
+
+      <style jsx>{`
+        select {
+          margin: 48px;
+        }
+      `}</style>
     </>
   );
 };

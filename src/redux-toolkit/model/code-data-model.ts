@@ -1,27 +1,26 @@
 import { uuid } from '../../lib/utils/id';
-import { TCodeLanguage } from './code-data-model';
 
-export interface IImageDataModel {
-  createNewImageData: () => IImageData;
+export interface ICodeDataModel {
+  createNewCodeData: () => ICodeData;
 }
 
-export class ImageDataModel implements IImageDataModel {
+export class CodeDataModel implements ICodeDataModel {
   private blockId: string;
-  private blockType: 'Image';
+  private blockType: 'Code';
   private html: string;
   private url: string;
   private codeLanguage: TCodeLanguage;
 
   constructor() {
     this.blockId = uuid();
-    this.blockType = 'Image';
+    this.blockType = 'Code';
     this.html = '';
     this.url = '';
     this.codeLanguage = 'tsx';
   }
 
   // for Data Serealization
-  createNewImageData(): IImageData {
+  createNewCodeData(): ICodeData {
     return {
       blockId: this.blockId,
       blockType: this.blockType,
@@ -32,10 +31,20 @@ export class ImageDataModel implements IImageDataModel {
   }
 }
 
-export interface IImageData {
+export interface ICodeData {
   blockId: string;
-  blockType: 'Image';
+  blockType: 'Code';
   html: string;
   url: string;
   codeLanguage: TCodeLanguage;
 }
+
+export type TCodeLanguage =
+  | 'typescript'
+  | 'tsx'
+  | 'swift'
+  | 'css'
+  | 'sass'
+  | 'scss'
+  | 'javascript'
+  | 'jsx';

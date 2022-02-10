@@ -4,12 +4,18 @@
   @include common.placeholder;
 }
 
-.edit__mode__editable__element__switch {
+.edit__block__type__editable__element__switch {
   position: relative;
 
-  select {
+  select:nth-child(1) {
     position: absolute;
     top: 5px;
+    left: -120px;
+  }
+
+  select:nth-child(2) {
+    position: absolute;
+    top: 48px;
     left: -120px;
   }
 }

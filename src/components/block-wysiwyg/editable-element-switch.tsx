@@ -1,5 +1,4 @@
 import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from 'react';
-import { TBlockType } from '../../redux-toolkit/model/text-data-model';
 import {
   addNewBlock,
   addNewLinkBlock,
@@ -20,12 +19,16 @@ import {
 } from '../../redux-toolkit/slices/temp-post-slice';
 import { useAppDispatch } from '../../redux-toolkit/store';
 import EditableTextBlock from './editable-element/text/editable-text-block';
-import { IParagraphData } from '../../redux-toolkit/model/post-data-model';
+import {
+  IParagraphData,
+  TBlockType,
+} from '../../redux-toolkit/model/post-data-model';
 import EditableLinkBlock from './editable-element/link/editable-link-block';
 import { ILinkData } from '../../redux-toolkit/model/link-data-model';
 import EditableCodeBlock from './editable-element/code/editable-code-block';
 import EditableImageBlock from './editable-element/image/editable-image-block';
 import styles from './editable-element.module.scss';
+import { ICodeData } from '../../redux-toolkit/model/code-data-model';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
@@ -136,6 +139,9 @@ const EditableElementSwitch: FC<Props> = ({
     }
   };
 
+  const addBlockFocusUseEffectDependency = datas[currentIndex];
+  const removeCurrentBlockFocusUseEffectDependency = datas[currentIndex + 1];
+
   const switchBlocks = () => {
     switch (type) {
       case 'Image':
@@ -150,8 +156,10 @@ const EditableElementSwitch: FC<Props> = ({
             setPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
-            addBlockFocusUseEffectDependency={datas[currentIndex]}
-            removeCurrentBlockFocusUseEffectDependency={datas[currentIndex + 1]}
+            addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
+            removeCurrentBlockFocusUseEffectDependency={
+              removeCurrentBlockFocusUseEffectDependency
+            }
             placeholder={
               data.url ? '캡션 입력' : '아래 버튼을 눌러 이미지 업로드'
             }
@@ -170,8 +178,10 @@ const EditableElementSwitch: FC<Props> = ({
             setPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
-            addBlockFocusUseEffectDependency={datas[currentIndex]}
-            removeCurrentBlockFocusUseEffectDependency={datas[currentIndex + 1]}
+            addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
+            removeCurrentBlockFocusUseEffectDependency={
+              removeCurrentBlockFocusUseEffectDependency
+            }
             placeholder='링크 제목 입력'
           />
         );
@@ -180,13 +190,16 @@ const EditableElementSwitch: FC<Props> = ({
         return (
           <EditableCodeBlock
             contentEditable={contentEditable}
-            html={data.html}
+            data={data as ICodeData}
+            currentIndex={currentIndex}
             setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
             // setPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
-            addBlockFocusUseEffectDependency={datas[currentIndex]}
-            removeCurrentBlockFocusUseEffectDependency={datas[currentIndex + 1]}
+            addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
+            removeCurrentBlockFocusUseEffectDependency={
+              removeCurrentBlockFocusUseEffectDependency
+            }
             placeholder='코드 입력'
           />
         );
@@ -201,8 +214,10 @@ const EditableElementSwitch: FC<Props> = ({
             setPostHtmlData={setCurrentBlockPostHtmlData} // `` 때문에 필요
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
-            addBlockFocusUseEffectDependency={datas[currentIndex]}
-            removeCurrentBlockFocusUseEffectDependency={datas[currentIndex + 1]}
+            addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
+            removeCurrentBlockFocusUseEffectDependency={
+              removeCurrentBlockFocusUseEffectDependency
+            }
             placeholder='텍스트 입력'
           />
         );
@@ -212,7 +227,7 @@ const EditableElementSwitch: FC<Props> = ({
   return (
     <>
       {contentEditable && wysiwygType !== 'Link' ? (
-        <div className={styles.edit__mode__editable__element__switch}>
+        <div className={styles.edit__block__type__editable__element__switch}>
           <select value={type} onChange={changeBlockType}>
             <option value='Paragraph'>Paragraph</option>
             <option value='Heading1'>Heading1</option>
