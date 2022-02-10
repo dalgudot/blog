@@ -1,6 +1,6 @@
 import '../styles/fonts.css';
 import '../styles/colors.css';
-// import '../styles/common.scss';
+import '../styles/common.scss';
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { ToastProvider } from '@dalgu/react-toast';

@@ -46,6 +46,7 @@
 }
 
 .response__submit__button {
+  cursor: not-allowed;
   @include text-styles.body1;
   width: 100%;
   padding: 18px 0;
@@ -71,7 +72,9 @@
 }
 
 .active__response__submit__button {
+  cursor: pointer;
   @include motion.scale__hover;
+  transition: color 0.4s ease-in-out, border 0.4s ease-in-out;
   font-weight: 500;
   color: var(--g1);
   border: 1px solid var(--g1);
