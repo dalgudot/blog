@@ -57,6 +57,7 @@ const CodeTextarea: FC<Props> = ({
         onKeyPress={onKeyPress}
         onKeyDown={onKeyDown}
         placeholder={placeholder}
+        spellCheck={false}
         // minRows={3}
         // minLength={6}
         // maxLength={3000}

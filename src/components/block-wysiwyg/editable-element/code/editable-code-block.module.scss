@@ -17,8 +17,9 @@
 
   span {
     text-align: left;
-    font-family: 'SourceCodePro', Menlo, Monaco, Lucida Console, Liberation Mono,
-      DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+    font-family: 'Source Code Pro', Menlo, Monaco, Lucida Console,
+      Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New,
+      monospace;
     font-size: 16px;
 
     @media screen and (max-width: text-styles.$text__first__max__width) {

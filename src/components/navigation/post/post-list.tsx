@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC, useEffect, useState } from 'react';
-import { brunchList } from '../../../data/brunch-list';
+import { brunchShareDesignList } from '../../../data/brunch-list';
 import BrunchList from './brunch-list';
 import styles from './post-list.module.scss';
 import variables from '../../../styles/motion.module.scss';
@@ -71,7 +71,7 @@ const PostList: FC<Props> = ({
               />
             ))}
             {showBrunchList &&
-              brunchList.map((list) => (
+              brunchShareDesignList.map((list) => (
                 <BrunchList
                   key={list.title}
                   url={list.url}

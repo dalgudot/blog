@@ -1,14 +1,14 @@
-export const brunchList = [
-  // {
-  //   url: 'https://share-design.kr/article/ui-ux-design/1',
-  //   dateTime: '2021-04-18',
-  //   title: '모션 디자인은 UX에 어떤 영향을 미칠까?',
-  // },
-  // {
-  //   url: 'https://share-design.kr/article/ui-ux-design/1',
-  //   dateTime: '2021-03-28',
-  //   title: '언어 전환 토글 버튼의 UI/UX 디자인은?',
-  // },
+export const brunchShareDesignList = [
+  {
+    url: 'https://share-design.kr/article/ui-ux-design/2',
+    dateTime: '2021-04-18',
+    title: '모션 디자인은 UX에 어떤 영향을 미칠까?',
+  },
+  {
+    url: 'https://share-design.kr/article/ui-ux-design/1',
+    dateTime: '2021-03-28',
+    title: '언어 전환 토글 버튼의 UI/UX 디자인은?',
+  },
   {
     url: 'https://brunch.co.kr/@dalgudot/124',
     dateTime: '2021-03-28',

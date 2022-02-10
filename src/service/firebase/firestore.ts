@@ -29,16 +29,10 @@ export const getEachAllCollectionDataArray = async (
     orderBy('dateTime', 'desc')
   );
   const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(q);
-  // 컬렉션 전체 데이터 받아오는 'getDoc's''
-  // const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
-  //   collection(db, collectionRefName)
-  // );
-
   const dataArray: IPostData[] = [];
 
   querySnapshot.forEach((doc) => {
     dataArray.push({
-      // postId: doc.data().postId,
       category: collectionRefName,
       order: doc.id,
       series: doc.data().series,

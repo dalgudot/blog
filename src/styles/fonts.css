@@ -55,7 +55,7 @@
 
 /* S of Source Code Pro */
 @font-face {
-  font-family: 'SourceCodePro';
+  font-family: 'Source Code Pro';
   font-style: normal;
   font-weight: 400;
   src: url('/fonts/SourceCodePro/source-code-pro-v18-latin-regular.woff2')
@@ -65,7 +65,7 @@
 }
 
 @font-face {
-  font-family: 'SourceCodePro';
+  font-family: 'Source Code Pro';
   font-style: normal;
   font-weight: 500;
   src: url('/fonts/SourceCodePro/source-code-pro-v18-latin-500.woff2')
@@ -75,7 +75,7 @@
 }
 
 @font-face {
-  font-family: 'SourceCodePro';
+  font-family: 'Source Code Pro';
   font-style: normal;
   font-weight: 600;
   src: url('/fonts/SourceCodePro/source-code-pro-v20-latin-600.woff2')
@@ -85,7 +85,7 @@
 }
 
 @font-face {
-  font-family: 'SourceCodePro';
+  font-family: 'Source Code Pro';
   font-style: normal;
   font-weight: 700;
   src: url('/fonts/SourceCodePro/source-code-pro-v18-latin-700.woff2')

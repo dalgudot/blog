@@ -37,6 +37,7 @@
 
 .blog__name {
   @include text-styles.body2(700);
+  @include motion.scale__hover;
   letter-spacing: 0.6px;
   display: flex;
 
@@ -61,9 +62,10 @@
   align-items: center;
 
   svg {
-    padding: 12px;
+    padding: 12px; // 터치 영역
     margin-top: 1px; // 시각 보정
     margin-right: 16px;
+    @include motion.scale__avtive;
   }
 }
 
@@ -96,7 +98,7 @@
 .gnb__list__nav__list {
   width: 120px;
   position: relative;
-  @include motion.opacity__hover;
+  @include motion.opacity__p__color__hover;
 
   @media screen and (max-width: text-styles.$text__first__max__width) {
     width: 108px;

@@ -2,6 +2,7 @@ import { ITextData, TextDataModel } from '../model/text-data-model';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IPostData, postInitialData } from '../model/post-data-model';
 import { ILinkData, LinkDataModel } from '../model/link-data-model';
+import { TCodeLanguage } from '../model/code-data-model';
 
 const initialState: { tempPost: IPostData } = {
   tempPost: postInitialData,
@@ -27,9 +28,20 @@ export const tempPostSlice = createSlice({
       state,
       action: PayloadAction<{ imageRef: string; currentIndex: number }>
     ) => {
-      // console.log('redux', action.payload.currentIndex);
       state.tempPost.wysiwygDataArray[action.payload.currentIndex].url =
         action.payload.imageRef;
+    },
+
+    setCurrentCodeBlockTempCodeLanguage: (
+      state,
+      action: PayloadAction<{
+        codeLanguage: TCodeLanguage;
+        currentIndex: number;
+      }>
+    ) => {
+      state.tempPost.wysiwygDataArray[
+        action.payload.currentIndex
+      ].codeLanguage = action.payload.codeLanguage;
     },
 
     setTempPostCategory: (state, action: PayloadAction<string>) => {
@@ -144,6 +156,7 @@ export const {
   setTempPostData,
   setCurrentBlockTempHtml,
   setCurrentBlockTempImageRef,
+  setCurrentCodeBlockTempCodeLanguage,
   setTempPostCategory,
   setTempArticleTitleData,
   setTempArticleDateTimeData,
