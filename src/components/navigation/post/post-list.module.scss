@@ -31,7 +31,7 @@
   a {
     padding: 8px 12px;
     border: 1px solid var(--g6);
-    @include motion.opacity__hover;
+    @include motion.opacity__p__color__hover;
 
     @media screen and (max-width: text-styles.$text__second__max__width) {
       padding: 6px 10px;

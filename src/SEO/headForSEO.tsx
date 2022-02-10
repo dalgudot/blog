@@ -12,7 +12,6 @@ export type TInfoForSEO = {
 };
 
 const HeadForSEO: FC<TInfoForSEO> = ({ info }) => {
-  // Common
   const icoImage = '/record.ico';
   const author = '김경환';
   const keywords =

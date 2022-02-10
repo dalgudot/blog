@@ -1,5 +1,6 @@
 @use '../../styles/common';
 @use '../../styles/text-styles.module';
+@use '../../styles/motion.module';
 
 .contact__main {
   max-width: common.$post__max__width;
@@ -129,6 +130,7 @@
 
   .email__button {
     @include text-styles.title2;
+    @include motion.scale__hover;
   }
 
   .button__area {
@@ -141,6 +143,7 @@
 
     button {
       @include email__section__button;
+      @include motion.scale__hover;
       margin-right: 6px;
 
       @media screen and (max-width: text-styles.$text__second__max__width) {
@@ -150,6 +153,7 @@
 
     a {
       @include email__section__button;
+      @include motion.scale__hover;
       margin-left: 6px;
 
       @media screen and (max-width: text-styles.$text__second__max__width) {
