@@ -1,4 +1,5 @@
 @use 'text-styles.module';
+@use 'motion.module';
 
 $list__max__width: 640px;
 $post__max__width: 740px;
@@ -61,6 +62,7 @@ $modal__z__index: 11;
 
 @mixin admin__button {
   @include text-styles.body3;
+  @include motion.scale__hover;
   position: fixed;
   bottom: 48px;
   padding: 12px 24px;

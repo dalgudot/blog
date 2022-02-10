@@ -160,9 +160,7 @@ const EditableElementSwitch: FC<Props> = ({
             removeCurrentBlockFocusUseEffectDependency={
               removeCurrentBlockFocusUseEffectDependency
             }
-            placeholder={
-              data.url ? '캡션 입력' : '아래 버튼을 눌러 이미지 업로드'
-            }
+            placeholder={data.url ? '캡션 입력' : '버튼을 눌러 이미지 업로드'}
           />
         );
 

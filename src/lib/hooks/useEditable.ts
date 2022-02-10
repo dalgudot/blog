@@ -20,7 +20,8 @@ export const useEditable = (
       const textData = pastedData?.getData('text');
       const htmlData = pastedData
         ?.getData('text')
-        .replace(/&/g, '&amp;') // &부터 해야 뒤쪽 replace에 영향 없음!
+        // .replace(/&nbsp;/g, ' ')
+        .replace(/&/g, '&amp;') // &부터 해야 뒤쪽 <, > replace에 영향 없음!
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;');
       // .replace(/' '/g, '&nbsp;');
@@ -31,7 +32,10 @@ export const useEditable = (
         // const newInnerPasteText = DOMPurify.sanitize(
         //   `${ref.current.innerHTML}${textData}`
         // );
-        const newInnerPasteText = `${ref.current.innerHTML}${textData}`;
+        const newInnerPasteText = `${ref.current.innerHTML}${textData}`.replace(
+          /&nbsp;/g,
+          ' '
+        );
         ref.current.innerText = newInnerPasteText;
         // https://developer.mozilla.org/ko/docs/Web/API/Node/textContent
 

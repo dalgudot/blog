@@ -1,4 +1,5 @@
 @use '../../../../styles/text-styles.module';
+@use '../../../../styles/motion.module';
 
 .figure {
   position: relative; // NextJs Image 경고 제거
@@ -39,6 +40,7 @@
   right: -164px;
 
   @include text-styles.body3;
+  @include motion.scale__hover;
   padding: 12px 24px;
   background-color: var(--g7);
   border-radius: 16px;
