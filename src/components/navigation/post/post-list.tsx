@@ -21,6 +21,7 @@ const PostList: FC<Props> = ({
   allPostsListData,
 }) => {
   const router = useRouter();
+  const pathname = router.pathname;
   const asPath = router.asPath;
   const postList =
     asPath === '/design'
@@ -29,35 +30,35 @@ const PostList: FC<Props> = ({
       ? devPostListData
       : allPostsListData;
 
-  const showBrunchList: boolean = asPath === '/' || asPath === '/design';
+  const showBrunchList: boolean = pathname === '/' || asPath === '/design';
 
-  const [isFadeIn, setIsFadeIn] = useState<boolean>(false);
-  const FADE_IN_DURATION = Number(
-    variables.fade__in__duration.replace('s', '')
-  );
+  // const [isFadeIn, setIsFadeIn] = useState<boolean>(false);
+  // const FADE_IN_DURATION = Number(
+  //   variables.fade__in__duration.replace('s', '')
+  // );
 
-  // Dynamic Routing에서도 Fade-in 실행
-  useEffect(() => {
-    setIsFadeIn(true);
+  // // Dynamic Routing에서도 Fade-in 실행
+  // useEffect(() => {
+  //   setIsFadeIn(true);
 
-    const timeoutId = setTimeout(() => {
-      setIsFadeIn(false);
-    }, FADE_IN_DURATION * 1000);
+  //   const timeoutId = setTimeout(() => {
+  //     setIsFadeIn(false);
+  //   }, FADE_IN_DURATION * 1000);
 
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [asPath]);
+  //   return () => {
+  //     clearTimeout(timeoutId);
+  //   };
+  // }, [asPath]);
 
-  const mainClassname = classNames(
-    styles.post__list__main__layout,
-    isFadeIn && styles.main__fade__in
-  );
+  // const mainClassname = classNames(
+  //   styles.post__list__main__layout,
+  //   isFadeIn && styles.main__fade__in
+  // );
 
   return (
     <>
-      <CategoryFilter asPath={asPath} />
-      <main className={mainClassname}>
+      <CategoryFilter pathname={pathname} asPath={asPath} />
+      <main className={styles.post__list__main__layout}>
         <nav>
           <ul>
             {postList.map((list) => (
@@ -89,10 +90,11 @@ const PostList: FC<Props> = ({
 export default PostList;
 
 type CategoryFilterProps = {
+  pathname: string;
   asPath: string;
 };
 
-const CategoryFilter: FC<CategoryFilterProps> = ({ asPath }) => {
+const CategoryFilter: FC<CategoryFilterProps> = ({ pathname, asPath }) => {
   const categoryFilterList = [
     { href: '/', label: '모두' },
     { href: '/design', label: '디자인' },
@@ -101,7 +103,8 @@ const CategoryFilter: FC<CategoryFilterProps> = ({ asPath }) => {
   const listClassname = (href: string) => {
     return classNames(
       'body3__400',
-      asPath === href && styles.category__filter__selected
+      (asPath === href || pathname === href) &&
+        styles.category__filter__selected
     );
   };
 
