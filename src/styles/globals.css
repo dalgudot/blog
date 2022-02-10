@@ -12,13 +12,6 @@ body {
 
   /* iOS Safari Momentum Scroll, 버벅임 방지 */
   -webkit-overflow-scrolling: touch;
-
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-::-webkit-scrollbar {
-  display: none;
 }
 
 * {
