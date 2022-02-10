@@ -119,8 +119,3 @@ export const getStaticPaths = async () => {
 
   return { paths, fallback: false };
 };
-
-// useEffect(() => {
-//   // local이든 production이든 수정할 때는 수정한 내용 반영되도록, contentEditable이면 클라이언트에서 새로 데이터 받아와서 정렬
-//   isAdmin && fetchDB()
-// }, [isAdmin])

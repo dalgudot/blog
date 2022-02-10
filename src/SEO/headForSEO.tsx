@@ -12,7 +12,6 @@ export type TInfoForSEO = {
 };
 
 const HeadForSEO: FC<TInfoForSEO> = ({ info }) => {
-  // Common
   const icoImage = '/record.ico';
   const author = '김경환';
   const keywords =
@@ -21,12 +20,11 @@ const HeadForSEO: FC<TInfoForSEO> = ({ info }) => {
   return (
     <Head>
       {/* 모바일 대응 meta tag, viewport-fit=cover는 아이폰 Safe-Area 대응 가능*/}
-      {/* <meta
+      <meta
         name='viewport'
         content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover'
-      /> */}
-      {/* 기본 내장 */}
-      {/* <meta charSet='utf-8' /> */}
+      />
+      <meta charSet='utf-8' />
 
       <title>{info.title}</title>
       <meta name='author' content={author} />
@@ -52,6 +50,81 @@ const HeadForSEO: FC<TInfoForSEO> = ({ info }) => {
       <meta name='twitter:image' content={info.thumbnail} />
 
       <link rel='icon' href={icoImage} />
+
+      {/* S of fonts preload */}
+      <link
+        rel='preload'
+        href='/fonts/NotoSansKR/NotoSansKR-Regular.woff2'
+        as='font'
+        type='font/woff2'
+        crossOrigin='anonymous'
+      />
+      <link
+        rel='preload'
+        href='/fonts/NotoSansKR/NotoSansKR-Medium.woff2'
+        as='font'
+        type='font/woff2'
+        crossOrigin='anonymous'
+      />
+      <link
+        rel='preload'
+        href='/fonts/NotoSansKR/NotoSansKR-Bold.woff2'
+        as='font'
+        type='font/woff2'
+        crossOrigin='anonymous'
+      />
+
+      <link
+        rel='preload'
+        href='/fonts/OpenSans/open-sans-v27-latin-regular.woff2'
+        as='font'
+        type='font/woff2'
+        crossOrigin='anonymous'
+      />
+      <link
+        rel='preload'
+        href='/fonts/OpenSans/open-sans-v27-latin-500.woff2'
+        as='font'
+        type='font/woff2'
+        crossOrigin='anonymous'
+      />
+      <link
+        rel='preload'
+        href='/fonts/OpenSans/open-sans-v27-latin-700.woff2'
+        as='font'
+        type='font/woff2'
+        crossOrigin='anonymous'
+      />
+
+      <link
+        rel='preload'
+        href='/fonts/SourceCodePro/source-code-pro-v18-latin-regular.woff2'
+        as='font'
+        type='font/woff2'
+        crossOrigin='anonymous'
+      />
+      <link
+        rel='preload'
+        href='/fonts/SourceCodePro/source-code-pro-v18-latin-500.woff2'
+        as='font'
+        type='font/woff2'
+        crossOrigin='anonymous'
+      />
+      <link
+        rel='preload'
+        href='/fonts/SourceCodePro/source-code-pro-v20-latin-600.woff2'
+        as='font'
+        type='font/woff2'
+        crossOrigin='anonymous'
+      />
+      <link
+        rel='preload'
+        href='/fonts/SourceCodePro/source-code-pro-v18-latin-700.woff2'
+        as='font'
+        type='font/woff2'
+        crossOrigin='anonymous'
+      />
+      {/* E of Image preload */}
     </Head>
   );
 };
