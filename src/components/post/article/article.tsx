@@ -39,4 +39,4 @@ const Article: FC<Props> = ({
   );
 };
 
-export default memo(Article);
+export default Article;

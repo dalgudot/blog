@@ -27,4 +27,4 @@ const WYSIWYG: FC<Props> = ({ contentEditable, wysiwygDataArray }) => {
   );
 };
 
-export default memo(WYSIWYG);
+export default WYSIWYG;

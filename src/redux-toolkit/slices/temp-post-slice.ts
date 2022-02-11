@@ -25,22 +25,6 @@ export const tempPostSlice = createSlice({
         action.payload.inputHtml;
     },
 
-    setBlockByBlockIdTempHtml: (
-      state,
-      action: PayloadAction<{ inputHtml: string; blockId: string }>
-    ) => {
-      console.log('redux', action.payload.blockId);
-      console.log(
-        'filter',
-        state.tempPost.wysiwygDataArray.filter(
-          (block) => block.blockId === action.payload.blockId
-        )[0].html
-      );
-      // state.tempPost.wysiwygDataArray.filter(function (block) {
-      //   return block.blockId === action.payload.blockId;
-      // })[0].html = action.payload.inputHtml;
-    },
-
     setCurrentBlockTempImageRef: (
       state,
       action: PayloadAction<{ imageRef: string; currentIndex: number }>
@@ -172,7 +156,6 @@ export const tempPostSlice = createSlice({
 export const {
   setTempPostData,
   setCurrentBlockTempHtml,
-  setBlockByBlockIdTempHtml,
   setCurrentBlockTempImageRef,
   setCurrentCodeBlockTempCodeLanguage,
   setTempPostCategory,

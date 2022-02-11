@@ -13,7 +13,6 @@ import {
   removeLinkBlock,
   setBlockTypeData,
   setCurrentBlockHtml,
-  setCurrentLinkBlockHtml,
 } from '../../redux-toolkit/slices/post-slice';
 import {
   addTempNewBlock,
@@ -112,8 +111,6 @@ const EditableElementSwitch: FC<Props> = ({
   };
 
   const onKeyPress = (e: KeyboardEvent<HTMLElement>) => {
-    // console.log(e.key);
-
     if (e.key === 'Enter') {
       e.preventDefault();
       addBlock();
@@ -122,7 +119,6 @@ const EditableElementSwitch: FC<Props> = ({
 
   const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
     // html 텍스트가 없고, 블록이 2개 이상이고, Backspace를 누른 경우
-
     if (
       tempEachBlockStateText === '' &&
       datasLength > 1 &&
@@ -135,6 +131,7 @@ const EditableElementSwitch: FC<Props> = ({
     // 붙여넣기 command + c
     if (e.metaKey && e.key === 'v') {
       console.log('----------------Paste----------------');
+      e.preventDefault();
       paste();
     }
   };
@@ -188,9 +185,7 @@ const EditableElementSwitch: FC<Props> = ({
       case 'Image':
         return (
           <EditableImageBlock
-            datas={datas}
             blockId={data.blockId}
-            blockType={type}
             contentEditable={contentEditable}
             html={eachBlockStateText}
             imageDownloadURL={data.url}
@@ -210,11 +205,8 @@ const EditableElementSwitch: FC<Props> = ({
       case 'Link':
         return (
           <EditableLinkBlock
-            datas={datas}
-            blockId={data.blockId}
             wysiwygType={wysiwygType}
             linkBlockType={linkBlockType}
-            blockType={type}
             contentEditable={contentEditable}
             html={eachBlockStateText}
             data={data as ILinkData}
@@ -234,9 +226,6 @@ const EditableElementSwitch: FC<Props> = ({
       case 'Code':
         return (
           <EditableCodeBlock
-            datas={datas}
-            blockId={data.blockId}
-            blockType={type}
             contentEditable={contentEditable}
             data={data as ICodeData}
             html={eachBlockStateText}
@@ -256,12 +245,9 @@ const EditableElementSwitch: FC<Props> = ({
       default:
         return (
           <EditableTextBlock
-            datas={datas}
-            blockId={data.blockId}
             blockType={type}
             contentEditable={contentEditable}
             html={eachBlockStateText}
-            currentIndex={currentIndex}
             setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
             setPostHtmlData={setCurrentBlockPostHtmlData} // `` 때문에 필요
             onKeyPress={onKeyPress}

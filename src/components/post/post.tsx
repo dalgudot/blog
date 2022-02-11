@@ -4,8 +4,8 @@ import Article from '../../components/post/article/article';
 import { IPostData } from '../../redux-toolkit/model/post-data-model';
 import styles from './post.module.scss';
 import Response from './response/response';
-import Share from './share/share';
 import { useRouter } from 'next/router';
+import Share from './share/share';
 import Author from './author/author';
 
 type Props = {

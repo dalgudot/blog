@@ -5,7 +5,7 @@ import {
   getPostByCategoryOrder,
   saveDataToFireStoreDB,
 } from '../../service/firebase/firestore';
-import { useEffect, useState } from 'react';
+import { memo, useEffect } from 'react';
 import { useAppDispatch } from '../../redux-toolkit/store';
 import { useRouter } from 'next/router';
 import { setPostData } from '../../redux-toolkit/slices/post-slice';
@@ -27,8 +27,6 @@ type Props = {
 const CategoryOrderPost: NextPage<Props> = (props) => {
   useUpdateVisitors();
   const { isAdmin } = useIsAdmin();
-  const [isEditMode, setIsEditMode] = useState<boolean>(false);
-  const contentEditable: boolean = isAdmin && isEditMode;
   const { showToast } = useToast();
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -36,12 +34,11 @@ const CategoryOrderPost: NextPage<Props> = (props) => {
 
   useEffect(() => {
     const SyncServerAndClientData = () => {
-      dispatch(setPostData(props.post)); // 초기화 및 map() 상태 관리(새로운 블럭 그리는 일 등)
+      dispatch(setPostData(props.post)); // 초기화 및 map() 상태 관리(블럭 추가, 블럭 삭제)
       dispatch(setTempPostData(props.post)); // 데이터 저장 위해(contentEditable 요소가 매번 렌더링될 때마다 생기는 문제 방지)
     };
     SyncServerAndClientData();
-
-    // return으로 초기화하면 개발 모드에서 데이터 날아가는 문제가 생김
+    // *** return X *** return으로 초기화하면 개발 모드에서 데이터 날아가는 문제가 생김
   }, []);
 
   const { post } = useGetClientPostData();
@@ -56,12 +53,7 @@ const CategoryOrderPost: NextPage<Props> = (props) => {
       currentOrder as string,
       tempPost
     );
-    // setIsEditMode(false);
     showToast('저장 완료');
-  };
-
-  const editModeHandler = () => {
-    setIsEditMode(true);
   };
 
   useEffect(() => {
@@ -77,15 +69,6 @@ const CategoryOrderPost: NextPage<Props> = (props) => {
     <>
       <HeadForSEO info={props.infoForSEOByCategoryOrder.info} />
       {mounted && <Post contentEditable={isAdmin} postData={post} />}
-
-      {/* {isAdmin && !isEditMode && (
-        <>
-          <button onClick={editModeHandler} className='admin__button__left'>
-            수정
-          </button>
-        </>
-      )} */}
-
       {isAdmin && (
         <>
           <button

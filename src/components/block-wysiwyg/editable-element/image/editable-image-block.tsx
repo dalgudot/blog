@@ -1,9 +1,6 @@
 import { FC, KeyboardEvent, useEffect, useState } from 'react';
 import styles from './editable-image-block.module.scss';
-import {
-  IParagraphData,
-  TBlockType,
-} from '../../../../redux-toolkit/model/post-data-model';
+import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
 import UploadImage from './upload-image';
 import EditableElement from '../../editable-element';
 import { useAppDispatch } from '../../../../redux-toolkit/store';
@@ -16,8 +13,6 @@ import { useToast } from '@dalgu/react-toast';
 import Image from 'next/image';
 
 type Props = {
-  datas: IParagraphData[];
-  blockType: TBlockType; // select 바꾸었을 때 paste 다시 등록하기 위해 paste로 전달
   contentEditable: boolean;
   html: string;
   imageDownloadURL: string;
@@ -33,8 +28,6 @@ type Props = {
 };
 
 const EditableImageBlock: FC<Props> = ({
-  datas,
-  blockType,
   contentEditable,
   html,
   imageDownloadURL,
@@ -103,12 +96,8 @@ const EditableImageBlock: FC<Props> = ({
         )}
         <EditableElement
           TagName='figcaption'
-          datas={datas}
-          blockId={blockId}
-          blockType={blockType}
           contentEditable={contentEditable}
           html={html}
-          currentIndex={currentIndex}
           setTempPostHtmlData={setTempPostHtmlData}
           setPostHtmlData={setPostHtmlData}
           onKeyPress={onKeyPress} // optional, 블록 추가
