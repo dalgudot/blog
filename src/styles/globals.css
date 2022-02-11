@@ -1,9 +1,14 @@
+button {
+  /* unset이 있으므로 첫 번째 */
+  all: unset;
+  cursor: pointer;
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
   background-color: var(--g8);
-  user-select: none;
 
   /* 판독성 최적화 */
   text-rendering: optimizeLegibility;
@@ -12,6 +17,10 @@ body {
 
   /* iOS Safari Momentum Scroll, 버벅임 방지 */
   -webkit-overflow-scrolling: touch;
+}
+
+body {
+  user-select: none;
 }
 
 * {
@@ -28,11 +37,6 @@ body {
 
 input:focus {
   outline: none;
-}
-
-button {
-  all: unset;
-  cursor: pointer;
 }
 
 h1,

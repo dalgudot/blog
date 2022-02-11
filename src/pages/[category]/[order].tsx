@@ -5,7 +5,7 @@ import {
   getPostByCategoryOrder,
   saveDataToFireStoreDB,
 } from '../../service/firebase/firestore';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../../redux-toolkit/store';
 import { useRouter } from 'next/router';
 import { setPostData } from '../../redux-toolkit/slices/post-slice';
@@ -28,6 +28,8 @@ type Props = {
 const CategoryOrderPost: NextPage<Props> = (props) => {
   useUpdateVisitors();
   const { isAdmin } = useIsAdmin();
+  const [isEditMode, setIsEditMode] = useState<boolean>(false);
+  const contentEditable: boolean = isAdmin && isEditMode;
   const { showToast } = useToast();
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -58,17 +60,36 @@ const CategoryOrderPost: NextPage<Props> = (props) => {
       currentOrder as string,
       tempPost
     );
+    setIsEditMode(false);
     showToast('저장 완료');
   };
+
+  const editModeHandler = () => {
+    setIsEditMode(true);
+  };
+
+  useEffect(() => {
+    if (isAdmin) {
+      document.body.style.cssText = 'user-select: auto;';
+    }
+  }, [isAdmin]);
 
   // console.log('tempPost', tempPost.wysiwygDataArray);
 
   return (
     <>
       <HeadForSEO info={props.infoForSEOByCategoryOrder.info} />
-      {mounted && <Post contentEditable={isAdmin} postData={post} />}
+      {mounted && <Post contentEditable={contentEditable} postData={post} />}
 
-      {isAdmin && (
+      {isAdmin && !isEditMode && (
+        <>
+          <button onClick={editModeHandler} className='admin__button__left'>
+            수정
+          </button>
+        </>
+      )}
+
+      {contentEditable && (
         <>
           <button
             onClick={tempSaveDataToFireStoreDB}

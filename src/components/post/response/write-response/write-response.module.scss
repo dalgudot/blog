@@ -45,6 +45,22 @@
   }
 }
 
+.anonymous__profile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  button {
+    @include text-styles.body2(500);
+    @include motion.scale__hover;
+    padding-right: 2px; // 시각 보정 + 터치 영역
+  }
+}
+
+.anonymous__profile__left__div {
+  @include response.anonymous__profile__left;
+}
+
 .response__submit__button {
   cursor: not-allowed;
   @include text-styles.body1;
@@ -78,20 +94,4 @@
   font-weight: 500;
   color: var(--g1);
   border: 1px solid var(--g1);
-}
-
-.anonymous__profile {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  button {
-    @include text-styles.body2(500);
-    @include motion.scale__hover;
-    padding-right: 2px; // 시각 보정 + 터치 영역
-  }
-}
-
-.anonymous__profile__left__div {
-  @include response.anonymous__profile__left;
 }
