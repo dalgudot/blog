@@ -1,18 +1,9 @@
-import {
-  ChangeEvent,
-  FC,
-  KeyboardEvent,
-  memo,
-  useEffect,
-  useState,
-} from 'react';
+import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from 'react';
 import {
   addNewBlock,
   addNewLinkBlock,
   removeCurrentBlock,
   removeLinkBlock,
-  setBlockTypeData,
-  setCurrentBlockHtml,
 } from '../../redux-toolkit/slices/post-slice';
 import {
   addTempNewBlock,
@@ -85,7 +76,7 @@ const EditableElementSwitch: FC<Props> = ({
     dispatch(setTempBlockTypeData({ newBlockType, currentIndex }));
   };
 
-  // 초기화 데이터는 addBlock()과 removeBlock()에서만 업데이트! -> 배열 업데이트 위해
+  // *** [배열 업데이트] 초기화 데이터는 addBlock()과 removeBlock()에서만 업데이트! -> *** 배열 업데이트 위해
   const addBlock = () => {
     const isEnd: boolean = currentIndex === datasLength - 1;
 
@@ -109,6 +100,7 @@ const EditableElementSwitch: FC<Props> = ({
   };
 
   const onKeyPress = (e: KeyboardEvent<HTMLElement>) => {
+    // shift + Enter는 줄바꿈
     if (!e.shiftKey && e.key === 'Enter') {
       e.preventDefault();
       addBlock();
@@ -126,26 +118,35 @@ const EditableElementSwitch: FC<Props> = ({
       removeBlock();
     }
 
-    // 붙여넣기 command + c
+    // 붙여넣기 command + v
     if (e.metaKey && e.key === 'v') {
-      console.log('----------------Paste----------------');
+      // console.log('----------------Paste----------------');
       e.preventDefault();
       paste();
     }
   };
 
+  // console.log('eachBlockStateText', eachBlockStateText);
+
   const paste = () => {
     navigator.clipboard.readText().then((clipText) => {
+      // console.log('clipText', clipText);
+
       const htmlData = clipText
         ?.replace(/&/g, '&amp;') // &부터 해야 뒤쪽 <, > replace에 영향 없음!
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;');
 
       // 커서나 selection 위치에 따라 붙여넣는 위치 조정 필요
-      const newInnerPasteHtml = `${tempEachBlockStateText}${htmlData}`;
+      const newHtml = `${tempEachBlockStateText}${htmlData}`;
 
-      setCurrentBlockTempPostHtmlData(newInnerPasteHtml);
-      setEachBlockStateText(newInnerPasteHtml); // 각 블록 렌더링
+      // console.log('newHtml', newHtml);
+      setEachBlockStateText(''); // 같은 문자열 복사 후 지우고 다시 붙여넣으면 리액트에서 같다고 판단해 렌더링하지 않는 문제 해결
+
+      setCurrentBlockTempPostHtmlData(newHtml);
+      setTempEachBlockStateText(newHtml);
+      setEachBlockStateText(newHtml); // 각 블록 렌더링
+      // dispatch(setCurrentBlockTempHtml({ inputHtml: newHtml, currentIndex }));
     });
   };
 
@@ -282,4 +283,4 @@ const EditableElementSwitch: FC<Props> = ({
   );
 };
 
-export default memo(EditableElementSwitch);
+export default EditableElementSwitch;
