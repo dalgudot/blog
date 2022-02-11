@@ -68,6 +68,12 @@ const CategoryOrderPost: NextPage<Props> = (props) => {
     setIsEditMode(true);
   };
 
+  useEffect(() => {
+    if (isAdmin) {
+      document.body.style.cssText = 'user-select: auto;';
+    }
+  }, [isAdmin]);
+
   // console.log('tempPost', tempPost.wysiwygDataArray);
 
   return (
