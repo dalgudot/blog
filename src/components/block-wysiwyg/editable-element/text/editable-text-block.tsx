@@ -9,8 +9,8 @@ type Props = {
   blockType: TBlockTextType;
   contentEditable: boolean;
   html: string;
-  setTempPostHtmlData: (inputHtml: string) => void;
-  setPostHtmlData: (inputHtml: string) => void;
+  setCurrentBlockTempPostHtmlData: (inputHtml: string) => void;
+  setCurrentBlockPostHtmlData: (inputHtml: string) => void;
   onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
   addBlockFocusUseEffectDependency?: IParagraphData;
@@ -23,8 +23,8 @@ const EditableTextBlock: FC<Props> = ({
   blockType,
   contentEditable,
   html,
-  setTempPostHtmlData,
-  setPostHtmlData,
+  setCurrentBlockTempPostHtmlData,
+  setCurrentBlockPostHtmlData,
   onKeyPress,
   onKeyDown,
   addBlockFocusUseEffectDependency,
@@ -56,8 +56,8 @@ const EditableTextBlock: FC<Props> = ({
         TagName={TagName}
         contentEditable={contentEditable}
         html={html}
-        setTempPostHtmlData={setTempPostHtmlData}
-        setPostHtmlData={setPostHtmlData}
+        setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+        setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
         onKeyPress={onKeyPress} // optional, 블록 추가
         onKeyDown={onKeyDown} // optional, 블록 삭제
         addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}

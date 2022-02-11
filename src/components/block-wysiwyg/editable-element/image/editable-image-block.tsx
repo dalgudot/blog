@@ -18,8 +18,8 @@ type Props = {
   imageDownloadURL: string;
   blockId: string;
   currentIndex: number;
-  setTempPostHtmlData: (inputHtml: string) => void;
-  setPostHtmlData: (inputHtml: string) => void;
+  setCurrentBlockTempPostHtmlData: (inputHtml: string) => void;
+  setCurrentBlockPostHtmlData: (inputHtml: string) => void;
   onKeyPress: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown: (e: KeyboardEvent<HTMLElement>) => void;
   addBlockFocusUseEffectDependency?: IParagraphData;
@@ -33,8 +33,8 @@ const EditableImageBlock: FC<Props> = ({
   imageDownloadURL,
   blockId,
   currentIndex,
-  setTempPostHtmlData, // 캡션 데이터로 활용
-  setPostHtmlData,
+  setCurrentBlockTempPostHtmlData, // 캡션 데이터로 활용
+  setCurrentBlockPostHtmlData,
   onKeyPress,
   onKeyDown,
   addBlockFocusUseEffectDependency,
@@ -98,8 +98,8 @@ const EditableImageBlock: FC<Props> = ({
           TagName='figcaption'
           contentEditable={contentEditable}
           html={html}
-          setTempPostHtmlData={setTempPostHtmlData}
-          setPostHtmlData={setPostHtmlData}
+          setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+          setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
           onKeyPress={onKeyPress} // optional, 블록 추가
           onKeyDown={onKeyDown} // optional, 블록 삭제
           addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}

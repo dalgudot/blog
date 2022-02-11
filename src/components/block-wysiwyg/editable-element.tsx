@@ -10,8 +10,8 @@ type Props = {
   TagName: 'h1' | 'h2' | 'h3' | 'p' | 'code' | 'figcaption';
   contentEditable: boolean;
   html: string;
-  setTempPostHtmlData: (inputHtml: string) => void;
-  setPostHtmlData: (inputHtml: string) => void;
+  setCurrentBlockTempPostHtmlData: (inputHtml: string) => void;
+  setCurrentBlockPostHtmlData: (inputHtml: string) => void;
   onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
   addBlockFocusUseEffectDependency?: IParagraphData;
@@ -25,8 +25,8 @@ const EditableElement: FC<Props> = ({
   TagName,
   contentEditable = false,
   html,
-  setTempPostHtmlData,
-  setPostHtmlData,
+  setCurrentBlockTempPostHtmlData,
+  setCurrentBlockPostHtmlData,
   onKeyPress,
   onKeyDown,
   addBlockFocusUseEffectDependency,
@@ -34,7 +34,7 @@ const EditableElement: FC<Props> = ({
   placeholder = '',
   customClassName,
 }) => {
-  // setTempPostHtmlData과 setPostHtmlData는 모두 current index와 관련있으므로 switch에서 처리하고 props로 넘겨받음!
+  // setCurrentBlockTempPostHtmlData과 setCurrentBlockPostHtmlData는 모두 current index와 관련있으므로 switch에서 처리하고 props로 넘겨받음!
   const onInput = (
     e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>
   ) => {
@@ -46,8 +46,12 @@ const EditableElement: FC<Props> = ({
     // *** input 이벤트로 들어오는 html은 정규식으로 변환됨!
     // *** [KEY] dangerouslySetInnerHTML로 들어가는 html에서 정규식 변환된 "&amp;", "&lt;" ,"&gt;"는 텍스트로, < > &는 실제 html 요소로 렌더링한다!
     const inputHtml = e.target.innerHTML;
-    setTempPostHtmlData(inputHtml);
-    addInlineCodeBlock(inputHtml, setTempPostHtmlData, setPostHtmlData);
+    setCurrentBlockTempPostHtmlData(inputHtml);
+    addInlineCodeBlock(
+      inputHtml,
+      setCurrentBlockTempPostHtmlData,
+      setCurrentBlockPostHtmlData
+    );
   };
 
   const ref = useEditable(
@@ -55,8 +59,6 @@ const EditableElement: FC<Props> = ({
     addBlockFocusUseEffectDependency,
     removeCurrentBlockFocusUseEffectDependency
   );
-
-  // console.log('Render EditableElement', html);
 
   return (
     <TagName

@@ -14,8 +14,8 @@ type Props = {
   html: string;
   data: ILinkData;
   currentIndex: number;
-  setTempPostHtmlData: (inputHtml: string) => void;
-  setPostHtmlData: (inputHtml: string) => void;
+  setCurrentBlockTempPostHtmlData: (inputHtml: string) => void;
+  setCurrentBlockPostHtmlData: (inputHtml: string) => void;
   onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
   addBlockFocusUseEffectDependency?: IParagraphData;
@@ -30,8 +30,8 @@ const EditableLinkBlock: FC<Props> = ({
   html,
   data,
   currentIndex,
-  setTempPostHtmlData,
-  setPostHtmlData,
+  setCurrentBlockTempPostHtmlData,
+  setCurrentBlockPostHtmlData,
   onKeyPress,
   onKeyDown,
   addBlockFocusUseEffectDependency,
@@ -57,8 +57,8 @@ const EditableLinkBlock: FC<Props> = ({
             TagName='p'
             contentEditable={contentEditable}
             html={html}
-            setTempPostHtmlData={setTempPostHtmlData}
-            setPostHtmlData={setPostHtmlData}
+            setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+            setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress} // optional, 블록 추가
             onKeyDown={onKeyDown} // optional, 블록 삭제
             addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}

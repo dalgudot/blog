@@ -24,8 +24,8 @@ type Props = {
   data: ICodeData;
   html: string;
   currentIndex: number;
-  setTempPostHtmlData: (inputHtml: string) => void;
-  // setPostHtmlData: (inputHtml: string) => void;
+  setCurrentBlockTempPostHtmlData: (inputHtml: string) => void;
+  // setCurrentBlockPostHtmlData: (inputHtml: string) => void;
   onKeyPress: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown: (e: KeyboardEvent<HTMLElement>) => void;
   addBlockFocusUseEffectDependency?: IParagraphData;
@@ -38,8 +38,8 @@ const EditableCodeBlock: FC<Props> = ({
   data,
   html,
   currentIndex,
-  setTempPostHtmlData,
-  // setPostHtmlData,
+  setCurrentBlockTempPostHtmlData,
+  // setCurrentBlockPostHtmlData,
   onKeyPress,
   onKeyDown,
   addBlockFocusUseEffectDependency,
@@ -69,7 +69,7 @@ const EditableCodeBlock: FC<Props> = ({
           <CodeTextarea
             codeString={codeString}
             setCodeString={setCodeString}
-            setTempPostHtmlData={setTempPostHtmlData}
+            setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
             addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}

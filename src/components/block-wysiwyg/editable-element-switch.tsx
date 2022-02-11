@@ -26,6 +26,7 @@ import EditableCodeBlock from './editable-element/code/editable-code-block';
 import EditableImageBlock from './editable-element/image/editable-image-block';
 import styles from './editable-element.module.scss';
 import { ICodeData } from '../../redux-toolkit/model/code-data-model';
+import { paste } from '../../lib/utils/editable-block/paste';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
@@ -121,26 +122,15 @@ const EditableElementSwitch: FC<Props> = ({
     // 붙여넣기 command + v
     if (e.metaKey && e.key === 'v') {
       e.preventDefault();
-      paste();
+      paste(tempEachBlockStateText, setPasteData);
     }
   };
 
-  const paste = () => {
-    navigator.clipboard.readText().then((clipText) => {
-      const htmlData = clipText
-        ?.replace(/&/g, '&amp;') // &부터 해야 뒤쪽 <, > replace에 영향 없음!
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
-
-      // 커서나 selection 위치에 따라 붙여넣는 위치 조정 필요
-      const newHtml = `${tempEachBlockStateText}${htmlData}`;
-
-      setEachBlockStateText(''); // 같은 문자열 복사 후 지우고 다시 붙여넣으면 리액트에서 같다고 판단해 렌더링하지 않는 문제 해결
-
-      setCurrentBlockTempPostHtmlData(newHtml);
-      setTempEachBlockStateText(newHtml);
-      setEachBlockStateText(newHtml); // 현재 블록만 렌더링
-    });
+  const setPasteData = (newHtml: string) => {
+    setEachBlockStateText(''); // 같은 문자열 복사 후 지우고 다시 붙여넣으면 리액트에서 같다고 판단해 렌더링하지 않는 문제 해결
+    setCurrentBlockTempPostHtmlData(newHtml);
+    setTempEachBlockStateText(newHtml);
+    setEachBlockStateText(newHtml); // 현재 블록만 렌더링
   };
 
   // onInput에서 이용
@@ -172,8 +162,8 @@ const EditableElementSwitch: FC<Props> = ({
             html={eachBlockStateText}
             imageDownloadURL={data.url}
             currentIndex={currentIndex}
-            setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
-            setPostHtmlData={setCurrentBlockPostHtmlData}
+            setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+            setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
             addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
@@ -193,8 +183,8 @@ const EditableElementSwitch: FC<Props> = ({
             html={eachBlockStateText}
             data={data as ILinkData}
             currentIndex={currentIndex}
-            setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
-            setPostHtmlData={setCurrentBlockPostHtmlData}
+            setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+            setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
             addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
@@ -212,8 +202,8 @@ const EditableElementSwitch: FC<Props> = ({
             data={data as ICodeData}
             html={eachBlockStateText}
             currentIndex={currentIndex}
-            setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
-            // setPostHtmlData={setCurrentBlockPostHtmlData}
+            setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+            // setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
             addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
@@ -230,8 +220,8 @@ const EditableElementSwitch: FC<Props> = ({
             blockType={type}
             contentEditable={contentEditable}
             html={eachBlockStateText}
-            setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
-            setPostHtmlData={setCurrentBlockPostHtmlData}
+            setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+            setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
             addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}

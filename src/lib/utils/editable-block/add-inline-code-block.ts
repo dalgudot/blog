@@ -1,12 +1,12 @@
 export const addInlineCodeBlock = (
   inputHtml: string,
-  setTempPostHtmlData: (inputHtml: string) => void,
-  setPostHtmlData: (inputHtml: string) => void
+  setCurrentBlockTempPostHtmlData: (inputHtml: string) => void,
+  setCurrentBlockPostHtmlData: (inputHtml: string) => void
 ) => {
   const countBacktick = inputHtml.match(/`/g)?.length;
   const updateInlineBlock = (inputHtml: string) => {
-    setTempPostHtmlData(inputHtml);
-    setPostHtmlData(inputHtml);
+    setCurrentBlockTempPostHtmlData(inputHtml);
+    setCurrentBlockPostHtmlData(inputHtml);
   };
 
   if (countBacktick === 2) {
