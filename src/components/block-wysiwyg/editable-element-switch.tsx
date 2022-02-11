@@ -1,4 +1,11 @@
-import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from 'react';
+import {
+  ChangeEvent,
+  FC,
+  KeyboardEvent,
+  memo,
+  useEffect,
+  useState,
+} from 'react';
 import {
   addNewBlock,
   addNewLinkBlock,
@@ -48,7 +55,9 @@ const EditableElementSwitch: FC<Props> = ({
   currentIndex,
 }) => {
   const [type, setType] = useState<TBlockType>('Paragraph');
-  const [text, setText] = useState<string>(''); // block 지울 떄 활용
+  const [tempEachBlockStateText, setTempEachBlockStateText] =
+    useState<string>(''); // block 지울 때 활용
+  const [eachBlockStateText, setEachBlockStateText] = useState<string>(''); // block 지울 때 활용
   const dispatch = useAppDispatch();
   const datasLength = datas.length;
 
@@ -58,7 +67,8 @@ const EditableElementSwitch: FC<Props> = ({
   }, [data.blockType]);
 
   useEffect(() => {
-    setText(data.html);
+    setTempEachBlockStateText(data.html);
+    setEachBlockStateText(data.html);
   }, [data.html]);
 
   const changeBlockType = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -70,7 +80,9 @@ const EditableElementSwitch: FC<Props> = ({
     setType(newBlockType);
     dispatch(setTempBlockTypeData({ newBlockType, currentIndex }));
     // 다른 업데이트에서 post 데이터에는 html이 업데이트되지 않았기 때문에 여기서는 동기화시켜줘야 타입을 바꿔도 html 유지!
-    dispatch(setCurrentBlockHtml({ inputHtml: text, currentIndex }));
+    dispatch(
+      setCurrentBlockHtml({ inputHtml: tempEachBlockStateText, currentIndex })
+    );
     dispatch(setBlockTypeData({ newBlockType, currentIndex }));
   };
 
@@ -100,6 +112,8 @@ const EditableElementSwitch: FC<Props> = ({
   };
 
   const onKeyPress = (e: KeyboardEvent<HTMLElement>) => {
+    // console.log(e.key);
+
     if (e.key === 'Enter') {
       e.preventDefault();
       addBlock();
@@ -108,10 +122,36 @@ const EditableElementSwitch: FC<Props> = ({
 
   const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
     // html 텍스트가 없고, 블록이 2개 이상이고, Backspace를 누른 경우
-    if (text === '' && datasLength > 1 && e.key === 'Backspace') {
+
+    if (
+      tempEachBlockStateText === '' &&
+      datasLength > 1 &&
+      e.key === 'Backspace'
+    ) {
       e.preventDefault();
       removeBlock();
     }
+
+    // 붙여넣기 command + c
+    if (e.metaKey && e.key === 'v') {
+      console.log('----------------Paste----------------');
+      paste();
+    }
+  };
+
+  const paste = () => {
+    navigator.clipboard.readText().then((clipText) => {
+      const htmlData = clipText
+        ?.replace(/&/g, '&amp;') // &부터 해야 뒤쪽 <, > replace에 영향 없음!
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+      // 커서나 selection 위치에 따라 붙여넣는 위치 조정 필요
+      const newInnerPasteHtml = `${tempEachBlockStateText}${htmlData}`;
+
+      setCurrentBlockTempPostHtmlData(newInnerPasteHtml);
+      setEachBlockStateText(newInnerPasteHtml); // 각 블록 렌더링
+    });
   };
 
   // onInput에서 이용
@@ -125,17 +165,18 @@ const EditableElementSwitch: FC<Props> = ({
     }
 
     // 리덕스에서 tempHtml을 가져오면 계속 전체 리렌더가 일어나기 때문에 해당 컴포넌트의 state로 관리
-    setText(inputHtml);
+    setTempEachBlockStateText(inputHtml);
   };
 
   // updateInlineBlock에서 이용
   const setCurrentBlockPostHtmlData = (inputHtml: string) => {
     // currentIndex 인자로 넣어 props로 전달
     // map 안 쓰는 block에서는 다른 함수로 props 전달
+    setEachBlockStateText(inputHtml);
     if (wysiwygType === 'Link') {
-      dispatch(setCurrentLinkBlockHtml({ inputHtml, currentIndex }));
+      // dispatch(setCurrentLinkBlockHtml({ inputHtml, currentIndex }));
     } else {
-      dispatch(setCurrentBlockHtml({ inputHtml, currentIndex }));
+      // dispatch(setCurrentBlockHtml({ inputHtml, currentIndex }));
     }
   };
 
@@ -147,10 +188,12 @@ const EditableElementSwitch: FC<Props> = ({
       case 'Image':
         return (
           <EditableImageBlock
-            contentEditable={contentEditable}
-            html={data.html}
-            imageDownloadURL={data.url}
+            datas={datas}
             blockId={data.blockId}
+            blockType={type}
+            contentEditable={contentEditable}
+            html={eachBlockStateText}
+            imageDownloadURL={data.url}
             currentIndex={currentIndex}
             setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
             setPostHtmlData={setCurrentBlockPostHtmlData}
@@ -167,9 +210,13 @@ const EditableElementSwitch: FC<Props> = ({
       case 'Link':
         return (
           <EditableLinkBlock
+            datas={datas}
+            blockId={data.blockId}
             wysiwygType={wysiwygType}
             linkBlockType={linkBlockType}
+            blockType={type}
             contentEditable={contentEditable}
+            html={eachBlockStateText}
             data={data as ILinkData}
             currentIndex={currentIndex}
             setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
@@ -187,8 +234,12 @@ const EditableElementSwitch: FC<Props> = ({
       case 'Code':
         return (
           <EditableCodeBlock
+            datas={datas}
+            blockId={data.blockId}
+            blockType={type}
             contentEditable={contentEditable}
             data={data as ICodeData}
+            html={eachBlockStateText}
             currentIndex={currentIndex}
             setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
             // setPostHtmlData={setCurrentBlockPostHtmlData}
@@ -205,9 +256,12 @@ const EditableElementSwitch: FC<Props> = ({
       default:
         return (
           <EditableTextBlock
+            datas={datas}
+            blockId={data.blockId}
             blockType={type}
             contentEditable={contentEditable}
-            html={data.html}
+            html={eachBlockStateText}
+            currentIndex={currentIndex}
             setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
             setPostHtmlData={setCurrentBlockPostHtmlData} // `` 때문에 필요
             onKeyPress={onKeyPress}
@@ -244,4 +298,4 @@ const EditableElementSwitch: FC<Props> = ({
   );
 };
 
-export default EditableElementSwitch;
+export default memo(EditableElementSwitch);

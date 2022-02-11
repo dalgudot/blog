@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
 import EditableElementSwitch from '../../../block-wysiwyg/editable-element-switch';
 
@@ -27,4 +27,4 @@ const WYSIWYG: FC<Props> = ({ contentEditable, wysiwygDataArray }) => {
   );
 };
 
-export default WYSIWYG;
+export default memo(WYSIWYG);

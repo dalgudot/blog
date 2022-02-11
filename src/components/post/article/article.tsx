@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import {
   IParagraphData,
   TStatus,
@@ -39,4 +39,4 @@ const Article: FC<Props> = ({
   );
 };
 
-export default Article;
+export default memo(Article);

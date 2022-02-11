@@ -10,7 +10,10 @@ import {
 import styles from './editable-code-block.module.scss';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
+import {
+  IParagraphData,
+  TBlockType,
+} from '../../../../redux-toolkit/model/post-data-model';
 import CodeTextarea from './code-textarea';
 import {
   TCodeLanguage,
@@ -20,8 +23,12 @@ import { useAppDispatch } from '../../../../redux-toolkit/store';
 import { setCurrentCodeBlockTempCodeLanguage } from '../../../../redux-toolkit/slices/temp-post-slice';
 
 type Props = {
+  blockId: string;
+  blockType: TBlockType; // select 바꾸었을 때 paste 다시 등록하기 위해 paste로 전달 - code block에서는 textarea가 관리하지만, 나중을 위해 미리 전달.
   contentEditable: boolean;
   data: ICodeData;
+  datas: IParagraphData[];
+  html: string;
   currentIndex: number;
   setTempPostHtmlData: (inputHtml: string) => void;
   // setPostHtmlData: (inputHtml: string) => void;
@@ -33,8 +40,12 @@ type Props = {
 };
 
 const EditableCodeBlock: FC<Props> = ({
+  blockId,
+  blockType,
   contentEditable,
   data,
+  datas,
+  html,
   currentIndex,
   setTempPostHtmlData,
   // setPostHtmlData,
@@ -48,8 +59,8 @@ const EditableCodeBlock: FC<Props> = ({
   const [codeLanguage, setCodeLanguage] = useState<TCodeLanguage>('tsx');
 
   useEffect(() => {
-    setCodeString(data.html);
-  }, [data.html]);
+    setCodeString(html);
+  }, [html]);
 
   useEffect(() => {
     setCodeLanguage(data.codeLanguage);

@@ -46,16 +46,12 @@ const EditableElement: FC<Props> = ({
     // *** input 이벤트로 들어오는 html은 정규식으로 변환됨!
     // *** [KEY] dangerouslySetInnerHTML로 들어가는 html에서 정규식 변환된 "&amp;", "&lt;" ,"&gt;"는 텍스트로, < > &는 실제 html 요소로 렌더링한다!
     const inputHtml = e.target.innerHTML;
-    // console.log('inputHtml', inputHtml);
-    // const textContent = e.target.textContent;
-    // console.log('textContent', textContent);
     setTempPostHtmlData(inputHtml);
     addInlineCodeBlock(inputHtml, setTempPostHtmlData, setPostHtmlData);
   };
 
   const ref = useEditable(
     html,
-    setTempPostHtmlData,
     addBlockFocusUseEffectDependency,
     removeCurrentBlockFocusUseEffectDependency
   );
@@ -67,7 +63,6 @@ const EditableElement: FC<Props> = ({
       suppressContentEditableWarning={contentEditable}
       // *** [KEY] dangerouslySetInnerHTML로 들어가는 html에서 정규식 변환된 "&amp;", "&lt;" ,"&gt;"는 텍스트로, < > &는 html 요소로 렌더링한다!
       dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }}
-      // dangerouslySetInnerHTML={{ __html: html }}
       onInput={onInput}
       onKeyPress={onKeyPress} // optional, 블록 추가
       onKeyDown={onKeyDown} // optional, 블록 삭제

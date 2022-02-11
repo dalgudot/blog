@@ -7,8 +7,11 @@ import styles from './editable-text-block.module.scss';
 
 type Props = {
   blockType: TBlockTextType;
+  datas: IParagraphData[];
   contentEditable: boolean;
+  blockId: string;
   html: string;
+  currentIndex: number;
   setTempPostHtmlData: (inputHtml: string) => void;
   setPostHtmlData: (inputHtml: string) => void;
   onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
@@ -21,8 +24,11 @@ type Props = {
 
 const EditableTextBlock: FC<Props> = ({
   blockType,
+  datas,
   contentEditable,
+  blockId,
   html,
+  currentIndex,
   setTempPostHtmlData,
   setPostHtmlData,
   onKeyPress,
@@ -54,8 +60,12 @@ const EditableTextBlock: FC<Props> = ({
     <>
       <EditableElement
         TagName={TagName}
+        datas={datas}
+        blockId={blockId}
+        blockType={blockType}
         contentEditable={contentEditable}
         html={html}
+        currentIndex={currentIndex}
         setTempPostHtmlData={setTempPostHtmlData}
         setPostHtmlData={setPostHtmlData}
         onKeyPress={onKeyPress} // optional, 블록 추가

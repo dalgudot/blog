@@ -26,8 +26,8 @@ export const addInlineCodeBlock = (
         .replace('`', '<code class="inline__code__block">')
         .replace(
           '`',
-          `</code>`
-          // `</code>&nbsp`
+          // `</code>`
+          `</code>&nbsp`
           // &nbsp로 코드 블럭 벗어나기
         );
 

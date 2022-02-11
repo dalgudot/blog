@@ -16,7 +16,6 @@ import { useGetClientPostData } from '../../lib/hooks/useGetClientPostData';
 import { useGetClientTempPostData } from '../../lib/hooks/useGetClientTempPostData';
 import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
 import { IPostData } from '../../redux-toolkit/model/post-data-model';
-import { useInitializeClientData } from '../../lib/hooks/useInitializeClientData';
 import HeadForSEO, { TInfoForSEO } from '../../SEO/headForSEO';
 import { useUpdateVisitors } from '../../lib/hooks/useUpdateVisitors';
 
@@ -34,7 +33,6 @@ const CategoryOrderPost: NextPage<Props> = (props) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const mounted = useMounted();
-  const initializeClientData = useInitializeClientData();
 
   useEffect(() => {
     const SyncServerAndClientData = () => {
@@ -43,9 +41,7 @@ const CategoryOrderPost: NextPage<Props> = (props) => {
     };
     SyncServerAndClientData();
 
-    return () => {
-      initializeClientData();
-    };
+    // return으로 초기화하면 개발 모드에서 데이터 날아가는 문제가 생김
   }, []);
 
   const { post } = useGetClientPostData();
@@ -60,7 +56,7 @@ const CategoryOrderPost: NextPage<Props> = (props) => {
       currentOrder as string,
       tempPost
     );
-    setIsEditMode(false);
+    // setIsEditMode(false);
     showToast('저장 완료');
   };
 
@@ -74,22 +70,23 @@ const CategoryOrderPost: NextPage<Props> = (props) => {
     }
   }, [isAdmin]);
 
+  // console.log('tempPost', tempPost.wysiwygDataArray[0].html);
   // console.log('tempPost', tempPost.wysiwygDataArray);
 
   return (
     <>
       <HeadForSEO info={props.infoForSEOByCategoryOrder.info} />
-      {mounted && <Post contentEditable={contentEditable} postData={post} />}
+      {mounted && <Post contentEditable={isAdmin} postData={post} />}
 
-      {isAdmin && !isEditMode && (
+      {/* {isAdmin && !isEditMode && (
         <>
           <button onClick={editModeHandler} className='admin__button__left'>
             수정
           </button>
         </>
-      )}
+      )} */}
 
-      {contentEditable && (
+      {isAdmin && (
         <>
           <button
             onClick={tempSaveDataToFireStoreDB}

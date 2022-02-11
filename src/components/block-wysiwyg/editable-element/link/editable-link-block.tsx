@@ -1,7 +1,10 @@
 import classNames from 'classnames';
 import { FC, KeyboardEvent } from 'react';
 import { ILinkData } from '../../../../redux-toolkit/model/link-data-model';
-import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
+import {
+  IParagraphData,
+  TBlockType,
+} from '../../../../redux-toolkit/model/post-data-model';
 import IconNewTap24 from '../../../../svg/icon-new-tap-24';
 import EditableElement from '../../editable-element';
 import styles from './editable-link-block.module.scss';
@@ -10,7 +13,11 @@ import UrlInput from './url-input';
 type Props = {
   wysiwygType: 'Normal' | 'Link';
   linkBlockType: 'Paragraph' | 'Reference';
+  datas: IParagraphData[];
+  blockId: string;
+  blockType: TBlockType; // select 바꾸었을 때 paste 다시 등록하기 위해 paste로 전달
   contentEditable: boolean;
+  html: string;
   data: ILinkData;
   currentIndex: number;
   setTempPostHtmlData: (inputHtml: string) => void;
@@ -25,7 +32,11 @@ type Props = {
 const EditableLinkBlock: FC<Props> = ({
   wysiwygType,
   linkBlockType,
+  datas,
+  blockId,
+  blockType,
   contentEditable,
+  html,
   data,
   currentIndex,
   setTempPostHtmlData,
@@ -53,8 +64,12 @@ const EditableLinkBlock: FC<Props> = ({
         >
           <EditableElement
             TagName='p'
+            datas={datas}
+            blockType={blockType}
+            blockId={blockId}
             contentEditable={contentEditable}
-            html={data.html}
+            html={html}
+            currentIndex={currentIndex}
             setTempPostHtmlData={setTempPostHtmlData}
             setPostHtmlData={setPostHtmlData}
             onKeyPress={onKeyPress} // optional, 블록 추가
