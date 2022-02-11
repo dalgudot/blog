@@ -15,6 +15,7 @@ import Footer from '../components/footer/footer';
 import React from 'react';
 import { RecoilRoot } from 'recoil';
 import Modal from '../components/modal/modal';
+import { usePreventRightClick } from '../lib/hooks/usePreventRightClick';
 
 const BlogApp = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
@@ -24,6 +25,8 @@ const BlogApp = ({ Component, pageProps }: AppProps) => {
     router.pathname === '/[category]' ||
     router.pathname === '/story' ||
     router.pathname === '/contact';
+
+  usePreventRightClick();
 
   return (
     <>
