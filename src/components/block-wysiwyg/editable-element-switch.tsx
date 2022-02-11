@@ -120,18 +120,13 @@ const EditableElementSwitch: FC<Props> = ({
 
     // 붙여넣기 command + v
     if (e.metaKey && e.key === 'v') {
-      // console.log('----------------Paste----------------');
       e.preventDefault();
       paste();
     }
   };
 
-  // console.log('eachBlockStateText', eachBlockStateText);
-
   const paste = () => {
     navigator.clipboard.readText().then((clipText) => {
-      // console.log('clipText', clipText);
-
       const htmlData = clipText
         ?.replace(/&/g, '&amp;') // &부터 해야 뒤쪽 <, > replace에 영향 없음!
         .replace(/</g, '&lt;')
@@ -140,40 +135,28 @@ const EditableElementSwitch: FC<Props> = ({
       // 커서나 selection 위치에 따라 붙여넣는 위치 조정 필요
       const newHtml = `${tempEachBlockStateText}${htmlData}`;
 
-      // console.log('newHtml', newHtml);
       setEachBlockStateText(''); // 같은 문자열 복사 후 지우고 다시 붙여넣으면 리액트에서 같다고 판단해 렌더링하지 않는 문제 해결
 
       setCurrentBlockTempPostHtmlData(newHtml);
       setTempEachBlockStateText(newHtml);
-      setEachBlockStateText(newHtml); // 각 블록 렌더링
-      // dispatch(setCurrentBlockTempHtml({ inputHtml: newHtml, currentIndex }));
+      setEachBlockStateText(newHtml); // 현재 블록만 렌더링
     });
   };
 
   // onInput에서 이용
   const setCurrentBlockTempPostHtmlData = (inputHtml: string) => {
-    // currentIndex 인자로 넣어 props로 전달
-    // map 안 쓰는 block에서는 다른 함수로 props 전달
     if (wysiwygType === 'Link') {
       dispatch(setCurrentLinkBlockTempHtml({ inputHtml, currentIndex }));
     } else {
       dispatch(setCurrentBlockTempHtml({ inputHtml, currentIndex }));
     }
 
-    // 리덕스에서 tempHtml을 가져오면 계속 전체 리렌더가 일어나기 때문에 해당 컴포넌트의 state로 관리
-    setTempEachBlockStateText(inputHtml);
+    setTempEachBlockStateText(inputHtml); // 리덕스에서 tempHtml을 가져오면 계속 전체 리렌더가 일어나기 때문에 해당 컴포넌트의 state로 관리
   };
 
   // updateInlineBlock에서 이용
   const setCurrentBlockPostHtmlData = (inputHtml: string) => {
-    // currentIndex 인자로 넣어 props로 전달
-    // map 안 쓰는 block에서는 다른 함수로 props 전달
-    setEachBlockStateText(inputHtml);
-    if (wysiwygType === 'Link') {
-      // dispatch(setCurrentLinkBlockHtml({ inputHtml, currentIndex }));
-    } else {
-      // dispatch(setCurrentBlockHtml({ inputHtml, currentIndex }));
-    }
+    setEachBlockStateText(inputHtml); // 현재 블록만 렌더링
   };
 
   const addBlockFocusUseEffectDependency = datas[currentIndex];
@@ -248,7 +231,7 @@ const EditableElementSwitch: FC<Props> = ({
             contentEditable={contentEditable}
             html={eachBlockStateText}
             setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
-            setPostHtmlData={setCurrentBlockPostHtmlData} // `` 때문에 필요
+            setPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
             addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}

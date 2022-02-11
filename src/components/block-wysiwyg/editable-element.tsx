@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import DOMPurify from 'dompurify';
-import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FC, KeyboardEvent } from 'react';
 import { useEditable } from '../../lib/hooks/useEditable';
 import { addInlineCodeBlock } from '../../lib/utils/editable-block/add-inline-code-block';
 import { IParagraphData } from '../../redux-toolkit/model/post-data-model';
