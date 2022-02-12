@@ -3,6 +3,7 @@ import DOMPurify from 'dompurify';
 import { ChangeEvent, FC, KeyboardEvent, MutableRefObject } from 'react';
 import { useEditable } from '../../lib/hooks/useEditable';
 import { addInlineCodeBlock } from '../../lib/utils/editable-block/add-inline-code-block';
+import { replaceCaret } from '../../lib/utils/focus-content-editable-text-to-end';
 import { IParagraphData } from '../../redux-toolkit/model/post-data-model';
 import styles from './editable-element.module.scss';
 
@@ -52,15 +53,10 @@ const EditableElement: FC<Props> = ({
     addInlineCodeBlock(
       inputHtml,
       setCurrentBlockTempPostHtmlData,
-      setCurrentBlockPostHtmlData
+      setCurrentBlockPostHtmlData,
+      eachRef
     );
   };
-
-  // const ref = useEditable(
-  //   html,
-  //   addBlockFocusUseEffectDependency,
-  //   removeCurrentBlockFocusUseEffectDependency
-  // );
 
   return (
     <TagName

@@ -28,6 +28,7 @@ import styles from './editable-element.module.scss';
 import { ICodeData } from '../../redux-toolkit/model/code-data-model';
 import { paste } from '../../lib/utils/editable-block/paste';
 import { useEditable } from '../../lib/hooks/useEditable';
+import { focusContentEditableTextToEnd } from '../../lib/utils/focus-content-editable-text-to-end';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';

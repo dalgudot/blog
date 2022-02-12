@@ -44,14 +44,17 @@ export const paste = (
       tempEachBlockStateTextArray.join('');
 
     // &부터 해야 뒤쪽 <, > replace에 영향 없음!
-    newHtml = `${selectionRemovedtempEachBlockStateText}`
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
+    newHtml = `${selectionRemovedtempEachBlockStateText}`;
+    // .replace(/&/g, '&amp;')
+    // .replace(/</g, '&lt;')
+    // .replace(/>/g, '&gt;');
+
+    console.log('newHtml', newHtml);
 
     setPasteData(newHtml);
-    focusCaretAfterClipText(eachRef, smallOffset, clipText, selection);
+
     // setPasteData 데이터 업데이트 이후에 caret 위치 조정
+    focusCaretAfterClipText(eachRef, smallOffset, clipText, selection);
   });
 };
 
@@ -68,8 +71,8 @@ const focusCaretAfterClipText = (
   // replace 처리된 htmlClipText가 아닌 clipText 원본으로 해야 length 정확히 맞음
 
   const newRange = document.createRange();
-  newCaretPosition && newRange.setStart(targetNode, newCaretPosition);
-  newCaretPosition && newRange.setEnd(targetNode, newCaretPosition);
+  newCaretPosition !== false && newRange.setStart(targetNode, newCaretPosition);
+  // newCaretPosition && newRange.setEnd(targetNode, newCaretPosition);
   // 앞쪽 셀렉션 지점(smallOffset)에서 붙여넣는 텍스트 길이만큼 뒤쪽에 커서 위치
 
   selection && selection.removeAllRanges();
