@@ -5,8 +5,7 @@ import { IParagraphData } from '../../redux-toolkit/model/post-data-model';
 export const useEditable = (
   html: string,
   addBlockFocusUseEffectDependency: IParagraphData,
-  removeCurrentBlockFocusUseEffectDependency: IParagraphData,
-  setPasteData: (newHtml: string) => void
+  removeCurrentBlockFocusUseEffectDependency: IParagraphData
 ) => {
   // 블록 안에 ``을 추가하거나 블록을 지울 때의 focusing은 여기가 아닌 <EditableElementSwitch />에서 관리해야 함.
   const ref = useRef<HTMLHeadingElement | HTMLParagraphElement | any>(null);

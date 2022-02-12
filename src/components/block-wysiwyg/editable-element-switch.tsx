@@ -157,8 +157,7 @@ const EditableElementSwitch: FC<Props> = ({
   const eachRef = useEditable(
     eachBlockStateText,
     addBlockFocusUseEffectDependency,
-    removeCurrentBlockFocusUseEffectDependency,
-    setPasteData
+    removeCurrentBlockFocusUseEffectDependency
   );
 
   const switchBlocks = () => {
