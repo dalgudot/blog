@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { checkPublishedDate } from '../../../../lib/utils/get-date';
 import { TStatus } from '../../../../redux-toolkit/model/post-data-model';
 import { setArticleTitleData } from '../../../../redux-toolkit/slices/post-slice';
@@ -39,16 +39,19 @@ const TitleWYSIWYG: FC<Props> = ({
     dispatch(setArticleTitleData({ inputHtml }));
   };
 
+  const ref = useRef<HTMLHeadingElement>(null);
+
   return (
     <>
       <section className={styles.article__title__section}>
         <time dateTime={seoDate}>{displayDate}</time>
         <EditableTextBlock
+          eachRef={ref}
           blockType='Heading1'
           contentEditable={contentEditable}
           html={title}
-          setTempPostHtmlData={setTempPostHtmlData}
-          setPostHtmlData={setPostHtmlData}
+          setCurrentBlockTempPostHtmlData={setTempPostHtmlData}
+          setCurrentBlockPostHtmlData={setPostHtmlData}
           placeholder='글의 제목을 입력해주세요'
         />
         <Profile />

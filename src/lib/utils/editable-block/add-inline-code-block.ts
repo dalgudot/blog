@@ -1,12 +1,12 @@
 export const addInlineCodeBlock = (
   inputHtml: string,
-  setTempPostHtmlData: (inputHtml: string) => void,
-  setPostHtmlData: (inputHtml: string) => void
+  setCurrentBlockTempPostHtmlData: (inputHtml: string) => void,
+  setCurrentBlockPostHtmlData: (inputHtml: string) => void
 ) => {
   const countBacktick = inputHtml.match(/`/g)?.length;
   const updateInlineBlock = (inputHtml: string) => {
-    setTempPostHtmlData(inputHtml);
-    setPostHtmlData(inputHtml);
+    setCurrentBlockTempPostHtmlData(inputHtml);
+    setCurrentBlockPostHtmlData(inputHtml);
   };
 
   if (countBacktick === 2) {
@@ -26,8 +26,8 @@ export const addInlineCodeBlock = (
         .replace('`', '<code class="inline__code__block">')
         .replace(
           '`',
-          `</code>`
-          // `</code>&nbsp`
+          // `</code>`
+          `</code>&nbsp`
           // &nbsp로 코드 블럭 벗어나기
         );
 

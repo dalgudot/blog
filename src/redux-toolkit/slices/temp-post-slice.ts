@@ -20,6 +20,7 @@ export const tempPostSlice = createSlice({
       state,
       action: PayloadAction<{ inputHtml: string; currentIndex: number }>
     ) => {
+      // console.log('redux', action.payload.currentIndex);
       state.tempPost.wysiwygDataArray[action.payload.currentIndex].html =
         action.payload.inputHtml;
     },

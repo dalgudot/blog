@@ -4,9 +4,6 @@ import {
   addNewLinkBlock,
   removeCurrentBlock,
   removeLinkBlock,
-  setBlockTypeData,
-  setCurrentBlockHtml,
-  setCurrentLinkBlockHtml,
 } from '../../redux-toolkit/slices/post-slice';
 import {
   addTempNewBlock,
@@ -29,6 +26,8 @@ import EditableCodeBlock from './editable-element/code/editable-code-block';
 import EditableImageBlock from './editable-element/image/editable-image-block';
 import styles from './editable-element.module.scss';
 import { ICodeData } from '../../redux-toolkit/model/code-data-model';
+import { paste } from '../../lib/utils/editable-block/paste';
+import { useEditable } from '../../lib/hooks/useEditable';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
@@ -47,33 +46,39 @@ const EditableElementSwitch: FC<Props> = ({
   datas,
   currentIndex,
 }) => {
-  const [type, setType] = useState<TBlockType>('Paragraph');
-  const [text, setText] = useState<string>(''); // block 지울 떄 활용
+  // console.log(currentIndex, 'data.html', data.html);
+  // data.html은 최초 초기화만 해주는 역할. 초기화 이후 어디서도 업데이트하지 않음.
+  // 업데이트는 각 컴포넌트의 setTempEachBlockStateText, setEachBlockStateText로 컴포넌트별 렌더링으로 성능 극대화
+  const [type, setType] = useState<TBlockType>(data.blockType);
+  const [tempEachBlockStateText, setTempEachBlockStateText] = useState<string>(
+    data.html
+  ); // block 지울 때 활용
+  const [eachBlockStateText, setEachBlockStateText] = useState<string>(
+    data.html
+  ); // add inline code block처럼 전체 렌더링이 아닌 블럭 개별 렌더링만 할 때
   const dispatch = useAppDispatch();
   const datasLength = datas.length;
 
-  // new -> draft로 이동 시 첫 번째 블럭이 paragraph로 남는 현상 해결
   useEffect(() => {
     setType(data.blockType);
   }, [data.blockType]);
+  // console.log(currentIndex, data.blockType, type);
 
   useEffect(() => {
-    setText(data.html);
+    setTempEachBlockStateText(data.html);
+    setEachBlockStateText(data.html);
   }, [data.html]);
+  // console.log(currentIndex, tempEachBlockStateText, eachBlockStateText);
 
   const changeBlockType = (e: ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault();
     const newBlockType = e.target.value as TBlockType;
 
-    // 해당 blockType만 업데이트하고 렌더링하기 위해
-    // tempPost 데이터의 html 가져오면 모든 블럭이 업데이트됨.
-    setType(newBlockType);
+    setType(newBlockType); // 해당 blockType만 업데이트하고 렌더링하기 위해
     dispatch(setTempBlockTypeData({ newBlockType, currentIndex }));
-    // 다른 업데이트에서 post 데이터에는 html이 업데이트되지 않았기 때문에 여기서는 동기화시켜줘야 타입을 바꿔도 html 유지!
-    dispatch(setCurrentBlockHtml({ inputHtml: text, currentIndex }));
-    dispatch(setBlockTypeData({ newBlockType, currentIndex }));
   };
 
+  // *** [배열 업데이트] 초기화 데이터는 addBlock()과 removeBlock()에서만 업데이트! -> *** 배열 업데이트 위해
   const addBlock = () => {
     const isEnd: boolean = currentIndex === datasLength - 1;
 
@@ -81,11 +86,8 @@ const EditableElementSwitch: FC<Props> = ({
       dispatch(addNewLinkBlock({ currentIndex, isEnd }));
       dispatch(addTempNewLinkBlock({ currentIndex, isEnd }));
     } else {
-      // wysiwygType === 'Normal'인 일반적인 경우
-      // 새로운 블럭 그리기 위해
-      dispatch(addNewBlock({ currentIndex, isEnd }));
-      // 데이터 저장하기 위해
-      dispatch(addTempNewBlock({ currentIndex, isEnd }));
+      dispatch(addNewBlock({ currentIndex, isEnd })); // 새로운 블럭 그리기 위해
+      dispatch(addTempNewBlock({ currentIndex, isEnd })); // 데이터 저장하기 위해
     }
   };
 
@@ -100,7 +102,8 @@ const EditableElementSwitch: FC<Props> = ({
   };
 
   const onKeyPress = (e: KeyboardEvent<HTMLElement>) => {
-    if (e.key === 'Enter') {
+    // shift + Enter는 줄바꿈
+    if (!e.shiftKey && e.key === 'Enter') {
       e.preventDefault();
       addBlock();
     }
@@ -108,52 +111,68 @@ const EditableElementSwitch: FC<Props> = ({
 
   const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
     // html 텍스트가 없고, 블록이 2개 이상이고, Backspace를 누른 경우
-    if (text === '' && datasLength > 1 && e.key === 'Backspace') {
+    if (
+      tempEachBlockStateText === '' &&
+      datasLength > 1 &&
+      e.key === 'Backspace'
+    ) {
       e.preventDefault();
       removeBlock();
     }
+
+    // 붙여넣기 command + v
+    if (e.metaKey && e.key === 'v') {
+      e.preventDefault();
+      paste(tempEachBlockStateText, setPasteData, eachRef);
+    }
+  };
+
+  // const [selection, setSelection] = useRecoilState(selectionState);
+  const setPasteData = (newHtml: string) => {
+    setEachBlockStateText(''); // 같은 문자열 복사 후 지우고 다시 붙여넣으면 리액트에서 같다고 판단해 렌더링하지 않는 문제 해결
+    setCurrentBlockTempPostHtmlData(newHtml);
+    setTempEachBlockStateText(newHtml);
+    setEachBlockStateText(newHtml); // 현재 블록만 렌더링
   };
 
   // onInput에서 이용
   const setCurrentBlockTempPostHtmlData = (inputHtml: string) => {
-    // currentIndex 인자로 넣어 props로 전달
-    // map 안 쓰는 block에서는 다른 함수로 props 전달
     if (wysiwygType === 'Link') {
       dispatch(setCurrentLinkBlockTempHtml({ inputHtml, currentIndex }));
     } else {
       dispatch(setCurrentBlockTempHtml({ inputHtml, currentIndex }));
     }
 
-    // 리덕스에서 tempHtml을 가져오면 계속 전체 리렌더가 일어나기 때문에 해당 컴포넌트의 state로 관리
-    setText(inputHtml);
+    setTempEachBlockStateText(inputHtml); // 리덕스에서 tempHtml을 가져오면 계속 전체 리렌더가 일어나기 때문에 해당 컴포넌트의 state로 관리
   };
 
   // updateInlineBlock에서 이용
   const setCurrentBlockPostHtmlData = (inputHtml: string) => {
-    // currentIndex 인자로 넣어 props로 전달
-    // map 안 쓰는 block에서는 다른 함수로 props 전달
-    if (wysiwygType === 'Link') {
-      dispatch(setCurrentLinkBlockHtml({ inputHtml, currentIndex }));
-    } else {
-      dispatch(setCurrentBlockHtml({ inputHtml, currentIndex }));
-    }
+    setEachBlockStateText(inputHtml); // 현재 블록만 렌더링
   };
 
   const addBlockFocusUseEffectDependency = datas[currentIndex];
   const removeCurrentBlockFocusUseEffectDependency = datas[currentIndex + 1];
+
+  const eachRef = useEditable(
+    eachBlockStateText,
+    addBlockFocusUseEffectDependency,
+    removeCurrentBlockFocusUseEffectDependency
+  );
 
   const switchBlocks = () => {
     switch (type) {
       case 'Image':
         return (
           <EditableImageBlock
-            contentEditable={contentEditable}
-            html={data.html}
-            imageDownloadURL={data.url}
             blockId={data.blockId}
+            eachRef={eachRef}
+            contentEditable={contentEditable}
+            html={eachBlockStateText}
+            imageDownloadURL={data.url}
             currentIndex={currentIndex}
-            setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
-            setPostHtmlData={setCurrentBlockPostHtmlData}
+            setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+            setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
             addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
@@ -169,11 +188,13 @@ const EditableElementSwitch: FC<Props> = ({
           <EditableLinkBlock
             wysiwygType={wysiwygType}
             linkBlockType={linkBlockType}
+            eachRef={eachRef}
             contentEditable={contentEditable}
+            html={eachBlockStateText}
             data={data as ILinkData}
             currentIndex={currentIndex}
-            setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
-            setPostHtmlData={setCurrentBlockPostHtmlData}
+            setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+            setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
             addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
@@ -187,11 +208,13 @@ const EditableElementSwitch: FC<Props> = ({
       case 'Code':
         return (
           <EditableCodeBlock
+            eachRef={eachRef}
             contentEditable={contentEditable}
             data={data as ICodeData}
+            html={eachBlockStateText}
             currentIndex={currentIndex}
-            setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
-            // setPostHtmlData={setCurrentBlockPostHtmlData}
+            setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+            // setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
             addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
@@ -206,10 +229,11 @@ const EditableElementSwitch: FC<Props> = ({
         return (
           <EditableTextBlock
             blockType={type}
+            eachRef={eachRef}
             contentEditable={contentEditable}
-            html={data.html}
-            setTempPostHtmlData={setCurrentBlockTempPostHtmlData}
-            setPostHtmlData={setCurrentBlockPostHtmlData} // `` 때문에 필요
+            html={eachBlockStateText}
+            setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+            setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
             addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
@@ -225,18 +249,23 @@ const EditableElementSwitch: FC<Props> = ({
   return (
     <>
       {contentEditable && wysiwygType !== 'Link' ? (
-        <div className={styles.edit__block__type__editable__element__switch}>
-          <select value={type} onChange={changeBlockType}>
-            <option value='Paragraph'>Paragraph</option>
-            <option value='Heading1'>Heading1</option>
-            <option value='Heading2'>Heading2</option>
-            <option value='Heading3'>Heading3</option>
-            <option value='Image'>Image</option>
-            <option value='Code'>Code</option>
-            <option value='Link'>Link</option>
-          </select>
-          {switchBlocks()}
-        </div>
+        <>
+          <div className={styles.edit__block__type__editable__element__switch}>
+            <select value={type} onChange={changeBlockType}>
+              <option value='Paragraph'>Paragraph</option>
+              <option value='Heading1'>Heading1</option>
+              <option value='Heading2'>Heading2</option>
+              <option value='Heading3'>Heading3</option>
+              <option value='Image'>Image</option>
+              <option value='Code'>Code</option>
+              <option value='Link'>Link</option>
+            </select>
+            {switchBlocks()}
+          </div>
+          <span className={styles.currentIndex__wrapper}>
+            <span className={styles.currentIndex}>{currentIndex}</span>
+          </span>
+        </>
       ) : (
         <>{switchBlocks()}</>
       )}

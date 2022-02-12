@@ -21,8 +21,8 @@ import { FC } from 'react';
 // type Props = {
 //   contentEditable: boolean;
 //   html: string;
-//   setTempPostHtmlData: (inputHtml: string) => void;
-//   // setPostHtmlData: (inputHtml: string) => void;
+//   setCurrentBlockTempPostHtmlData: (inputHtml: string) => void;
+//   // setCurrentBlockPostHtmlData: (inputHtml: string) => void;
 //   onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
 //   onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
 //   addBlockFocusUseEffectDependency?: IParagraphData;
@@ -33,8 +33,8 @@ import { FC } from 'react';
 // const EditableCodeBlockTest: FC<Props> = ({
 //   contentEditable,
 //   html,
-//   setTempPostHtmlData,
-//   // setPostHtmlData,
+//   setCurrentBlockTempPostHtmlData,
+//   // setCurrentBlockPostHtmlData,
 //   onKeyPress,
 //   onKeyDown,
 //   addBlockFocusUseEffectDependency,
@@ -48,7 +48,7 @@ import { FC } from 'react';
 //   }, [codeString]);
 
 //   const syncTempPostWithPasteText = (newInnerPasteText: string) => {
-//     setTempPostHtmlData(newInnerPasteText);
+//     setCurrentBlockTempPostHtmlData(newInnerPasteText);
 //     setCodeString(newInnerPasteText);
 //   };
 
@@ -63,7 +63,7 @@ import { FC } from 'react';
 //     // const inputHtml = DOMPurify.sanitize(e.target.innerHTML);
 //     const inputHtml = e.target.innerHTML;
 //     // setCodeString(inputHtml);
-//     setTempPostHtmlData(inputHtml);
+//     setCurrentBlockTempPostHtmlData(inputHtml);
 //   };
 
 //   const language = 'language-html';
