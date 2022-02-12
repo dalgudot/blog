@@ -3,6 +3,7 @@ import {
   Dispatch,
   FC,
   KeyboardEvent,
+  MutableRefObject,
   SetStateAction,
   useEffect,
   useState,
@@ -20,6 +21,7 @@ import { useAppDispatch } from '../../../../redux-toolkit/store';
 import { setCurrentCodeBlockTempCodeLanguage } from '../../../../redux-toolkit/slices/temp-post-slice';
 
 type Props = {
+  eachRef: MutableRefObject<any>;
   contentEditable: boolean;
   data: ICodeData;
   html: string;
@@ -34,6 +36,7 @@ type Props = {
 };
 
 const EditableCodeBlock: FC<Props> = ({
+  eachRef,
   contentEditable,
   data,
   html,

@@ -27,6 +27,7 @@ import EditableImageBlock from './editable-element/image/editable-image-block';
 import styles from './editable-element.module.scss';
 import { ICodeData } from '../../redux-toolkit/model/code-data-model';
 import { paste } from '../../lib/utils/editable-block/paste';
+import { useEditable } from '../../lib/hooks/useEditable';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
@@ -122,10 +123,11 @@ const EditableElementSwitch: FC<Props> = ({
     // 붙여넣기 command + v
     if (e.metaKey && e.key === 'v') {
       e.preventDefault();
-      paste(tempEachBlockStateText, setPasteData);
+      paste(tempEachBlockStateText, setPasteData, eachRef);
     }
   };
 
+  // const [selection, setSelection] = useRecoilState(selectionState);
   const setPasteData = (newHtml: string) => {
     setEachBlockStateText(''); // 같은 문자열 복사 후 지우고 다시 붙여넣으면 리액트에서 같다고 판단해 렌더링하지 않는 문제 해결
     setCurrentBlockTempPostHtmlData(newHtml);
@@ -152,12 +154,20 @@ const EditableElementSwitch: FC<Props> = ({
   const addBlockFocusUseEffectDependency = datas[currentIndex];
   const removeCurrentBlockFocusUseEffectDependency = datas[currentIndex + 1];
 
+  const eachRef = useEditable(
+    eachBlockStateText,
+    addBlockFocusUseEffectDependency,
+    removeCurrentBlockFocusUseEffectDependency,
+    setPasteData
+  );
+
   const switchBlocks = () => {
     switch (type) {
       case 'Image':
         return (
           <EditableImageBlock
             blockId={data.blockId}
+            eachRef={eachRef}
             contentEditable={contentEditable}
             html={eachBlockStateText}
             imageDownloadURL={data.url}
@@ -179,6 +189,7 @@ const EditableElementSwitch: FC<Props> = ({
           <EditableLinkBlock
             wysiwygType={wysiwygType}
             linkBlockType={linkBlockType}
+            eachRef={eachRef}
             contentEditable={contentEditable}
             html={eachBlockStateText}
             data={data as ILinkData}
@@ -198,6 +209,7 @@ const EditableElementSwitch: FC<Props> = ({
       case 'Code':
         return (
           <EditableCodeBlock
+            eachRef={eachRef}
             contentEditable={contentEditable}
             data={data as ICodeData}
             html={eachBlockStateText}
@@ -218,6 +230,7 @@ const EditableElementSwitch: FC<Props> = ({
         return (
           <EditableTextBlock
             blockType={type}
+            eachRef={eachRef}
             contentEditable={contentEditable}
             html={eachBlockStateText}
             setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
@@ -237,18 +250,23 @@ const EditableElementSwitch: FC<Props> = ({
   return (
     <>
       {contentEditable && wysiwygType !== 'Link' ? (
-        <div className={styles.edit__block__type__editable__element__switch}>
-          <select value={type} onChange={changeBlockType}>
-            <option value='Paragraph'>Paragraph</option>
-            <option value='Heading1'>Heading1</option>
-            <option value='Heading2'>Heading2</option>
-            <option value='Heading3'>Heading3</option>
-            <option value='Image'>Image</option>
-            <option value='Code'>Code</option>
-            <option value='Link'>Link</option>
-          </select>
-          {switchBlocks()}
-        </div>
+        <>
+          <div className={styles.edit__block__type__editable__element__switch}>
+            <select value={type} onChange={changeBlockType}>
+              <option value='Paragraph'>Paragraph</option>
+              <option value='Heading1'>Heading1</option>
+              <option value='Heading2'>Heading2</option>
+              <option value='Heading3'>Heading3</option>
+              <option value='Image'>Image</option>
+              <option value='Code'>Code</option>
+              <option value='Link'>Link</option>
+            </select>
+            {switchBlocks()}
+          </div>
+          <span className={styles.currentIndex__wrapper}>
+            <span className={styles.currentIndex}>{currentIndex}</span>
+          </span>
+        </>
       ) : (
         <>{switchBlocks()}</>
       )}

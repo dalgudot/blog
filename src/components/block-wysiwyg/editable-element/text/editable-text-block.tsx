@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { FC, KeyboardEvent } from 'react';
+import { FC, KeyboardEvent, MutableRefObject } from 'react';
 import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
 import { TBlockTextType } from '../../../../redux-toolkit/model/text-data-model';
 import EditableElement from '../../editable-element';
@@ -7,6 +7,7 @@ import styles from './editable-text-block.module.scss';
 
 type Props = {
   blockType: TBlockTextType;
+  eachRef: MutableRefObject<any>;
   contentEditable: boolean;
   html: string;
   setCurrentBlockTempPostHtmlData: (inputHtml: string) => void;
@@ -21,6 +22,7 @@ type Props = {
 
 const EditableTextBlock: FC<Props> = ({
   blockType,
+  eachRef,
   contentEditable,
   html,
   setCurrentBlockTempPostHtmlData,
@@ -54,6 +56,7 @@ const EditableTextBlock: FC<Props> = ({
     <>
       <EditableElement
         TagName={TagName}
+        eachRef={eachRef}
         contentEditable={contentEditable}
         html={html}
         setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}

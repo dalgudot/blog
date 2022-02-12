@@ -9,13 +9,23 @@
 
   select:nth-child(1) {
     position: absolute;
-    top: 5px;
+    top: 7px;
     left: -120px;
   }
 
   select:nth-child(2) {
     position: absolute;
-    top: 48px;
+    top: 44px;
     left: -120px;
   }
+}
+
+.currentIndex__wrapper {
+  position: relative;
+}
+
+.currentIndex {
+  position: absolute;
+  top: -30px;
+  left: -144px;
 }

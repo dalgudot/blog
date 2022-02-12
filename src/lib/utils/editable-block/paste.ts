@@ -1,7 +1,10 @@
+import { MutableRefObject } from 'react';
+
 // https://gdtbgl93.tistory.com/175
 export const paste = (
   tempEachBlockStateText: string,
-  setPasteData: (newHtml: string) => void
+  setPasteData: (newHtml: string) => void,
+  eachRef: MutableRefObject<any>
 ) => {
   navigator.clipboard.readText().then((clipText) => {
     const htmlClipText = clipText
@@ -21,6 +24,8 @@ export const paste = (
       ((selection?.anchorOffset < selection?.focusOffset
         ? selection?.focusOffset
         : selection?.anchorOffset) as number);
+
+    console.log(smallOffset, largeOffset);
 
     const isNotNullOffset = largeOffset !== null && smallOffset !== null;
     const rangeLength = isNotNullOffset && largeOffset - smallOffset;
@@ -48,10 +53,27 @@ export const paste = (
         tempEachBlockStateTextArray.join('');
 
       newHtml = `${selectionRemovedtempEachBlockStateText}`;
+
+      // selection?.getRangeAt(0).insertNode(document.createTextNode(newHtml));
     } else {
       newHtml = `${tempEachBlockStateText}${htmlClipText}`;
     }
 
     setPasteData(newHtml);
+
+    if (isSelectionPaste) {
+      // console.log(eachRef.current);
+      const targetNode = eachRef.current.childNodes[0];
+      console.log(targetNode);
+
+      const newRange = document.createRange();
+      // !== null 해야 0일 때도 작동 -> 0은 false!
+      smallOffset !== null &&
+        newRange.setStart(targetNode, smallOffset + htmlClipText.length); // 앞쪽 셀렉션 지점(smallOffset)에서 붙여넣는 텍스트 길이만큼 뒤쪽에 커서 위치
+      // smallOffset && newRange.setEnd(targetNode, smallOffset);
+
+      selection && selection.removeAllRanges();
+      selection && selection.addRange(newRange);
+    }
   });
 };

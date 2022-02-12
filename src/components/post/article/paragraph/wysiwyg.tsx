@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import { FC } from 'react';
 import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
 import EditableElementSwitch from '../../../block-wysiwyg/editable-element-switch';
 

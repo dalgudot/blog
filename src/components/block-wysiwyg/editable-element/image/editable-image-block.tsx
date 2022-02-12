@@ -1,4 +1,10 @@
-import { FC, KeyboardEvent, useEffect, useState } from 'react';
+import {
+  FC,
+  KeyboardEvent,
+  MutableRefObject,
+  useEffect,
+  useState,
+} from 'react';
 import styles from './editable-image-block.module.scss';
 import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
 import UploadImage from './upload-image';
@@ -13,6 +19,7 @@ import { useToast } from '@dalgu/react-toast';
 import Image from 'next/image';
 
 type Props = {
+  eachRef: MutableRefObject<any>;
   contentEditable: boolean;
   html: string;
   imageDownloadURL: string;
@@ -28,6 +35,7 @@ type Props = {
 };
 
 const EditableImageBlock: FC<Props> = ({
+  eachRef,
   contentEditable,
   html,
   imageDownloadURL,
@@ -96,6 +104,7 @@ const EditableImageBlock: FC<Props> = ({
         )}
         <EditableElement
           TagName='figcaption'
+          eachRef={eachRef}
           contentEditable={contentEditable}
           html={html}
           setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}

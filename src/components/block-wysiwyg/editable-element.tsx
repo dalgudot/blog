@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import DOMPurify from 'dompurify';
-import { ChangeEvent, FC, KeyboardEvent } from 'react';
+import { ChangeEvent, FC, KeyboardEvent, MutableRefObject } from 'react';
 import { useEditable } from '../../lib/hooks/useEditable';
 import { addInlineCodeBlock } from '../../lib/utils/editable-block/add-inline-code-block';
 import { IParagraphData } from '../../redux-toolkit/model/post-data-model';
@@ -8,6 +8,7 @@ import styles from './editable-element.module.scss';
 
 type Props = {
   TagName: 'h1' | 'h2' | 'h3' | 'p' | 'code' | 'figcaption';
+  eachRef: MutableRefObject<any>;
   contentEditable: boolean;
   html: string;
   setCurrentBlockTempPostHtmlData: (inputHtml: string) => void;
@@ -23,6 +24,7 @@ type Props = {
 // 개별로 쓸 수 있도록 만들거나, map()으로 블록 만들 때도 쓸 수 있도록 만든 컴포넌트 > 아마 텍스트에만 쓰일 듯.
 const EditableElement: FC<Props> = ({
   TagName,
+  eachRef,
   contentEditable = false,
   html,
   setCurrentBlockTempPostHtmlData,
@@ -54,15 +56,15 @@ const EditableElement: FC<Props> = ({
     );
   };
 
-  const ref = useEditable(
-    html,
-    addBlockFocusUseEffectDependency,
-    removeCurrentBlockFocusUseEffectDependency
-  );
+  // const ref = useEditable(
+  //   html,
+  //   addBlockFocusUseEffectDependency,
+  //   removeCurrentBlockFocusUseEffectDependency
+  // );
 
   return (
     <TagName
-      ref={ref}
+      ref={eachRef}
       contentEditable={contentEditable}
       suppressContentEditableWarning={contentEditable}
       // *** [KEY] dangerouslySetInnerHTML로 들어가는 html에서 정규식 변환된 "&amp;", "&lt;" ,"&gt;"는 텍스트로, < > &는 html 요소로 렌더링한다!

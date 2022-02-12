@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { FC, KeyboardEvent } from 'react';
+import { FC, KeyboardEvent, MutableRefObject } from 'react';
 import { ILinkData } from '../../../../redux-toolkit/model/link-data-model';
 import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
 import IconNewTap24 from '../../../../svg/icon-new-tap-24';
@@ -10,6 +10,7 @@ import UrlInput from './url-input';
 type Props = {
   wysiwygType: 'Normal' | 'Link';
   linkBlockType: 'Paragraph' | 'Reference';
+  eachRef: MutableRefObject<any>;
   contentEditable: boolean;
   html: string;
   data: ILinkData;
@@ -26,6 +27,7 @@ type Props = {
 const EditableLinkBlock: FC<Props> = ({
   wysiwygType,
   linkBlockType,
+  eachRef,
   contentEditable,
   html,
   data,
@@ -55,6 +57,7 @@ const EditableLinkBlock: FC<Props> = ({
         >
           <EditableElement
             TagName='p'
+            eachRef={eachRef}
             contentEditable={contentEditable}
             html={html}
             setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
