@@ -27,7 +27,7 @@ export const addInlineCodeBlock = (
   // console.log('secoundBacktickPosition', secoundBacktickPosition);
 
   const frontTag = '<code class="inline__code__block">';
-  const backTag = '</code>&nbsp';
+  const backTag = '</code>\u00A0';
   const frontTagLength = frontTag.length;
   const backTagLength = backTag.length;
 
@@ -38,7 +38,7 @@ export const addInlineCodeBlock = (
       // 2개 연속(``)이면 빈 inline Code Block 생성
       const emptyCodeInlineBlock = inputHtml.replace(
         '``',
-        `${frontTag}&nbsp${backTag}`
+        `${frontTag}\u00A0${backTag}`
       );
 
       updateInlineBlock(emptyCodeInlineBlock);
@@ -47,7 +47,7 @@ export const addInlineCodeBlock = (
       const addBacktick = inputHtml.replace('`', frontTag).replace(
         '`',
         backTag
-        // &nbsp로 코드 블럭 벗어나기
+        // (&nbsp;)로 코드 블럭 벗어나기
       );
 
       updateInlineBlock(addBacktick);

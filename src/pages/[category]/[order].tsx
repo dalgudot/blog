@@ -18,6 +18,7 @@ import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
 import { IPostData } from '../../redux-toolkit/model/post-data-model';
 import HeadForSEO, { TInfoForSEO } from '../../SEO/headForSEO';
 import { useUpdateVisitors } from '../../lib/hooks/useUpdateVisitors';
+import { useInitializeClientData } from '../../lib/hooks/useInitializeClientData';
 
 type Props = {
   post: IPostData;
@@ -31,6 +32,7 @@ const CategoryOrderPost: NextPage<Props> = (props) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const mounted = useMounted();
+  const initializeClientData = useInitializeClientData();
 
   useEffect(() => {
     const SyncServerAndClientData = () => {
@@ -38,7 +40,10 @@ const CategoryOrderPost: NextPage<Props> = (props) => {
       dispatch(setTempPostData(props.post)); // 데이터 저장 위해(contentEditable 요소가 매번 렌더링될 때마다 생기는 문제 방지)
     };
     SyncServerAndClientData();
-    // *** return X *** return으로 초기화하면 개발 모드에서 데이터 날아가는 문제가 생김
+
+    return () => {
+      initializeClientData();
+    };
   }, []);
 
   const { post } = useGetClientPostData();
