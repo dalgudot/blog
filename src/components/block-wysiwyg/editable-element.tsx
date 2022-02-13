@@ -9,7 +9,7 @@ import styles from './editable-element.module.scss';
 
 type Props = {
   TagName: 'h1' | 'h2' | 'h3' | 'p' | 'code' | 'figcaption';
-  eachRef: MutableRefObject<any>;
+  eachBlockRef: MutableRefObject<any>;
   contentEditable: boolean;
   html: string;
   setCurrentBlockTempPostHtmlData: (inputHtml: string) => void;
@@ -25,7 +25,7 @@ type Props = {
 // 개별로 쓸 수 있도록 만들거나, map()으로 블록 만들 때도 쓸 수 있도록 만든 컴포넌트 > 아마 텍스트에만 쓰일 듯.
 const EditableElement: FC<Props> = ({
   TagName,
-  eachRef,
+  eachBlockRef,
   contentEditable = false,
   html,
   setCurrentBlockTempPostHtmlData,
@@ -55,7 +55,7 @@ const EditableElement: FC<Props> = ({
       inputHtml,
       setCurrentBlockTempPostHtmlData,
       setCurrentBlockPostHtmlData,
-      eachRef
+      eachBlockRef
     );
 
     // console.log('inputHtml', inputHtml);
@@ -63,7 +63,7 @@ const EditableElement: FC<Props> = ({
 
   return (
     <TagName
-      ref={eachRef}
+      ref={eachBlockRef}
       contentEditable={contentEditable}
       suppressContentEditableWarning={contentEditable}
       // *** [KEY] dangerouslySetInnerHTML로 들어가는 html에서 정규식 변환된 "&amp;", "&lt;" ,"&gt;"는 텍스트로, < > &는 html 요소로 렌더링한다!

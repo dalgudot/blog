@@ -46,7 +46,7 @@ const TitleWYSIWYG: FC<Props> = ({
       <section className={styles.article__title__section}>
         <time dateTime={seoDate}>{displayDate}</time>
         <EditableTextBlock
-          eachRef={ref}
+          eachBlockRef={ref}
           blockType='Heading1'
           contentEditable={contentEditable}
           html={title}

@@ -124,7 +124,7 @@ const EditableElementSwitch: FC<Props> = ({
     // 붙여넣기 command + v
     if (e.metaKey && e.key === 'v') {
       e.preventDefault();
-      paste(tempEachBlockStateText, setPasteData, eachRef);
+      paste(tempEachBlockStateText, setPasteData, eachBlockRef);
     }
   };
 
@@ -155,7 +155,7 @@ const EditableElementSwitch: FC<Props> = ({
   const addBlockFocusUseEffectDependency = datas[currentIndex];
   const removeCurrentBlockFocusUseEffectDependency = datas[currentIndex + 1];
 
-  const eachRef = useEditable(
+  const eachBlockRef = useEditable(
     eachBlockStateText,
     addBlockFocusUseEffectDependency,
     removeCurrentBlockFocusUseEffectDependency
@@ -167,7 +167,7 @@ const EditableElementSwitch: FC<Props> = ({
         return (
           <EditableImageBlock
             blockId={data.blockId}
-            eachRef={eachRef}
+            eachBlockRef={eachBlockRef}
             contentEditable={contentEditable}
             html={eachBlockStateText}
             imageDownloadURL={data.url}
@@ -189,7 +189,7 @@ const EditableElementSwitch: FC<Props> = ({
           <EditableLinkBlock
             wysiwygType={wysiwygType}
             linkBlockType={linkBlockType}
-            eachRef={eachRef}
+            eachBlockRef={eachBlockRef}
             contentEditable={contentEditable}
             html={eachBlockStateText}
             data={data as ILinkData}
@@ -209,7 +209,7 @@ const EditableElementSwitch: FC<Props> = ({
       case 'Code':
         return (
           <EditableCodeBlock
-            eachRef={eachRef}
+            eachBlockRef={eachBlockRef}
             contentEditable={contentEditable}
             data={data as ICodeData}
             html={eachBlockStateText}
@@ -230,7 +230,7 @@ const EditableElementSwitch: FC<Props> = ({
         return (
           <EditableTextBlock
             blockType={type}
-            eachRef={eachRef}
+            eachBlockRef={eachBlockRef}
             contentEditable={contentEditable}
             html={eachBlockStateText}
             setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}

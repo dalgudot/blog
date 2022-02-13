@@ -5,40 +5,39 @@ import { MutableRefObject } from 'react';
 export const paste = (
   tempEachBlockStateText: string,
   setPasteData: (newHtml: string) => void,
-  eachRef: MutableRefObject<any>
+  eachBlockRef: MutableRefObject<any>
 ) => {
   navigator.clipboard.readText().then((clipText) => {
     // Selection의 anchor는 텍스트 선택을 시작한 지점, focus는 선택을 끝낸 지점
     let newHtml: string = '';
     const selection = window.getSelection(); // 셀렉션이 있는 노드들 모두
-    let eachRefNodeLength = eachRef.current.childNodes.length;
+    let eachBlockRefNodeLength = eachBlockRef.current.childNodes.length;
+    // console.log('eachBlockRefNodeLength', eachBlockRefNodeLength);
 
-    console.log('eachRefNodeLength', eachRefNodeLength);
-
-    let eachRefNodeArray: {
+    let eachBlockRefNodeArray: {
       nodeName: '#text' | 'CODE';
       textContent: string;
     }[] = [];
 
-    // 아무런 텍스트도 없는 노드일 경우(eachRef.current.childNodes)
-    if (eachRefNodeLength === 0) {
+    // 아무런 텍스트도 없는 노드일 경우(eachBlockRef.current.childNodes)
+    if (eachBlockRefNodeLength === 0) {
       // 아무런 노드도 없는 경우 array 및 length 초기화
-      eachRefNodeArray = [
+      eachBlockRefNodeArray = [
         {
           nodeName: '#text',
           textContent: '',
         },
       ];
     } else {
-      for (let i = 0; i < eachRefNodeLength; i++) {
-        eachRefNodeArray.push({
-          nodeName: eachRef.current.childNodes[i].nodeName,
-          textContent: eachRef.current.childNodes[i].textContent,
+      for (let i = 0; i < eachBlockRefNodeLength; i++) {
+        eachBlockRefNodeArray.push({
+          nodeName: eachBlockRef.current.childNodes[i].nodeName,
+          textContent: eachBlockRef.current.childNodes[i].textContent,
         }); // nodeValue 대신 TextContent로 해야, <code></code> 안의 텍스트 가져옴
       }
     }
 
-    // console.log('eachRefNodeArray', eachRefNodeArray);
+    // console.log('eachBlockRefNodeArray', eachBlockRefNodeArray);
 
     const range = selection?.getRangeAt(0);
     const startContainer = range?.startContainer;
@@ -61,79 +60,82 @@ export const paste = (
     // 2) 그리고 다시 전체로 구성해줘야 한다.
 
     // if (collapsed === true) {
-    let nodeWithCaretIndex: number = 0;
+    let nodeWithCaretIndex: number = 0; // eachBlockRefNodeLength === 0일 떄 대비 가능
     // 아래 for문을 통해 현재 커서가 있는 노드 식별!
-    if (eachRefNodeLength === 0) {
-      eachRefNodeLength = 1; // length는 여기서 초기화해야 위  if (eachRefNodeLength === 0) 쓸 수 있음.
+    if (eachBlockRefNodeLength === 0) {
+      eachBlockRefNodeLength = 1; // length는 여기서 초기화해야 위  if (eachBlockRefNodeLength === 0) 쓸 수 있음.
     } else {
-      for (let i = 0; i < eachRefNodeLength; i++) {
+      for (let i = 0; i < eachBlockRefNodeLength; i++) {
         if (
-          eachRef.current.childNodes[i].nodeName === '#text' &&
-          endContainer?.isSameNode(eachRef.current.childNodes[i])
+          eachBlockRef.current.childNodes[i].nodeName === '#text' &&
+          endContainer?.isSameNode(eachBlockRef.current.childNodes[i])
         ) {
-          // nodeWithCaret = { node: eachRef.current.childNodes[i], nodeIndex: i };
+          // nodeWithCaret = { node: eachBlockRef.current.childNodes[i], nodeIndex: i };
           nodeWithCaretIndex = i;
-          console.log('***#text***', eachRef.current.childNodes[i], i);
+          // console.log('***#text***', eachBlockRef.current.childNodes[i], i);
         }
 
         if (
-          eachRef.current.childNodes[i].nodeName === 'CODE' &&
+          eachBlockRef.current.childNodes[i].nodeName === 'CODE' &&
           endContainer?.isSameNode(
-            eachRef.current.childNodes[i].childNodes.item(0) // CODE의 경우 childeNode로 endContainer와 비교해야 함.
+            eachBlockRef.current.childNodes[i].childNodes.item(0) // CODE의 경우 childeNode(#text)로 endContainer와 비교해야 함.
           )
         ) {
-          // nodeWithCaret = { node: eachRef.current.childNodes[i], nodeIndex: i };
+          // nodeWithCaret = { node: eachBlockRef.current.childNodes[i], nodeIndex: i };
           nodeWithCaretIndex = i;
-          console.log('***CODE***', eachRef.current.childNodes[i], i);
+          // console.log('***CODE***', eachBlockRef.current.childNodes[i], i);
+        }
+
+        if (nodeWithCaretIndex !== 0) {
+          break;
         }
       }
     }
     console.log('nodeWithCaretIndex', nodeWithCaretIndex);
-    console.log('eachRefNodeArray.length', eachRefNodeArray.length);
+    // console.log('eachBlockRefNodeArray.length', eachBlockRefNodeArray.length);
 
     const nodeWithCaretTextContent =
-      eachRefNodeArray[nodeWithCaretIndex].textContent;
+      eachBlockRefNodeArray[nodeWithCaretIndex].textContent;
 
-    console.log('nodeWithCaretTextContent', nodeWithCaretTextContent);
+    // console.log('nodeWithCaretTextContent', nodeWithCaretTextContent);
 
     const nodeWithCaretTextContentArray = nodeWithCaretTextContent.split('');
     endOffset !== undefined &&
       nodeWithCaretTextContentArray.splice(endOffset, 0, clipText);
 
-    console.log('nodeWithCaretTextContentArray', nodeWithCaretTextContentArray);
+    // console.log('nodeWithCaretTextContentArray', nodeWithCaretTextContentArray);
 
     const textAfterPastedNodeWithCaretIndex =
       nodeWithCaretTextContentArray.join('');
 
-    console.log(
-      'textAfterPastedNodeWithCaretIndex',
-      textAfterPastedNodeWithCaretIndex
-    );
+    // console.log(
+    //   'textAfterPastedNodeWithCaretIndex',
+    //   textAfterPastedNodeWithCaretIndex
+    // );
 
-    eachRefNodeArray[nodeWithCaretIndex].textContent =
+    eachBlockRefNodeArray[nodeWithCaretIndex].textContent =
       textAfterPastedNodeWithCaretIndex;
 
-    console.log(
-      'newTextContent',
-      eachRefNodeArray[nodeWithCaretIndex].textContent
-    );
+    // console.log(
+    //   'newTextContent',
+    //   eachBlockRefNodeArray[nodeWithCaretIndex].textContent
+    // );
 
-    console.log('Final eachRefNodeArray', eachRefNodeArray);
+    // console.log('Final eachBlockRefNodeArray', eachBlockRefNodeArray);
 
     // 붙여넣은 노드 합쳐서 문자열 재조합
-    for (let i = 0; i < eachRefNodeLength; i++) {
+    for (let i = 0; i < eachBlockRefNodeLength; i++) {
       const frontTag = '<code class="inline__code__block">';
       const backTag = '</code>';
 
-      console.log('for');
-      if (eachRefNodeArray[i].nodeName === '#text') {
-        newHtml = `${newHtml}${eachRefNodeArray[i].textContent}`;
-        console.log('for', '#text', newHtml);
+      if (eachBlockRefNodeArray[i].nodeName === '#text') {
+        newHtml = `${newHtml}${eachBlockRefNodeArray[i].textContent}`;
+        // console.log('for', '#text', newHtml);
       }
 
-      if (eachRefNodeArray[i].nodeName === 'CODE') {
-        newHtml = `${newHtml}${frontTag}${eachRefNodeArray[i].textContent}${backTag}`;
-        console.log('for', 'CODE', newHtml);
+      if (eachBlockRefNodeArray[i].nodeName === 'CODE') {
+        newHtml = `${newHtml}${frontTag}${eachBlockRefNodeArray[i].textContent}${backTag}`;
+        // console.log('for', 'CODE', newHtml);
       }
     }
 
@@ -142,14 +144,16 @@ export const paste = (
 
     setPasteData(newHtml);
 
+    // CARET
+
     // setPasteData 데이터 업데이트 이후에 caret 위치 조정
-    // focusCaretAfterClipText(
-    //   eachRef,
-    //   smallOffset,
-    //   clipText,
-    //   selection,
-    //   nodeForCaret
-    // );
+    focusCaretAfterClipText(
+      eachBlockRef,
+      nodeWithCaretIndex,
+      endOffset,
+      clipText,
+      selection
+    );
   });
 };
 
@@ -157,38 +161,26 @@ export const paste = (
 
 // 이게 노드를 기준으로 하기 때문에 문제가 생긴다.
 const focusCaretAfterClipText = (
-  eachRef: MutableRefObject<any>,
-  smallOffset: number | null,
+  eachBlockRef: MutableRefObject<any>,
+  nodeWithCaretIndex: number,
+  endOffset: number | undefined,
   clipText: string,
-  selection: Selection | null,
-  nodeForCaret: Node | null | undefined
+  selection: Selection | null
 ) => {
-  // const range = selection?.getRangeAt(0);
-  // const childNodesLength = eachRef.current.childNodes.length;
-
-  // for (let i = 0; i < childNodesLength; i++) {
-  //   const selectNode = range?.selectNode(eachRef.current.childNodes[i]);
-  //   console.log('selectNode', selectNode);
-  // }
-
-  // console.log('eachRef.current.childNodes', eachRef.current.childNodes);
-
-  // 리액트 렌더링과 관계없이 작동
-  // console.log('2 selection', selection);
-
-  const targetNode = eachRef.current.childNodes[0];
+  const targetNode = eachBlockRef.current.childNodes[nodeWithCaretIndex];
   const newCaretPosition =
-    smallOffset !== null && smallOffset + clipText.length;
-  // !== null 해야 0일 때도 작동 -> 0은 false!
-  // replace 처리된 htmlClipText가 아닌 clipText 원본으로 해야 length 정확히 맞음
-
-  console.log('2 nodeForCaret', nodeForCaret);
+    endOffset !== undefined && endOffset + clipText.length;
 
   const newRange = document.createRange();
-  // newCaretPosition !== false && newRange.setStart(targetNode, newCaretPosition);
-  nodeForCaret && newRange.setStart(nodeForCaret, 1);
-  // newCaretPosition && newRange.setEnd(targetNode, newCaretPosition);
-  // 앞쪽 셀렉션 지점(smallOffset)에서 붙여넣는 텍스트 길이만큼 뒤쪽에 커서 위치
+  if (newCaretPosition !== false) {
+    if (
+      eachBlockRef.current.childNodes[nodeWithCaretIndex].nodeName === 'CODE'
+    ) {
+      newRange.setStart(targetNode.childNodes.item(0), newCaretPosition); // CODE의 경우 childeNode(#text)로 캐럿 위치 조정
+    } else {
+      newRange.setStart(targetNode, newCaretPosition);
+    }
+  }
 
   selection && selection.removeAllRanges();
   selection && selection.addRange(newRange);

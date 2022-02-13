@@ -5,7 +5,7 @@ import { MutableRefObject } from 'react';
 export const paste = (
   tempEachBlockStateText: string,
   setPasteData: (newHtml: string) => void,
-  eachRef: MutableRefObject<any>
+  eachBlockRef: MutableRefObject<any>
 ) => {
   navigator.clipboard.readText().then((clipText) => {
     // Selection의 anchor는 텍스트 선택을 시작한 지점, focus는 선택을 끝낸 지점
@@ -91,7 +91,7 @@ export const paste = (
 
     // setPasteData 데이터 업데이트 이후에 caret 위치 조정
     // focusCaretAfterClipText(
-    //   eachRef,
+    //   eachBlockRef,
     //   smallOffset,
     //   clipText,
     //   selection,
@@ -104,26 +104,26 @@ export const paste = (
 
 // 이게 노드를 기준으로 하기 때문에 문제가 생긴다.
 const focusCaretAfterClipText = (
-  eachRef: MutableRefObject<any>,
+  eachBlockRef: MutableRefObject<any>,
   smallOffset: number | null,
   clipText: string,
   selection: Selection | null,
   nodeForCaret: Node | null | undefined
 ) => {
   // const range = selection?.getRangeAt(0);
-  // const childNodesLength = eachRef.current.childNodes.length;
+  // const childNodesLength = eachBlockRef.current.childNodes.length;
 
   // for (let i = 0; i < childNodesLength; i++) {
-  //   const selectNode = range?.selectNode(eachRef.current.childNodes[i]);
+  //   const selectNode = range?.selectNode(eachBlockRef.current.childNodes[i]);
   //   console.log('selectNode', selectNode);
   // }
 
-  // console.log('eachRef.current.childNodes', eachRef.current.childNodes);
+  // console.log('eachBlockRef.current.childNodes', eachBlockRef.current.childNodes);
 
   // 리액트 렌더링과 관계없이 작동
   // console.log('2 selection', selection);
 
-  const targetNode = eachRef.current.childNodes[0];
+  const targetNode = eachBlockRef.current.childNodes[0];
   const newCaretPosition =
     smallOffset !== null && smallOffset + clipText.length;
   // !== null 해야 0일 때도 작동 -> 0은 false!

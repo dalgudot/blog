@@ -8,7 +8,7 @@ export const addInlineCodeBlock = (
   inputHtml: string,
   setCurrentBlockTempPostHtmlData: (inputHtml: string) => void,
   setCurrentBlockPostHtmlData: (inputHtml: string) => void,
-  eachRef: MutableRefObject<any>
+  eachBlockRef: MutableRefObject<any>
 ) => {
   const countBacktick = inputHtml.match(/`/g)?.length;
   const updateInlineBlock = (inputHtml: string) => {
@@ -53,17 +53,17 @@ export const addInlineCodeBlock = (
       updateInlineBlock(addBacktick);
     }
 
-    // console.log(eachRef.current);
+    // console.log(eachBlockRef.current);
 
-    // eachRef.current = inputHtml
+    // eachBlockRef.current = inputHtml
     //   .replace(/&lt;/g, '<')
     //   .replace(/&gt;/g, '>')
     //   .replace(/&amp;/g, '&')
     //   .split('');
 
-    // console.log(eachRef.current);
-    // console.log('childNodes', eachRef.current.childNodes);
-    // console.log('childNodes.length', eachRef.current.childNodes.length);
+    // console.log(eachBlockRef.current);
+    // console.log('childNodes', eachBlockRef.current.childNodes);
+    // console.log('childNodes.length', eachBlockRef.current.childNodes.length);
 
     // const nodeFromInputHtml = new DOMParser().parseFromString(
     //   inputHtml,
@@ -74,10 +74,10 @@ export const addInlineCodeBlock = (
     // target 노드가 어디인지 알아내면된다.
     // const selection = window.getSelection();
 
-    // const codeList = eachRef.current.querySelectorAll('code');
+    // const codeList = eachBlockRef.current.querySelectorAll('code');
     // console.log('codeList', codeList);
 
-    // const targetNode = eachRef.current.childNodes[0];
+    // const targetNode = eachBlockRef.current.childNodes[0];
     // console.log('targetNode', targetNode);
 
     // const newCaretPosition = secoundBacktickPosition;
