@@ -9,7 +9,7 @@ export const paste = (
 ) => {
   navigator.clipboard.readText().then((clipText) => {
     // Selection의 anchor는 텍스트 선택을 시작한 지점, focus는 선택을 끝낸 지점
-    let newHtml = '';
+    let newHtml: string = '';
     const selection = window.getSelection(); // 셀렉션이 있는 노드들 모두
     // selection &&
     //   console.log('selection.node', selection.anchorNode, selection.focusNode);
@@ -42,7 +42,7 @@ export const paste = (
         textContent: eachRef.current.childNodes[i].textContent,
       }); // nodeValue 대신 TextContent로 해야, <code></code> 안의 텍스트 가져옴
     }
-    // console.log('eachRefNodeArray', eachRefNodeArray);
+    console.log('eachRefNodeArray', eachRefNodeArray);
 
     const range = selection?.getRangeAt(0);
     const startContainer = range?.startContainer;
@@ -67,82 +67,85 @@ export const paste = (
     // 1) tempEachBlockStateText가 아닌, 즉 전체 텍스트를 이용하는 게 아닌 커서가 있는 노드의 텍스트를 바꿔줘아 한다.
     // 2) 그리고 다시 전체로 구성해줘야 한다.
 
-    // if (collapsed === true) {
-    let nodeWithCaret; // 아래 for문을 통해 현재 커서가 있는 노드 식별!
-    for (let i = 0; i < eachRefNodeLength; i++) {
-      if (
-        eachRef.current.childNodes[i].nodeName === '#text' &&
-        endContainer?.isSameNode(eachRef.current.childNodes[i])
-      ) {
-        nodeWithCaret = eachRef.current.childNodes[i];
-        console.log('***#text***', eachRef.current.childNodes[i], i);
+    if (collapsed === true) {
+      let nodeWithCaretIndex: number = 0; // 아래 for문을 통해 현재 커서가 있는 노드 식별!
+      for (let i = 0; i < eachRefNodeLength; i++) {
+        if (
+          eachRef.current.childNodes[i].nodeName === '#text' &&
+          endContainer?.isSameNode(eachRef.current.childNodes[i])
+        ) {
+          // nodeWithCaret = { node: eachRef.current.childNodes[i], nodeIndex: i };
+          nodeWithCaretIndex = i;
+          console.log('***#text***', eachRef.current.childNodes[i], i);
+        }
+
+        if (
+          eachRef.current.childNodes[i].nodeName === 'CODE' &&
+          endContainer?.isSameNode(
+            eachRef.current.childNodes[i].childNodes.item(0) // CODE의 경우 childeNode로 endContainer와 비교해야 함.
+          )
+        ) {
+          // nodeWithCaret = { node: eachRef.current.childNodes[i], nodeIndex: i };
+          nodeWithCaretIndex = i;
+          console.log('***CODE***', eachRef.current.childNodes[i], i);
+        }
+      }
+      console.log('nodeWithCaret', nodeWithCaretIndex);
+
+      const nodeWithCaretTextContent =
+        eachRefNodeArray[nodeWithCaretIndex].textContent;
+
+      console.log('nodeWithCaretTextContent', nodeWithCaretTextContent);
+
+      const nodeWithCaretTextContentArray = nodeWithCaretTextContent.split('');
+      endOffset !== undefined &&
+        nodeWithCaretTextContentArray.splice(endOffset, 0, clipText);
+
+      console.log(
+        'nodeWithCaretTextContentArray',
+        nodeWithCaretTextContentArray
+      );
+
+      const textAfterPastedNodeWithCaretIndex =
+        nodeWithCaretTextContentArray.join('');
+
+      console.log(
+        'textAfterPastedNodeWithCaretIndex',
+        textAfterPastedNodeWithCaretIndex
+      );
+
+      eachRefNodeArray[nodeWithCaretIndex].textContent =
+        textAfterPastedNodeWithCaretIndex;
+
+      console.log(
+        'newTextContent',
+        eachRefNodeArray[nodeWithCaretIndex].textContent
+      );
+
+      console.log('Final eachRefNodeArray', eachRefNodeArray);
+
+      // 붙여넣은 노드 합쳐서 문자열 재조합
+      for (let i = 0; i < eachRefNodeLength; i++) {
+        const frontTag = '<code class="inline__code__block">';
+        const backTag = '</code>';
+
+        if (eachRefNodeArray[i].nodeName === '#text') {
+          // newHtml.concat(eachRefNodeArray[i].textContent);
+          newHtml = `${newHtml}${eachRefNodeArray[i].textContent}`;
+          console.log('for', '#text', newHtml);
+        }
+
+        if (eachRefNodeArray[i].nodeName === 'CODE') {
+          // newHtml.concat(frontTag, eachRefNodeArray[i].textContent, backTag);
+          newHtml = `${newHtml}${frontTag}${eachRefNodeArray[i].textContent}${backTag}`;
+          console.log('for', 'CODE', newHtml);
+        }
       }
 
-      if (
-        eachRef.current.childNodes[i].nodeName === 'CODE' &&
-        endContainer?.isSameNode(
-          eachRef.current.childNodes[i].childNodes.item(0) // CODE의 경우 childeNode로 endContainer와 비교해야 함.
-        )
-      ) {
-        nodeWithCaret = eachRef.current.childNodes[i];
-        console.log('***CODE***', eachRef.current.childNodes[i], i);
-      }
-    }
-    console.log('nodeWithCaret', nodeWithCaret);
-    // }
-
-    const smallOffset =
-      selection && Math.min(selection.anchorOffset, selection.focusOffset);
-    const largeOffset =
-      selection && Math.max(selection.anchorOffset, selection.focusOffset);
-
-    // console.log(smallOffset, largeOffset);
-
-    const isNotNullOffset = largeOffset !== null && smallOffset !== null;
-    const rangeLength = isNotNullOffset && largeOffset - smallOffset;
-    const isSelectionPaste = rangeLength !== false && rangeLength !== 0;
-
-    // console.log('tempEachBlockStateText', tempEachBlockStateText);
-
-    // *** 길이 동기화시키기 위해 reverse replace
-    const convertTempEachBlockStateText = tempEachBlockStateText
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&nbsp;/g, '\u00A0') // & 변환 피하기 위해 &nbsp; 대신
-      .replace(/&nbsp/g, '\u00A0') // & 변환 피하기 위해 &nbsp; 대신
-      .replace(/&amp;/g, '&');
-
-    // console.log('convertTempEachBlockStateText', convertTempEachBlockStateText);
-
-    // 문자열을 배열로
-    const tempEachBlockStateTextArray = convertTempEachBlockStateText.split('');
-
-    if (isSelectionPaste) {
-      // 드래그된 텍스트 있으면 해당 텍스트 지우기 > selection 있으면 그 영역 삭제
-      isNotNullOffset &&
-        tempEachBlockStateTextArray.splice(smallOffset, rangeLength);
+      console.log('newHtml', newHtml);
     }
 
-    // 붙여넣기
-    smallOffset !== null &&
-      tempEachBlockStateTextArray.splice(smallOffset, 0, clipText);
-
-    // 배열을 문자열로 // &부터 해야 뒤쪽 <, > replace에 영향 없음!
-    const selectionRemovedtempEachBlockStateText = tempEachBlockStateTextArray
-      .join('')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;') // 여기까지 바꾼 값들을 코드 블럭은 다시 replace해줘서 코드 블럭이 innerHtml에서 유지되도록 해준다.
-      .replace(
-        /\&lt;code class="inline__code__block"\&gt;/g,
-        '<code class="inline__code__block">'
-      )
-      .replace(/\&lt;\/code\&gt;/g, '</code>');
-
-    newHtml = `${selectionRemovedtempEachBlockStateText}`;
-    // console.log('newHtml', newHtml);
-
-    // setPasteData(newHtml);
+    setPasteData(newHtml);
 
     // setPasteData 데이터 업데이트 이후에 caret 위치 조정
     // focusCaretAfterClipText(
