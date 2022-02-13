@@ -7,7 +7,7 @@ import styles from './editable-text-block.module.scss';
 
 type Props = {
   blockType: TBlockTextType;
-  eachRef: MutableRefObject<any>;
+  eachBlockRef: MutableRefObject<any>;
   contentEditable: boolean;
   html: string;
   setCurrentBlockTempPostHtmlData: (inputHtml: string) => void;
@@ -22,7 +22,7 @@ type Props = {
 
 const EditableTextBlock: FC<Props> = ({
   blockType,
-  eachRef,
+  eachBlockRef,
   contentEditable,
   html,
   setCurrentBlockTempPostHtmlData,
@@ -56,7 +56,7 @@ const EditableTextBlock: FC<Props> = ({
     <>
       <EditableElement
         TagName={TagName}
-        eachRef={eachRef}
+        eachBlockRef={eachBlockRef}
         contentEditable={contentEditable}
         html={html}
         setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}

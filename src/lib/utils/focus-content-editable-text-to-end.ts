@@ -1,18 +1,17 @@
 export const focusContentEditableTextToEnd = (element: HTMLElement) => {
   if (element.innerText.length === 0) {
     element.focus();
-    return;
+  } else {
+    const selection = window.getSelection();
+    const newRange = document.createRange();
+    newRange.selectNodeContents(element);
+    newRange.collapse(false);
+    selection?.removeAllRanges();
+    selection?.addRange(newRange);
   }
-
-  const selection = window.getSelection();
-  const newRange = document.createRange();
-  newRange.selectNodeContents(element);
-  newRange.collapse(false);
-  selection?.removeAllRanges();
-  selection?.addRange(newRange);
 };
 
-export function replaceCaret(element: HTMLElement) {
+export const replaceCaret = (element: HTMLElement) => {
   if (element.innerText.length === 0) {
     element.focus();
     return;
@@ -36,4 +35,4 @@ export function replaceCaret(element: HTMLElement) {
 
     if (element instanceof HTMLElement) element.focus();
   }
-}
+};

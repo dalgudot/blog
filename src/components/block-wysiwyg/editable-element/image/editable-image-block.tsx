@@ -19,7 +19,7 @@ import { useToast } from '@dalgu/react-toast';
 import Image from 'next/image';
 
 type Props = {
-  eachRef: MutableRefObject<any>;
+  eachBlockRef: MutableRefObject<any>;
   contentEditable: boolean;
   html: string;
   imageDownloadURL: string;
@@ -35,7 +35,7 @@ type Props = {
 };
 
 const EditableImageBlock: FC<Props> = ({
-  eachRef,
+  eachBlockRef,
   contentEditable,
   html,
   imageDownloadURL,
@@ -104,7 +104,7 @@ const EditableImageBlock: FC<Props> = ({
         )}
         <EditableElement
           TagName='figcaption'
-          eachRef={eachRef}
+          eachBlockRef={eachBlockRef}
           contentEditable={contentEditable}
           html={html}
           setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}

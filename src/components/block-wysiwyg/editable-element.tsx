@@ -3,12 +3,13 @@ import DOMPurify from 'dompurify';
 import { ChangeEvent, FC, KeyboardEvent, MutableRefObject } from 'react';
 import { useEditable } from '../../lib/hooks/useEditable';
 import { addInlineCodeBlock } from '../../lib/utils/editable-block/add-inline-code-block';
+import { replaceCaret } from '../../lib/utils/focus-content-editable-text-to-end';
 import { IParagraphData } from '../../redux-toolkit/model/post-data-model';
 import styles from './editable-element.module.scss';
 
 type Props = {
   TagName: 'h1' | 'h2' | 'h3' | 'p' | 'code' | 'figcaption';
-  eachRef: MutableRefObject<any>;
+  eachBlockRef: MutableRefObject<any>;
   contentEditable: boolean;
   html: string;
   setCurrentBlockTempPostHtmlData: (inputHtml: string) => void;
@@ -24,7 +25,7 @@ type Props = {
 // 개별로 쓸 수 있도록 만들거나, map()으로 블록 만들 때도 쓸 수 있도록 만든 컴포넌트 > 아마 텍스트에만 쓰일 듯.
 const EditableElement: FC<Props> = ({
   TagName,
-  eachRef,
+  eachBlockRef,
   contentEditable = false,
   html,
   setCurrentBlockTempPostHtmlData,
@@ -40,6 +41,7 @@ const EditableElement: FC<Props> = ({
   const onInput = (
     e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>
   ) => {
+    e.preventDefault();
     // https://developer.mozilla.org/ko/docs/Web/API/Element/innerHTML
     // innerHtml은 HTML 태그와 관련된 문자열  (&), (<), (>)를 "&amp;", "&lt;" ,"&gt;"로 보관해 inline 코드로 쓰고 싶을 때만 쓸 수 있도록 한다.
     // 텍스트를 쓰는 동안 바로 코드로 바뀌지 않도록 하기 위해서다.
@@ -52,19 +54,16 @@ const EditableElement: FC<Props> = ({
     addInlineCodeBlock(
       inputHtml,
       setCurrentBlockTempPostHtmlData,
-      setCurrentBlockPostHtmlData
+      setCurrentBlockPostHtmlData,
+      eachBlockRef
     );
-  };
 
-  // const ref = useEditable(
-  //   html,
-  //   addBlockFocusUseEffectDependency,
-  //   removeCurrentBlockFocusUseEffectDependency
-  // );
+    // console.log('inputHtml', inputHtml);
+  };
 
   return (
     <TagName
-      ref={eachRef}
+      ref={eachBlockRef}
       contentEditable={contentEditable}
       suppressContentEditableWarning={contentEditable}
       // *** [KEY] dangerouslySetInnerHTML로 들어가는 html에서 정규식 변환된 "&amp;", "&lt;" ,"&gt;"는 텍스트로, < > &는 html 요소로 렌더링한다!
