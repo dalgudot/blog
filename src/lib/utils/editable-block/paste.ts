@@ -11,38 +11,34 @@ export const paste = (
     // Selection의 anchor는 텍스트 선택을 시작한 지점, focus는 선택을 끝낸 지점
     let newHtml: string = '';
     const selection = window.getSelection(); // 셀렉션이 있는 노드들 모두
-    // selection &&
-    //   console.log('selection.node', selection.anchorNode, selection.focusNode);
+    let eachRefNodeLength = eachRef.current.childNodes.length;
 
-    // const newTextNode = document.createTextNode('');
-
-    // 쓸만한 값: nodeValue! 쓸만한 메소드: hasChildNodes, appendChild(newNode)
-    // Node.compareDocumentPosition(otherNode)
-    // 쓸만한 인터페이스: NodeList - item(index: number): Node | null;
-
-    const anchorNode = selection?.anchorNode;
-    const focusNode = selection?.focusNode;
-
-    // anchorNode &&
-    //   focusNode &&
-    //   console.log('***nodeOfSelection***', anchorNode, focusNode);
-
-    // console.log('childeNodes', eachRef.current.childNodes.item(1));
-
-    const eachRefNodeLength = eachRef.current.childNodes.length;
+    console.log('eachRefNodeLength', eachRefNodeLength);
 
     let eachRefNodeArray: {
       nodeName: '#text' | 'CODE';
       textContent: string;
     }[] = [];
 
-    for (let i = 0; i < eachRefNodeLength; i++) {
-      eachRefNodeArray.push({
-        nodeName: eachRef.current.childNodes[i].nodeName,
-        textContent: eachRef.current.childNodes[i].textContent,
-      }); // nodeValue 대신 TextContent로 해야, <code></code> 안의 텍스트 가져옴
+    // 아무런 텍스트도 없는 노드일 경우(eachRef.current.childNodes)
+    if (eachRefNodeLength === 0) {
+      // 아무런 노드도 없는 경우 array 및 length 초기화
+      eachRefNodeArray = [
+        {
+          nodeName: '#text',
+          textContent: '',
+        },
+      ];
+    } else {
+      for (let i = 0; i < eachRefNodeLength; i++) {
+        eachRefNodeArray.push({
+          nodeName: eachRef.current.childNodes[i].nodeName,
+          textContent: eachRef.current.childNodes[i].textContent,
+        }); // nodeValue 대신 TextContent로 해야, <code></code> 안의 텍스트 가져옴
+      }
     }
-    console.log('eachRefNodeArray', eachRefNodeArray);
+
+    // console.log('eachRefNodeArray', eachRefNodeArray);
 
     const range = selection?.getRangeAt(0);
     const startContainer = range?.startContainer;
@@ -52,23 +48,24 @@ export const paste = (
     const startTextContent = startContainer?.textContent;
     const endTextContent = endContainer?.textContent;
     const collapsed = range?.collapsed;
-
-    // console.log('endContainer', endContainer);
-
     // console.log('rangeContainer', startContainer, endContainer); // 무조건 왼쪽, 오른쪽
     // console.log('rangeOffset', startOffset, endOffset); // 무조건 왼쪽, 오른쪽
     // console.log('collapsed', collapsed); // 무조건 왼쪽, 오른쪽
     // console.log('textContent', startTextContent, endTextContent); // nodeValue 또는 textContent 이용
 
     // Node | undefined 고려
-    // 1. 커서 하나일 때, if(collapsed === true)
+    // 1. 커서 하나일 때, if(collapsed === true) 2. 선택 영역이 있을 때, if(collapsed === false)
 
     // 정확한 위치에 clipText를 붙여넣으려면?
     // 1) tempEachBlockStateText가 아닌, 즉 전체 텍스트를 이용하는 게 아닌 커서가 있는 노드의 텍스트를 바꿔줘아 한다.
     // 2) 그리고 다시 전체로 구성해줘야 한다.
 
-    if (collapsed === true) {
-      let nodeWithCaretIndex: number = 0; // 아래 for문을 통해 현재 커서가 있는 노드 식별!
+    // if (collapsed === true) {
+    let nodeWithCaretIndex: number = 0;
+    // 아래 for문을 통해 현재 커서가 있는 노드 식별!
+    if (eachRefNodeLength === 0) {
+      eachRefNodeLength = 1; // length는 여기서 초기화해야 위  if (eachRefNodeLength === 0) 쓸 수 있음.
+    } else {
       for (let i = 0; i < eachRefNodeLength; i++) {
         if (
           eachRef.current.childNodes[i].nodeName === '#text' &&
@@ -90,60 +87,58 @@ export const paste = (
           console.log('***CODE***', eachRef.current.childNodes[i], i);
         }
       }
-      console.log('nodeWithCaret', nodeWithCaretIndex);
+    }
+    console.log('nodeWithCaretIndex', nodeWithCaretIndex);
+    console.log('eachRefNodeArray.length', eachRefNodeArray.length);
 
-      const nodeWithCaretTextContent =
-        eachRefNodeArray[nodeWithCaretIndex].textContent;
+    const nodeWithCaretTextContent =
+      eachRefNodeArray[nodeWithCaretIndex].textContent;
 
-      console.log('nodeWithCaretTextContent', nodeWithCaretTextContent);
+    console.log('nodeWithCaretTextContent', nodeWithCaretTextContent);
 
-      const nodeWithCaretTextContentArray = nodeWithCaretTextContent.split('');
-      endOffset !== undefined &&
-        nodeWithCaretTextContentArray.splice(endOffset, 0, clipText);
+    const nodeWithCaretTextContentArray = nodeWithCaretTextContent.split('');
+    endOffset !== undefined &&
+      nodeWithCaretTextContentArray.splice(endOffset, 0, clipText);
 
-      console.log(
-        'nodeWithCaretTextContentArray',
-        nodeWithCaretTextContentArray
-      );
+    console.log('nodeWithCaretTextContentArray', nodeWithCaretTextContentArray);
 
-      const textAfterPastedNodeWithCaretIndex =
-        nodeWithCaretTextContentArray.join('');
+    const textAfterPastedNodeWithCaretIndex =
+      nodeWithCaretTextContentArray.join('');
 
-      console.log(
-        'textAfterPastedNodeWithCaretIndex',
-        textAfterPastedNodeWithCaretIndex
-      );
+    console.log(
+      'textAfterPastedNodeWithCaretIndex',
+      textAfterPastedNodeWithCaretIndex
+    );
 
-      eachRefNodeArray[nodeWithCaretIndex].textContent =
-        textAfterPastedNodeWithCaretIndex;
+    eachRefNodeArray[nodeWithCaretIndex].textContent =
+      textAfterPastedNodeWithCaretIndex;
 
-      console.log(
-        'newTextContent',
-        eachRefNodeArray[nodeWithCaretIndex].textContent
-      );
+    console.log(
+      'newTextContent',
+      eachRefNodeArray[nodeWithCaretIndex].textContent
+    );
 
-      console.log('Final eachRefNodeArray', eachRefNodeArray);
+    console.log('Final eachRefNodeArray', eachRefNodeArray);
 
-      // 붙여넣은 노드 합쳐서 문자열 재조합
-      for (let i = 0; i < eachRefNodeLength; i++) {
-        const frontTag = '<code class="inline__code__block">';
-        const backTag = '</code>';
+    // 붙여넣은 노드 합쳐서 문자열 재조합
+    for (let i = 0; i < eachRefNodeLength; i++) {
+      const frontTag = '<code class="inline__code__block">';
+      const backTag = '</code>';
 
-        if (eachRefNodeArray[i].nodeName === '#text') {
-          // newHtml.concat(eachRefNodeArray[i].textContent);
-          newHtml = `${newHtml}${eachRefNodeArray[i].textContent}`;
-          console.log('for', '#text', newHtml);
-        }
-
-        if (eachRefNodeArray[i].nodeName === 'CODE') {
-          // newHtml.concat(frontTag, eachRefNodeArray[i].textContent, backTag);
-          newHtml = `${newHtml}${frontTag}${eachRefNodeArray[i].textContent}${backTag}`;
-          console.log('for', 'CODE', newHtml);
-        }
+      console.log('for');
+      if (eachRefNodeArray[i].nodeName === '#text') {
+        newHtml = `${newHtml}${eachRefNodeArray[i].textContent}`;
+        console.log('for', '#text', newHtml);
       }
 
-      console.log('newHtml', newHtml);
+      if (eachRefNodeArray[i].nodeName === 'CODE') {
+        newHtml = `${newHtml}${frontTag}${eachRefNodeArray[i].textContent}${backTag}`;
+        console.log('for', 'CODE', newHtml);
+      }
     }
+
+    console.log('newHtml', newHtml);
+    // }
 
     setPasteData(newHtml);
 
