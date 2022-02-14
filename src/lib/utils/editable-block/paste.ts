@@ -3,20 +3,20 @@ import { MutableRefObject } from 'react';
 // selection / range 속성, 메소드 정리 >> https://jungpaeng.tistory.com/86
 // https://gdtbgl93.tistory.com/175
 export const paste = (
-  tempEachBlockStateText: string,
-  setPasteData: (newHtml: string) => void,
-  eachBlockRef: MutableRefObject<HTMLElement>
+  eachBlockRef: MutableRefObject<HTMLElement>,
+  setPasteData: (newHtml: string) => void
 ) => {
   navigator.clipboard.readText().then((clipText) => {
     // Selection의 anchor는 텍스트 선택을 시작한 지점, focus는 선택을 끝낸 지점
     let newHtml: string = '';
     const selection = window.getSelection(); // 셀렉션이 있는 노드들 모두
 
-    const eachBlockChildNodes: NodeListOf<ChildNode> =
-      eachBlockRef.current.childNodes;
-    let eachBlockChildNodesLength = eachBlockChildNodes.length;
+    let eachBlockChildNodes = eachBlockRef.current.childNodes;
+    let eachBlockChildNodesLength = eachBlockRef.current.childNodes.length;
+
     let isRemovedSomeNode: boolean = false;
     const removeChildNode = (index: number) => {
+      console.log('eachBlockChildNodes', eachBlockChildNodes);
       eachBlockChildNodes[index].remove(); // 실제 노드 삭제
       myNodeArray.splice(index, 1); // 내가 만든 배열 요소 삭제
       isRemovedSomeNode = true;
@@ -172,94 +172,90 @@ export const paste = (
       }
       console.log('startNodeIndex', startNodeIndex);
 
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
       if (endNodeIndex === startNodeIndex) {
         // 같은 노드에 있다면
-        const tempNodeTextArray =
-          myNodeArray[endNodeIndex].textContent?.split('');
+        const nodeTextArray = myNodeArray[endNodeIndex].textContent?.split('');
 
         // 선택 영역 삭제
         endOffset !== undefined &&
           startOffset !== undefined &&
-          tempNodeTextArray?.splice(startOffset, endOffset - startOffset);
+          nodeTextArray?.splice(startOffset, endOffset - startOffset);
 
         // cliptText 붙여넣기
         startOffset !== undefined &&
-          tempNodeTextArray?.splice(startOffset, 0, clipText);
+          nodeTextArray?.splice(startOffset, 0, clipText);
 
-        const finalNodeText = tempNodeTextArray?.join('');
+        const finalNodeText = nodeTextArray?.join('');
 
         myNodeArray[endNodeIndex].textContent = finalNodeText;
 
         console.log(myNodeArray[endNodeIndex].textContent);
-      } else if (endNodeIndex - startNodeIndex === 1) {
-        // 하나 차이가 나는 노드에 있다면
-        // Start 노드는 startOffset부터 끝까지, 두 번째 노드는 처음부터 endOffset까지
-
-        // Start 노드 - 삭제만 - CODE인데 Textcontent가 없다면 <code> 노드 삭제
-        const tempStartNodeTextArray =
+      }
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+      else if (endNodeIndex - startNodeIndex > 0) {
+        // Start 노드, 1)텍스트 삭제 2)CODE인데 textContent가 없다면 <code> 노드 삭제
+        const startNodeTextArray =
           myNodeArray[startNodeIndex].textContent?.split('');
+        const endNodeTextArray =
+          myNodeArray[endNodeIndex].textContent?.split('');
+
+        const startNodeArrayLength = startNodeTextArray?.length;
 
         // Start 노드 선택 영역 삭제
-        const startNodeLength = myNodeArray[startNodeIndex].textContent?.length;
         const startNodeRemoveRange =
-          startNodeLength !== undefined &&
+          startNodeArrayLength !== undefined &&
           startOffset !== undefined &&
-          startNodeLength - startOffset;
+          startNodeArrayLength - startOffset;
 
         startOffset !== undefined &&
           startNodeRemoveRange !== false &&
-          tempStartNodeTextArray?.splice(startOffset, startNodeRemoveRange);
+          startNodeTextArray?.splice(startOffset, startNodeRemoveRange);
 
-        const tempStartNodeTextArrayAfterRemoveLength =
-          tempStartNodeTextArray?.length; // *** 길이 0일 떄 CODE 요소 삭제하기 위해 필요
-
-        console.log(
-          'tempStartNodeTextArrayAfterRemoveLength',
-          tempStartNodeTextArrayAfterRemoveLength
-        );
-
-        // Start 노드 cliptText 붙여넣기 ***No*** - 삭제만
-        // startOffset !== undefined &&
-        //   tempStartNodeTextArray?.splice(startOffset, 0, clipText);
-
-        // 하단 if문에서 필요없으므로 밑 2줄은 나중에 삭제
-        // const finalStartNodeText = tempStartNodeTextArray?.join('');
-        // myNodeArray[startNodeIndex].textContent = finalStartNodeText; // 내가 만든 Array에 textContent 넣기
+        // 순서는 위 splice 다음
+        const startNodeTextArrayAfterRemoveLength = startNodeTextArray?.length; // *** 길이 0일 떄 CODE 요소 삭제하기 위해 필요
 
         // End 노드, End 노드는 처음부터 endOffset까지 삭제
-        // 스트링 배열로
-        const tempEndNodeTextArray =
-          myNodeArray[endNodeIndex].textContent?.split('');
-
-        const tempEndNodeTextArrayAfterRemoveLength =
-          tempEndNodeTextArray?.length; // *** 길이 0일 떄 CODE 요소 삭제하기 위해 필요
-
         // End 노드 영역 삭제
-        endOffset !== undefined && tempEndNodeTextArray?.splice(0, endOffset); // End 노드는 처음부터 endOffset까지 삭제
+        endOffset !== undefined && endNodeTextArray?.splice(0, endOffset); // End 노드는 처음부터 endOffset까지 삭제
+
+        // 순서는 위 splice 다음
+        const endNodeTextArrayAfterRemoveLength = endNodeTextArray?.length; // *** 길이 0일 떄 CODE 요소 삭제하기 위해 필요
 
         // End 노드 offset 0부터 cliptText 붙여넣기
-        endOffset !== undefined && tempEndNodeTextArray?.splice(0, 0, clipText); // End 노드는 0부터 붙여야 함
+        endOffset !== undefined && endNodeTextArray?.splice(0, 0, clipText); // End 노드는 0부터 붙여야 함
 
-        // 복사한 내용이 ' '이고 End가 CODE이면 ' ' -> '으로 반환
-        const finalEndNodeText =
-          tempEndNodeTextArray?.join('') === ' ' // 한 칸 띄어쓰기
-            ? ''
-            : tempEndNodeTextArray?.join('');
+        // setFinalStartNodeText()만 아래 if문에서 쓰임 -> index 맞추기 위해
+        const setFinalStartNodeText = () => {
+          const finalStartNodeText = startNodeTextArray?.join('');
+          myNodeArray[startNodeIndex].textContent = finalStartNodeText;
+        };
 
-        // const finalEndNodeText = '';
-        console.log('finalEndNodeText', `테스트${finalEndNodeText}테스트`);
-
+        const finalEndNodeText = endNodeTextArray?.join('');
         myNodeArray[endNodeIndex].textContent = finalEndNodeText; // 내가 만든 Array에 textContent 넣기
+
+        const removeMiddleNode = () => {
+          // ***중요*** 큰 index부터 시작해야 삭제 순서가 꼬이지 않음 > 큰 index 요소부터 삭제한다는 뜻
+          for (let i = endNodeIndex - 1; i > startNodeIndex; i--) {
+            console.log('i,', i);
+            removeChildNode(i);
+          }
+        };
+        removeMiddleNode(); // 이 함수 때문에 startNodeIndex는 안 바뀜
 
         // 아래 if문은 위 두 줄 코드를 포함해 start 노드의 텍스트가 없어질 경우 노드 삭제하고, 텍스트가 있을 경우삭제만 하는 코드
         // *** 허나 여기서 index를 바꾸면 위쪽 End 노드 코드에 endNodeIndex 변화로 영향 끼치기 때문에 End 노드 작업 이후에 여기서!
         if (
-          tempStartNodeTextArrayAfterRemoveLength === 0 &&
+          startNodeTextArrayAfterRemoveLength === 0 &&
           myNodeArray[startNodeIndex].nodeName === 'CODE'
         ) {
           // CODE 노드를 삭제하면 기존에 startNodeIndex, endNodeIndex를 쓸 수 없게 때문에 2중 if문으로 숫자 계산해서 한꺼번에 처리
           if (
-            tempEndNodeTextArrayAfterRemoveLength === 0 &&
+            endNodeTextArrayAfterRemoveLength === 0 &&
             myNodeArray[endNodeIndex].nodeName === 'CODE'
           ) {
             removeChildNode(startNodeIndex);
@@ -269,29 +265,33 @@ export const paste = (
           }
           //
         } else if (
-          finalEndNodeText === '' &&
+          (finalEndNodeText === '' || finalEndNodeText === ' ') &&
           myNodeArray[endNodeIndex].nodeName === 'CODE'
         ) {
-          console.log('CODE 동작');
           //
           if (
-            tempStartNodeTextArrayAfterRemoveLength === 0 &&
+            startNodeTextArrayAfterRemoveLength === 0 &&
             myNodeArray[startNodeIndex].nodeName === 'CODE'
           ) {
+            console.log('CODE 동작 1');
             removeChildNode(startNodeIndex);
             removeChildNode(endNodeIndex - 1); // 이미 startNodeIndex 제거했으므로 -1
           } else {
+            console.log('CODE 동작 2');
+            setFinalStartNodeText(); // start 노드 업데이트된 텍스트 여기서는 삭제되지 않으므로, 넣어줘야
             removeChildNode(endNodeIndex);
           }
           //
         } else {
-          const finalStartNodeText = tempStartNodeTextArray?.join('');
-          myNodeArray[startNodeIndex].textContent = finalStartNodeText; // 내가 만든 Array에 textContent 넣기
+          // 여기선 인덱스가 변하지 않음.
+          setFinalStartNodeText(); // 내가 만든 Array에 textContent 넣기
         }
-        //
-      } else if (endNodeIndex - startNodeIndex > 1) {
-        // 둘 이상 차이가 나는 노드에 있다면
-      } else {
+      }
+
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+      else {
         throw new Error('Error');
       }
     }
@@ -300,7 +300,7 @@ export const paste = (
 
     // ***중요*** (불변성 이슈 - let을 안 쓸 수 있는가?)제거된 노드가 있다면, 업데이트된 eachBlockChildNodes.length를, 아니라면 할당된 eachBlockChildNodesLength를(그래야 아무런 노드 없을 때도 작동)
     const finalEachBlockChildNodeLength = isRemovedSomeNode
-      ? eachBlockChildNodes.length
+      ? eachBlockRef.current.childNodes.length
       : eachBlockChildNodesLength;
 
     // ***공통*** 붙여넣은 노드 합쳐서 문자열 재조합
@@ -311,12 +311,12 @@ export const paste = (
 
       if (myNodeArray[i].nodeName === '#text') {
         newHtml = `${newHtml}${myNodeArray[i].textContent}`;
-        // console.log('for', '#text', newHtml);
+        console.log('for', '#text', newHtml);
       }
 
       if (myNodeArray[i].nodeName === 'CODE') {
         newHtml = `${newHtml}${frontTag}${myNodeArray[i].textContent}${backTag}`;
-        // console.log('for', 'CODE', newHtml);
+        console.log('for', 'CODE', newHtml);
       }
     }
 

@@ -124,7 +124,7 @@ const EditableElementSwitch: FC<Props> = ({
     // 붙여넣기 command + v
     if (e.metaKey && e.key === 'v') {
       e.preventDefault();
-      paste(tempEachBlockStateText, setPasteData, eachBlockRef);
+      paste(eachBlockRef, setPasteData);
     }
   };
 
