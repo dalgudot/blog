@@ -8,9 +8,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { useEditable } from '../../lib/hooks/useEditable';
 import { addInlineCodeBlock } from '../../lib/utils/editable-block/add-inline-code-block';
-import { replaceCaret } from '../../lib/utils/focus-content-editable-text-to-end';
 import { IParagraphData } from '../../redux-toolkit/model/post-data-model';
 import styles from './editable-element.module.scss';
 
@@ -45,6 +43,7 @@ const EditableElement: FC<Props> = ({
   customClassName,
 }) => {
   // setCurrentBlockTempPostHtmlData과 setCurrentBlockPostHtmlData는 모두 current index와 관련있으므로 switch에서 처리하고 props로 넘겨받음!
+
   const [changeCaretPosition, setChangeCaretPosition] = useState<
     number | undefined
   >(undefined);
@@ -60,6 +59,23 @@ const EditableElement: FC<Props> = ({
     // *** input 이벤트로 들어오는 html은 정규식으로 변환됨!
     // *** [KEY] dangerouslySetInnerHTML로 들어가는 html에서 정규식 변환된 "&amp;", "&lt;" ,"&gt;"는 텍스트로, < > &는 실제 html 요소로 렌더링한다!
     const inputHtml = e.target.innerHTML;
+
+    // const checkChromeBug = () => {
+    //   const selection = window.getSelection();
+    //   if (
+    //     selection?.focusNode?.parentNode?.nodeName === 'SPAN' ||
+    //     selection?.focusNode?.parentNode?.nodeName === 'FONT'
+    //   ) {
+    //     e.preventDefault();
+    //     const emptyTextNode = document.createTextNode('');
+    //     selection?.focusNode?.parentNode?.replaceChild(
+    //       emptyTextNode,
+    //       emptyTextNode
+    //     );
+    //   }
+    // };
+    // checkChromeBug();
+
     const twoBacktickNodeIndex: number | undefined = addInlineCodeBlock(
       updateDataWithInlineBlock,
       eachBlockRef
@@ -94,7 +110,7 @@ const EditableElement: FC<Props> = ({
       selection && selection.removeAllRanges();
       selection && selection.addRange(newRange);
 
-      setChangeCaretPosition(undefined);
+      setChangeCaretPosition(undefined); // 초기화
     }
   }, [changeCaretPosition]);
 
