@@ -5,6 +5,8 @@ export const addInlineCodeBlock = (
   updateInlineBlock: (inputHtml: string) => void,
   eachBlockRef: MutableRefObject<HTMLElement>
 ) => {
+  const selection = window.getSelection();
+
   const frontTag = '<code class="inline__code__block">';
   const backTag = '</code>\u00A0';
 
@@ -41,7 +43,7 @@ export const addInlineCodeBlock = (
   };
   let myNodeArray = getMyNodeArray();
 
-  console.log('myNodeArray', myNodeArray);
+  // console.log('myNodeArray', myNodeArray);
 
   const getNewNodesWithInlineCodeHtml = () => {
     let twoBacktickNodeIndex: number | null = null;
@@ -55,25 +57,25 @@ export const addInlineCodeBlock = (
         const countBacktick: number | undefined =
           textContent?.match(/`/g)?.length;
 
-        if (isContinuousBacktick) {
-          twoBacktickNodeIndex = i;
-          // 2개 연속(``)이면 빈 inline Code Block 생성
-          myNodeArray[i].textContent = textContent?.replace(
-            '``',
-            `${frontTag}\u00A0\u00A0${backTag}`
-          );
-        }
-
         if (countBacktick === 2) {
-          twoBacktickNodeIndex = i;
-          // 첫 번째 `는 <code>로 두 번째 `는 </code>로!
-          myNodeArray[i].textContent = textContent
-            ?.replace('`', frontTag)
-            .replace(
-              '`',
-              backTag
-              // (&nbsp;)로 코드 블럭 벗어나기
+          if (isContinuousBacktick) {
+            twoBacktickNodeIndex = i;
+            // 2개 연속(``)이면 빈 inline Code Block 생성
+            myNodeArray[i].textContent = textContent?.replace(
+              '``',
+              `${frontTag}\u00A0${backTag}`
             );
+          } else {
+            twoBacktickNodeIndex = i;
+            // 첫 번째 `는 <code>로 두 번째 `는 </code>로!
+            myNodeArray[i].textContent = textContent
+              ?.replace('`', frontTag)
+              .replace(
+                '`',
+                backTag
+                // (&nbsp;)로 코드 블럭 벗어나기
+              );
+          }
         }
       }
     }
@@ -83,7 +85,8 @@ export const addInlineCodeBlock = (
 
   const twoBacktickNodeIndex = getNewNodesWithInlineCodeHtml();
 
-  console.log(twoBacktickNodeIndex);
+  twoBacktickNodeIndex !== null &&
+    console.log(myNodeArray[twoBacktickNodeIndex].textContent);
 
   if (twoBacktickNodeIndex !== null) {
     const getNewHtml = () => {
@@ -108,38 +111,10 @@ export const addInlineCodeBlock = (
 
     const newHtml = getNewHtml();
 
-    console.log('newHtml', newHtml);
+    // console.log('newHtml', newHtml);
 
     updateInlineBlock(newHtml);
+
+    return twoBacktickNodeIndex; // null이면 코드 변환이 되지 않음.
   }
-
-  // const selection = window.getSelection();
-  // const range = selection?.getRangeAt(0);
-  // const startContainer = range?.startContainer;
-  // const endContainer = range?.endContainer;
-
-  // if (countBacktick === 2) {
-  //   const isContinuousBacktick: boolean = inputHtml.includes('``');
-
-  //   if (isContinuousBacktick) {
-  //     // 2개 연속(``)이면 빈 inline Code Block 생성
-  //     const emptyCodeInlineBlock = inputHtml.replace(
-  //       '``',
-  //       `${frontTag}\u00A0\u00A0${backTag}`
-  //     );
-
-  //     updateInlineBlock(emptyCodeInlineBlock);
-  //   } else {
-  //     // 첫 번째 `는 <code>로 두 번째 `는 </code>로!
-  //     const addBacktick = inputHtml //
-  //       .replace('`', frontTag)
-  //       .replace(
-  //         '`',
-  //         backTag
-  //         // (&nbsp;)로 코드 블럭 벗어나기
-  //       );
-
-  //     updateInlineBlock(addBacktick);
-  //   }
-  // }
 };

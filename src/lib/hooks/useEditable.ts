@@ -22,5 +22,16 @@ export const useEditable = (
     removeCurrentBlockFocusUseEffectDependency,
   ]);
 
+  useEffect(() => {
+    // const selection = window.getSelection();
+    // const targetNode = ref.current.childNodes[2];
+    // if (targetNode) {
+    //   const newRange = document.createRange();
+    //   newRange.setStart(targetNode, 1);
+    //   selection && selection.removeAllRanges();
+    //   selection && selection.addRange(newRange);
+    // }
+  }, [html]);
+
   return ref;
 };

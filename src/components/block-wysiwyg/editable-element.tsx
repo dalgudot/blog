@@ -1,6 +1,13 @@
 import classNames from 'classnames';
 import DOMPurify from 'dompurify';
-import { ChangeEvent, FC, KeyboardEvent, MutableRefObject } from 'react';
+import {
+  ChangeEvent,
+  FC,
+  KeyboardEvent,
+  MutableRefObject,
+  useEffect,
+  useState,
+} from 'react';
 import { useEditable } from '../../lib/hooks/useEditable';
 import { addInlineCodeBlock } from '../../lib/utils/editable-block/add-inline-code-block';
 import { replaceCaret } from '../../lib/utils/focus-content-editable-text-to-end';
@@ -38,6 +45,9 @@ const EditableElement: FC<Props> = ({
   customClassName,
 }) => {
   // setCurrentBlockTempPostHtmlData과 setCurrentBlockPostHtmlData는 모두 current index와 관련있으므로 switch에서 처리하고 props로 넘겨받음!
+  const [changeCaretPosition, setChangeCaretPosition] = useState<
+    number | undefined
+  >(undefined);
   const onInput = (
     e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>
   ) => {
@@ -50,7 +60,13 @@ const EditableElement: FC<Props> = ({
     // *** input 이벤트로 들어오는 html은 정규식으로 변환됨!
     // *** [KEY] dangerouslySetInnerHTML로 들어가는 html에서 정규식 변환된 "&amp;", "&lt;" ,"&gt;"는 텍스트로, < > &는 실제 html 요소로 렌더링한다!
     const inputHtml = e.target.innerHTML;
-    addInlineCodeBlock(inputHtml, updateInlineBlock, eachBlockRef);
+    const twoBacktickNodeIndex: number | undefined = addInlineCodeBlock(
+      inputHtml,
+      updateInlineBlock,
+      eachBlockRef
+    ); // >> 이게 return 하는 값 받기.
+    twoBacktickNodeIndex !== undefined &&
+      setChangeCaretPosition(twoBacktickNodeIndex);
     setCurrentBlockTempPostHtmlData(inputHtml); // 여기 순서가 커서 위치에 문제가 될 수 있음 -> countBacktick 조건을 여기서 해서 조건문 만들면 해결할 수 있을듯.
 
     // console.log('inputHtml', inputHtml);
@@ -60,6 +76,23 @@ const EditableElement: FC<Props> = ({
     setCurrentBlockTempPostHtmlData(inputHtml);
     setCurrentBlockPostHtmlData(inputHtml);
   };
+
+  useEffect(() => {
+    // onInput 안에서 inlineCodeBlock이 업데이트되기 때문에,
+    // onInput에 대한 렌더링이 완전히 끝난 후 여기서 업데이트!
+    if (changeCaretPosition !== undefined) {
+      const selection = window.getSelection();
+      const targetNode =
+        eachBlockRef.current.childNodes[changeCaretPosition + 2];
+      const newRange = document.createRange();
+      newRange.setStart(targetNode, 1);
+
+      selection && selection.removeAllRanges();
+      selection && selection.addRange(newRange);
+
+      setChangeCaretPosition(undefined);
+    }
+  }, [changeCaretPosition]);
 
   return (
     <TagName
