@@ -73,7 +73,7 @@ const DraftWriting: NextPage = () => {
   };
 
   // console.log('post', post.wysiwygDataArray);
-  // console.log('tempPost', tempPost);
+  console.log('tempPost', tempPost);
 
   return (
     <>

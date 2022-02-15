@@ -147,7 +147,7 @@ const EditableElementSwitch: FC<Props> = ({
     setTempEachBlockStateText(inputHtml); // 리덕스에서 tempHtml을 가져오면 계속 전체 리렌더가 일어나기 때문에 해당 컴포넌트의 state로 관리
   };
 
-  // updateInlineBlock에서 이용
+  // updateDataWithInlineBlock에서 이용
   const setCurrentBlockPostHtmlData = (inputHtml: string) => {
     setEachBlockStateText(inputHtml); // 현재 블록만 렌더링
   };

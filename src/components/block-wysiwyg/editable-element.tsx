@@ -61,17 +61,19 @@ const EditableElement: FC<Props> = ({
     // *** [KEY] dangerouslySetInnerHTML로 들어가는 html에서 정규식 변환된 "&amp;", "&lt;" ,"&gt;"는 텍스트로, < > &는 실제 html 요소로 렌더링한다!
     const inputHtml = e.target.innerHTML;
     const twoBacktickNodeIndex: number | undefined = addInlineCodeBlock(
-      updateInlineBlock,
+      updateDataWithInlineBlock,
       eachBlockRef
-    ); // >> 이게 return 하는 값 받기.
-    twoBacktickNodeIndex !== undefined &&
+    );
+    if (twoBacktickNodeIndex !== undefined) {
       setChangeCaretPosition(twoBacktickNodeIndex);
-    setCurrentBlockTempPostHtmlData(inputHtml); // 여기 순서가 커서 위치에 문제가 될 수 있음 -> countBacktick 조건을 여기서 해서 조건문 만들면 해결할 수 있을듯.
+    } else {
+      setCurrentBlockTempPostHtmlData(inputHtml); // twoBacktickNodeIndex !== undefined이면 addInlineCodeBlock()의 updateDataWithInlineBlock에서 업데이트하기 때문에 2번 업데이트 할 필요 없음.
+    }
 
     // console.log('inputHtml', inputHtml);
   };
 
-  const updateInlineBlock = (inputHtml: string) => {
+  const updateDataWithInlineBlock = (inputHtml: string) => {
     setCurrentBlockTempPostHtmlData(inputHtml);
     setCurrentBlockPostHtmlData(inputHtml);
   };
@@ -82,9 +84,12 @@ const EditableElement: FC<Props> = ({
     if (changeCaretPosition !== undefined) {
       const selection = window.getSelection();
       const targetNode =
-        eachBlockRef.current.childNodes[changeCaretPosition + 2];
+        eachBlockRef.current.childNodes.length === 2
+          ? eachBlockRef.current.childNodes[changeCaretPosition + 1] // 어떤 노드 도 없는 경우에만 length가 2
+          : eachBlockRef.current.childNodes[changeCaretPosition + 2]; // 코드 블럭 생기면 2개의 노드가 추가로 생기기 때문
+
       const newRange = document.createRange();
-      newRange.setStart(targetNode, 1);
+      newRange.setStart(targetNode, 1); // 코드 블럭 한 칸 뒤쪽 위치
 
       selection && selection.removeAllRanges();
       selection && selection.addRange(newRange);

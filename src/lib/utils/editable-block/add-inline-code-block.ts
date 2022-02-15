@@ -1,7 +1,7 @@
 import { MutableRefObject } from 'react';
 
 export const addInlineCodeBlock = (
-  updateInlineBlock: (inputHtml: string) => void,
+  updateDataWithInlineBlock: (inputHtml: string) => void,
   eachBlockRef: MutableRefObject<HTMLElement>
 ) => {
   const frontTag = '<code class="inline__code__block">';
@@ -82,9 +82,6 @@ export const addInlineCodeBlock = (
 
   const twoBacktickNodeIndex = getNewNodesWithInlineCodeHtml();
 
-  twoBacktickNodeIndex !== null &&
-    console.log(myNodeArray[twoBacktickNodeIndex].textContent);
-
   if (twoBacktickNodeIndex !== null) {
     const getNewHtml = () => {
       let newHtml: string = '';
@@ -110,7 +107,7 @@ export const addInlineCodeBlock = (
 
     // console.log('newHtml', newHtml);
 
-    updateInlineBlock(newHtml);
+    updateDataWithInlineBlock(newHtml);
 
     return twoBacktickNodeIndex; // null이면 코드 변환이 되지 않음.
   }
