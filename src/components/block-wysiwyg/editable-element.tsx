@@ -61,7 +61,6 @@ const EditableElement: FC<Props> = ({
     // *** [KEY] dangerouslySetInnerHTML로 들어가는 html에서 정규식 변환된 "&amp;", "&lt;" ,"&gt;"는 텍스트로, < > &는 실제 html 요소로 렌더링한다!
     const inputHtml = e.target.innerHTML;
     const twoBacktickNodeIndex: number | undefined = addInlineCodeBlock(
-      inputHtml,
       updateInlineBlock,
       eachBlockRef
     ); // >> 이게 return 하는 값 받기.

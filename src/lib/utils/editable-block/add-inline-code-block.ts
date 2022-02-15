@@ -1,12 +1,9 @@
 import { MutableRefObject } from 'react';
 
 export const addInlineCodeBlock = (
-  inputHtml: string,
   updateInlineBlock: (inputHtml: string) => void,
   eachBlockRef: MutableRefObject<HTMLElement>
 ) => {
-  const selection = window.getSelection();
-
   const frontTag = '<code class="inline__code__block">';
   const backTag = '</code>\u00A0';
 
