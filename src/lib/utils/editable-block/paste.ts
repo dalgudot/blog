@@ -59,16 +59,6 @@ export const paste = (
     // console.log('rangeOffset', startOffset, endOffset); // 무조건 왼쪽, 오른쪽
     // console.log('collapsed', collapsed); // 무조건 왼쪽, 오른쪽
 
-    // https://jungpaeng.tistory.com/86
-    // range.startContainer: 범위가 시작하는 부분을 포함하고 있는 노드
-    // range.endContainter: 범위가 끝나는 부분을 포함하고 있는 노드
-    // range.startOffset: startContainer에서 범위가 시작하는 지점의 offset
-    // // // // // startContainer가 TEXT_NODE라면 문자의 갯수
-    // // // // // startContainer가 ELEMENT_NODE라면 자식 노드의 인덱스
-    // range.endOffset: endContainer에서 범위가 끝나는 지점의 offset
-    // // // // // startOffset과 동일한 규칙이 적용
-    // range.collapsed: Range의 시작점과 끝점이 같은 위치인지 알 수 있는 boolean 값을 반환
-
     // 1. 커서 하나일 때, if(collapsed === true) 2. 선택 영역이 있을 때, if(collapsed === false)
 
     // 정확한 위치에 clipText를 붙여넣으려면?
@@ -76,6 +66,9 @@ export const paste = (
     // 2) 그리고 다시 전체로 구성해줘야 한다.
 
     let endNodeIndex: number = 0; // eachBlockChildNodesLength === 0일 떄 대비 가능
+    let startNodeIndex: number = 0;
+    let middleNodeCount: number = 0;
+
     // ***공통*** 아래 for문을 통해 마지막 노드(선택 영역 없는 경우 커서 1개) 커서가 있는 노드 식별!
     if (eachBlockChildNodesLength === 0) {
       eachBlockChildNodesLength = 1; // length는 여기서 초기화해야 위  if (eachBlockChildNodesLength === 0) 쓸 수 있음.
@@ -109,38 +102,21 @@ export const paste = (
     console.log('endNodeIndex', endNodeIndex);
 
     if (collapsed === true) {
-      // console.log('myNodeArray.length', myNodeArray.length);
-
       const nodeWithCaretTextContent = myNodeArray[endNodeIndex].textContent;
-
-      // console.log('nodeWithCaretTextContent', nodeWithCaretTextContent);
-
       const nodeWithCaretTextContentArray = nodeWithCaretTextContent?.split('');
 
       // 배열에서 붙여넣기
       endOffset !== undefined &&
         nodeWithCaretTextContentArray?.splice(endOffset, 0, clipText);
 
-      // console.log('nodeWithCaretTextContentArray', nodeWithCaretTextContentArray);
-
       const textAfterPastedNodeWithCaretIndex =
         nodeWithCaretTextContentArray?.join('');
 
-      // console.log(
-      //   'textAfterPastedNodeWithCaretIndex',
-      //   textAfterPastedNodeWithCaretIndex
-      // );
-
       myNodeArray[endNodeIndex].textContent = textAfterPastedNodeWithCaretIndex;
-
-      // console.log(
-      //   'newTextContent',
-      //   myNodeArray[endNodeIndex].textContent
-      // );
     }
 
     // 드래그한 선택 영역 있을 경우
-    let startNodeIndex: number = 0;
+
     if (collapsed === false) {
       // 1. 셀렉션 영역 모두 지운다
       // 2. 마지막 노드에 해당 텍스트를 붙여넣는다.
@@ -245,7 +221,9 @@ export const paste = (
             removeChildNode(i);
           }
         };
-        removeMiddleNode(); // 이 함수 때문에 startNodeIndex는 안 바뀜
+        // 여기서 removeMiddleNode() 실행시키면 아래 if문 조건에서 endNodeIndex, startNodeIndex를 쓸 수 없게 됨.
+        // > 각 조건에서 각각 실행시켜줘야 함!
+        middleNodeCount = endNodeIndex - startNodeIndex - 1;
 
         // 아래 if문은 위 두 줄 코드를 포함해 start 노드의 텍스트가 없어질 경우 노드 삭제하고, 텍스트가 있을 경우삭제만 하는 코드
         // *** 허나 여기서 index를 바꾸면 위쪽 End 노드 코드에 endNodeIndex 변화로 영향 끼치기 때문에 End 노드 작업 이후에 여기서!
@@ -258,9 +236,11 @@ export const paste = (
             endNodeTextArrayAfterRemoveLength === 0 &&
             myNodeArray[endNodeIndex].nodeName === 'CODE'
           ) {
+            removeMiddleNode();
             removeChildNode(startNodeIndex);
-            removeChildNode(endNodeIndex - 1); // 이미 startNodeIndex 제거했으므로 -1
+            removeChildNode(endNodeIndex - middleNodeCount - 1); // 이미 startNodeIndex 제거했으므로 -1
           } else {
+            removeMiddleNode();
             removeChildNode(startNodeIndex);
           }
           //
@@ -273,17 +253,17 @@ export const paste = (
             startNodeTextArrayAfterRemoveLength === 0 &&
             myNodeArray[startNodeIndex].nodeName === 'CODE'
           ) {
-            console.log('CODE 동작 1');
+            removeMiddleNode();
             removeChildNode(startNodeIndex);
-            removeChildNode(endNodeIndex - 1); // 이미 startNodeIndex 제거했으므로 -1
+            removeChildNode(endNodeIndex - middleNodeCount - 1); // 이미 startNodeIndex 제거했으므로 -1
           } else {
-            console.log('CODE 동작 2');
             setFinalStartNodeText(); // start 노드 업데이트된 텍스트 여기서는 삭제되지 않으므로, 넣어줘야
-            removeChildNode(endNodeIndex);
+            removeMiddleNode();
+            removeChildNode(endNodeIndex - middleNodeCount);
           }
           //
         } else {
-          // 여기선 인덱스가 변하지 않음.
+          removeMiddleNode(); // 여기선 인덱스가 변하지 않음.
           setFinalStartNodeText(); // 내가 만든 Array에 textContent 넣기
         }
       }
@@ -325,13 +305,17 @@ export const paste = (
     setPasteData(newHtml);
 
     // setPasteData 데이터 업데이트 이후에 caret 위치 조정
-    // focusCaretAfterClipText(
-    //   eachBlockRef,
-    //   endNodeIndex,
-    //   endOffset,
-    //   clipText,
-    //   selection
-    // );
+    focusCaretAfterClipText(
+      eachBlockRef,
+      startNodeIndex,
+      endNodeIndex,
+      startOffset,
+      endOffset,
+      clipText,
+      selection,
+      collapsed,
+      middleNodeCount
+    );
   });
 };
 
@@ -340,24 +324,69 @@ export const paste = (
 // 이게 노드를 기준으로 하기 때문에 문제가 생긴다.
 const focusCaretAfterClipText = (
   eachBlockRef: MutableRefObject<any>,
+  startNodeIndex: number,
   endNodeIndex: number,
+  startOffset: number | undefined,
   endOffset: number | undefined,
   clipText: string,
-  selection: Selection | null
+  selection: Selection | null,
+  collapsed: boolean | undefined,
+  middleNodeCount: number
 ) => {
-  const targetNode = eachBlockRef.current.childNodes[endNodeIndex];
-  const newCaretPosition =
-    endOffset !== undefined && endOffset + clipText.length;
+  const getCaretNodeIndex = () => {
+    // if (collapsed === true) {
+    //   return endNodeIndex;
+    // }
 
+    // if (endNodeIndex === startNodeIndex) {
+    //   return startNodeIndex;
+    // }
+
+    // if (endNodeIndex - startNodeIndex > 0) {
+    //   return startNodeIndex;
+    // }
+
+    return endNodeIndex;
+    // return 0;
+  };
+  const caretNodeIndex = getCaretNodeIndex();
+  const targetNode = eachBlockRef.current.childNodes[caretNodeIndex];
   const newRange = document.createRange();
-  if (newCaretPosition !== false) {
-    if (eachBlockRef.current.childNodes[endNodeIndex].nodeName === 'CODE') {
+
+  console.log('targetNode', targetNode);
+
+  const setNewRangeStart = (newCaretPosition: number) => {
+    if (targetNode.nodeName === 'CODE') {
       newRange.setStart(targetNode.childNodes.item(0), newCaretPosition); // CODE의 경우 childeNode(#text)로 캐럿 위치 조정
     } else {
       newRange.setStart(targetNode, newCaretPosition);
     }
+  };
+
+  if (collapsed === true) {
+    const newCaretPosition =
+      endOffset !== undefined ? endOffset + clipText.length : 0;
+
+    setNewRangeStart(newCaretPosition);
+  } else {
+    const newCaretPosition =
+      startOffset !== undefined ? startOffset + clipText.length : 0; // 선택 영역 있을 때에는 startOffset으로
+
+    console.log('newCaretPosition', newCaretPosition);
+
+    setNewRangeStart(newCaretPosition);
   }
 
   selection && selection.removeAllRanges();
   selection && selection.addRange(newRange);
 };
+
+// https://jungpaeng.tistory.com/86
+// range.startContainer: 범위가 시작하는 부분을 포함하고 있는 노드
+// range.endContainter: 범위가 끝나는 부분을 포함하고 있는 노드
+// range.startOffset: startContainer에서 범위가 시작하는 지점의 offset
+// // // // // startContainer가 TEXT_NODE라면 문자의 갯수
+// // // // // startContainer가 ELEMENT_NODE라면 자식 노드의 인덱스
+// range.endOffset: endContainer에서 범위가 끝나는 지점의 offset
+// // // // // startOffset과 동일한 규칙이 적용
+// range.collapsed: Range의 시작점과 끝점이 같은 위치인지 알 수 있는 boolean 값을 반환
