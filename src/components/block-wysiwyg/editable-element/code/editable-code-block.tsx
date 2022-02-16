@@ -3,6 +3,7 @@ import {
   Dispatch,
   FC,
   KeyboardEvent,
+  MutableRefObject,
   SetStateAction,
   useEffect,
   useState,
@@ -20,11 +21,13 @@ import { useAppDispatch } from '../../../../redux-toolkit/store';
 import { setCurrentCodeBlockTempCodeLanguage } from '../../../../redux-toolkit/slices/temp-post-slice';
 
 type Props = {
+  eachBlockRef: MutableRefObject<any>;
   contentEditable: boolean;
   data: ICodeData;
+  html: string;
   currentIndex: number;
-  setTempPostHtmlData: (inputHtml: string) => void;
-  // setPostHtmlData: (inputHtml: string) => void;
+  setCurrentBlockTempPostHtmlData: (inputHtml: string) => void;
+  // setCurrentBlockPostHtmlData: (inputHtml: string) => void;
   onKeyPress: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown: (e: KeyboardEvent<HTMLElement>) => void;
   addBlockFocusUseEffectDependency?: IParagraphData;
@@ -33,11 +36,13 @@ type Props = {
 };
 
 const EditableCodeBlock: FC<Props> = ({
+  eachBlockRef,
   contentEditable,
   data,
+  html,
   currentIndex,
-  setTempPostHtmlData,
-  // setPostHtmlData,
+  setCurrentBlockTempPostHtmlData,
+  // setCurrentBlockPostHtmlData,
   onKeyPress,
   onKeyDown,
   addBlockFocusUseEffectDependency,
@@ -48,8 +53,8 @@ const EditableCodeBlock: FC<Props> = ({
   const [codeLanguage, setCodeLanguage] = useState<TCodeLanguage>('tsx');
 
   useEffect(() => {
-    setCodeString(data.html);
-  }, [data.html]);
+    setCodeString(html);
+  }, [html]);
 
   useEffect(() => {
     setCodeLanguage(data.codeLanguage);
@@ -67,7 +72,7 @@ const EditableCodeBlock: FC<Props> = ({
           <CodeTextarea
             codeString={codeString}
             setCodeString={setCodeString}
-            setTempPostHtmlData={setTempPostHtmlData}
+            setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
             addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}

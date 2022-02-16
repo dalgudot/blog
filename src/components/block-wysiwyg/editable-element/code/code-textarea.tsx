@@ -15,7 +15,7 @@ import styles from './editable-code-block.module.scss';
 type Props = {
   codeString: string;
   setCodeString: Dispatch<SetStateAction<string>>;
-  setTempPostHtmlData: (inputHtml: string) => void;
+  setCurrentBlockTempPostHtmlData: (inputHtml: string) => void;
   onKeyPress: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown: (e: KeyboardEvent<HTMLElement>) => void;
   addBlockFocusUseEffectDependency?: IParagraphData;
@@ -26,7 +26,7 @@ type Props = {
 const CodeTextarea: FC<Props> = ({
   codeString,
   setCodeString,
-  setTempPostHtmlData,
+  setCurrentBlockTempPostHtmlData,
   onKeyPress,
   onKeyDown,
   addBlockFocusUseEffectDependency,
@@ -37,7 +37,7 @@ const CodeTextarea: FC<Props> = ({
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setCodeString(e.target.value);
-    setTempPostHtmlData(e.target.value);
+    setCurrentBlockTempPostHtmlData(e.target.value);
   };
 
   useEffect(() => {

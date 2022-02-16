@@ -26,6 +26,12 @@ const HeadForSEO: FC<TInfoForSEO> = ({ info }) => {
       />
       <meta charSet='utf-8' />
 
+      {/* 네이버 서치 어드바이저 */}
+      <meta
+        name='naver-site-verification'
+        content='ecd5e29d625e1271c569b8d18cc77c0df08e95fc'
+      />
+
       <title>{info.title}</title>
       <meta name='author' content={author} />
       <meta name='description' content={info.description} />

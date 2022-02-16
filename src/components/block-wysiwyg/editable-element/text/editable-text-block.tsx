@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { FC, KeyboardEvent } from 'react';
+import { FC, KeyboardEvent, MutableRefObject } from 'react';
 import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
 import { TBlockTextType } from '../../../../redux-toolkit/model/text-data-model';
 import EditableElement from '../../editable-element';
@@ -7,10 +7,11 @@ import styles from './editable-text-block.module.scss';
 
 type Props = {
   blockType: TBlockTextType;
+  eachBlockRef: MutableRefObject<any>;
   contentEditable: boolean;
   html: string;
-  setTempPostHtmlData: (inputHtml: string) => void;
-  setPostHtmlData: (inputHtml: string) => void;
+  setCurrentBlockTempPostHtmlData: (inputHtml: string) => void;
+  setCurrentBlockPostHtmlData: (inputHtml: string) => void;
   onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
   addBlockFocusUseEffectDependency?: IParagraphData;
@@ -21,10 +22,11 @@ type Props = {
 
 const EditableTextBlock: FC<Props> = ({
   blockType,
+  eachBlockRef,
   contentEditable,
   html,
-  setTempPostHtmlData,
-  setPostHtmlData,
+  setCurrentBlockTempPostHtmlData,
+  setCurrentBlockPostHtmlData,
   onKeyPress,
   onKeyDown,
   addBlockFocusUseEffectDependency,
@@ -54,10 +56,11 @@ const EditableTextBlock: FC<Props> = ({
     <>
       <EditableElement
         TagName={TagName}
+        eachBlockRef={eachBlockRef}
         contentEditable={contentEditable}
         html={html}
-        setTempPostHtmlData={setTempPostHtmlData}
-        setPostHtmlData={setPostHtmlData}
+        setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+        setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
         onKeyPress={onKeyPress} // optional, 블록 추가
         onKeyDown={onKeyDown} // optional, 블록 삭제
         addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}

@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { FC, KeyboardEvent } from 'react';
+import { FC, KeyboardEvent, MutableRefObject } from 'react';
 import { ILinkData } from '../../../../redux-toolkit/model/link-data-model';
 import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
 import IconNewTap24 from '../../../../svg/icon-new-tap-24';
@@ -10,11 +10,13 @@ import UrlInput from './url-input';
 type Props = {
   wysiwygType: 'Normal' | 'Link';
   linkBlockType: 'Paragraph' | 'Reference';
+  eachBlockRef: MutableRefObject<any>;
   contentEditable: boolean;
+  html: string;
   data: ILinkData;
   currentIndex: number;
-  setTempPostHtmlData: (inputHtml: string) => void;
-  setPostHtmlData: (inputHtml: string) => void;
+  setCurrentBlockTempPostHtmlData: (inputHtml: string) => void;
+  setCurrentBlockPostHtmlData: (inputHtml: string) => void;
   onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
   addBlockFocusUseEffectDependency?: IParagraphData;
@@ -25,11 +27,13 @@ type Props = {
 const EditableLinkBlock: FC<Props> = ({
   wysiwygType,
   linkBlockType,
+  eachBlockRef,
   contentEditable,
+  html,
   data,
   currentIndex,
-  setTempPostHtmlData,
-  setPostHtmlData,
+  setCurrentBlockTempPostHtmlData,
+  setCurrentBlockPostHtmlData,
   onKeyPress,
   onKeyDown,
   addBlockFocusUseEffectDependency,
@@ -53,10 +57,11 @@ const EditableLinkBlock: FC<Props> = ({
         >
           <EditableElement
             TagName='p'
+            eachBlockRef={eachBlockRef}
             contentEditable={contentEditable}
-            html={data.html}
-            setTempPostHtmlData={setTempPostHtmlData}
-            setPostHtmlData={setPostHtmlData}
+            html={html}
+            setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
+            setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress} // optional, 블록 추가
             onKeyDown={onKeyDown} // optional, 블록 삭제
             addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}

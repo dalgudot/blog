@@ -1,37 +1,114 @@
+import { MutableRefObject } from 'react';
+
 export const addInlineCodeBlock = (
-  inputHtml: string,
-  setTempPostHtmlData: (inputHtml: string) => void,
-  setPostHtmlData: (inputHtml: string) => void
+  updateDataWithInlineBlock: (inputHtml: string) => void,
+  eachBlockRef: MutableRefObject<HTMLElement>
 ) => {
-  const countBacktick = inputHtml.match(/`/g)?.length;
-  const updateInlineBlock = (inputHtml: string) => {
-    setTempPostHtmlData(inputHtml);
-    setPostHtmlData(inputHtml);
+  const frontTag = '<code class="inline__code__block">';
+  const backTag = '</code>\u00A0';
+
+  const eachBlockChildNodes: NodeListOf<ChildNode> =
+    eachBlockRef.current.childNodes;
+  const eachBlockChildNodesLength: number = eachBlockChildNodes.length;
+  // console.log('eachBlockChildNodes', eachBlockChildNodes);
+
+  const getNodeArray = () => {
+    let nodeArray: {
+      nodeName: '#text' | 'CODE';
+      textContent: string | null | undefined;
+    }[] = [];
+
+    // 아무런 텍스트도 없는 노드일 경우(eachBlockRef.current.childNodes)
+    if (eachBlockChildNodesLength === 0) {
+      // 아무런 노드도 없는 경우 array 및 length 초기화
+      nodeArray = [
+        {
+          nodeName: '#text',
+          textContent: '',
+        },
+      ];
+    } else {
+      for (let i = 0; i < eachBlockChildNodesLength; i++) {
+        nodeArray.push({
+          nodeName: eachBlockChildNodes[i].nodeName as '#text' | 'CODE',
+          textContent: eachBlockChildNodes[i].textContent,
+        }); // nodeValue 대신 TextContent로 해야, <code></code> 안의 텍스트 가져옴
+      }
+    }
+
+    return nodeArray;
+  };
+  const nodeArray = getNodeArray();
+
+  const getNewNodesWithInlineCodeHtml = () => {
+    let twoBacktickNodeIndex: number | null = null;
+
+    for (let i = 0; i < eachBlockChildNodesLength; i++) {
+      //
+      if (eachBlockChildNodes[i].nodeName === '#text') {
+        const textContent = eachBlockChildNodes[i].textContent;
+        const isContinuousBacktick: boolean | undefined =
+          textContent?.includes('``');
+        const numberOfBacktick: number = textContent?.match(/`/g)?.length ?? 0;
+
+        if (numberOfBacktick === 2) {
+          //
+          if (isContinuousBacktick) {
+            twoBacktickNodeIndex = i;
+            // 2개 연속(``)이면 빈 inline Code Block 생성
+            nodeArray[i].textContent = textContent?.replace(
+              '``',
+              `${frontTag}\u00A0${backTag}`
+            );
+          }
+          //
+          else {
+            twoBacktickNodeIndex = i;
+            // 첫 번째 `는 <code>로 두 번째 `는 </code>로!
+            nodeArray[i].textContent = textContent
+              ?.replace('`', frontTag)
+              .replace(
+                '`',
+                backTag
+                // (&nbsp;)로 코드 블럭 벗어나기
+              );
+          }
+        }
+      }
+    }
+
+    return twoBacktickNodeIndex;
   };
 
-  if (countBacktick === 2) {
-    const isContinuousBacktick: boolean = inputHtml.includes('``');
+  const twoBacktickNodeIndex = getNewNodesWithInlineCodeHtml();
 
-    if (isContinuousBacktick) {
-      // 2개 연속(``)이면 빈 inline Code Block 생성
-      const emptyCodeInlineBlock = inputHtml.replace(
-        '``',
-        '<code>&nbsp</code>&nbsp'
-      );
+  if (twoBacktickNodeIndex !== null) {
+    const getNewHtml = () => {
+      let newHtml: string = '';
 
-      updateInlineBlock(emptyCodeInlineBlock);
-    } else {
-      // 첫 번째 `는 <code>로 두 번째 `는 </code>로!
-      const addBacktick = inputHtml
-        .replace('`', '<code class="inline__code__block">')
-        .replace(
-          '`',
-          `</code>`
-          // `</code>&nbsp`
-          // &nbsp로 코드 블럭 벗어나기
-        );
+      for (let i = 0; i < eachBlockChildNodesLength; i++) {
+        if (nodeArray[i].nodeName === '#text') {
+          newHtml = `${newHtml}${nodeArray[i].textContent}`;
+          // console.log('for', '#text', newHtml);
+        }
 
-      updateInlineBlock(addBacktick);
-    }
+        if (nodeArray[i].nodeName === 'CODE') {
+          newHtml = `${newHtml}${frontTag}${
+            nodeArray[i].textContent
+          }${backTag.replace(/\u00A0/, '')}`;
+          // console.log('for', 'CODE', newHtml);
+        }
+      }
+
+      return newHtml;
+    };
+
+    const newHtml = getNewHtml();
+
+    // console.log('newHtml', newHtml);
+
+    updateDataWithInlineBlock(newHtml);
+
+    return twoBacktickNodeIndex; // null이면 코드 변환이 되지 않음.
   }
 };

@@ -6,6 +6,20 @@ $text__second__max__width: 640px;
   text__second__max__width: $text__second__max__width;
 }
 
+@mixin fixChromeContentEditableBug {
+  font {
+    font-size: inherit !important;
+    letter-spacing: inherit !important;
+    background-color: inherit !important;
+  }
+
+  span {
+    font-size: inherit !important;
+    letter-spacing: inherit !important;
+    background-color: inherit !important;
+  }
+}
+
 /**
 *
 * Title 500, 700
@@ -87,6 +101,8 @@ $text__second__max__width: 640px;
 @mixin body1($weight: 400) {
   font-size: 21px;
   font-weight: $weight;
+  // @include fixChromeContentEditableBug;
+  // https://stackoverflow.com/questions/15015019/prevent-chrome-from-wrapping-contents-of-joined-p-with-a-span
 
   @media screen and (max-width: $text__first__max__width) {
     font-size: 19px;
