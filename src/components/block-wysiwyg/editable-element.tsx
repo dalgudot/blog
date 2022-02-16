@@ -49,12 +49,6 @@ const EditableElement: FC<Props> = ({
     number | undefined
   >(undefined);
 
-  // const prevBackticCountRef = useRef<number>(0);
-  const [prevBackticCount, setPrevBackticCount] = useState<number>(0);
-  // console.log('prevBackticCountRef', prevBackticCountRef.current);
-
-  // console.log('prevBackticCount', prevBackticCount);
-
   const onInput = (
     e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>
   ) => {
@@ -70,17 +64,13 @@ const EditableElement: FC<Props> = ({
 
     const twoBacktickNodeIndex: number | undefined = addInlineCodeBlock(
       updateDataWithInlineBlock,
-      eachBlockRef,
-      prevBackticCount,
-      setPrevBackticCount
+      eachBlockRef
     );
     if (twoBacktickNodeIndex !== undefined) {
       setChangeCaretPosition(twoBacktickNodeIndex);
     } else {
       setCurrentBlockTempPostHtmlData(inputHtml); // twoBacktickNodeIndex !== undefined이면 addInlineCodeBlock()의 updateDataWithInlineBlock에서 업데이트하기 때문에 2번 업데이트 할 필요 없음.
     }
-
-    // console.log('inputHtml', inputHtml);
   };
 
   const updateDataWithInlineBlock = (inputHtml: string) => {

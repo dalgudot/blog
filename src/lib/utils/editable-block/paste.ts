@@ -10,13 +10,14 @@ export const paste = (
     // Selection의 anchor는 텍스트 선택을 시작한 지점, focus는 선택을 끝낸 지점
     let newHtml: string = '';
     const selection = window.getSelection(); // 셀렉션이 있는 노드들 모두
+    const clipTextLength = clipText.length;
 
     let eachBlockChildNodes = eachBlockRef.current.childNodes;
     let eachBlockChildNodesLength = eachBlockRef.current.childNodes.length;
 
     let isRemovedSomeNode: boolean = false;
     const removeChildNode = (index: number) => {
-      console.log('eachBlockChildNodes', eachBlockChildNodes);
+      // console.log('eachBlockChildNodes', eachBlockChildNodes);
       eachBlockChildNodes[index].remove(); // 실제 노드 삭제
       myNodeArray.splice(index, 1); // 내가 만든 배열 요소 삭제
       isRemovedSomeNode = true;
@@ -291,91 +292,53 @@ export const paste = (
 
       if (myNodeArray[i].nodeName === '#text') {
         newHtml = `${newHtml}${myNodeArray[i].textContent}`;
-        console.log('for', '#text', newHtml);
+        // console.log('for', '#text', newHtml);
       }
 
       if (myNodeArray[i].nodeName === 'CODE') {
         newHtml = `${newHtml}${frontTag}${myNodeArray[i].textContent}${backTag}`;
-        console.log('for', 'CODE', newHtml);
+        // console.log('for', 'CODE', newHtml);
       }
     }
 
-    console.log('newHtml', newHtml);
+    // console.log('newHtml', newHtml);
 
     setPasteData(newHtml);
 
     // setPasteData 데이터 업데이트 이후에 caret 위치 조정
-    focusCaretAfterClipText(
-      eachBlockRef,
-      startNodeIndex,
-      endNodeIndex,
-      startOffset,
-      endOffset,
-      clipText,
-      selection,
-      collapsed,
-      middleNodeCount
-    );
+    if (collapsed) {
+      focusCaretAfterClipText(
+        eachBlockRef,
+        endNodeIndex,
+        clipTextLength,
+        startOffset,
+        selection
+      );
+    }
+
+    if (!collapsed) {
+      console.log('collapsed', collapsed);
+    }
   });
 };
 
-// & === < === >
-
-// 이게 노드를 기준으로 하기 때문에 문제가 생긴다.
 const focusCaretAfterClipText = (
-  eachBlockRef: MutableRefObject<any>,
-  startNodeIndex: number,
+  eachBlockRef: MutableRefObject<HTMLElement>,
   endNodeIndex: number,
+  clipTextLength: number,
   startOffset: number | undefined,
-  endOffset: number | undefined,
-  clipText: string,
-  selection: Selection | null,
-  collapsed: boolean | undefined,
-  middleNodeCount: number
+  selection: Selection | null
 ) => {
-  const getCaretNodeIndex = () => {
-    // if (collapsed === true) {
-    //   return endNodeIndex;
-    // }
+  const targetNode =
+    eachBlockRef.current.childNodes[endNodeIndex].nodeName === 'CODE'
+      ? eachBlockRef.current.childNodes[endNodeIndex].childNodes[0]
+      : eachBlockRef.current.childNodes[endNodeIndex];
 
-    // if (endNodeIndex === startNodeIndex) {
-    //   return startNodeIndex;
-    // }
+  const newCaretPosition =
+    startOffset !== undefined && startOffset + clipTextLength;
 
-    // if (endNodeIndex - startNodeIndex > 0) {
-    //   return startNodeIndex;
-    // }
-
-    return endNodeIndex;
-    // return 0;
-  };
-  const caretNodeIndex = getCaretNodeIndex();
-  const targetNode = eachBlockRef.current.childNodes[caretNodeIndex];
   const newRange = document.createRange();
-
-  console.log('targetNode', targetNode);
-
-  const setNewRangeStart = (newCaretPosition: number) => {
-    if (targetNode.nodeName === 'CODE') {
-      newRange.setStart(targetNode.childNodes.item(0), newCaretPosition); // CODE의 경우 childeNode(#text)로 캐럿 위치 조정
-    } else {
-      newRange.setStart(targetNode, newCaretPosition);
-    }
-  };
-
-  if (collapsed === true) {
-    const newCaretPosition =
-      endOffset !== undefined ? endOffset + clipText.length : 0;
-
-    setNewRangeStart(newCaretPosition);
-  } else {
-    const newCaretPosition =
-      startOffset !== undefined ? startOffset + clipText.length : 0; // 선택 영역 있을 때에는 startOffset으로
-
-    console.log('newCaretPosition', newCaretPosition);
-
-    setNewRangeStart(newCaretPosition);
-  }
+  newCaretPosition !== false && newRange.setStart(targetNode, newCaretPosition); // 코드 블럭 한 칸 뒤쪽 위치
 
   selection && selection.removeAllRanges();
   selection && selection.addRange(newRange);

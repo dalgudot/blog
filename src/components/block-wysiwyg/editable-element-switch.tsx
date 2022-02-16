@@ -191,12 +191,6 @@ const EditableElementSwitch: FC<Props> = ({
       selection && selection.addRange(newRange);
     }
 
-    // console.log(
-    //   'endContainer',
-    //   endContainer,
-    //   endContainer?.parentNode?.nodeName,
-    //   endContainer?.textContent?.length
-    // );
     if (
       e.key === 'Backspace' &&
       endContainer?.parentNode?.nodeName === 'CODE' &&
@@ -228,15 +222,11 @@ const EditableElementSwitch: FC<Props> = ({
     }
 
     setTempEachBlockStateText(inputHtml); // 리덕스에서 tempHtml을 가져오면 계속 전체 리렌더가 일어나기 때문에 해당 컴포넌트의 state로 관리
-
-    // console.log('Rendering of setCurrentBlockTempPostHtmlData');
   };
 
   // updateDataWithInlineBlock에서 이용
   const setCurrentBlockPostHtmlData = (inputHtml: string) => {
     setEachBlockStateText(inputHtml); // 현재 블록만 렌더링
-
-    // console.log('Rendering of setCurrentBlockPostHtmlData');
   };
 
   const addBlockFocusUseEffectDependency = datas[currentIndex];
