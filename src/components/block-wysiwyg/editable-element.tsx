@@ -59,8 +59,8 @@ const EditableElement: FC<Props> = ({
     const inputHtml = e.target.innerHTML;
 
     const twoBacktickNodeIndex: number | undefined = addInlineCodeBlock(
-      updateDataWithInlineBlock,
-      eachBlockRef
+      eachBlockRef,
+      updateDataWithInlineBlock
     );
     if (twoBacktickNodeIndex !== undefined) {
       setChangeCaretPosition(twoBacktickNodeIndex);

@@ -28,6 +28,7 @@ import styles from './editable-element.module.scss';
 import { ICodeData } from '../../redux-toolkit/model/code-data-model';
 import { paste } from '../../lib/utils/editable-block/paste';
 import { useEditable } from '../../lib/hooks/useEditable';
+import { getSelectionEndIndex } from '../../lib/utils/editable-block/node';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
@@ -142,29 +143,7 @@ const EditableElementSwitch: FC<Props> = ({
     const endOffset = range?.endOffset;
     const collapsed = range?.collapsed;
 
-    const getSelectionEndIndex = () => {
-      let selectionEndIndex: number = 0;
-
-      for (let i = 0; i < childeNodesLength; i++) {
-        if (
-          childeNodes[i].nodeName === '#text' &&
-          focusNode?.isSameNode(childeNodes[i])
-        ) {
-          selectionEndIndex = i;
-        }
-
-        if (
-          childeNodes[i].nodeName === 'CODE' &&
-          focusNode?.isSameNode(childeNodes[i].childNodes.item(0))
-        ) {
-          selectionEndIndex = i;
-        }
-      }
-
-      return selectionEndIndex;
-    };
-    const selectionEndIndex = getSelectionEndIndex();
-
+    const selectionEndIndex = getSelectionEndIndex(childeNodes);
     // console.log('selectionEndIndex', selectionEndIndex);
 
     // 렌더링 없이, 인라인 코드 블럭 오른쪽 한 칸 삭제 못하도록 하고, 커서 이동

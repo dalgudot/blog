@@ -1,4 +1,10 @@
 import { MutableRefObject } from 'react';
+import {
+  getNewHtml,
+  getNodeArray,
+  getSelectionEndIndex,
+  getSelectionStartIndex,
+} from './node';
 
 // selection / range 속성, 메소드 정리 >> https://jungpaeng.tistory.com/86
 // https://gdtbgl93.tistory.com/175
@@ -7,49 +13,23 @@ export const paste = (
   setPasteData: (newHtml: string) => void
 ) => {
   navigator.clipboard.readText().then((clipText) => {
-    // Selection의 anchor는 텍스트 선택을 시작한 지점, focus는 선택을 끝낸 지점
-    let newHtml: string = '';
-    const selection = window.getSelection(); // 셀렉션이 있는 노드들 모두
+    // let newHtml: string = '';
     const clipTextLength = clipText.length;
+    const eachBlockChildNodes = eachBlockRef.current.childNodes;
+    const nodeArray = getNodeArray(eachBlockChildNodes);
 
-    let eachBlockChildNodes = eachBlockRef.current.childNodes;
-    let eachBlockChildNodesLength = eachBlockRef.current.childNodes.length;
+    // const eachBlockChildNodesLength = eachBlockRef.current.childNodes.length;
+    // console.log('eachBlockChildNodesLength', eachBlockChildNodesLength);
 
     let isRemovedSomeNode: boolean = false;
     const removeChildNode = (index: number) => {
       // console.log('eachBlockChildNodes', eachBlockChildNodes);
       eachBlockChildNodes[index].remove(); // 실제 노드 삭제
-      myNodeArray.splice(index, 1); // 내가 만든 배열 요소 삭제
+      nodeArray.splice(index, 1); // 내가 만든 배열 요소 삭제
       isRemovedSomeNode = true;
     };
-    // console.log('eachBlockChildNodesLength', eachBlockChildNodesLength);
 
-    let myNodeArray: {
-      nodeName: '#text' | 'CODE';
-      textContent: string | null | undefined;
-    }[] = [];
-
-    // 아무런 텍스트도 없는 노드일 경우(eachBlockRef.current.childNodes)
-    if (eachBlockChildNodesLength === 0) {
-      // 아무런 노드도 없는 경우 array 및 length 초기화
-      myNodeArray = [
-        {
-          nodeName: '#text',
-          textContent: '',
-        },
-      ];
-    } else {
-      for (let i = 0; i < eachBlockChildNodesLength; i++) {
-        myNodeArray.push({
-          nodeName: eachBlockRef.current.childNodes[i].nodeName as
-            | '#text'
-            | 'CODE',
-          textContent: eachBlockRef.current.childNodes[i].textContent,
-        }); // nodeValue 대신 TextContent로 해야, <code></code> 안의 텍스트 가져옴
-      }
-    }
-
-    // console.log('myNodeArray', myNodeArray);
+    const selection = window.getSelection();
     const range = selection?.getRangeAt(0);
     const startContainer = range?.startContainer;
     const endContainer = range?.endContainer;
@@ -64,44 +44,16 @@ export const paste = (
     // 1) tempEachBlockStateText가 아닌, 즉 전체 텍스트를 이용하는 게 아닌 커서가 있는 노드의 텍스트를 바꿔줘아 한다.
     // 2) 그리고 다시 전체로 구성해줘야 한다.
 
-    let endNodeIndex: number = 0; // eachBlockChildNodesLength === 0일 떄 대비 가능
-    let startNodeIndex: number = 0;
+    // let selectionStartIndex: number = 0;
     let middleNodeCount: number = 0;
 
-    // ***공통*** 아래 for문을 통해 마지막 노드(선택 영역 없는 경우 커서 1개) 커서가 있는 노드 식별!
-    if (eachBlockChildNodesLength === 0) {
-      eachBlockChildNodesLength = 1; // length는 여기서 초기화해야 위  if (eachBlockChildNodesLength === 0) 쓸 수 있음.
-    } else {
-      for (let i = 0; i < eachBlockChildNodesLength; i++) {
-        if (
-          eachBlockRef.current.childNodes[i].nodeName === '#text' &&
-          endContainer?.isSameNode(eachBlockRef.current.childNodes[i])
-        ) {
-          // nodeWithCaret = { node: eachBlockRef.current.childNodes[i], nodeIndex: i };
-          endNodeIndex = i;
-          // console.log('***#text***', eachBlockRef.current.childNodes[i], i);
-        }
+    // ***공통*** 아래 함수 속 for문을 통해 마지막 노드(선택 영역 없는 경우 커서 1개) 커서가 있는 노드 식별!
+    const selectionEndIndex = getSelectionEndIndex(eachBlockChildNodes);
+    console.log('selectionEndIndex', selectionEndIndex);
 
-        if (
-          eachBlockRef.current.childNodes[i].nodeName === 'CODE' &&
-          endContainer?.isSameNode(
-            eachBlockRef.current.childNodes[i].childNodes.item(0) // CODE의 경우 childeNode(#text)로 endContainer와 비교해야 함.
-          )
-        ) {
-          // nodeWithCaret = { node: eachBlockRef.current.childNodes[i], nodeIndex: i };
-          endNodeIndex = i;
-          // console.log('***CODE***', eachBlockRef.current.childNodes[i], i);
-        }
-
-        if (endNodeIndex !== 0) {
-          break;
-        }
-      }
-    }
-    console.log('endNodeIndex', endNodeIndex);
-
+    // 커서에서 붙여넣기
     if (collapsed === true) {
-      const nodeWithCaretTextContent = myNodeArray[endNodeIndex].textContent;
+      const nodeWithCaretTextContent = nodeArray[selectionEndIndex].textContent;
       const nodeWithCaretTextContentArray = nodeWithCaretTextContent?.split('');
 
       // 배열에서 붙여넣기
@@ -111,48 +63,24 @@ export const paste = (
       const textAfterPastedNodeWithCaretIndex =
         nodeWithCaretTextContentArray?.join('');
 
-      myNodeArray[endNodeIndex].textContent = textAfterPastedNodeWithCaretIndex;
+      nodeArray[selectionEndIndex].textContent =
+        textAfterPastedNodeWithCaretIndex;
     }
 
     // 드래그한 선택 영역 있을 경우
-
     if (collapsed === false) {
       // 1. 셀렉션 영역 모두 지운다
       // 2. 마지막 노드에 해당 텍스트를 붙여넣는다.
-
-      for (let i = 0; i < eachBlockChildNodesLength; i++) {
-        if (
-          eachBlockRef.current.childNodes[i].nodeName === '#text' &&
-          startContainer?.isSameNode(eachBlockRef.current.childNodes[i])
-        ) {
-          // nodeWithCaret = { node: eachBlockRef.current.childNodes[i], nodeIndex: i };
-          startNodeIndex = i;
-          // console.log('***#text***', eachBlockRef.current.childNodes[i], i);
-        }
-
-        if (
-          eachBlockRef.current.childNodes[i].nodeName === 'CODE' &&
-          startContainer?.isSameNode(
-            eachBlockRef.current.childNodes[i].childNodes.item(0) // CODE의 경우 childeNode(#text)로 startContainer와 비교해야 함.
-          )
-        ) {
-          // nodeWithCaret = { node: eachBlockRef.current.childNodes[i], nodeIndex: i };
-          startNodeIndex = i;
-          // console.log('***CODE***', eachBlockRef.current.childNodes[i], i);
-        }
-
-        if (startNodeIndex !== 0) {
-          break;
-        }
-      }
-      console.log('startNodeIndex', startNodeIndex);
+      const selectionStartIndex = getSelectionStartIndex(eachBlockChildNodes);
+      console.log('selectionStartIndex', selectionStartIndex);
 
       // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
       // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
       // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-      if (endNodeIndex === startNodeIndex) {
+      if (selectionEndIndex === selectionStartIndex) {
         // 같은 노드에 있다면
-        const nodeTextArray = myNodeArray[endNodeIndex].textContent?.split('');
+        const nodeTextArray =
+          nodeArray[selectionEndIndex].textContent?.split('');
 
         // 선택 영역 삭제
         endOffset !== undefined &&
@@ -165,19 +93,19 @@ export const paste = (
 
         const finalNodeText = nodeTextArray?.join('');
 
-        myNodeArray[endNodeIndex].textContent = finalNodeText;
+        nodeArray[selectionEndIndex].textContent = finalNodeText;
 
-        console.log(myNodeArray[endNodeIndex].textContent);
+        console.log(nodeArray[selectionEndIndex].textContent);
       }
       // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
       // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
       // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-      else if (endNodeIndex - startNodeIndex > 0) {
+      else if (selectionEndIndex - selectionStartIndex > 0) {
         // Start 노드, 1)텍스트 삭제 2)CODE인데 textContent가 없다면 <code> 노드 삭제
         const startNodeTextArray =
-          myNodeArray[startNodeIndex].textContent?.split('');
+          nodeArray[selectionStartIndex].textContent?.split('');
         const endNodeTextArray =
-          myNodeArray[endNodeIndex].textContent?.split('');
+          nodeArray[selectionEndIndex].textContent?.split('');
 
         const startNodeArrayLength = startNodeTextArray?.length;
 
@@ -207,58 +135,58 @@ export const paste = (
         // setFinalStartNodeText()만 아래 if문에서 쓰임 -> index 맞추기 위해
         const setFinalStartNodeText = () => {
           const finalStartNodeText = startNodeTextArray?.join('');
-          myNodeArray[startNodeIndex].textContent = finalStartNodeText;
+          nodeArray[selectionStartIndex].textContent = finalStartNodeText;
         };
 
         const finalEndNodeText = endNodeTextArray?.join('');
-        myNodeArray[endNodeIndex].textContent = finalEndNodeText; // 내가 만든 Array에 textContent 넣기
+        nodeArray[selectionEndIndex].textContent = finalEndNodeText; // 내가 만든 Array에 textContent 넣기
 
         const removeMiddleNode = () => {
           // ***중요*** 큰 index부터 시작해야 삭제 순서가 꼬이지 않음 > 큰 index 요소부터 삭제한다는 뜻
-          for (let i = endNodeIndex - 1; i > startNodeIndex; i--) {
+          for (let i = selectionEndIndex - 1; i > selectionStartIndex; i--) {
             console.log('i,', i);
             removeChildNode(i);
           }
         };
-        // 여기서 removeMiddleNode() 실행시키면 아래 if문 조건에서 endNodeIndex, startNodeIndex를 쓸 수 없게 됨.
+        // 여기서 removeMiddleNode() 실행시키면 아래 if문 조건에서 selectionEndIndex, selectionStartIndex를 쓸 수 없게 됨.
         // > 각 조건에서 각각 실행시켜줘야 함!
-        middleNodeCount = endNodeIndex - startNodeIndex - 1;
+        middleNodeCount = selectionEndIndex - selectionStartIndex - 1;
 
         // 아래 if문은 위 두 줄 코드를 포함해 start 노드의 텍스트가 없어질 경우 노드 삭제하고, 텍스트가 있을 경우삭제만 하는 코드
-        // *** 허나 여기서 index를 바꾸면 위쪽 End 노드 코드에 endNodeIndex 변화로 영향 끼치기 때문에 End 노드 작업 이후에 여기서!
+        // *** 허나 여기서 index를 바꾸면 위쪽 End 노드 코드에 selectionEndIndex 변화로 영향 끼치기 때문에 End 노드 작업 이후에 여기서!
         if (
           startNodeTextArrayAfterRemoveLength === 0 &&
-          myNodeArray[startNodeIndex].nodeName === 'CODE'
+          nodeArray[selectionStartIndex].nodeName === 'CODE'
         ) {
-          // CODE 노드를 삭제하면 기존에 startNodeIndex, endNodeIndex를 쓸 수 없게 때문에 2중 if문으로 숫자 계산해서 한꺼번에 처리
+          // CODE 노드를 삭제하면 기존에 selectionStartIndex, selectionEndIndex를 쓸 수 없게 때문에 2중 if문으로 숫자 계산해서 한꺼번에 처리
           if (
             endNodeTextArrayAfterRemoveLength === 0 &&
-            myNodeArray[endNodeIndex].nodeName === 'CODE'
+            nodeArray[selectionEndIndex].nodeName === 'CODE'
           ) {
             removeMiddleNode();
-            removeChildNode(startNodeIndex);
-            removeChildNode(endNodeIndex - middleNodeCount - 1); // 이미 startNodeIndex 제거했으므로 -1
+            removeChildNode(selectionStartIndex);
+            removeChildNode(selectionEndIndex - middleNodeCount - 1); // 이미 selectionStartIndex 제거했으므로 -1
           } else {
             removeMiddleNode();
-            removeChildNode(startNodeIndex);
+            removeChildNode(selectionStartIndex);
           }
           //
         } else if (
           (finalEndNodeText === '' || finalEndNodeText === ' ') &&
-          myNodeArray[endNodeIndex].nodeName === 'CODE'
+          nodeArray[selectionEndIndex].nodeName === 'CODE'
         ) {
           //
           if (
             startNodeTextArrayAfterRemoveLength === 0 &&
-            myNodeArray[startNodeIndex].nodeName === 'CODE'
+            nodeArray[selectionStartIndex].nodeName === 'CODE'
           ) {
             removeMiddleNode();
-            removeChildNode(startNodeIndex);
-            removeChildNode(endNodeIndex - middleNodeCount - 1); // 이미 startNodeIndex 제거했으므로 -1
+            removeChildNode(selectionStartIndex);
+            removeChildNode(selectionEndIndex - middleNodeCount - 1); // 이미 selectionStartIndex 제거했으므로 -1
           } else {
             setFinalStartNodeText(); // start 노드 업데이트된 텍스트 여기서는 삭제되지 않으므로, 넣어줘야
             removeMiddleNode();
-            removeChildNode(endNodeIndex - middleNodeCount);
+            removeChildNode(selectionEndIndex - middleNodeCount);
           }
           //
         } else {
@@ -275,30 +203,7 @@ export const paste = (
       }
     }
 
-    // console.log('Final myNodeArray', myNodeArray);
-
-    // ***중요*** (불변성 이슈 - let을 안 쓸 수 있는가?)제거된 노드가 있다면, 업데이트된 eachBlockChildNodes.length를, 아니라면 할당된 eachBlockChildNodesLength를(그래야 아무런 노드 없을 때도 작동)
-    const finalEachBlockChildNodeLength = isRemovedSomeNode
-      ? eachBlockRef.current.childNodes.length
-      : eachBlockChildNodesLength;
-
-    // ***공통*** 붙여넣은 노드 합쳐서 문자열 재조합
-    // for (let i = 0; i < eachBlockChildNodesLength; i++) {
-    for (let i = 0; i < finalEachBlockChildNodeLength; i++) {
-      const frontTag = '<code class="inline__code__block">';
-      const backTag = '</code>';
-
-      if (myNodeArray[i].nodeName === '#text') {
-        newHtml = `${newHtml}${myNodeArray[i].textContent}`;
-        // console.log('for', '#text', newHtml);
-      }
-
-      if (myNodeArray[i].nodeName === 'CODE') {
-        newHtml = `${newHtml}${frontTag}${myNodeArray[i].textContent}${backTag}`;
-        // console.log('for', 'CODE', newHtml);
-      }
-    }
-
+    const newHtml = getNewHtml(nodeArray);
     // console.log('newHtml', newHtml);
 
     setPasteData(newHtml);
@@ -308,7 +213,7 @@ export const paste = (
     if (collapsed) {
       focusCaretAfterClipTextWhenCollapsed(
         eachBlockRef,
-        endNodeIndex,
+        selectionEndIndex,
         clipTextLength,
         startOffset,
         selection
@@ -324,15 +229,15 @@ export const paste = (
 
 const focusCaretAfterClipTextWhenCollapsed = (
   eachBlockRef: MutableRefObject<HTMLElement>,
-  endNodeIndex: number,
+  selectionEndIndex: number,
   clipTextLength: number,
   startOffset: number | undefined,
   selection: Selection | null
 ) => {
   const targetNode =
-    eachBlockRef.current.childNodes[endNodeIndex].nodeName === 'CODE'
-      ? eachBlockRef.current.childNodes[endNodeIndex].childNodes[0]
-      : eachBlockRef.current.childNodes[endNodeIndex];
+    eachBlockRef.current.childNodes[selectionEndIndex].nodeName === 'CODE'
+      ? eachBlockRef.current.childNodes[selectionEndIndex].childNodes[0]
+      : eachBlockRef.current.childNodes[selectionEndIndex];
 
   const newCaretPosition =
     startOffset !== undefined && startOffset + clipTextLength;
