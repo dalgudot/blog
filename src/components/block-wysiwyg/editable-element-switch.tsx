@@ -166,7 +166,7 @@ const EditableElementSwitch: FC<Props> = ({
     };
     const selectionEndIndex = getSelectionEndIndex();
 
-    console.log('selectionEndIndex', selectionEndIndex);
+    // console.log('selectionEndIndex', selectionEndIndex);
 
     // 렌더링 없이, 인라인 코드 블럭 오른쪽 한 칸 삭제 못하도록 하고, 커서 이동
     if (
@@ -191,12 +191,12 @@ const EditableElementSwitch: FC<Props> = ({
       selection && selection.addRange(newRange);
     }
 
-    console.log(
-      'endContainer',
-      endContainer,
-      endContainer?.parentNode?.nodeName,
-      endContainer?.textContent?.length
-    );
+    // console.log(
+    //   'endContainer',
+    //   endContainer,
+    //   endContainer?.parentNode?.nodeName,
+    //   endContainer?.textContent?.length
+    // );
     if (
       e.key === 'Backspace' &&
       endContainer?.parentNode?.nodeName === 'CODE' &&
@@ -204,9 +204,11 @@ const EditableElementSwitch: FC<Props> = ({
     ) {
       // e.preventDefault();
       // 데이터 동기화가 관건
-      console.log('크롬 버그 동작');
+      console.error('크롬 버그 동작');
       // 앞선 노드의 마지막 글자를 지우고 다시 생성
       // 코드 블럭 앞에 #text 노드가 없다면? 이 방법으로 해결 불가
+
+      // https://stackoverflow.com/questions/15015019/prevent-chrome-from-wrapping-contents-of-joined-p-with-a-span
     }
   };
 

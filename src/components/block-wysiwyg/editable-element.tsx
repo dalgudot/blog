@@ -6,6 +6,7 @@ import {
   KeyboardEvent,
   MutableRefObject,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import { addInlineCodeBlock } from '../../lib/utils/editable-block/add-inline-code-block';
@@ -47,6 +48,13 @@ const EditableElement: FC<Props> = ({
   const [changeCaretPosition, setChangeCaretPosition] = useState<
     number | undefined
   >(undefined);
+
+  // const prevBackticCountRef = useRef<number>(0);
+  const [prevBackticCount, setPrevBackticCount] = useState<number>(0);
+  // console.log('prevBackticCountRef', prevBackticCountRef.current);
+
+  // console.log('prevBackticCount', prevBackticCount);
+
   const onInput = (
     e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>
   ) => {
@@ -60,26 +68,11 @@ const EditableElement: FC<Props> = ({
     // *** [KEY] dangerouslySetInnerHTML로 들어가는 html에서 정규식 변환된 "&amp;", "&lt;" ,"&gt;"는 텍스트로, < > &는 실제 html 요소로 렌더링한다!
     const inputHtml = e.target.innerHTML;
 
-    // https://stackoverflow.com/questions/15015019/prevent-chrome-from-wrapping-contents-of-joined-p-with-a-span
-    // const checkChromeBug = () => {
-    //   const selection = window.getSelection();
-    //   if (
-    //     selection?.focusNode?.parentNode?.nodeName === 'SPAN' ||
-    //     selection?.focusNode?.parentNode?.nodeName === 'FONT'
-    //   ) {
-    //     e.preventDefault();
-    //     const emptyTextNode = document.createTextNode('');
-    //     selection?.focusNode?.parentNode?.replaceChild(
-    //       emptyTextNode,
-    //       emptyTextNode
-    //     );
-    //   }
-    // };
-    // checkChromeBug();
-
     const twoBacktickNodeIndex: number | undefined = addInlineCodeBlock(
       updateDataWithInlineBlock,
-      eachBlockRef
+      eachBlockRef,
+      prevBackticCount,
+      setPrevBackticCount
     );
     if (twoBacktickNodeIndex !== undefined) {
       setChangeCaretPosition(twoBacktickNodeIndex);
