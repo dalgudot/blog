@@ -132,10 +132,16 @@ const EditableElementSwitch: FC<Props> = ({
     const focusNode: Node | null | undefined = selection?.focusNode;
     const anchorOffset = selection?.anchorOffset;
     const focusOffset = selection?.focusOffset;
-    const isSelection: boolean = anchorOffset !== focusOffset;
     const childeNodes = eachBlockRef.current.childNodes;
     const childeNodesLength = childeNodes.length;
-    console.log('childeNodes', childeNodes);
+    // console.log('childeNodes', childeNodes);
+
+    const range = selection?.getRangeAt(0);
+    const startContainer = range?.startContainer;
+    const endContainer = range?.endContainer;
+    const startOffset = range?.startOffset;
+    const endOffset = range?.endOffset;
+    const collapsed = range?.collapsed;
 
     const getSelectionEndIndex = () => {
       let selectionEndIndex: number = 0;
@@ -165,17 +171,16 @@ const EditableElementSwitch: FC<Props> = ({
     // 렌더링 없이, 인라인 코드 블럭 오른쪽 한 칸 삭제 못하도록 하고, 커서 이동
     if (
       e.key === 'Backspace' &&
-      !isSelection &&
+      collapsed &&
+      selectionEndIndex !== 0 &&
       childeNodes[selectionEndIndex].textContent ===
         ('\u00A0' || '&nbsp;' || ' ') &&
       childeNodes[selectionEndIndex - 1].nodeName === 'CODE'
     ) {
       e.preventDefault();
-      console.log('작동');
-      console.log(
-        'childeNodes[selectionEndIndex - 1]',
-        childeNodes[selectionEndIndex - 1]
-      );
+      // 이 경우 커서만 이동할 뿐 서버에 저장될 데이터는 전후로 동일함.
+      // 즉 커서만 이동할 뿐 데이터는 동기화된 상태
+
       const targetNode = childeNodes[selectionEndIndex - 1].childNodes[0];
       const newCaretPosition = targetNode.textContent.length;
 
@@ -184,6 +189,24 @@ const EditableElementSwitch: FC<Props> = ({
 
       selection && selection.removeAllRanges();
       selection && selection.addRange(newRange);
+    }
+
+    console.log(
+      'endContainer',
+      endContainer,
+      endContainer?.parentNode?.nodeName,
+      endContainer?.textContent?.length
+    );
+    if (
+      e.key === 'Backspace' &&
+      endContainer?.parentNode?.nodeName === 'CODE' &&
+      endContainer?.textContent?.length === 1
+    ) {
+      // e.preventDefault();
+      // 데이터 동기화가 관건
+      console.log('크롬 버그 동작');
+      // 앞선 노드의 마지막 글자를 지우고 다시 생성
+      // 코드 블럭 앞에 #text 노드가 없다면? 이 방법으로 해결 불가
     }
   };
 
