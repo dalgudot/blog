@@ -126,9 +126,67 @@ const EditableElementSwitch: FC<Props> = ({
       e.preventDefault();
       paste(eachBlockRef, setPasteData);
     }
+
+    const selection: Selection | null = window.getSelection();
+    const anchorNode: Node | null | undefined = selection?.anchorNode;
+    const focusNode: Node | null | undefined = selection?.focusNode;
+    const anchorOffset = selection?.anchorOffset;
+    const focusOffset = selection?.focusOffset;
+    const isSelection: boolean = anchorOffset !== focusOffset;
+    const childeNodes = eachBlockRef.current.childNodes;
+    const childeNodesLength = childeNodes.length;
+    console.log('childeNodes', childeNodes);
+
+    const getSelectionEndIndex = () => {
+      let selectionEndIndex: number = 0;
+
+      for (let i = 0; i < childeNodesLength; i++) {
+        if (
+          childeNodes[i].nodeName === '#text' &&
+          focusNode?.isSameNode(childeNodes[i])
+        ) {
+          selectionEndIndex = i;
+        }
+
+        if (
+          childeNodes[i].nodeName === 'CODE' &&
+          focusNode?.isSameNode(childeNodes[i].childNodes.item(0))
+        ) {
+          selectionEndIndex = i;
+        }
+      }
+
+      return selectionEndIndex;
+    };
+    const selectionEndIndex = getSelectionEndIndex();
+
+    console.log('selectionEndIndex', selectionEndIndex);
+
+    // 렌더링 없이, 인라인 코드 블럭 오른쪽 한 칸 삭제 못하도록 하고, 커서 이동
+    if (
+      e.key === 'Backspace' &&
+      !isSelection &&
+      childeNodes[selectionEndIndex].textContent ===
+        ('\u00A0' || '&nbsp;' || ' ') &&
+      childeNodes[selectionEndIndex - 1].nodeName === 'CODE'
+    ) {
+      e.preventDefault();
+      console.log('작동');
+      console.log(
+        'childeNodes[selectionEndIndex - 1]',
+        childeNodes[selectionEndIndex - 1]
+      );
+      const targetNode = childeNodes[selectionEndIndex - 1].childNodes[0];
+      const newCaretPosition = targetNode.textContent.length;
+
+      const newRange = document.createRange();
+      newRange.setStart(targetNode, newCaretPosition); // 코드 블럭 한 칸 뒤쪽 위치
+
+      selection && selection.removeAllRanges();
+      selection && selection.addRange(newRange);
+    }
   };
 
-  // const [selection, setSelection] = useRecoilState(selectionState);
   const setPasteData = (newHtml: string) => {
     setEachBlockStateText(''); // 같은 문자열 복사 후 지우고 다시 붙여넣으면 리액트에서 같다고 판단해 렌더링하지 않는 문제 해결
     setCurrentBlockTempPostHtmlData(newHtml);
@@ -145,11 +203,15 @@ const EditableElementSwitch: FC<Props> = ({
     }
 
     setTempEachBlockStateText(inputHtml); // 리덕스에서 tempHtml을 가져오면 계속 전체 리렌더가 일어나기 때문에 해당 컴포넌트의 state로 관리
+
+    // console.log('Rendering of setCurrentBlockTempPostHtmlData');
   };
 
-  // updateInlineBlock에서 이용
+  // updateDataWithInlineBlock에서 이용
   const setCurrentBlockPostHtmlData = (inputHtml: string) => {
     setEachBlockStateText(inputHtml); // 현재 블록만 렌더링
+
+    // console.log('Rendering of setCurrentBlockPostHtmlData');
   };
 
   const addBlockFocusUseEffectDependency = datas[currentIndex];

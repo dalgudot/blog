@@ -8,9 +8,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { useEditable } from '../../lib/hooks/useEditable';
 import { addInlineCodeBlock } from '../../lib/utils/editable-block/add-inline-code-block';
-import { replaceCaret } from '../../lib/utils/focus-content-editable-text-to-end';
 import { IParagraphData } from '../../redux-toolkit/model/post-data-model';
 import styles from './editable-element.module.scss';
 
@@ -45,6 +43,7 @@ const EditableElement: FC<Props> = ({
   customClassName,
 }) => {
   // setCurrentBlockTempPostHtmlData과 setCurrentBlockPostHtmlData는 모두 current index와 관련있으므로 switch에서 처리하고 props로 넘겨받음!
+
   const [changeCaretPosition, setChangeCaretPosition] = useState<
     number | undefined
   >(undefined);
@@ -60,19 +59,38 @@ const EditableElement: FC<Props> = ({
     // *** input 이벤트로 들어오는 html은 정규식으로 변환됨!
     // *** [KEY] dangerouslySetInnerHTML로 들어가는 html에서 정규식 변환된 "&amp;", "&lt;" ,"&gt;"는 텍스트로, < > &는 실제 html 요소로 렌더링한다!
     const inputHtml = e.target.innerHTML;
+
+    // https://stackoverflow.com/questions/15015019/prevent-chrome-from-wrapping-contents-of-joined-p-with-a-span
+    // const checkChromeBug = () => {
+    //   const selection = window.getSelection();
+    //   if (
+    //     selection?.focusNode?.parentNode?.nodeName === 'SPAN' ||
+    //     selection?.focusNode?.parentNode?.nodeName === 'FONT'
+    //   ) {
+    //     e.preventDefault();
+    //     const emptyTextNode = document.createTextNode('');
+    //     selection?.focusNode?.parentNode?.replaceChild(
+    //       emptyTextNode,
+    //       emptyTextNode
+    //     );
+    //   }
+    // };
+    // checkChromeBug();
+
     const twoBacktickNodeIndex: number | undefined = addInlineCodeBlock(
-      inputHtml,
-      updateInlineBlock,
+      updateDataWithInlineBlock,
       eachBlockRef
-    ); // >> 이게 return 하는 값 받기.
-    twoBacktickNodeIndex !== undefined &&
+    );
+    if (twoBacktickNodeIndex !== undefined) {
       setChangeCaretPosition(twoBacktickNodeIndex);
-    setCurrentBlockTempPostHtmlData(inputHtml); // 여기 순서가 커서 위치에 문제가 될 수 있음 -> countBacktick 조건을 여기서 해서 조건문 만들면 해결할 수 있을듯.
+    } else {
+      setCurrentBlockTempPostHtmlData(inputHtml); // twoBacktickNodeIndex !== undefined이면 addInlineCodeBlock()의 updateDataWithInlineBlock에서 업데이트하기 때문에 2번 업데이트 할 필요 없음.
+    }
 
     // console.log('inputHtml', inputHtml);
   };
 
-  const updateInlineBlock = (inputHtml: string) => {
+  const updateDataWithInlineBlock = (inputHtml: string) => {
     setCurrentBlockTempPostHtmlData(inputHtml);
     setCurrentBlockPostHtmlData(inputHtml);
   };
@@ -83,14 +101,17 @@ const EditableElement: FC<Props> = ({
     if (changeCaretPosition !== undefined) {
       const selection = window.getSelection();
       const targetNode =
-        eachBlockRef.current.childNodes[changeCaretPosition + 2];
+        eachBlockRef.current.childNodes.length === 2
+          ? eachBlockRef.current.childNodes[changeCaretPosition + 1] // 어떤 노드도 없는 경우에만 length가 2
+          : eachBlockRef.current.childNodes[changeCaretPosition + 2]; // 코드 블럭 생기면 2개의 노드가 추가로 생기기 때문
+
       const newRange = document.createRange();
-      newRange.setStart(targetNode, 1);
+      newRange.setStart(targetNode, 1); // 코드 블럭 한 칸 뒤쪽 위치
 
       selection && selection.removeAllRanges();
       selection && selection.addRange(newRange);
 
-      setChangeCaretPosition(undefined);
+      setChangeCaretPosition(undefined); // 초기화
     }
   }, [changeCaretPosition]);
 
