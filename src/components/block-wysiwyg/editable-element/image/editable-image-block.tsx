@@ -6,7 +6,6 @@ import {
   useState,
 } from 'react';
 import styles from './editable-image-block.module.scss';
-import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
 import UploadImage from './upload-image';
 import EditableElement from '../../editable-element';
 import { useAppDispatch } from '../../../../redux-toolkit/store';
@@ -29,8 +28,6 @@ type Props = {
   setCurrentBlockPostHtmlData: (inputHtml: string) => void;
   onKeyPress: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown: (e: KeyboardEvent<HTMLElement>) => void;
-  addBlockFocusUseEffectDependency?: IParagraphData;
-  removeCurrentBlockFocusUseEffectDependency?: IParagraphData;
   placeholder: string;
 };
 
@@ -45,8 +42,6 @@ const EditableImageBlock: FC<Props> = ({
   setCurrentBlockPostHtmlData,
   onKeyPress,
   onKeyDown,
-  addBlockFocusUseEffectDependency,
-  removeCurrentBlockFocusUseEffectDependency,
   placeholder,
 }) => {
   const [image, setImage] = useState<string>(imageDownloadURL);
@@ -111,10 +106,6 @@ const EditableImageBlock: FC<Props> = ({
           setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
           onKeyPress={onKeyPress} // optional, 블록 추가
           onKeyDown={onKeyDown} // optional, 블록 삭제
-          addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
-          removeCurrentBlockFocusUseEffectDependency={
-            removeCurrentBlockFocusUseEffectDependency
-          }
           placeholder={placeholder}
         />
         {contentEditable && (

@@ -60,8 +60,6 @@ export const paste = (
     // console.log('rangeOffset', startOffset, endOffset); // 무조건 왼쪽, 오른쪽
     // console.log('collapsed', collapsed); // 무조건 왼쪽, 오른쪽
 
-    // 1. 커서 하나일 때, if(collapsed === true) 2. 선택 영역이 있을 때, if(collapsed === false)
-
     // 정확한 위치에 clipText를 붙여넣으려면?
     // 1) tempEachBlockStateText가 아닌, 즉 전체 텍스트를 이용하는 게 아닌 커서가 있는 노드의 텍스트를 바꿔줘아 한다.
     // 2) 그리고 다시 전체로 구성해줘야 한다.
@@ -306,8 +304,9 @@ export const paste = (
     setPasteData(newHtml);
 
     // setPasteData 데이터 업데이트 이후에 caret 위치 조정
+    // 1. 커서 하나일 때, if(collapsed === true)
     if (collapsed) {
-      focusCaretAfterClipText(
+      focusCaretAfterClipTextWhenCollapsed(
         eachBlockRef,
         endNodeIndex,
         clipTextLength,
@@ -316,13 +315,14 @@ export const paste = (
       );
     }
 
+    // 2. 선택 영역이 있을 때, if(collapsed === false)
     if (!collapsed) {
-      console.log('collapsed', collapsed);
+      focusCaretAfterClipTextWhenNotCollapsed();
     }
   });
 };
 
-const focusCaretAfterClipText = (
+const focusCaretAfterClipTextWhenCollapsed = (
   eachBlockRef: MutableRefObject<HTMLElement>,
   endNodeIndex: number,
   clipTextLength: number,
@@ -342,6 +342,10 @@ const focusCaretAfterClipText = (
 
   selection && selection.removeAllRanges();
   selection && selection.addRange(newRange);
+};
+
+const focusCaretAfterClipTextWhenNotCollapsed = () => {
+  console.log('!collapsed');
 };
 
 // https://jungpaeng.tistory.com/86

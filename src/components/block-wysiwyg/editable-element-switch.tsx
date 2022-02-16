@@ -28,7 +28,6 @@ import styles from './editable-element.module.scss';
 import { ICodeData } from '../../redux-toolkit/model/code-data-model';
 import { paste } from '../../lib/utils/editable-block/paste';
 import { useEditable } from '../../lib/hooks/useEditable';
-import { focusContentEditableTextToEnd } from '../../lib/utils/focus-content-editable-text-to-end';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
@@ -207,7 +206,7 @@ const EditableElementSwitch: FC<Props> = ({
   };
 
   const setPasteData = (newHtml: string) => {
-    setEachBlockStateText(''); // 같은 문자열 복사 후 지우고 다시 붙여넣으면 리액트에서 같다고 판단해 렌더링하지 않는 문제 해결
+    setEachBlockStateText(''); // ***중요*** 같은 문자열 복사 후 지우고 다시 붙여넣으면 리액트에서 같다고 판단해 렌더링하지 않는 문제 해결
     setCurrentBlockTempPostHtmlData(newHtml);
     setTempEachBlockStateText(newHtml);
     setEachBlockStateText(newHtml); // 현재 블록만 렌더링
@@ -253,10 +252,6 @@ const EditableElementSwitch: FC<Props> = ({
             setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
-            addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
-            removeCurrentBlockFocusUseEffectDependency={
-              removeCurrentBlockFocusUseEffectDependency
-            }
             placeholder={data.url ? '캡션 입력' : '버튼을 눌러 이미지 업로드'}
           />
         );
@@ -275,10 +270,6 @@ const EditableElementSwitch: FC<Props> = ({
             setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
-            addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
-            removeCurrentBlockFocusUseEffectDependency={
-              removeCurrentBlockFocusUseEffectDependency
-            }
             placeholder='링크 제목 입력'
           />
         );
@@ -295,10 +286,6 @@ const EditableElementSwitch: FC<Props> = ({
             // setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
-            addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
-            removeCurrentBlockFocusUseEffectDependency={
-              removeCurrentBlockFocusUseEffectDependency
-            }
             placeholder='코드 입력'
           />
         );
@@ -314,10 +301,6 @@ const EditableElementSwitch: FC<Props> = ({
             setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
-            addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
-            removeCurrentBlockFocusUseEffectDependency={
-              removeCurrentBlockFocusUseEffectDependency
-            }
             placeholder='텍스트 입력'
           />
         );
