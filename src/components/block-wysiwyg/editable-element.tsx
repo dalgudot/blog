@@ -60,6 +60,7 @@ const EditableElement: FC<Props> = ({
     // *** [KEY] dangerouslySetInnerHTML로 들어가는 html에서 정규식 변환된 "&amp;", "&lt;" ,"&gt;"는 텍스트로, < > &는 실제 html 요소로 렌더링한다!
     const inputHtml = e.target.innerHTML;
 
+    // https://stackoverflow.com/questions/15015019/prevent-chrome-from-wrapping-contents-of-joined-p-with-a-span
     // const checkChromeBug = () => {
     //   const selection = window.getSelection();
     //   if (
@@ -101,7 +102,7 @@ const EditableElement: FC<Props> = ({
       const selection = window.getSelection();
       const targetNode =
         eachBlockRef.current.childNodes.length === 2
-          ? eachBlockRef.current.childNodes[changeCaretPosition + 1] // 어떤 노드 도 없는 경우에만 length가 2
+          ? eachBlockRef.current.childNodes[changeCaretPosition + 1] // 어떤 노드도 없는 경우에만 length가 2
           : eachBlockRef.current.childNodes[changeCaretPosition + 2]; // 코드 블럭 생기면 2개의 노드가 추가로 생기기 때문
 
       const newRange = document.createRange();
