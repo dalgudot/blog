@@ -1,10 +1,8 @@
-import { Dispatch, MutableRefObject, SetStateAction } from 'react';
+import { MutableRefObject } from 'react';
 
 export const addInlineCodeBlock = (
   updateDataWithInlineBlock: (inputHtml: string) => void,
-  eachBlockRef: MutableRefObject<HTMLElement>,
-  prevBackticCount: number,
-  setPrevBackticCount: Dispatch<SetStateAction<number>>
+  eachBlockRef: MutableRefObject<HTMLElement>
 ) => {
   const frontTag = '<code class="inline__code__block">';
   const backTag = '</code>\u00A0';
@@ -42,8 +40,6 @@ export const addInlineCodeBlock = (
   };
   const nodeArray = getNodeArray();
 
-  // console.log('nodeArray', nodeArray);
-
   const getNewNodesWithInlineCodeHtml = () => {
     let twoBacktickNodeIndex: number | null = null;
 
@@ -54,12 +50,9 @@ export const addInlineCodeBlock = (
         const isContinuousBacktick: boolean | undefined =
           textContent?.includes('``');
         const numberOfBacktick: number = textContent?.match(/`/g)?.length ?? 0;
-        console.log('numberOfBacktick', i, numberOfBacktick);
-        // console.log('prevBackticCount', prevBackticCount);
 
-        if (numberOfBacktick === 2 && numberOfBacktick > prevBackticCount) {
-          console.log('동작');
-
+        if (numberOfBacktick === 2) {
+          //
           if (isContinuousBacktick) {
             twoBacktickNodeIndex = i;
             // 2개 연속(``)이면 빈 inline Code Block 생성
@@ -67,7 +60,9 @@ export const addInlineCodeBlock = (
               '``',
               `${frontTag}\u00A0${backTag}`
             );
-          } else {
+          }
+          //
+          else {
             twoBacktickNodeIndex = i;
             // 첫 번째 `는 <code>로 두 번째 `는 </code>로!
             nodeArray[i].textContent = textContent
@@ -78,9 +73,6 @@ export const addInlineCodeBlock = (
                 // (&nbsp;)로 코드 블럭 벗어나기
               );
           }
-          setPrevBackticCount(0); // 코드가 실행된 뒤에는 0이 돼야 함.
-        } else {
-          setPrevBackticCount(numberOfBacktick);
         }
       }
     }
