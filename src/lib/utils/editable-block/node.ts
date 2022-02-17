@@ -1,7 +1,5 @@
 import { backTag, frontTag } from './add-inline-code-block';
 
-// https://jungpaeng.tistory.com/86
-// https://gdtbgl93.tistory.com/175
 export type TMyNode = {
   nodeName: '#text' | 'CODE';
   textContent: string | null | undefined;
@@ -29,9 +27,11 @@ export const getNodeArray = (nodeList: NodeListOf<ChildNode>): TMyNode[] => {
   return nodeArray;
 };
 
-export const getSelectionStartIndex = (nodeList: NodeListOf<ChildNode>) => {
+export const getSelectionStartIndex = (
+  nodeList: NodeListOf<ChildNode>,
+  selection: Selection | null
+) => {
   const nodesLength = nodeList.length;
-  const selection = window.getSelection();
   const range = selection?.getRangeAt(0);
   const startContainer = range?.startContainer;
 
@@ -60,11 +60,13 @@ export const getSelectionStartIndex = (nodeList: NodeListOf<ChildNode>) => {
   return selectionStartIndex;
 };
 
-export const getSelectionEndIndex = (nodeList: NodeListOf<ChildNode>) => {
+export const getSelectionEndIndex = (
+  nodeList: NodeListOf<ChildNode>,
+  selection: Selection | null
+) => {
   const nodesLength = nodeList.length;
   let selectionEndIndex: number = 0;
 
-  const selection = window.getSelection();
   const range = selection?.getRangeAt(0);
   const endContainer = range?.endContainer;
 
@@ -93,9 +95,13 @@ export const getSelectionEndIndex = (nodeList: NodeListOf<ChildNode>) => {
 
 export const getSelectionStart = (
   nodeList: NodeListOf<ChildNode>,
-  nodeArray: TMyNode[]
+  nodeArray: TMyNode[],
+  selection: Selection | null
 ) => {
-  const selectionStartIndex: number = getSelectionStartIndex(nodeList);
+  const selectionStartIndex: number = getSelectionStartIndex(
+    nodeList,
+    selection
+  );
   const selectionStartNodeText: string =
     nodeArray[selectionStartIndex].textContent ?? '';
   const selectionStartNodeTextArray: string[] =
@@ -108,9 +114,10 @@ export const getSelectionStart = (
 
 export const getSelectionEnd = (
   nodeList: NodeListOf<ChildNode>,
-  nodeArray: TMyNode[]
+  nodeArray: TMyNode[],
+  selection: Selection | null
 ) => {
-  const selectionEndIndex: number = getSelectionEndIndex(nodeList);
+  const selectionEndIndex: number = getSelectionEndIndex(nodeList, selection);
   const selectionEndNodeText: string =
     nodeArray[selectionEndIndex].textContent ?? '';
   const selectionEndNodeTextArray: string[] =
@@ -153,3 +160,5 @@ export const getNewHtml = (nodeArray: TMyNode[]) => {
 // range.endOffset: endContainer에서 범위가 끝나는 지점의 offset
 // // // // // startOffset과 동일한 규칙이 적용
 // range.collapsed: Range의 시작점과 끝점이 같은 위치인지 알 수 있는 boolean 값을 반환
+
+// https://gdtbgl93.tistory.com/175

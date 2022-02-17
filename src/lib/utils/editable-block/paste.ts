@@ -3,9 +3,7 @@ import {
   getNewHtml,
   getNodeArray,
   getSelectionEnd,
-  getSelectionEndIndex,
   getSelectionStart,
-  getSelectionStartIndex,
   TMyNode,
 } from './node';
 
@@ -17,16 +15,17 @@ export const paste = (
     const clipTextLength = clipText.length;
     const eachBlockChildNodes = eachBlockRef.current.childNodes;
     const nodeArray: TMyNode[] = getNodeArray(eachBlockChildNodes);
-    const { selectionStartIndex, selectionStartNodeTextArray } =
-      getSelectionStart(eachBlockChildNodes, nodeArray);
 
-    const selection = window.getSelection();
+    const selection: Selection | null = window.getSelection();
     const range = selection?.getRangeAt(0);
     const startContainer = range?.startContainer; // 무조건 왼쪽, 오른쪽
     const endContainer = range?.endContainer; // 무조건 왼쪽, 오른쪽
     const startOffset = range?.startOffset ?? 0; // 무조건 왼쪽, 오른쪽 // ?? 0으로 undefined 없애 코드량 감소시킴. 있을 것이 보장됨.
     const endOffset = range?.endOffset ?? 0; // 무조건 왼쪽, 오른쪽 // ?? 0으로 undefined 없애 코드량 감소시킴. 있을 것이 보장됨.
     const isSelection = !range?.collapsed; // isSelection 맥락 위해 !
+
+    const { selectionStartIndex, selectionStartNodeTextArray } =
+      getSelectionStart(eachBlockChildNodes, nodeArray, selection);
 
     // ***공통*** 아래 함수 속 for문을 통해 마지막 노드(선택 영역 없는 경우 커서 1개) 커서가 있는 노드 식별!
 
@@ -54,7 +53,8 @@ export const paste = (
       // selectionEndIndex는 여기서만 쓰임
       const { selectionEndIndex, selectionEndNodeTextArray } = getSelectionEnd(
         eachBlockChildNodes,
-        nodeArray
+        nodeArray,
+        selection
       );
 
       const caseOfLocatedOnOneNode: boolean =
@@ -90,14 +90,9 @@ export const paste = (
 
         // Start 노드 선택 영역 삭제
         const startNodeRemoveRange =
-          selectionStartNodeTextArray?.length !== undefined &&
-          selectionStartNodeTextArray?.length - startOffset;
+          selectionStartNodeTextArray.length - startOffset;
 
-        startNodeRemoveRange !== false &&
-          selectionStartNodeTextArray?.splice(
-            startOffset,
-            startNodeRemoveRange
-          );
+        selectionStartNodeTextArray?.splice(startOffset, startNodeRemoveRange);
 
         // 순서는 위 splice 다음
         const selectionStartNodeTextArrayAfterRemoveLength =
@@ -105,16 +100,14 @@ export const paste = (
 
         // End 노드, End 노드는 처음부터 endOffset까지 삭제
         // End 노드 영역 삭제
-        endOffset !== undefined &&
-          selectionEndNodeTextArray?.splice(0, endOffset); // End 노드는 처음부터 endOffset까지 삭제
+        selectionEndNodeTextArray?.splice(0, endOffset); // End 노드는 처음부터 endOffset까지 삭제
 
         // 순서는 위 splice 다음
         const selectionEndNodeTextArrayAfterRemoveLength =
           selectionEndNodeTextArray?.length; // *** 길이 0일 떄 CODE 요소 삭제하기 위해 필요
 
         // End 노드 offset 0부터 cliptText 붙여넣기
-        endOffset !== undefined &&
-          selectionEndNodeTextArray?.splice(0, 0, clipText); // End 노드는 0부터 붙여야 함
+        selectionEndNodeTextArray?.splice(0, 0, clipText); // End 노드는 0부터 붙여야 함
 
         // setFinalStartNodeText()만 아래 if문에서 쓰임 -> index 맞추기 위해
         const setFinalStartNodeText = () => {
@@ -207,6 +200,7 @@ export const paste = (
 
 const focus__afterClipText__whenCollapsed = (
   eachBlockRef: MutableRefObject<HTMLElement>,
+  // ***붙여넣기가 끝난 뒤의 current를 봐야 하므로*** eachBlockChildNodes가 아닌 eachBlockRef을 받아와야 함.
   selectionStartIndex: number,
   clipTextLength: number,
   startOffset: number,
