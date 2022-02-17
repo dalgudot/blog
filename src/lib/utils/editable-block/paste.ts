@@ -12,14 +12,14 @@ export const paste = (
   setPasteData: (newHtml: string) => void
 ) => {
   navigator.clipboard.readText().then((clipText) => {
-    const clipTextLength = clipText.length;
-    const eachBlockChildNodes = eachBlockRef.current.childNodes;
-    const nodeArray: TMyNode[] = getNodeArray(eachBlockChildNodes);
+    const eachBlockChildNodes: NodeListOf<ChildNode> =
+      eachBlockRef.current.childNodes;
+    const nodeArray: TMyNode[] = getNodeArray(eachBlockChildNodes); // newHtml 만들기 위한 배열
 
     const selection: Selection | null = window.getSelection();
     const range = selection?.getRangeAt(0);
-    const startContainer = range?.startContainer; // 무조건 왼쪽, 오른쪽
-    const endContainer = range?.endContainer; // 무조건 왼쪽, 오른쪽
+    const startContainer = range?.startContainer;
+    const endContainer = range?.endContainer;
     const startOffset = range?.startOffset ?? 0; // 무조건 왼쪽, 오른쪽 // ?? 0으로 undefined 없애 코드량 감소시킴. 있을 것이 보장됨.
     const endOffset = range?.endOffset ?? 0; // 무조건 왼쪽, 오른쪽 // ?? 0으로 undefined 없애 코드량 감소시킴. 있을 것이 보장됨.
     const isSelection = !range?.collapsed; // isSelection 맥락 위해 !
@@ -30,7 +30,7 @@ export const paste = (
     // ***공통*** 아래 함수 속 for문을 통해 마지막 노드(선택 영역 없는 경우 커서 1개) 커서가 있는 노드 식별!
 
     // 여기서만 쓰이는 공통 함수, export 하려면 고쳐야 함.
-    const pasteClipText__toSelection__startNode = () => {
+    const pasteClipText__toSelectionStartNode = () => {
       // cliptText 붙여넣기
       selection__startNode__textArray.splice(startOffset, 0, clipText); // Start 노드 startOffset부터 붙여넣음
     };
@@ -45,7 +45,6 @@ export const paste = (
     const deleteSelection__startNode = (start: number, end: number): number => {
       const deleteRange = end - start;
       selection__startNode__textArray.splice(start, deleteRange);
-
       const startNode__length__afterDeleteRange =
         selection__startNode__textArray.length;
       return startNode__length__afterDeleteRange;
@@ -56,7 +55,7 @@ export const paste = (
     // 1) tempEachBlockStateText가 아닌, 즉 전체 텍스트를 이용하는 게 아닌 ***커서가 있는 노드***의 텍스트를 바꿔줘아 한다.
     // 2) 그리고 다시 전체로 구성해줘야 한다.
     if (isSelection === false) {
-      pasteClipText__toSelection__startNode();
+      pasteClipText__toSelectionStartNode();
       setText__startNode__afterPaste();
     }
 
@@ -96,14 +95,14 @@ export const paste = (
       if (case__located__sameNode) {
         // ***UX Logic*** '지운다'는 것은 Backspace가 보편적, 뒤에서 앞으로 지워진다. -> ***붙여넣는 위치는 StartIndex
 
-        const pasteClipText__toSelection__startNode__afterDeleteSelection =
+        const pasteClipText__toSelectionStartNode__afterDeleteSelection =
           () => {
             deleteSelection__startNode(startOffset, endOffset);
-            pasteClipText__toSelection__startNode();
+            pasteClipText__toSelectionStartNode();
             setText__startNode__afterPaste();
           };
 
-        pasteClipText__toSelection__startNode__afterDeleteSelection();
+        pasteClipText__toSelectionStartNode__afterDeleteSelection();
       }
 
       if (case__located__differentNode) {
@@ -120,9 +119,13 @@ export const paste = (
           selection__startNode__textArray.length
         ); // *** 길이 0일 떄 CODE 요소 삭제하기 위해 필요
 
-        pasteClipText__toSelection__startNode();
+        const startNode__length__afterDeleteRange__and__paste: number =
+          startNode__length__afterDeleteRange + clipText.length;
+
+        pasteClipText__toSelectionStartNode();
         // 이후 if문에서 조건에 따라 setText__startNode__afterPaste()
         // ***paste되면서 길이가 달라지기 때문!
+        setText__startNode__afterPaste(); // 내가 만든 Array에 textContent 넣기
 
         // 2. End 노드 영역 삭제
         const endNode__length__afterDeleteRange = deleteSelection__endNode(
@@ -130,69 +133,57 @@ export const paste = (
           endOffset
         ); // End 노드는 처음부터 endOffset까지 삭제
 
+        // endNode는 paste 없음.
         const finalEndNodeText = setText__endNode();
 
         // 3. 중간 노드 있다면 삭제
-        // 아래 if문은 위 두 줄 코드를 포함해 start 노드의 텍스트가 없어질 경우 노드 삭제하고, 텍스트가 있을 경우 텍스트 삭제만 하는 코드
-        const removeChildeNode__byCondition = () => {
-          const middleNodeCount = selectionEndIndex - selectionStartIndex - 1;
 
-          const removeChildNode = (index: number) => {
+        // 아래 if문은 위 두 줄 코드를 포함해 start 노드의 텍스트가 없어질 경우 노드 삭제하고, 텍스트가 있을 경우 텍스트 삭제만 하는 코드
+        // ***중요*** removeChildNodes__byCondition()를 실행하면 startIndex와 endIndex가 바뀔 수 있음.
+        const removeChildNodes__byCondition = () => {
+          const removeNode = (index: number): void => {
             eachBlockChildNodes[index].remove(); // 실제 노드 삭제
             nodeArray.splice(index, 1); // 내가 만든 배열 요소 삭제
           };
 
-          const removeMiddleNode = () => {
+          // 지우는 순서는 End > Middle > Start
+          const removeEndNode = () => {
+            removeNode(selectionEndIndex);
+          };
+
+          const removeMiddleNode = (): void => {
             // ***중요*** 큰 index부터 시작해야 삭제 순서가 꼬이지 않음 > 큰 index 요소부터 삭제한다는 뜻
-            for (let i = selectionEndIndex - 1; i > selectionStartIndex; i--) {
-              removeChildNode(i);
+            for (let i = selectionEndIndex - 1; selectionStartIndex < i; i--) {
+              removeNode(i);
             }
           };
-          // 여기서 removeMiddleNode() 실행시키면 아래 if문 조건에서 selectionEndIndex, selectionStartIndex를 쓸 수 없게 됨.
-          // > 각 조건에서 각각 실행시켜줘야 함!
 
-          if (
-            startNode__length__afterDeleteRange === 0 &&
-            nodeArray[selectionStartIndex].nodeName === 'CODE'
-          ) {
-            // CODE 노드를 삭제하면 기존에 selectionStartIndex, selectionEndIndex를 쓸 수 없게 때문에 2중 if문으로 숫자 계산해서 한꺼번에 처리
-            if (
-              endNode__length__afterDeleteRange === 0 &&
-              nodeArray[selectionEndIndex].nodeName === 'CODE'
-            ) {
-              removeMiddleNode();
-              removeChildNode(selectionStartIndex);
-              removeChildNode(selectionEndIndex - middleNodeCount - 1); // 이미 selectionStartIndex 제거했으므로 -1
-            } else {
-              removeMiddleNode();
-              removeChildNode(selectionStartIndex);
-            }
+          const removeStartNode = () => {
+            removeNode(selectionStartIndex);
+          };
+
+          // 'CODE'일 떄 문제가 생기기 때문에 따로 제어해줘야 한다. -> 텍스트 길이가 0일 때 코드 노드를 지워줘야 함.
+          // 1) isEmpty__endCODENode
+          // 2) clipText === ' '
+
+          const isEmpty__endCODENode: boolean =
+            nodeArray[selectionEndIndex].nodeName === 'CODE' &&
+            endNode__length__afterDeleteRange === 0;
+
+          if (isEmpty__endCODENode) {
+            console.log('isEmpty__endCODENode');
+            removeEndNode();
+            removeMiddleNode(); // 지우는 순서는 End > Middle > Start
           }
-          //
-          else if (
-            (finalEndNodeText === '' || finalEndNodeText === ' ') &&
-            nodeArray[selectionEndIndex].nodeName === 'CODE'
-          ) {
-            if (
-              startNode__length__afterDeleteRange === 0 &&
-              nodeArray[selectionStartIndex].nodeName === 'CODE'
-            ) {
-              removeMiddleNode();
-              removeChildNode(selectionStartIndex);
-              removeChildNode(selectionEndIndex - middleNodeCount - 1); // 이미 selectionStartIndex 제거했으므로 -1
-            } else {
-              setText__startNode__afterPaste(); // start 노드 업데이트된 텍스트 여기서는 삭제되지 않으므로, 넣어줘야
-              removeMiddleNode();
-              removeChildNode(selectionEndIndex - middleNodeCount);
-            }
-          }
-          //
+          // else가 일반적인 경우
           else {
             removeMiddleNode(); // 여기선 인덱스가 변하지 않음.
-            setText__startNode__afterPaste(); // 내가 만든 Array에 textContent 넣기
           }
+
+          const isSpacing__clipText: boolean = clipText === ' ';
+          isSpacing__clipText && removeStartNode(); // clipText가 spacing이면 지울 수 없는 코드 블럭이 남기 때문에. // index 순서상 마지막에
         };
-        removeChildeNode__byCondition();
+        removeChildNodes__byCondition();
       }
     }
 
@@ -200,34 +191,34 @@ export const paste = (
     setPasteData(newHtml);
 
     // setPasteData 데이터 업데이트 이후에 caret 위치 조정
-    if (!isSelection) {
-      focus__afterClipText__whenCollapsed(
-        eachBlockRef,
-        selectionStartIndex,
-        clipTextLength,
-        startOffset,
-        selection
-      );
-    }
-
-    if (isSelection) {
-      focus__afterClipText__whenNotCollapsed();
-    }
+    focus__afterSetClipText(
+      eachBlockRef,
+      eachBlockChildNodes,
+      selectionStartIndex,
+      clipText.length,
+      startOffset,
+      selection
+    );
   });
 };
 
-const focus__afterClipText__whenCollapsed = (
+const focus__afterSetClipText = (
   eachBlockRef: MutableRefObject<HTMLElement>,
-  // ***붙여넣기가 끝난 뒤의 current를 봐야 하므로*** eachBlockChildNodes가 아닌 eachBlockRef을 받아와야 함.
+  eachBlockChildNodes: NodeListOf<ChildNode>,
   selectionStartIndex: number,
   clipTextLength: number,
   startOffset: number,
   selection: Selection | null
 ) => {
+  if (eachBlockChildNodes.length === 0 || eachBlockChildNodes === undefined) {
+    eachBlockRef.current.focus();
+    return;
+  }
+
   const targetNode =
-    eachBlockRef.current.childNodes[selectionStartIndex].nodeName === 'CODE'
-      ? eachBlockRef.current.childNodes[selectionStartIndex].childNodes[0]
-      : eachBlockRef.current.childNodes[selectionStartIndex];
+    eachBlockChildNodes[selectionStartIndex].nodeName === 'CODE'
+      ? eachBlockChildNodes[selectionStartIndex].childNodes[0]
+      : eachBlockChildNodes[selectionStartIndex];
 
   const newCaretPosition = startOffset + clipTextLength;
 
@@ -236,8 +227,4 @@ const focus__afterClipText__whenCollapsed = (
 
   selection && selection.removeAllRanges();
   selection && selection.addRange(newRange);
-};
-
-const focus__afterClipText__whenNotCollapsed = () => {
-  // console.log('isSelection');
 };

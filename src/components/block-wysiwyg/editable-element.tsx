@@ -10,6 +10,11 @@ import {
   useState,
 } from 'react';
 import { addInlineCodeBlock } from '../../lib/utils/editable-block/add-inline-code-block';
+import {
+  getNodeArray,
+  getSelectionStart,
+  TMyNode,
+} from '../../lib/utils/editable-block/node';
 import { IParagraphData } from '../../redux-toolkit/model/post-data-model';
 import styles from './editable-element.module.scss';
 
@@ -58,18 +63,39 @@ const EditableElement: FC<Props> = ({
     // *** [KEY] dangerouslySetInnerHTML로 들어가는 html에서 정규식 변환된 "&amp;", "&lt;" ,"&gt;"는 텍스트로, < > &는 실제 html 요소로 렌더링한다!
     const inputHtml = e.target.innerHTML;
 
+    // console.log('inputHtml', inputHtml);
+
+    // '<br>'만 남은 경우 <br> 제거 후 플레이스 홀더 보이도록
+    // ***paste*** 첫 노드 undefined 문제 해결
+    if (inputHtml === '<br>') {
+      updateData__bothTempAndRendering('');
+      return;
+    }
+
+    // const selection: Selection | null = window.getSelection();
+    // const range = selection?.getRangeAt(0);
+    // const startContainer: Node | undefined = range?.startContainer;
+    // // const anchorNode: Node | null | undefined = selection?.anchorNode;
+    // const isChromeBug =
+    //   startContainer?.parentNode?.nodeName === 'SPAN' &&
+    //   startContainer?.parentNode?.parentNode?.nodeName === 'FONT';
+
+    // if (isChromeBug) {
+    //   console.log('크롬 버그 동작', startContainer);
+    // }
+
     const twoBacktickNodeIndex: number | undefined = addInlineCodeBlock(
       eachBlockRef,
-      updateDataWithInlineBlock
+      updateData__bothTempAndRendering
     );
     if (twoBacktickNodeIndex !== undefined) {
       setChangeCaretPosition(twoBacktickNodeIndex);
     } else {
-      setCurrentBlockTempPostHtmlData(inputHtml); // twoBacktickNodeIndex !== undefined이면 addInlineCodeBlock()의 updateDataWithInlineBlock에서 업데이트하기 때문에 2번 업데이트 할 필요 없음.
+      setCurrentBlockTempPostHtmlData(inputHtml); // twoBacktickNodeIndex !== undefined이면 addInlineCodeBlock()의 updateData__bothTempAndRendering에서 업데이트하기 때문에 2번 업데이트 할 필요 없음.
     }
   };
 
-  const updateDataWithInlineBlock = (inputHtml: string) => {
+  const updateData__bothTempAndRendering = (inputHtml: string) => {
     setCurrentBlockTempPostHtmlData(inputHtml);
     setCurrentBlockPostHtmlData(inputHtml);
   };

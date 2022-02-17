@@ -172,11 +172,12 @@ const EditableElementSwitch: FC<Props> = ({
     if (
       e.key === 'Backspace' &&
       endContainer?.parentNode?.nodeName === 'CODE' &&
-      endContainer?.textContent?.length === 1
+      endContainer?.textContent?.length === 1 // 커서로 하나씩 지우는 경우
     ) {
+      // https://pmakesperfect.tistory.com/366
       // e.preventDefault();
       // 데이터 동기화가 관건
-      console.error('크롬 버그 동작');
+      console.log('크롬 버그 동작');
       // 앞선 노드의 마지막 글자를 지우고 다시 생성
       // 코드 블럭 앞에 #text 노드가 없다면? 이 방법으로 해결 불가
 
