@@ -104,12 +104,12 @@ export const getSelectionStart = (
   );
   const selectionStartNodeText: string =
     nodeArray[selectionStartIndex].textContent ?? '';
-  const selectionStartNodeTextArray: string[] =
+  const selection__startNode__textArray: string[] =
     selectionStartNodeText?.split('') ?? [];
 
   console.log('selectionStartIndex', selectionStartIndex);
 
-  return { selectionStartIndex, selectionStartNodeTextArray };
+  return { selectionStartIndex, selection__startNode__textArray };
 };
 
 export const getSelectionEnd = (
@@ -120,12 +120,12 @@ export const getSelectionEnd = (
   const selectionEndIndex: number = getSelectionEndIndex(nodeList, selection);
   const selectionEndNodeText: string =
     nodeArray[selectionEndIndex].textContent ?? '';
-  const selectionEndNodeTextArray: string[] =
+  const selection__endNode__textArray: string[] =
     selectionEndNodeText?.split('') ?? [];
 
   console.log('selectionEndIndex', selectionEndIndex);
 
-  return { selectionEndIndex, selectionEndNodeTextArray };
+  return { selectionEndIndex, selection__endNode__textArray };
 };
 
 export const getNewHtml = (nodeArray: TMyNode[]) => {

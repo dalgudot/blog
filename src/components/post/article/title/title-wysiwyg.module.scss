@@ -17,7 +17,7 @@
   @include text-styles.body4(500);
   margin-top: 24px;
   margin-left: 1px; // 시각 보정
-  display: flex;
+  display: inline-flex;
   align-items: center;
   position: relative; // NextJs Image 경고 제거
 

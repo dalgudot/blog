@@ -143,7 +143,7 @@ const EditableElementSwitch: FC<Props> = ({
     const endOffset = range?.endOffset;
     const collapsed = range?.collapsed;
 
-    const selectionEndIndex = getSelectionEndIndex(childeNodes);
+    const selectionEndIndex = getSelectionEndIndex(childeNodes, selection);
     // console.log('selectionEndIndex', selectionEndIndex);
 
     // 렌더링 없이, 인라인 코드 블럭 오른쪽 한 칸 삭제 못하도록 하고, 커서 이동
