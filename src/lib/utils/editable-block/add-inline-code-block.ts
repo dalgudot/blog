@@ -39,12 +39,11 @@ export const addInlineCodeBlock = (
             twoBacktickNodeIndex = i;
             // 첫 번째 `는 <code>로 두 번째 `는 </code>로!
             nodeArray[i].textContent = textContent
-              ?.replace('`', frontTag)
-              .replace(
-                '`',
-                backTag
-                // (&nbsp;)로 코드 블럭 벗어나기
-              );
+              ?.replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace('`', frontTag)
+              .replace('`', backTag);
           }
         }
       }
@@ -57,8 +56,6 @@ export const addInlineCodeBlock = (
 
   if (twoBacktickNodeIndex !== null) {
     const newHtml = getNewHtml(nodeArray);
-    // console.log('newHtml', newHtml);
-
     updateDataWithInlineBlock(newHtml);
 
     return twoBacktickNodeIndex; // null이면 코드 변환이 되지 않음.

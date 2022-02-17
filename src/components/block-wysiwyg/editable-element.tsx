@@ -6,16 +6,9 @@ import {
   KeyboardEvent,
   MutableRefObject,
   useEffect,
-  useRef,
   useState,
 } from 'react';
 import { addInlineCodeBlock } from '../../lib/utils/editable-block/add-inline-code-block';
-import {
-  getNodeArray,
-  getSelectionStart,
-  TMyNode,
-} from '../../lib/utils/editable-block/node';
-import { IParagraphData } from '../../redux-toolkit/model/post-data-model';
 import styles from './editable-element.module.scss';
 
 type Props = {
