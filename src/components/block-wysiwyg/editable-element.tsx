@@ -22,8 +22,6 @@ type Props = {
   setCurrentBlockPostHtmlData: (inputHtml: string) => void;
   onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
-  addBlockFocusUseEffectDependency?: IParagraphData;
-  removeCurrentBlockFocusUseEffectDependency?: IParagraphData;
   placeholder: string;
   customClassName?: string;
 };
@@ -38,8 +36,6 @@ const EditableElement: FC<Props> = ({
   setCurrentBlockPostHtmlData,
   onKeyPress,
   onKeyDown,
-  addBlockFocusUseEffectDependency,
-  removeCurrentBlockFocusUseEffectDependency,
   placeholder = '',
   customClassName,
 }) => {
@@ -63,8 +59,8 @@ const EditableElement: FC<Props> = ({
     const inputHtml = e.target.innerHTML;
 
     const twoBacktickNodeIndex: number | undefined = addInlineCodeBlock(
-      updateDataWithInlineBlock,
-      eachBlockRef
+      eachBlockRef,
+      updateDataWithInlineBlock
     );
     if (twoBacktickNodeIndex !== undefined) {
       setChangeCaretPosition(twoBacktickNodeIndex);

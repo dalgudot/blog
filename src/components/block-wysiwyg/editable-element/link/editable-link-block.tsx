@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import { FC, KeyboardEvent, MutableRefObject } from 'react';
 import { ILinkData } from '../../../../redux-toolkit/model/link-data-model';
-import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
 import IconNewTap24 from '../../../../svg/icon-new-tap-24';
 import EditableElement from '../../editable-element';
 import styles from './editable-link-block.module.scss';
@@ -19,8 +18,6 @@ type Props = {
   setCurrentBlockPostHtmlData: (inputHtml: string) => void;
   onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
-  addBlockFocusUseEffectDependency?: IParagraphData;
-  removeCurrentBlockFocusUseEffectDependency?: IParagraphData;
   placeholder: string;
 };
 
@@ -36,8 +33,6 @@ const EditableLinkBlock: FC<Props> = ({
   setCurrentBlockPostHtmlData,
   onKeyPress,
   onKeyDown,
-  addBlockFocusUseEffectDependency,
-  removeCurrentBlockFocusUseEffectDependency,
   placeholder,
 }) => {
   return (
@@ -64,10 +59,6 @@ const EditableLinkBlock: FC<Props> = ({
             setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress} // optional, 블록 추가
             onKeyDown={onKeyDown} // optional, 블록 삭제
-            addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
-            removeCurrentBlockFocusUseEffectDependency={
-              removeCurrentBlockFocusUseEffectDependency
-            }
             placeholder={placeholder}
           />
           <IconNewTap24 color='var(--g1)' />

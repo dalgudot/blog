@@ -1,44 +1,17 @@
 import { MutableRefObject } from 'react';
+import { getNewHtml, getNodeArray } from './node';
+
+export const frontTag = '<code class="inline__code__block">';
+export const backTag = '</code>\u00A0';
 
 export const addInlineCodeBlock = (
-  updateDataWithInlineBlock: (inputHtml: string) => void,
-  eachBlockRef: MutableRefObject<HTMLElement>
+  eachBlockRef: MutableRefObject<HTMLElement>,
+  updateDataWithInlineBlock: (inputHtml: string) => void
 ) => {
-  const frontTag = '<code class="inline__code__block">';
-  const backTag = '</code>\u00A0';
-
   const eachBlockChildNodes: NodeListOf<ChildNode> =
     eachBlockRef.current.childNodes;
   const eachBlockChildNodesLength: number = eachBlockChildNodes.length;
-  // console.log('eachBlockChildNodes', eachBlockChildNodes);
-
-  const getNodeArray = () => {
-    let nodeArray: {
-      nodeName: '#text' | 'CODE';
-      textContent: string | null | undefined;
-    }[] = [];
-
-    // 아무런 텍스트도 없는 노드일 경우(eachBlockRef.current.childNodes)
-    if (eachBlockChildNodesLength === 0) {
-      // 아무런 노드도 없는 경우 array 및 length 초기화
-      nodeArray = [
-        {
-          nodeName: '#text',
-          textContent: '',
-        },
-      ];
-    } else {
-      for (let i = 0; i < eachBlockChildNodesLength; i++) {
-        nodeArray.push({
-          nodeName: eachBlockChildNodes[i].nodeName as '#text' | 'CODE',
-          textContent: eachBlockChildNodes[i].textContent,
-        }); // nodeValue 대신 TextContent로 해야, <code></code> 안의 텍스트 가져옴
-      }
-    }
-
-    return nodeArray;
-  };
-  const nodeArray = getNodeArray();
+  const nodeArray = getNodeArray(eachBlockChildNodes);
 
   const getNewNodesWithInlineCodeHtml = () => {
     let twoBacktickNodeIndex: number | null = null;
@@ -83,28 +56,7 @@ export const addInlineCodeBlock = (
   const twoBacktickNodeIndex = getNewNodesWithInlineCodeHtml();
 
   if (twoBacktickNodeIndex !== null) {
-    const getNewHtml = () => {
-      let newHtml: string = '';
-
-      for (let i = 0; i < eachBlockChildNodesLength; i++) {
-        if (nodeArray[i].nodeName === '#text') {
-          newHtml = `${newHtml}${nodeArray[i].textContent}`;
-          // console.log('for', '#text', newHtml);
-        }
-
-        if (nodeArray[i].nodeName === 'CODE') {
-          newHtml = `${newHtml}${frontTag}${
-            nodeArray[i].textContent
-          }${backTag.replace(/\u00A0/, '')}`;
-          // console.log('for', 'CODE', newHtml);
-        }
-      }
-
-      return newHtml;
-    };
-
-    const newHtml = getNewHtml();
-
+    const newHtml = getNewHtml(nodeArray);
     // console.log('newHtml', newHtml);
 
     updateDataWithInlineBlock(newHtml);

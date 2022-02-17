@@ -11,7 +11,6 @@ import {
 import styles from './editable-code-block.module.scss';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
 import CodeTextarea from './code-textarea';
 import {
   TCodeLanguage,
@@ -30,8 +29,6 @@ type Props = {
   // setCurrentBlockPostHtmlData: (inputHtml: string) => void;
   onKeyPress: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown: (e: KeyboardEvent<HTMLElement>) => void;
-  addBlockFocusUseEffectDependency?: IParagraphData;
-  removeCurrentBlockFocusUseEffectDependency?: IParagraphData;
   placeholder: string;
 };
 
@@ -45,8 +42,6 @@ const EditableCodeBlock: FC<Props> = ({
   // setCurrentBlockPostHtmlData,
   onKeyPress,
   onKeyDown,
-  addBlockFocusUseEffectDependency,
-  removeCurrentBlockFocusUseEffectDependency,
   placeholder,
 }) => {
   const [codeString, setCodeString] = useState<string>('');
@@ -75,10 +70,6 @@ const EditableCodeBlock: FC<Props> = ({
             setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
-            addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
-            removeCurrentBlockFocusUseEffectDependency={
-              removeCurrentBlockFocusUseEffectDependency
-            }
             placeholder={placeholder}
           />
         </>
