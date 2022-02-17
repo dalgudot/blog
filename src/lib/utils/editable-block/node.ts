@@ -28,37 +28,6 @@ export const getNodeArray = (nodeList: NodeListOf<ChildNode>): TMyNode[] => {
   return nodeArray;
 };
 
-export const getSelectionEndIndex = (nodeList: NodeListOf<ChildNode>) => {
-  const nodesLength = nodeList.length;
-  let selectionEndIndex: number = 0;
-
-  const selection = window.getSelection();
-  const range = selection?.getRangeAt(0);
-  const endContainer = range?.endContainer;
-
-  for (let i = 0; i < nodesLength; i++) {
-    if (
-      nodeList[i].nodeName === '#text' &&
-      endContainer?.isSameNode(nodeList[i])
-    ) {
-      selectionEndIndex = i;
-    }
-
-    if (
-      nodeList[i].nodeName === 'CODE' &&
-      endContainer?.isSameNode(nodeList[i].childNodes.item(0))
-    ) {
-      selectionEndIndex = i;
-    }
-
-    if (selectionEndIndex !== 0) {
-      break;
-    }
-  }
-
-  return selectionEndIndex;
-};
-
 export const getSelectionStartIndex = (nodeList: NodeListOf<ChildNode>) => {
   const nodesLength = nodeList.length;
   let selectionStartIndex: number = 0;
@@ -88,6 +57,37 @@ export const getSelectionStartIndex = (nodeList: NodeListOf<ChildNode>) => {
   }
 
   return selectionStartIndex;
+};
+
+export const getSelectionEndIndex = (nodeList: NodeListOf<ChildNode>) => {
+  const nodesLength = nodeList.length;
+  let selectionEndIndex: number = 0;
+
+  const selection = window.getSelection();
+  const range = selection?.getRangeAt(0);
+  const endContainer = range?.endContainer;
+
+  for (let i = 0; i < nodesLength; i++) {
+    if (
+      nodeList[i].nodeName === '#text' &&
+      endContainer?.isSameNode(nodeList[i])
+    ) {
+      selectionEndIndex = i;
+    }
+
+    if (
+      nodeList[i].nodeName === 'CODE' &&
+      endContainer?.isSameNode(nodeList[i].childNodes.item(0))
+    ) {
+      selectionEndIndex = i;
+    }
+
+    if (selectionEndIndex !== 0) {
+      break;
+    }
+  }
+
+  return selectionEndIndex;
 };
 
 export const getNewHtml = (nodeArray: TMyNode[]) => {
