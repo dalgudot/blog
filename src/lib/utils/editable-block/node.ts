@@ -5,6 +5,7 @@ export type TMyNode = {
   textContent: string | null | undefined;
 };
 
+// newHtml 만들기 위한 배열인 nodeArray 리턴
 export const getNodeArray = (nodeList: NodeListOf<ChildNode>): TMyNode[] => {
   const nodesLength = nodeList.length;
   const nodeArray: TMyNode[] = [];
@@ -25,6 +26,64 @@ export const getNodeArray = (nodeList: NodeListOf<ChildNode>): TMyNode[] => {
   }
 
   return nodeArray;
+};
+
+export const getNewHtml = (nodeArray: TMyNode[]) => {
+  const nodesLength = nodeArray.length;
+  let newHtml: string = '';
+
+  for (let i = 0; i < nodesLength; i++) {
+    if (nodeArray[i].nodeName === '#text') {
+      newHtml = `${newHtml}${nodeArray[i].textContent}`;
+      // console.log('for', '#text', newHtml);
+    }
+
+    if (nodeArray[i].nodeName === 'CODE') {
+      newHtml = `${newHtml}${frontTag}${
+        nodeArray[i].textContent
+      }${backTag.replace(/\u00A0/, '')}`;
+      // console.log('for', 'CODE', newHtml);
+    }
+  }
+
+  // console.log('newHtml', newHtml);
+
+  return newHtml;
+};
+
+export const getSelectionStart = (
+  nodeList: NodeListOf<ChildNode>,
+  nodeArray: TMyNode[],
+  selection: Selection | null
+) => {
+  const selectionStartIndex: number = getSelectionStartIndex(
+    nodeList,
+    selection
+  );
+  const selectionStartNodeText: string =
+    nodeArray[selectionStartIndex].textContent ?? '';
+  const selection__startNode__textArray: string[] =
+    selectionStartNodeText?.split('') ?? [];
+
+  // console.log('selectionStartIndex', selectionStartIndex);
+
+  return { selectionStartIndex, selection__startNode__textArray };
+};
+
+export const getSelectionEnd = (
+  nodeList: NodeListOf<ChildNode>,
+  nodeArray: TMyNode[],
+  selection: Selection | null
+) => {
+  const selectionEndIndex: number = getSelectionEndIndex(nodeList, selection);
+  const selectionEndNodeText: string =
+    nodeArray[selectionEndIndex].textContent ?? '';
+  const selection__endNode__textArray: string[] =
+    selectionEndNodeText?.split('') ?? [];
+
+  // console.log('selectionEndIndex', selectionEndIndex);
+
+  return { selectionEndIndex, selection__endNode__textArray };
 };
 
 export const getSelectionStartIndex = (
@@ -91,64 +150,6 @@ export const getSelectionEndIndex = (
   }
 
   return selectionEndIndex;
-};
-
-export const getSelectionStart = (
-  nodeList: NodeListOf<ChildNode>,
-  nodeArray: TMyNode[],
-  selection: Selection | null
-) => {
-  const selectionStartIndex: number = getSelectionStartIndex(
-    nodeList,
-    selection
-  );
-  const selectionStartNodeText: string =
-    nodeArray[selectionStartIndex].textContent ?? '';
-  const selection__startNode__textArray: string[] =
-    selectionStartNodeText?.split('') ?? [];
-
-  console.log('selectionStartIndex', selectionStartIndex);
-
-  return { selectionStartIndex, selection__startNode__textArray };
-};
-
-export const getSelectionEnd = (
-  nodeList: NodeListOf<ChildNode>,
-  nodeArray: TMyNode[],
-  selection: Selection | null
-) => {
-  const selectionEndIndex: number = getSelectionEndIndex(nodeList, selection);
-  const selectionEndNodeText: string =
-    nodeArray[selectionEndIndex].textContent ?? '';
-  const selection__endNode__textArray: string[] =
-    selectionEndNodeText?.split('') ?? [];
-
-  console.log('selectionEndIndex', selectionEndIndex);
-
-  return { selectionEndIndex, selection__endNode__textArray };
-};
-
-export const getNewHtml = (nodeArray: TMyNode[]) => {
-  const nodesLength = nodeArray.length;
-  let newHtml: string = '';
-
-  for (let i = 0; i < nodesLength; i++) {
-    if (nodeArray[i].nodeName === '#text') {
-      newHtml = `${newHtml}${nodeArray[i].textContent}`;
-      // console.log('for', '#text', newHtml);
-    }
-
-    if (nodeArray[i].nodeName === 'CODE') {
-      newHtml = `${newHtml}${frontTag}${
-        nodeArray[i].textContent
-      }${backTag.replace(/\u00A0/, '')}`;
-      // console.log('for', 'CODE', newHtml);
-    }
-  }
-
-  // console.log('newHtml', newHtml);
-
-  return newHtml;
 };
 
 // https://jungpaeng.tistory.com/86
