@@ -1,5 +1,7 @@
 import { backTag, frontTag } from './add-inline-code-block';
 
+// https://jungpaeng.tistory.com/86
+// https://gdtbgl93.tistory.com/175
 export type TMyNode = {
   nodeName: '#text' | 'CODE';
   textContent: string | null | undefined;
@@ -7,7 +9,6 @@ export type TMyNode = {
 
 export const getNodeArray = (nodeList: NodeListOf<ChildNode>): TMyNode[] => {
   const nodesLength = nodeList.length;
-
   const nodeArray: TMyNode[] = [];
 
   // 아무 텍스트도 없는 경우, 즉 플레이스 홀더가 보이는 경우
@@ -30,11 +31,11 @@ export const getNodeArray = (nodeList: NodeListOf<ChildNode>): TMyNode[] => {
 
 export const getSelectionStartIndex = (nodeList: NodeListOf<ChildNode>) => {
   const nodesLength = nodeList.length;
-  let selectionStartIndex: number = 0;
-
   const selection = window.getSelection();
   const range = selection?.getRangeAt(0);
   const startContainer = range?.startContainer;
+
+  let selectionStartIndex: number = 0;
 
   for (let i = 0; i < nodesLength; i++) {
     if (
@@ -90,6 +91,36 @@ export const getSelectionEndIndex = (nodeList: NodeListOf<ChildNode>) => {
   return selectionEndIndex;
 };
 
+export const getSelectionStart = (
+  nodeList: NodeListOf<ChildNode>,
+  nodeArray: TMyNode[]
+) => {
+  const selectionStartIndex: number = getSelectionStartIndex(nodeList);
+  const selectionStartNodeText: string =
+    nodeArray[selectionStartIndex].textContent ?? '';
+  const selectionStartNodeTextArray: string[] =
+    selectionStartNodeText?.split('') ?? [];
+
+  console.log('selectionStartIndex', selectionStartIndex);
+
+  return { selectionStartIndex, selectionStartNodeTextArray };
+};
+
+export const getSelectionEnd = (
+  nodeList: NodeListOf<ChildNode>,
+  nodeArray: TMyNode[]
+) => {
+  const selectionEndIndex: number = getSelectionEndIndex(nodeList);
+  const selectionEndNodeText: string =
+    nodeArray[selectionEndIndex].textContent ?? '';
+  const selectionEndNodeTextArray: string[] =
+    selectionEndNodeText?.split('') ?? [];
+
+  console.log('selectionEndIndex', selectionEndIndex);
+
+  return { selectionEndIndex, selectionEndNodeTextArray };
+};
+
 export const getNewHtml = (nodeArray: TMyNode[]) => {
   const nodesLength = nodeArray.length;
   let newHtml: string = '';
@@ -108,5 +139,17 @@ export const getNewHtml = (nodeArray: TMyNode[]) => {
     }
   }
 
+  // console.log('newHtml', newHtml);
+
   return newHtml;
 };
+
+// https://jungpaeng.tistory.com/86
+// range.startContainer: 범위가 시작하는 부분을 포함하고 있는 노드
+// range.endContainter: 범위가 끝나는 부분을 포함하고 있는 노드
+// range.startOffset: startContainer에서 범위가 시작하는 지점의 offset
+// // // // // startContainer가 TEXT_NODE라면 문자의 갯수
+// // // // // startContainer가 ELEMENT_NODE라면 자식 노드의 인덱스
+// range.endOffset: endContainer에서 범위가 끝나는 지점의 offset
+// // // // // startOffset과 동일한 규칙이 적용
+// range.collapsed: Range의 시작점과 끝점이 같은 위치인지 알 수 있는 boolean 값을 반환

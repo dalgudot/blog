@@ -2,12 +2,13 @@ import { MutableRefObject } from 'react';
 import {
   getNewHtml,
   getNodeArray,
+  getSelectionEnd,
   getSelectionEndIndex,
+  getSelectionStart,
   getSelectionStartIndex,
+  TMyNode,
 } from './node';
 
-// selection / range 속성, 메소드 정리 >> https://jungpaeng.tistory.com/86
-// https://gdtbgl93.tistory.com/175
 export const paste = (
   eachBlockRef: MutableRefObject<HTMLElement>,
   setPasteData: (newHtml: string) => void
@@ -15,7 +16,9 @@ export const paste = (
   navigator.clipboard.readText().then((clipText) => {
     const clipTextLength = clipText.length;
     const eachBlockChildNodes = eachBlockRef.current.childNodes;
-    const nodeArray = getNodeArray(eachBlockChildNodes);
+    const nodeArray: TMyNode[] = getNodeArray(eachBlockChildNodes);
+    const { selectionStartIndex, selectionStartNodeTextArray } =
+      getSelectionStart(eachBlockChildNodes, nodeArray);
 
     const selection = window.getSelection();
     const range = selection?.getRangeAt(0);
@@ -26,10 +29,6 @@ export const paste = (
     const isSelection = !range?.collapsed; // isSelection 맥락 위해 !
 
     // ***공통*** 아래 함수 속 for문을 통해 마지막 노드(선택 영역 없는 경우 커서 1개) 커서가 있는 노드 식별!
-    const selectionStartIndex = getSelectionStartIndex(eachBlockChildNodes);
-    const selectionStartNodeText = nodeArray[selectionStartIndex].textContent;
-    const selectionStartNodeTextArray = selectionStartNodeText?.split('');
-    console.log('selectionStartIndex', selectionStartIndex);
 
     // 여기서만 쓰이는 공통 함수, export 하려면 고쳐야 함.
     const pasteClipText__toSelectionStartNode = () => {
@@ -53,23 +52,20 @@ export const paste = (
     // 2. 마지막 노드에 해당 텍스트를 붙여넣는다.
     if (isSelection === true) {
       // selectionEndIndex는 여기서만 쓰임
-      const selectionEndIndex = getSelectionEndIndex(eachBlockChildNodes);
-      const selectionEndNodeText = nodeArray[selectionEndIndex].textContent;
-      const selectionEndNodeTextArray = selectionEndNodeText?.split('');
-      console.log('selectionEndIndex', selectionEndIndex);
+      const { selectionEndIndex, selectionEndNodeTextArray } = getSelectionEnd(
+        eachBlockChildNodes,
+        nodeArray
+      );
 
       const caseOfLocatedOnOneNode: boolean =
         selectionEndIndex === selectionStartIndex;
       const caseOfLocatedOnDifferentNode: boolean =
         selectionEndIndex - selectionStartIndex > 0;
 
-      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
       // 같은 노드에 있다면
       if (caseOfLocatedOnOneNode) {
         // ***UX Logic*** '지운다'는 것은 Backspace가 보편적, 뒤에서 앞으로 지워진다. -> ***붙여넣는 위치는 StartIndex
-        const deleteSelection = () => {
+        const deleteSelectionArea = () => {
           const lengthToDelete = endOffset - startOffset;
           selectionStartNodeTextArray?.splice(startOffset, lengthToDelete);
         };
@@ -77,60 +73,62 @@ export const paste = (
         const pasteClipText__toSelectionStartNode__afterDeleteSelectionArea =
           () => {
             // 선택 영역 삭제
-            deleteSelection();
+            deleteSelectionArea();
             pasteClipText__toSelectionStartNode();
           };
 
         pasteClipText__toSelectionStartNode__afterDeleteSelectionArea();
       }
-      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-      // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+
       if (caseOfLocatedOnDifferentNode) {
-        let isRemovedSomeNode: boolean = false;
-        const removeChildNode = (index: number) => {
-          eachBlockChildNodes[index].remove(); // 실제 노드 삭제
-          nodeArray.splice(index, 1); // 내가 만든 배열 요소 삭제
-          isRemovedSomeNode = true;
-        };
-
-        // Start 노드, 1)텍스트 삭제 2)CODE인데 textContent가 없다면 <code> 노드 삭제
-        const startNodeTextArray =
-          nodeArray[selectionStartIndex].textContent?.split('');
-        const endNodeTextArray =
-          nodeArray[selectionEndIndex].textContent?.split('');
-
-        const startNodeArrayLength = startNodeTextArray?.length;
+        /**
+         * 전체 절차
+         *** 1. Start 노드 선택 영역의 텍스트 삭제, Start 노드 전체가 선택됐다면 전체 노드 삭제(CODE인데 textContent가 없다면 <code> 노드 삭제)
+         *** 2. End 노드
+         *** 3. 중간 노드 삭제
+         */
 
         // Start 노드 선택 영역 삭제
         const startNodeRemoveRange =
-          startNodeArrayLength !== undefined &&
-          startNodeArrayLength - startOffset;
+          selectionStartNodeTextArray?.length !== undefined &&
+          selectionStartNodeTextArray?.length - startOffset;
 
         startNodeRemoveRange !== false &&
-          startNodeTextArray?.splice(startOffset, startNodeRemoveRange);
+          selectionStartNodeTextArray?.splice(
+            startOffset,
+            startNodeRemoveRange
+          );
 
         // 순서는 위 splice 다음
-        const startNodeTextArrayAfterRemoveLength = startNodeTextArray?.length; // *** 길이 0일 떄 CODE 요소 삭제하기 위해 필요
+        const selectionStartNodeTextArrayAfterRemoveLength =
+          selectionStartNodeTextArray?.length; // *** 길이 0일 떄 CODE 요소 삭제하기 위해 필요
 
         // End 노드, End 노드는 처음부터 endOffset까지 삭제
         // End 노드 영역 삭제
-        endOffset !== undefined && endNodeTextArray?.splice(0, endOffset); // End 노드는 처음부터 endOffset까지 삭제
+        endOffset !== undefined &&
+          selectionEndNodeTextArray?.splice(0, endOffset); // End 노드는 처음부터 endOffset까지 삭제
 
         // 순서는 위 splice 다음
-        const endNodeTextArrayAfterRemoveLength = endNodeTextArray?.length; // *** 길이 0일 떄 CODE 요소 삭제하기 위해 필요
+        const selectionEndNodeTextArrayAfterRemoveLength =
+          selectionEndNodeTextArray?.length; // *** 길이 0일 떄 CODE 요소 삭제하기 위해 필요
 
         // End 노드 offset 0부터 cliptText 붙여넣기
-        endOffset !== undefined && endNodeTextArray?.splice(0, 0, clipText); // End 노드는 0부터 붙여야 함
+        endOffset !== undefined &&
+          selectionEndNodeTextArray?.splice(0, 0, clipText); // End 노드는 0부터 붙여야 함
 
         // setFinalStartNodeText()만 아래 if문에서 쓰임 -> index 맞추기 위해
         const setFinalStartNodeText = () => {
-          const finalStartNodeText = startNodeTextArray?.join('');
+          const finalStartNodeText = selectionStartNodeTextArray?.join('');
           nodeArray[selectionStartIndex].textContent = finalStartNodeText;
         };
 
-        const finalEndNodeText = endNodeTextArray?.join('');
+        const finalEndNodeText = selectionEndNodeTextArray?.join('');
         nodeArray[selectionEndIndex].textContent = finalEndNodeText; // 내가 만든 Array에 textContent 넣기
+
+        const removeChildNode = (index: number) => {
+          eachBlockChildNodes[index].remove(); // 실제 노드 삭제
+          nodeArray.splice(index, 1); // 내가 만든 배열 요소 삭제
+        };
 
         const removeMiddleNode = () => {
           // ***중요*** 큰 index부터 시작해야 삭제 순서가 꼬이지 않음 > 큰 index 요소부터 삭제한다는 뜻
@@ -146,12 +144,12 @@ export const paste = (
         // 아래 if문은 위 두 줄 코드를 포함해 start 노드의 텍스트가 없어질 경우 노드 삭제하고, 텍스트가 있을 경우삭제만 하는 코드
         // *** 허나 여기서 index를 바꾸면 위쪽 End 노드 코드에 selectionEndIndex 변화로 영향 끼치기 때문에 End 노드 작업 이후에 여기서!
         if (
-          startNodeTextArrayAfterRemoveLength === 0 &&
+          selectionStartNodeTextArrayAfterRemoveLength === 0 &&
           nodeArray[selectionStartIndex].nodeName === 'CODE'
         ) {
           // CODE 노드를 삭제하면 기존에 selectionStartIndex, selectionEndIndex를 쓸 수 없게 때문에 2중 if문으로 숫자 계산해서 한꺼번에 처리
           if (
-            endNodeTextArrayAfterRemoveLength === 0 &&
+            selectionEndNodeTextArrayAfterRemoveLength === 0 &&
             nodeArray[selectionEndIndex].nodeName === 'CODE'
           ) {
             removeMiddleNode();
@@ -168,7 +166,7 @@ export const paste = (
         ) {
           //
           if (
-            startNodeTextArrayAfterRemoveLength === 0 &&
+            selectionStartNodeTextArrayAfterRemoveLength === 0 &&
             nodeArray[selectionStartIndex].nodeName === 'CODE'
           ) {
             removeMiddleNode();
@@ -188,14 +186,11 @@ export const paste = (
     }
 
     const newHtml = getNewHtml(nodeArray);
-    // console.log('newHtml', newHtml);
-
     setPasteData(newHtml);
 
     // setPasteData 데이터 업데이트 이후에 caret 위치 조정
-    // 1. 커서 하나일 때, if(isSelection === false)
     if (!isSelection) {
-      focusCaretAfterClipTextWhenCollapsed(
+      focus__afterClipText__whenCollapsed(
         eachBlockRef,
         selectionStartIndex,
         clipTextLength,
@@ -204,14 +199,13 @@ export const paste = (
       );
     }
 
-    // 2. 선택 영역이 있을 때, if(isSelection === true)
     if (isSelection) {
-      focusCaretAfterClipTextWhenNotCollapsed();
+      focus__afterClipText__whenNotCollapsed();
     }
   });
 };
 
-const focusCaretAfterClipTextWhenCollapsed = (
+const focus__afterClipText__whenCollapsed = (
   eachBlockRef: MutableRefObject<HTMLElement>,
   selectionStartIndex: number,
   clipTextLength: number,
@@ -232,16 +226,6 @@ const focusCaretAfterClipTextWhenCollapsed = (
   selection && selection.addRange(newRange);
 };
 
-const focusCaretAfterClipTextWhenNotCollapsed = () => {
+const focus__afterClipText__whenNotCollapsed = () => {
   console.log('isSelection');
 };
-
-// https://jungpaeng.tistory.com/86
-// range.startContainer: 범위가 시작하는 부분을 포함하고 있는 노드
-// range.endContainter: 범위가 끝나는 부분을 포함하고 있는 노드
-// range.startOffset: startContainer에서 범위가 시작하는 지점의 offset
-// // // // // startContainer가 TEXT_NODE라면 문자의 갯수
-// // // // // startContainer가 ELEMENT_NODE라면 자식 노드의 인덱스
-// range.endOffset: endContainer에서 범위가 끝나는 지점의 offset
-// // // // // startOffset과 동일한 규칙이 적용
-// range.collapsed: Range의 시작점과 끝점이 같은 위치인지 알 수 있는 boolean 값을 반환
