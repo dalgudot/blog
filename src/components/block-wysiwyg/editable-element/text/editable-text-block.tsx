@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import { FC, KeyboardEvent, MutableRefObject } from 'react';
-import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
 import { TBlockTextType } from '../../../../redux-toolkit/model/text-data-model';
 import EditableElement from '../../editable-element';
 import styles from './editable-text-block.module.scss';
@@ -14,8 +13,6 @@ type Props = {
   setCurrentBlockPostHtmlData: (inputHtml: string) => void;
   onKeyPress?: (e: KeyboardEvent<HTMLElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
-  addBlockFocusUseEffectDependency?: IParagraphData;
-  removeCurrentBlockFocusUseEffectDependency?: IParagraphData;
   placeholder: string;
   className?: string;
 };
@@ -29,8 +26,6 @@ const EditableTextBlock: FC<Props> = ({
   setCurrentBlockPostHtmlData,
   onKeyPress,
   onKeyDown,
-  addBlockFocusUseEffectDependency,
-  removeCurrentBlockFocusUseEffectDependency,
   placeholder,
   className,
 }) => {
@@ -63,10 +58,6 @@ const EditableTextBlock: FC<Props> = ({
         setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
         onKeyPress={onKeyPress} // optional, 블록 추가
         onKeyDown={onKeyDown} // optional, 블록 삭제
-        addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
-        removeCurrentBlockFocusUseEffectDependency={
-          removeCurrentBlockFocusUseEffectDependency
-        }
         placeholder={placeholder}
         customClassName={className ? className : customClassName}
       />

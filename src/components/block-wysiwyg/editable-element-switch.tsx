@@ -28,7 +28,7 @@ import styles from './editable-element.module.scss';
 import { ICodeData } from '../../redux-toolkit/model/code-data-model';
 import { paste } from '../../lib/utils/editable-block/paste';
 import { useEditable } from '../../lib/hooks/useEditable';
-import { focusContentEditableTextToEnd } from '../../lib/utils/focus-content-editable-text-to-end';
+import { getSelectionEndIndex } from '../../lib/utils/editable-block/node';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
@@ -127,87 +127,57 @@ const EditableElementSwitch: FC<Props> = ({
       paste(eachBlockRef, setPasteData);
     }
 
-    const selection: Selection | null = window.getSelection();
-    const anchorNode: Node | null | undefined = selection?.anchorNode;
-    const focusNode: Node | null | undefined = selection?.focusNode;
-    const anchorOffset = selection?.anchorOffset;
-    const focusOffset = selection?.focusOffset;
-    const childeNodes = eachBlockRef.current.childNodes;
-    const childeNodesLength = childeNodes.length;
-    // console.log('childeNodes', childeNodes);
-
-    const range = selection?.getRangeAt(0);
-    const startContainer = range?.startContainer;
-    const endContainer = range?.endContainer;
-    const startOffset = range?.startOffset;
-    const endOffset = range?.endOffset;
-    const collapsed = range?.collapsed;
-
-    const getSelectionEndIndex = () => {
-      let selectionEndIndex: number = 0;
-
-      for (let i = 0; i < childeNodesLength; i++) {
-        if (
-          childeNodes[i].nodeName === '#text' &&
-          focusNode?.isSameNode(childeNodes[i])
-        ) {
-          selectionEndIndex = i;
-        }
-
-        if (
-          childeNodes[i].nodeName === 'CODE' &&
-          focusNode?.isSameNode(childeNodes[i].childNodes.item(0))
-        ) {
-          selectionEndIndex = i;
-        }
-      }
-
-      return selectionEndIndex;
-    };
-    const selectionEndIndex = getSelectionEndIndex();
-
     // console.log('selectionEndIndex', selectionEndIndex);
 
     // 렌더링 없이, 인라인 코드 블럭 오른쪽 한 칸 삭제 못하도록 하고, 커서 이동
-    if (
-      e.key === 'Backspace' &&
-      collapsed &&
-      selectionEndIndex !== 0 &&
-      childeNodes[selectionEndIndex].textContent ===
-        ('\u00A0' || '&nbsp;' || ' ') &&
-      childeNodes[selectionEndIndex - 1].nodeName === 'CODE'
-    ) {
+    if (e.key === 'Backspace') {
       e.preventDefault();
       // 이 경우 커서만 이동할 뿐 서버에 저장될 데이터는 전후로 동일함.
       // 즉 커서만 이동할 뿐 데이터는 동기화된 상태
 
-      const targetNode = childeNodes[selectionEndIndex - 1].childNodes[0];
-      const newCaretPosition = targetNode.textContent.length;
+      const selection: Selection | null = window.getSelection();
+      const childeNodes = eachBlockRef.current?.childNodes;
+      const range = selection?.getRangeAt(0);
+      const collapsed = range?.collapsed;
 
-      const newRange = document.createRange();
-      newRange.setStart(targetNode, newCaretPosition); // 코드 블럭 한 칸 뒤쪽 위치
+      const selectionEndIndex = getSelectionEndIndex(childeNodes, selection);
 
-      selection && selection.removeAllRanges();
-      selection && selection.addRange(newRange);
+      if (
+        collapsed &&
+        selectionEndIndex !== 0 &&
+        childeNodes[selectionEndIndex].textContent ===
+          ('\u00A0' || '&nbsp;' || ' ') &&
+        childeNodes[selectionEndIndex - 1].nodeName === 'CODE'
+      ) {
+        const targetNode = childeNodes[selectionEndIndex - 1].childNodes[0];
+        const newCaretPosition = targetNode.textContent.length;
+
+        const newRange = document.createRange();
+        newRange.setStart(targetNode, newCaretPosition); // 코드 블럭 한 칸 뒤쪽 위치
+
+        selection && selection.removeAllRanges();
+        selection && selection.addRange(newRange);
+      }
     }
 
-    if (
-      e.key === 'Backspace' &&
-      endContainer?.parentNode?.nodeName === 'CODE' &&
-      endContainer?.textContent?.length === 1
-    ) {
-      // e.preventDefault();
-      // 데이터 동기화가 관건
-      console.error('크롬 버그 동작');
-      // 앞선 노드의 마지막 글자를 지우고 다시 생성
-      // 코드 블럭 앞에 #text 노드가 없다면? 이 방법으로 해결 불가
+    // if (
+    //   e.key === 'Backspace' &&
+    //   endContainer?.parentNode?.nodeName === 'CODE' &&
+    //   endContainer?.textContent?.length === 1 // 커서로 하나씩 지우는 경우
+    // ) {
+    //   // https://pmakesperfect.tistory.com/366
+    //   // e.preventDefault();
+    //   // 데이터 동기화가 관건
+    //   console.log('크롬 버그 동작');
+    //   // 앞선 노드의 마지막 글자를 지우고 다시 생성
+    //   // 코드 블럭 앞에 #text 노드가 없다면? 이 방법으로 해결 불가
 
-      // https://stackoverflow.com/questions/15015019/prevent-chrome-from-wrapping-contents-of-joined-p-with-a-span
-    }
+    //   // https://stackoverflow.com/questions/15015019/prevent-chrome-from-wrapping-contents-of-joined-p-with-a-span
+    // }
   };
 
   const setPasteData = (newHtml: string) => {
-    setEachBlockStateText(''); // 같은 문자열 복사 후 지우고 다시 붙여넣으면 리액트에서 같다고 판단해 렌더링하지 않는 문제 해결
+    setEachBlockStateText(''); // ***중요*** 같은 문자열 복사 후 지우고 다시 붙여넣으면 리액트에서 같다고 판단해 렌더링하지 않는 문제 해결
     setCurrentBlockTempPostHtmlData(newHtml);
     setTempEachBlockStateText(newHtml);
     setEachBlockStateText(newHtml); // 현재 블록만 렌더링
@@ -253,10 +223,6 @@ const EditableElementSwitch: FC<Props> = ({
             setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
-            addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
-            removeCurrentBlockFocusUseEffectDependency={
-              removeCurrentBlockFocusUseEffectDependency
-            }
             placeholder={data.url ? '캡션 입력' : '버튼을 눌러 이미지 업로드'}
           />
         );
@@ -275,10 +241,6 @@ const EditableElementSwitch: FC<Props> = ({
             setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
-            addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
-            removeCurrentBlockFocusUseEffectDependency={
-              removeCurrentBlockFocusUseEffectDependency
-            }
             placeholder='링크 제목 입력'
           />
         );
@@ -295,10 +257,6 @@ const EditableElementSwitch: FC<Props> = ({
             // setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
-            addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
-            removeCurrentBlockFocusUseEffectDependency={
-              removeCurrentBlockFocusUseEffectDependency
-            }
             placeholder='코드 입력'
           />
         );
@@ -314,10 +272,6 @@ const EditableElementSwitch: FC<Props> = ({
             setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
-            addBlockFocusUseEffectDependency={addBlockFocusUseEffectDependency}
-            removeCurrentBlockFocusUseEffectDependency={
-              removeCurrentBlockFocusUseEffectDependency
-            }
             placeholder='텍스트 입력'
           />
         );
