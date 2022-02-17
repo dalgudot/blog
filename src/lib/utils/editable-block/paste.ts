@@ -190,38 +190,31 @@ export const paste = (
     const newHtml = getNewHtml(nodeArray);
     setPasteData(newHtml);
 
-    console.log('newHtml', `테스트${newHtml}테스트`);
-
     // setPasteData 데이터 업데이트 이후에 caret 위치 조정
-    // if (newHtml === '') {
-    //   console.log('동작');
-    //   eachBlockRef.current.focus();
-    //   return;
-    // }
-
-    if (!isSelection) {
-      focus__afterClipText__whenCollapsed(
-        eachBlockChildNodes,
-        selectionStartIndex,
-        clipText.length,
-        startOffset,
-        selection
-      );
-    }
-
-    if (isSelection) {
-      focus__afterClipText__whenNotCollapsed();
-    }
+    focus__afterSetClipText(
+      eachBlockRef,
+      eachBlockChildNodes,
+      selectionStartIndex,
+      clipText.length,
+      startOffset,
+      selection
+    );
   });
 };
 
-const focus__afterClipText__whenCollapsed = (
+const focus__afterSetClipText = (
+  eachBlockRef: MutableRefObject<HTMLElement>,
   eachBlockChildNodes: NodeListOf<ChildNode>,
   selectionStartIndex: number,
   clipTextLength: number,
   startOffset: number,
   selection: Selection | null
 ) => {
+  if (eachBlockChildNodes.length === 0 || eachBlockChildNodes === undefined) {
+    eachBlockRef.current.focus();
+    return;
+  }
+
   const targetNode =
     eachBlockChildNodes[selectionStartIndex].nodeName === 'CODE'
       ? eachBlockChildNodes[selectionStartIndex].childNodes[0]
@@ -234,8 +227,4 @@ const focus__afterClipText__whenCollapsed = (
 
   selection && selection.removeAllRanges();
   selection && selection.addRange(newRange);
-};
-
-const focus__afterClipText__whenNotCollapsed = () => {
-  // console.log('isSelection');
 };

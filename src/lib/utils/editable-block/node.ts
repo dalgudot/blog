@@ -106,7 +106,7 @@ export const getSelectionStartIndex = (
 
     if (
       nodeList[i].nodeName === 'CODE' &&
-      startContainer?.isSameNode(nodeList[i].childNodes.item(0))
+      startContainer?.isSameNode(nodeList[i].childNodes[0])
     ) {
       selectionStartIndex = i;
     }
@@ -139,7 +139,7 @@ export const getSelectionEndIndex = (
 
     if (
       nodeList[i].nodeName === 'CODE' &&
-      endContainer?.isSameNode(nodeList[i].childNodes.item(0))
+      endContainer?.isSameNode(nodeList[i].childNodes[0])
     ) {
       selectionEndIndex = i;
     }
