@@ -2,8 +2,6 @@
 @use '../../../../styles/motion.module';
 
 .editable__link__block__li {
-  @include motion.scale__hover;
-
   a {
     display: flex;
     justify-content: space-between;
@@ -29,6 +27,10 @@
       }
     }
   }
+}
+
+.editable__link__block__li__hover {
+  @include motion.scale__hover;
 }
 
 .border__bottom__for__Reference__list__type {

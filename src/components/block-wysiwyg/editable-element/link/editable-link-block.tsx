@@ -35,11 +35,14 @@ const EditableLinkBlock: FC<Props> = ({
   onKeyDown,
   placeholder,
 }) => {
+  const isProduction: boolean = process.env.NODE_ENV === 'production';
+
   return (
     <>
       <li
         className={classNames(
           styles.editable__link__block__li,
+          isProduction && styles.editable__link__block__li__hover,
           linkBlockType === 'Reference'
             ? styles.border__bottom__for__Reference__list__type
             : styles.box__for__Paragraph__list__type

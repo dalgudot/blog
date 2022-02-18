@@ -171,7 +171,7 @@ export const paste = (
             endNode__length__afterDeleteRange === 0;
 
           if (isEmpty__endCODENode) {
-            console.log('isEmpty__endCODENode');
+            // console.log('isEmpty__endCODENode');
             removeEndNode();
             removeMiddleNode(); // 지우는 순서는 End > Middle > Start
           }

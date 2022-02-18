@@ -28,7 +28,13 @@ import styles from './editable-element.module.scss';
 import { ICodeData } from '../../redux-toolkit/model/code-data-model';
 import { paste } from '../../lib/utils/editable-block/paste';
 import { useEditable } from '../../lib/hooks/useEditable';
-import { getSelectionEndIndex } from '../../lib/utils/editable-block/node';
+import {
+  getNewHtml,
+  getNodeArray,
+  getSelectionEndIndex,
+  getSelectionStartIndex,
+  TMyNode,
+} from '../../lib/utils/editable-block/node';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
@@ -110,6 +116,33 @@ const EditableElementSwitch: FC<Props> = ({
     }
   };
 
+  const [indexAddedSpacing, setIndexAddedSpacing] = useState<
+    number | undefined
+  >(undefined);
+
+  useEffect(() => {
+    // console.log('useEffect', indexAddedSpacing);
+    if (indexAddedSpacing !== undefined) {
+      const selection: Selection | null = window.getSelection();
+
+      console.log('childeNodes', eachBlockRef.current?.childNodes);
+
+      const setCaret__newSpacing = () => {
+        const targetNode = eachBlockRef.current?.childNodes[indexAddedSpacing];
+        console.log('targetNode', targetNode);
+
+        const newRange = document.createRange();
+        newRange.setStart(targetNode, 1); // 코드 블럭 한 칸 뒤쪽 위치
+
+        selection && selection.removeAllRanges();
+        selection && selection.addRange(newRange);
+      };
+      setCaret__newSpacing();
+
+      setIndexAddedSpacing(undefined);
+    }
+  }, [indexAddedSpacing]);
+
   const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
     // html 텍스트가 없고, 블록이 2개 이상이고, Backspace를 누른 경우
     if (
@@ -127,8 +160,49 @@ const EditableElementSwitch: FC<Props> = ({
       paste(eachBlockRef, setPasteData);
     }
 
-    // console.log('selectionEndIndex', selectionEndIndex);
+    // 2번째엔 caret targetNode가 undefined > 이유는 모르겠지만 아래 조건문으로 보완, 해결됨.
+    if (e.key === 'ArrowRight') {
+      const selection: Selection | null = window.getSelection();
+      const childeNodes = eachBlockRef.current?.childNodes;
+      const range = selection?.getRangeAt(0);
+      const endContainr: Node | undefined = range?.endContainer; // 커서, 셀렉션인 경우 모두 대비 가능
+      const endOffset = range?.endOffset;
+      const collapsed = range?.collapsed;
+      const selectionEndIndex = getSelectionEndIndex(childeNodes, selection);
+      const nextIndex = selectionEndIndex + 1;
 
+      console.log(endContainr?.textContent?.length, endOffset);
+
+      const isCodeNode: boolean = endContainr?.parentNode?.nodeName === 'CODE';
+      const isEndText: boolean = endContainr?.textContent?.length === endOffset;
+      const isEmptyNextNode: boolean = childeNodes[nextIndex] === undefined;
+
+      console.log(
+        isCodeNode && isEndText && isEmptyNextNode,
+        childeNodes[nextIndex]
+      );
+
+      if (isCodeNode && isEndText && isEmptyNextNode) {
+        console.log('동작');
+        e.preventDefault();
+        const nodeArray: TMyNode[] = getNodeArray(childeNodes);
+        const spacing = '\u00A0';
+
+        const currentHtml = getNewHtml(nodeArray);
+        const addSpacing__afterCurrentHtml = `${currentHtml}${spacing}`;
+
+        setEachBlockStateText(''); // ***아주 중요*** 같은 문자열 복사 후 지우고 다시 붙여넣으면 리액트에서 같다고 판단해 렌더링하지 않는 문제 해결
+        setCurrentBlockTempPostHtmlData(addSpacing__afterCurrentHtml);
+        setTempEachBlockStateText(addSpacing__afterCurrentHtml);
+        setEachBlockStateText(addSpacing__afterCurrentHtml); // 현재 블록만 렌더링
+
+        console.log('eachBlockStateText', `${eachBlockStateText}test`);
+
+        setIndexAddedSpacing(nextIndex);
+      }
+    }
+
+    //  위 조건 보완!
     // 렌더링 없이, 인라인 코드 블럭 오른쪽 한 칸 삭제 못하도록 하고, 커서 이동
     if (e.key === 'Backspace') {
       // 이 경우 커서만 이동할 뿐 서버에 저장될 데이터는 전후로 동일함.
@@ -138,17 +212,20 @@ const EditableElementSwitch: FC<Props> = ({
       const range = selection?.getRangeAt(0);
       const collapsed = range?.collapsed;
 
-      const selectionEndIndex = getSelectionEndIndex(childeNodes, selection);
+      const selectionStartIndex = getSelectionStartIndex(
+        childeNodes,
+        selection
+      );
 
       if (
         collapsed &&
-        selectionEndIndex !== 0 &&
-        childeNodes[selectionEndIndex].textContent ===
+        selectionStartIndex !== 0 &&
+        childeNodes[selectionStartIndex].textContent ===
           ('\u00A0' || '&nbsp;' || ' ') &&
-        childeNodes[selectionEndIndex - 1].nodeName === 'CODE'
+        childeNodes[selectionStartIndex - 1].nodeName === 'CODE'
       ) {
         e.preventDefault();
-        const targetNode = childeNodes[selectionEndIndex - 1].childNodes[0];
+        const targetNode = childeNodes[selectionStartIndex - 1].childNodes[0];
         const newCaretPosition = targetNode.textContent.length;
 
         const newRange = document.createRange();
