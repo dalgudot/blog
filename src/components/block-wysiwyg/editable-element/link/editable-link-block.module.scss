@@ -2,8 +2,6 @@
 @use '../../../../styles/motion.module';
 
 .editable__link__block__li {
-  // @include motion.scale__hover;
-
   a {
     display: flex;
     justify-content: space-between;
