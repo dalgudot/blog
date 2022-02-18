@@ -131,10 +131,8 @@ const EditableElementSwitch: FC<Props> = ({
 
     // 렌더링 없이, 인라인 코드 블럭 오른쪽 한 칸 삭제 못하도록 하고, 커서 이동
     if (e.key === 'Backspace') {
-      e.preventDefault();
       // 이 경우 커서만 이동할 뿐 서버에 저장될 데이터는 전후로 동일함.
       // 즉 커서만 이동할 뿐 데이터는 동기화된 상태
-
       const selection: Selection | null = window.getSelection();
       const childeNodes = eachBlockRef.current?.childNodes;
       const range = selection?.getRangeAt(0);
@@ -149,6 +147,7 @@ const EditableElementSwitch: FC<Props> = ({
           ('\u00A0' || '&nbsp;' || ' ') &&
         childeNodes[selectionEndIndex - 1].nodeName === 'CODE'
       ) {
+        e.preventDefault();
         const targetNode = childeNodes[selectionEndIndex - 1].childNodes[0];
         const newCaretPosition = targetNode.textContent.length;
 
