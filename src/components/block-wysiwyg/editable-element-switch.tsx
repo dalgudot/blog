@@ -28,7 +28,7 @@ import styles from './editable-element.module.scss';
 import { ICodeData } from '../../redux-toolkit/model/code-data-model';
 import { paste } from '../../lib/utils/editable-block/paste';
 import { useEditable } from '../../lib/hooks/useEditable';
-import { getSelectionEndIndex } from '../../lib/utils/editable-block/node';
+import { getSelectionStartIndex } from '../../lib/utils/editable-block/node';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
@@ -127,7 +127,13 @@ const EditableElementSwitch: FC<Props> = ({
       paste(eachBlockRef, setPasteData);
     }
 
-    // console.log('selectionEndIndex', selectionEndIndex);
+    if (e.key === 'ArrowRight') {
+      console.log('ArrowRight');
+
+      if (false) {
+        e.preventDefault();
+      }
+    }
 
     // 렌더링 없이, 인라인 코드 블럭 오른쪽 한 칸 삭제 못하도록 하고, 커서 이동
     if (e.key === 'Backspace') {
@@ -138,17 +144,20 @@ const EditableElementSwitch: FC<Props> = ({
       const range = selection?.getRangeAt(0);
       const collapsed = range?.collapsed;
 
-      const selectionEndIndex = getSelectionEndIndex(childeNodes, selection);
+      const selectionStartIndex = getSelectionStartIndex(
+        childeNodes,
+        selection
+      );
 
       if (
         collapsed &&
-        selectionEndIndex !== 0 &&
-        childeNodes[selectionEndIndex].textContent ===
+        selectionStartIndex !== 0 &&
+        childeNodes[selectionStartIndex].textContent ===
           ('\u00A0' || '&nbsp;' || ' ') &&
-        childeNodes[selectionEndIndex - 1].nodeName === 'CODE'
+        childeNodes[selectionStartIndex - 1].nodeName === 'CODE'
       ) {
         e.preventDefault();
-        const targetNode = childeNodes[selectionEndIndex - 1].childNodes[0];
+        const targetNode = childeNodes[selectionStartIndex - 1].childNodes[0];
         const newCaretPosition = targetNode.textContent.length;
 
         const newRange = document.createRange();
