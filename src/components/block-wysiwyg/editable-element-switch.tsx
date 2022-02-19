@@ -202,7 +202,8 @@ const EditableElementSwitch: FC<Props> = ({
       }
     }
 
-    //  위 조건 보완!
+    // 위 조건 보완!
+    // 선택 영역(isSelection)으로 지웠을 때
     // 렌더링 없이, 인라인 코드 블럭 오른쪽 한 칸 삭제 못하도록 하고, 커서 이동
     if (e.key === 'Backspace') {
       // 이 경우 커서만 이동할 뿐 서버에 저장될 데이터는 전후로 동일함.
