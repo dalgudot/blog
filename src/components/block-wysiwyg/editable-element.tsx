@@ -56,8 +56,6 @@ const EditableElement: FC<Props> = ({
     // *** [KEY] dangerouslySetInnerHTML로 들어가는 html에서 정규식 변환된 "&amp;", "&lt;" ,"&gt;"는 텍스트로, < > &는 실제 html 요소로 렌더링한다!
     const inputHtml = e.target.innerHTML;
 
-    // console.log('inputHtml', inputHtml);
-
     // '<br>'만 남은 경우 <br> 제거 후 플레이스 홀더 보이도록
     // ***paste*** 첫 노드 undefined 문제 해결
     if (inputHtml === '<br>') {
