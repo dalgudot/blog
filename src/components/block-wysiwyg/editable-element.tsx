@@ -24,7 +24,6 @@ type Props = {
   customClassName?: string;
 };
 
-// 개별로 쓸 수 있도록 만들거나, map()으로 블록 만들 때도 쓸 수 있도록 만든 컴포넌트 > 아마 텍스트에만 쓰일 듯.
 const EditableElement: FC<Props> = ({
   TagName,
   eachBlockRef,
