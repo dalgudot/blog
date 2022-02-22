@@ -52,7 +52,7 @@ export const paste = (
 
     // 커서에서 붙여넣기
     // 정확한 위치에 clipText를 붙여넣으려면?
-    // 1) tempEachBlockStateText가 아닌, 즉 전체 텍스트를 이용하는 게 아닌 ***커서가 있는 노드***의 텍스트를 바꿔줘아 한다.
+    // 1) tempEachBlockStateHtml가 아닌, 즉 전체 텍스트를 이용하는 게 아닌 ***커서가 있는 노드***의 텍스트를 바꿔줘아 한다.
     // 2) 그리고 다시 전체로 구성해줘야 한다.
     if (isSelection === false) {
       pasteClipText__toSelectionStartNode();
