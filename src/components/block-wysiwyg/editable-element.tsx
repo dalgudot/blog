@@ -8,7 +8,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { addInlineCodeBlock } from '../../lib/utils/editable-block/add-inline-code-block';
+import { addInlineCode } from '../../lib/utils/editable-block/add-inline-code-block';
 import styles from './editable-element.module.scss';
 
 type Props = {
@@ -74,14 +74,14 @@ const EditableElement: FC<Props> = ({
     //   console.log('크롬 버그 동작', startContainer);
     // }
 
-    const twoBacktickNodeIndex: number | undefined = addInlineCodeBlock(
+    const twoBacktickNodeIndex: number | undefined = addInlineCode(
       eachBlockRef,
       updateData__bothTempAndRendering
     );
     if (twoBacktickNodeIndex !== undefined) {
       setChangeCaretPosition(twoBacktickNodeIndex);
     } else {
-      setCurrentBlockTempPostHtmlData(inputHtml); // twoBacktickNodeIndex !== undefined이면 addInlineCodeBlock()의 updateData__bothTempAndRendering에서 업데이트하기 때문에 2번 업데이트 할 필요 없음.
+      setCurrentBlockTempPostHtmlData(inputHtml); // twoBacktickNodeIndex !== undefined이면 addInlineCode()의 updateData__bothTempAndRendering에서 업데이트하기 때문에 2번 업데이트 할 필요 없음.
     }
   };
 

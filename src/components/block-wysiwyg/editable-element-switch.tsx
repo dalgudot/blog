@@ -167,7 +167,6 @@ const EditableElementSwitch: FC<Props> = ({
       const range = selection?.getRangeAt(0);
       const endContainr: Node | undefined = range?.endContainer; // 커서, 셀렉션인 경우 모두 대비 가능
       const endOffset = range?.endOffset;
-      const collapsed = range?.collapsed;
       const selectionEndIndex = getSelectionEndIndex(childeNodes, selection);
       const nextIndex = selectionEndIndex + 1;
 
@@ -183,7 +182,7 @@ const EditableElementSwitch: FC<Props> = ({
       );
 
       if (isCodeNode && isEndText && isEmptyNextNode) {
-        console.log('동작');
+        // console.log('동작');
         e.preventDefault();
         const nodeArray: TMyNode[] = getNodeArray(childeNodes);
         const spacing = '\u00A0';
@@ -201,6 +200,8 @@ const EditableElementSwitch: FC<Props> = ({
         setIndexAddedSpacing(nextIndex);
       }
     }
+
+    console.log('key', e.key);
 
     // 위 조건 보완!
     // 선택 영역(isSelection)으로 지웠을 때
@@ -249,8 +250,7 @@ const EditableElementSwitch: FC<Props> = ({
     //   // 앞선 노드의 마지막 글자를 지우고 다시 생성
     //   // 코드 블럭 앞에 #text 노드가 없다면? 이 방법으로 해결 불가
 
-    //   // https://stackoverflow.com/questions/15015019/prevent-chrome-from-wrapping-contents-of-joined-p-with-a-span
-    // }
+    // https://stackoverflow.com/questions/15015019/prevent-chrome-from-wrapping-contents-of-joined-p-with-a-span
   };
 
   const setPasteData = (newHtml: string) => {
