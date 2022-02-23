@@ -3,9 +3,9 @@ import { MutableRefObject, useEffect, useState } from 'react';
 export const useSetCaretPosition__afterAddInlineCode = (
   eachBlockRef: MutableRefObject<HTMLElement>
 ) => {
-  const [changeCaretPosition, setChangeCaretPosition] = useState<
-    number | undefined
-  >(undefined);
+  const [changeCaretPosition, setCaretPosition] = useState<number | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     // onInput 안에서 inlineCodeBlock이 업데이트되기 때문에,
@@ -23,9 +23,9 @@ export const useSetCaretPosition__afterAddInlineCode = (
       selection && selection.removeAllRanges();
       selection && selection.addRange(newRange);
 
-      setChangeCaretPosition(undefined); // 초기화
+      setCaretPosition(undefined); // 초기화
     }
   }, [changeCaretPosition]);
 
-  return setChangeCaretPosition;
+  return setCaretPosition;
 };

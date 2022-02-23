@@ -39,7 +39,7 @@ const EditableElement: FC<Props> = ({
 }) => {
   // setCurrentBlockTempPostHtmlData과 setCurrentBlockPostHtmlData는 모두 current index와 관련있으므로 switch에서 처리하고 props로 넘겨받음!
 
-  const setChangeCaretPosition =
+  const setCaretPosition =
     useSetCaretPosition__afterAddInlineCode(eachBlockRef);
 
   const onInput = (
@@ -80,7 +80,7 @@ const EditableElement: FC<Props> = ({
       updateData__tempAndRenderingData
     );
     if (twoBacktickNodeIndex !== undefined) {
-      setChangeCaretPosition(twoBacktickNodeIndex);
+      setCaretPosition(twoBacktickNodeIndex);
     } else {
       setCurrentBlockTempPostHtmlData(inputHtml); // twoBacktickNodeIndex !== undefined이면 addInlineCode()의 updateData__tempAndRenderingData에서 업데이트하기 때문에 2번 업데이트 할 필요 없음.
     }
