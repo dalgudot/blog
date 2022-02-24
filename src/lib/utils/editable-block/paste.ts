@@ -9,7 +9,7 @@ import {
 
 export const paste = (
   eachBlockRef: MutableRefObject<HTMLElement>,
-  setPasteData: (newHtml: string) => void
+  setData__withForcedReactRendering: (newHtml: string) => void
 ) => {
   navigator.clipboard.readText().then((clipText) => {
     const eachBlockChildNodes: NodeListOf<ChildNode> =
@@ -188,9 +188,9 @@ export const paste = (
     }
 
     const newHtml = getNewHtml(nodeArray);
-    setPasteData(newHtml);
+    setData__withForcedReactRendering(newHtml);
 
-    // setPasteData 데이터 업데이트 이후에 caret 위치 조정
+    // setData__withForcedReactRendering 데이터 업데이트 이후에 caret 위치 조정
     focus__afterSetClipText(
       eachBlockRef,
       eachBlockChildNodes,

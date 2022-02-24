@@ -1,13 +1,6 @@
 import classNames from 'classnames';
 import DOMPurify from 'dompurify';
-import {
-  ChangeEvent,
-  FC,
-  KeyboardEvent,
-  MutableRefObject,
-  useEffect,
-  useState,
-} from 'react';
+import { ChangeEvent, FC, KeyboardEvent, MutableRefObject } from 'react';
 import { useSetCaretPosition__afterAddInlineCode } from '../../lib/hooks/useSetCaretPosition__afterAddInlineCode';
 import { addInlineCode } from '../../lib/utils/editable-block/add-inline-code-block';
 import styles from './editable-element.module.scss';

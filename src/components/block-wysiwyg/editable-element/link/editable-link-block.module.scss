@@ -34,7 +34,7 @@
 }
 
 .border__bottom__for__Reference__list__type {
-  border-bottom: var(--g6) 1px solid;
+  border-bottom: 1px solid var(--g6);
 
   a {
     padding: 72px 0;
@@ -46,7 +46,7 @@
 }
 
 .box__for__Paragraph__list__type {
-  border: var(--g6) 1px solid;
+  border: 1px solid var(--g6);
   margin: 28px 0 36px;
 
   @media screen and (max-width: text-styles.$text__first__max__width) {
@@ -71,8 +71,8 @@
 }
 
 .input {
-  @include text-styles.body1(500);
+  @include text-styles.body3(500);
   width: 100%;
-  height: 48px;
-  padding: 0 16px;
+  padding: 8px 12px;
+  margin-top: -72px;
 }

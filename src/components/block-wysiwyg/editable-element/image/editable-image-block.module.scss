@@ -2,7 +2,7 @@
 @use '../../../../styles/motion.module';
 
 .figure {
-  position: relative; // NextJs Image 경고 제거
+  position: relative; // NextJS Image 경고 제거
   margin: 24px 0 48px;
   width: 100%;
   height: 100%;
@@ -22,10 +22,9 @@
     color: var(--g4);
   }
 
-  // NextJs Image
+  // NextJS Image
   span:nth-child(1) {
     position: relative !important;
-    // border: 1px solid var(--g6) !important;
 
     img {
       width: 100% !important;
@@ -36,13 +35,16 @@
 }
 
 .upload__image__label {
-  position: absolute;
-  top: 2px;
-  right: -164px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  @include text-styles.body3;
   @include motion.scale__hover;
-  padding: 12px 24px;
-  background-color: var(--g7);
-  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid var(--g6);
+  margin-top: 16px;
+
+  p {
+    @include text-styles.body3;
+  }
 }
