@@ -45,7 +45,7 @@ const TitleWYSIWYG: FC<Props> = ({
   return (
     <>
       <section className={styles.article__title__section}>
-        <SelectCategory />
+        {contentEditable && <SelectCategory />}
         <time dateTime={seoDate}>{displayDate}</time>
         <EditableTextBlock
           eachBlockRef={ref}

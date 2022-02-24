@@ -304,9 +304,9 @@ const EditableElementSwitch: FC<Props> = ({
             </select>
             {switchBlocks()}
           </div>
-          <span className={styles.currentIndex__wrapper}>
+          {/* <span className={styles.currentIndex__wrapper}>
             <span className={styles.currentIndex}>{currentIndex}</span>
-          </span>
+          </span> */}
         </>
       ) : (
         <>{switchBlocks()}</>
