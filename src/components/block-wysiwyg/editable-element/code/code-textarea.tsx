@@ -7,7 +7,6 @@ import {
   useEffect,
   useRef,
 } from 'react';
-import TextareaAutosize from 'react-textarea-autosize';
 import { focusContentEditableTextToEnd } from '../../../../lib/utils/focus-content-editable-text-to-end';
 import { IParagraphData } from '../../../../redux-toolkit/model/post-data-model';
 import styles from './editable-code-block.module.scss';

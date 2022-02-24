@@ -28,14 +28,8 @@ import styles from './editable-element.module.scss';
 import { ICodeData } from '../../redux-toolkit/model/code-data-model';
 import { paste } from '../../lib/utils/editable-block/paste';
 import { useEditable } from '../../lib/hooks/useEditable';
-import {
-  getNewHtml,
-  getNodeArray,
-  getSelectionEndIndex,
-  getSelectionStartIndex,
-  TMyNode,
-} from '../../lib/utils/editable-block/node';
-import { addInlineCode } from '../../lib/utils/editable-block/add-inline-code-block';
+import { addSpacing__afterInlineCode } from '../../lib/utils/editable-block/add-spacing-after-inline-code';
+import { moveCaret__betweenInlineCodeAndSpacing } from '../../lib/utils/editable-block/move-caret-between-inline-code-and-spacing';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
@@ -122,15 +116,11 @@ const EditableElementSwitch: FC<Props> = ({
   >(undefined);
 
   useEffect(() => {
-    // console.log('useEffect', indexAddedSpacing);
     if (indexAddedSpacing !== undefined) {
       const selection: Selection | null = window.getSelection();
-      // console.log('childeNodes', eachBlockRef.current?.childNodes);
 
       const setCaret__newSpacing = () => {
         const targetNode = eachBlockRef.current?.childNodes[indexAddedSpacing];
-        // console.log('targetNode', targetNode);
-
         const newRange = document.createRange();
         newRange.setStart(targetNode, 1); // 코드 블럭 한 칸 뒤쪽 위치
 
@@ -138,7 +128,6 @@ const EditableElementSwitch: FC<Props> = ({
         selection && selection.addRange(newRange);
       };
       setCaret__newSpacing();
-
       setIndexAddedSpacing(undefined);
     }
   }, [indexAddedSpacing]);
@@ -154,79 +143,31 @@ const EditableElementSwitch: FC<Props> = ({
       removeBlock();
     }
 
-    // 붙여넣기 command + v
-    if (e.metaKey && e.key === 'v') {
-      e.preventDefault();
-      paste(eachBlockRef, setPasteData);
-    }
-
-    const childeNodes: NodeListOf<ChildNode> = eachBlockRef.current?.childNodes;
-
-    // 2번째엔 caret targetNode가 undefined > 이유는 모르겠지만 아래 조건문으로 보완, 해결됨.
-    if (e.key === 'ArrowRight') {
-      const selection: Selection | null = window.getSelection();
-      // const childeNodes = eachBlockRef.current?.childNodes;
-      const range = selection?.getRangeAt(0);
-      const endContainr: Node | undefined = range?.endContainer; // 커서, 셀렉션인 경우 모두 대비 가능
-      const endOffset = range?.endOffset;
-      const selectionEndIndex = getSelectionEndIndex(childeNodes, selection);
-      const nextIndex = selectionEndIndex + 1;
-
-      const isCodeNode: boolean = endContainr?.parentNode?.nodeName === 'CODE';
-      const isEndText: boolean = endContainr?.textContent?.length === endOffset;
-      const isEmptyNextNode: boolean = childeNodes[nextIndex] === undefined;
-      if (isCodeNode && isEndText && isEmptyNextNode) {
-        // console.log('동작');
+    if (type !== 'Code') {
+      // 붙여넣기 command + v
+      if (e.metaKey && e.key === 'v') {
         e.preventDefault();
-        const nodeArray: TMyNode[] = getNodeArray(childeNodes);
-        const spacing = '\u00A0';
-
-        const currentHtml = getNewHtml(nodeArray);
-        const addSpacing__afterCurrentHtml = `${currentHtml}${spacing}`;
-
-        setEachBlockStateHtml(''); // ***아주 중요*** 같은 문자열 복사 후 지우고 다시 붙여넣으면 리액트에서 같다고 판단해 렌더링하지 않는 문제 해결
-        setCurrentBlockTempPostHtmlData(addSpacing__afterCurrentHtml);
-        setTempEachBlockStateHtml(addSpacing__afterCurrentHtml);
-        setEachBlockStateHtml(addSpacing__afterCurrentHtml); // 현재 블록만 렌더링
-
-        setIndexAddedSpacing(nextIndex);
+        paste(eachBlockRef, setData__withForcedReactRendering);
       }
-    }
 
-    // 위 조건 보완!
-    // 선택 영역(isSelection)으로 지웠을 때
-    // 렌더링 없이, 인라인 코드 블럭 오른쪽 한 칸 삭제 못하도록 하고, 커서 이동
-    if (e.key === 'Backspace') {
-      // 이 경우 커서만 이동할 뿐 서버에 저장될 데이터는 전후로 동일함.
-      // 즉 커서만 이동할 뿐 데이터는 동기화된 상태
-      const selection: Selection | null = window.getSelection();
-      // const childeNodes = eachBlockRef.current?.childNodes;
-      const range = selection?.getRangeAt(0);
-      const collapsed = range?.collapsed;
+      const childeNodes: NodeListOf<ChildNode> =
+        eachBlockRef.current?.childNodes;
 
-      const selectionStartIndex = getSelectionStartIndex(
-        childeNodes,
-        selection
-      );
+      // 2번째엔 caret targetNode가 undefined > 이유는 모르겠지만 아래 조건문으로 보완, 해결됨.
+      if (e.key === 'ArrowRight') {
+        addSpacing__afterInlineCode(
+          childeNodes,
+          e,
+          setData__withForcedReactRendering,
+          setIndexAddedSpacing
+        );
+      }
 
-      if (
-        collapsed &&
-        selectionStartIndex !== 0 &&
-        childeNodes[selectionStartIndex].textContent ===
-          ('\u00A0' || '&nbsp;' || ' ') &&
-        childeNodes[selectionStartIndex - 1].nodeName === 'CODE'
-      ) {
-        e.preventDefault();
-        const targetNode = childeNodes[selectionStartIndex - 1].childNodes[0];
-        const newCaretPosition = targetNode.textContent?.length;
-
-        if (newCaretPosition !== undefined) {
-          const newRange = document.createRange();
-          newRange.setStart(targetNode, newCaretPosition); // 코드 블럭 한 칸 뒤쪽 위치
-
-          selection && selection.removeAllRanges();
-          selection && selection.addRange(newRange);
-        }
+      // 위 조건 보완!
+      // 선택 영역(isSelection)으로 지웠을 때
+      // 렌더링 없이, 인라인 코드 블럭 오른쪽 한 칸 삭제 못하도록 하고, 커서 이동
+      if (e.key === 'Backspace') {
+        moveCaret__betweenInlineCodeAndSpacing(childeNodes, e);
       }
     }
 
@@ -245,7 +186,7 @@ const EditableElementSwitch: FC<Props> = ({
     // https://stackoverflow.com/questions/15015019/prevent-chrome-from-wrapping-contents-of-joined-p-with-a-span
   };
 
-  const setPasteData = (newHtml: string) => {
+  const setData__withForcedReactRendering = (newHtml: string) => {
     setEachBlockStateHtml(''); // ***중요*** 같은 문자열 복사 후 지우고 다시 붙여넣으면 리액트에서 같다고 판단해 렌더링하지 않는 문제 해결
     setCurrentBlockTempPostHtmlData(newHtml);
     setTempEachBlockStateHtml(newHtml);
@@ -363,9 +304,9 @@ const EditableElementSwitch: FC<Props> = ({
             </select>
             {switchBlocks()}
           </div>
-          <span className={styles.currentIndex__wrapper}>
+          {/* <span className={styles.currentIndex__wrapper}>
             <span className={styles.currentIndex}>{currentIndex}</span>
-          </span>
+          </span> */}
         </>
       ) : (
         <>{switchBlocks()}</>

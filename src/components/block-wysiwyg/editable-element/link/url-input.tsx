@@ -45,7 +45,7 @@ const UrlInput: FC<Props> = ({
       value={text}
       onChange={handleChange}
       onKeyPress={onKeyPress}
-      placeholder='URL을 입력해주세요'
+      placeholder='URL'
       className={styles.input}
     />
   );

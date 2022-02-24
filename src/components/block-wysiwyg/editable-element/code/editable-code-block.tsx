@@ -8,7 +8,6 @@ import {
   useEffect,
   useState,
 } from 'react';
-import styles from './editable-code-block.module.scss';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import CodeTextarea from './code-textarea';
@@ -18,6 +17,7 @@ import {
 } from '../../../../redux-toolkit/model/code-data-model';
 import { useAppDispatch } from '../../../../redux-toolkit/store';
 import { setCurrentCodeBlockTempCodeLanguage } from '../../../../redux-toolkit/slices/temp-post-slice';
+import styles from './editable-code-block.module.scss';
 
 type Props = {
   eachBlockRef: MutableRefObject<any>;
@@ -44,7 +44,7 @@ const EditableCodeBlock: FC<Props> = ({
   onKeyDown,
   placeholder,
 }) => {
-  const [codeString, setCodeString] = useState<string>('');
+  const [codeString, setCodeString] = useState<string>(html);
   const [codeLanguage, setCodeLanguage] = useState<TCodeLanguage>('tsx');
 
   useEffect(() => {
