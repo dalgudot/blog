@@ -72,7 +72,10 @@
 
 .input {
   @include text-styles.body3(500);
+  color: var(--g2);
   width: 100%;
   padding: 8px 12px;
   margin-top: -72px;
+  background-color: var(--g7);
+  border: 1px solid var(--g6) !important; // 안드로이드 삼성 인터넷에서 작동 안 해서 !important
 }

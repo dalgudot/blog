@@ -37,14 +37,15 @@
   -webkit-appearance: none; // remove iOS upper inner shadow
   overflow: hidden;
   width: 100%;
-  height: 42px;
-  background-color: transparent;
-  border: 1px solid var(--g6); // 안드로이드 삼성 인터넷에서 작동 안 해서 !important
-  resize: none; // 늘이고 줄이는 기능 없애기
-  margin-top: 16px;
   padding: 8px 16px;
-  @include text-styles.body3(500);
+  height: 42px;
+  background-color: var(--g7);
+  border: 1px solid var(--g6) !important; // 안드로이드 삼성 인터넷에서 작동 안 해서 !important
+  resize: none; // 늘이고 줄이는 기능 없애기
+  margin-top: 72px;
 
+  @include text-styles.body3(400);
+  color: var(--g2);
   display: flex;
 
   ::placeholder {
