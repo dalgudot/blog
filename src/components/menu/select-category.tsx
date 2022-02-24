@@ -1,5 +1,6 @@
 import { ChangeEvent, FC } from 'react';
 import { useGetClientTempPostData } from '../../lib/hooks/useGetClientTempPostData';
+import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
 import { setTempPostCategory } from '../../redux-toolkit/slices/temp-post-slice';
 import { useAppDispatch } from '../../redux-toolkit/store';
 import {
@@ -9,6 +10,7 @@ import {
 } from '../../service/firebase/firestore';
 
 const SelectCategory: FC = () => {
+  const { isAdmin } = useIsAdmin();
   const dispatch = useAppDispatch();
   const { tempPost } = useGetClientTempPostData();
 
@@ -19,18 +21,22 @@ const SelectCategory: FC = () => {
 
   return (
     <>
-      <select value={tempPost.category} onChange={changeCategory}>
-        <option value={designCollectionRefName}>design</option>
-        <option value={devCollectionRefName}>dev</option>
-        <option value={storyCollectionRefName}>story</option>
-      </select>
+      {isAdmin && (
+        <>
+          <select value={tempPost.category} onChange={changeCategory}>
+            <option value={designCollectionRefName}>design</option>
+            <option value={devCollectionRefName}>dev</option>
+            <option value={storyCollectionRefName}>story</option>
+          </select>
 
-      <style jsx>{`
-        select {
-          display: flex;
-          margin-bottom: 16px;
-        }
-      `}</style>
+          <style jsx>{`
+            select {
+              display: flex;
+              margin-bottom: 16px;
+            }
+          `}</style>
+        </>
+      )}
     </>
   );
 };
