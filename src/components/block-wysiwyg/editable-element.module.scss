@@ -6,26 +6,13 @@
 
 .edit__block__type__editable__element__switch {
   position: relative;
-
-  select:nth-child(1) {
-    position: absolute;
-    top: 7px;
-    left: -120px;
-  }
-
-  select:nth-child(2) {
-    position: absolute;
-    top: 44px;
-    left: -120px;
-  }
-}
-
-.currentIndex__wrapper {
-  position: relative;
+  top: 55px;
+  left: -144px;
+  width: 87px;
 }
 
 .currentIndex {
   position: absolute;
-  top: -30px;
-  left: -144px;
+  left: -36px;
+  bottom: 1px;
 }

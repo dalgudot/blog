@@ -114,15 +114,26 @@ const LanguageSelector: FC<LanguageSelectorProps> = ({
   };
 
   return (
-    <select value={codeLanguage} onChange={changeCategory}>
-      <option value='typescript'>typescript</option>
-      <option value='tsx'>tsx</option>
-      <option value='swift'>swift</option>
-      <option value='css'>css</option>
-      <option value='sass'>sass</option>
-      <option value='scss'>scss</option>
-      <option value='javascript'>javascript</option>
-      <option value='jsx'>jsx</option>
-    </select>
+    <>
+      <select value={codeLanguage} onChange={changeCategory}>
+        <option value='typescript'>typescript</option>
+        <option value='tsx'>tsx</option>
+        <option value='swift'>swift</option>
+        <option value='css'>css</option>
+        <option value='sass'>sass</option>
+        <option value='scss'>scss</option>
+        <option value='javascript'>javascript</option>
+        <option value='jsx'>jsx</option>
+      </select>
+
+      <style jsx>{`
+        select {
+          position: relative;
+          top: 54px;
+          left: -144px;
+          margin-top: 12px;
+        }
+      `}</style>
+    </>
   );
 };

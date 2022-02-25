@@ -9,13 +9,18 @@ export const moveCaret__betweenInlineCodeAndSpacing = (
   // 즉 커서만 이동할 뿐 데이터는 동기화된 상태
   const selection: Selection | null = window.getSelection();
   const range = selection?.getRangeAt(0);
+  const startOffset = range?.startOffset;
   const collapsed = range?.collapsed;
-
   const selectionStartIndex = getSelectionStartIndex(childeNodes, selection);
+
+  console.log(startOffset);
+
+  const isRightBesideOfCODE = startOffset === 1;
 
   if (
     collapsed &&
     selectionStartIndex !== 0 &&
+    isRightBesideOfCODE &&
     // 내부 블럭 오른쪽 빈 칸은 지울 수 없도록 한다
     // childeNodes[selectionStartIndex].textContent ===
     //   ('\u00A0' || '&nbsp;' || ' ') &&

@@ -24,12 +24,12 @@ import EditableLinkBlock from './editable-element/link/editable-link-block';
 import { ILinkData } from '../../redux-toolkit/model/link-data-model';
 import EditableCodeBlock from './editable-element/code/editable-code-block';
 import EditableImageBlock from './editable-element/image/editable-image-block';
-import styles from './editable-element.module.scss';
 import { ICodeData } from '../../redux-toolkit/model/code-data-model';
 import { paste } from '../../lib/utils/editable-block/paste';
 import { useEditable } from '../../lib/hooks/useEditable';
 import { addSpacing__afterInlineCode } from '../../lib/utils/editable-block/add-spacing-after-inline-code';
 import { moveCaret__betweenInlineCodeAndSpacing } from '../../lib/utils/editable-block/move-caret-between-inline-code-and-spacing';
+import styles from './editable-element.module.scss';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
@@ -290,27 +290,21 @@ const EditableElementSwitch: FC<Props> = ({
 
   return (
     <>
-      {contentEditable && wysiwygType !== 'Link' ? (
-        <>
-          <div className={styles.edit__block__type__editable__element__switch}>
-            <select value={type} onChange={changeBlockType}>
-              <option value='Paragraph'>Paragraph</option>
-              <option value='Heading1'>Heading1</option>
-              <option value='Heading2'>Heading2</option>
-              <option value='Heading3'>Heading3</option>
-              <option value='Image'>Image</option>
-              <option value='Code'>Code</option>
-              <option value='Link'>Link</option>
-            </select>
-            {switchBlocks()}
-          </div>
-          {/* <span className={styles.currentIndex__wrapper}>
-            <span className={styles.currentIndex}>{currentIndex}</span>
-          </span> */}
-        </>
-      ) : (
-        <>{switchBlocks()}</>
+      {contentEditable && wysiwygType !== 'Link' && (
+        <div className={styles.edit__block__type__editable__element__switch}>
+          <span className={styles.currentIndex}>{currentIndex}</span>
+          <select value={type} onChange={changeBlockType}>
+            <option value='Paragraph'>Paragraph</option>
+            <option value='Heading1'>Heading1</option>
+            <option value='Heading2'>Heading2</option>
+            <option value='Heading3'>Heading3</option>
+            <option value='Image'>Image</option>
+            <option value='Code'>Code</option>
+            <option value='Link'>Link</option>
+          </select>
+        </div>
       )}
+      {switchBlocks()}
     </>
   );
 };
