@@ -65,16 +65,7 @@ code {
 /* For Table of Contents */
 h2,
 h3 {
-  scroll-margin-top: 120px;
-}
-
-/* For Table of Contents with Safari */
-@supports (-webkit-hyphens: none) {
-  h2,
-  h3 {
-    padding-top: 120px;
-    margin-top: -120px;
-  }
+  scroll-margin-top: 96px;
 }
 
 p {
