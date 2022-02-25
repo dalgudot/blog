@@ -9,7 +9,7 @@ import styles from './response-list.module.scss';
 const ResponseList: FC = () => {
   const [responseList, setResponseList] = useState<TResponseData[]>([]);
   const router = useRouter();
-  const asPath = router.asPath;
+  const asPath = `/${router.query.category}/${router.query.order}`; // For TableOfContents
 
   useEffect(() => {
     const unSubscribeOnValueRealtimeDB = getResponseDataFromRealtimeDB(

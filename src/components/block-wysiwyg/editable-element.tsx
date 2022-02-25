@@ -2,11 +2,12 @@ import classNames from 'classnames';
 import DOMPurify from 'dompurify';
 import { ChangeEvent, FC, KeyboardEvent, MutableRefObject } from 'react';
 import { useSetCaretPosition__afterAddInlineCode } from '../../lib/hooks/useSetCaretPosition__afterAddInlineCode';
-import { addInlineCode } from '../../lib/utils/editable-block/add-inline-code-block';
+import { addInlineCode } from '../../lib/utils/editable-block/add-inline-code';
 import styles from './editable-element.module.scss';
 
 type Props = {
   TagName: 'h1' | 'h2' | 'h3' | 'p' | 'code' | 'figcaption';
+  blockId?: string;
   eachBlockRef: MutableRefObject<any>;
   contentEditable: boolean;
   html: string;
@@ -20,6 +21,7 @@ type Props = {
 
 const EditableElement: FC<Props> = ({
   TagName,
+  blockId,
   eachBlockRef,
   contentEditable = false,
   html,
@@ -86,6 +88,7 @@ const EditableElement: FC<Props> = ({
 
   return (
     <TagName
+      id={blockId && blockId}
       ref={eachBlockRef}
       contentEditable={contentEditable}
       suppressContentEditableWarning={contentEditable}

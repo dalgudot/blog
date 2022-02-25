@@ -3,6 +3,9 @@ import {
   IParagraphData,
   TStatus,
 } from '../../../redux-toolkit/model/post-data-model';
+import TableOfContents, {
+  TTableOfContentsData,
+} from '../../navigation/table-of-contents/table-of-contents';
 import Message from './message/message';
 import WYSIWYG from './paragraph/wysiwyg';
 import TitleWYSIWYG from './title/title-wysiwyg';
@@ -15,12 +18,14 @@ type Props = {
     status: TStatus;
   };
   wysiwygDataArray: IParagraphData[];
+  tableOfContentsData: TTableOfContentsData[];
 };
 
 const Article: FC<Props> = ({
   contentEditable,
   articleTitleWysiwygData,
   wysiwygDataArray,
+  tableOfContentsData,
 }) => {
   return (
     <article>
@@ -31,6 +36,7 @@ const Article: FC<Props> = ({
         status={articleTitleWysiwygData.status}
       />
       <Message />
+      <TableOfContents tableOfContentsData={tableOfContentsData} />
       <WYSIWYG
         contentEditable={contentEditable}
         wysiwygDataArray={wysiwygDataArray}

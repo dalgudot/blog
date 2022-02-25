@@ -275,6 +275,7 @@ const EditableElementSwitch: FC<Props> = ({
         return (
           <EditableTextBlock
             blockType={type}
+            blockId={data.blockId}
             eachBlockRef={eachBlockRef}
             contentEditable={contentEditable}
             html={eachBlockStateHtml}

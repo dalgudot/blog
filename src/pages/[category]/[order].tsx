@@ -5,7 +5,7 @@ import {
   getPostByCategoryOrder,
   saveDataToFireStoreDB,
 } from '../../service/firebase/firestore';
-import { memo, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useAppDispatch } from '../../redux-toolkit/store';
 import { useRouter } from 'next/router';
 import { setPostData } from '../../redux-toolkit/slices/post-slice';
@@ -19,10 +19,12 @@ import { IPostData } from '../../redux-toolkit/model/post-data-model';
 import HeadForSEO, { TInfoForSEO } from '../../SEO/headForSEO';
 import { useUpdateVisitors } from '../../lib/hooks/useUpdateVisitors';
 import { useInitializeClientData } from '../../lib/hooks/useInitializeClientData';
+import { TTableOfContentsData } from '../../components/navigation/table-of-contents/table-of-contents';
 
 type Props = {
   post: IPostData;
   infoForSEOByCategoryOrder: TInfoForSEO;
+  tableOfContentsData: TTableOfContentsData[];
 };
 
 const CategoryOrderPost: NextPage<Props> = (props) => {
@@ -73,7 +75,13 @@ const CategoryOrderPost: NextPage<Props> = (props) => {
   return (
     <>
       <HeadForSEO info={props.infoForSEOByCategoryOrder.info} />
-      {mounted && <Post contentEditable={isAdmin} postData={post} />}
+      {mounted && (
+        <Post
+          contentEditable={isAdmin}
+          postData={post}
+          tableOfContentsData={props.tableOfContentsData}
+        />
+      )}
       {isAdmin && (
         <>
           <button
@@ -114,7 +122,26 @@ export const getStaticProps = async ({ params }: Context) => {
     },
   };
 
-  return { props: { post, infoForSEOByCategoryOrder } };
+  const tableOfContentsData: TTableOfContentsData[] = post.wysiwygDataArray
+    .filter(
+      (data) => data.blockType === 'Heading2' || data.blockType === 'Heading3'
+    )
+    .map((data) => {
+      const dataForTableOfContents = {
+        blockType: data.blockType,
+        blockId: data.blockId,
+        html: data.html
+          .replace(/<code class="inline__code__block">/g, '')
+          .replace(/<\/code>/g, '')
+          .replace(/&lt;/g, '<')
+          .replace(/&gt;/g, '>')
+          .replace(/&amp;/g, '&'),
+      };
+
+      return dataForTableOfContents;
+    });
+
+  return { props: { post, infoForSEOByCategoryOrder, tableOfContentsData } };
 };
 
 export const getStaticPaths = async () => {
