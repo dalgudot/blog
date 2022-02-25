@@ -1,8 +1,9 @@
-import { FC, memo } from 'react';
+import classNames from 'classnames';
+import { FC, memo, MouseEvent } from 'react';
 import styles from './table-of-contents.module.scss';
 
 export type TTableOfContentsData = {
-  blockType: string;
+  blockType: 'Heading2' | 'Heading3';
   blockId: string;
   html: string;
 };
@@ -12,18 +13,29 @@ type Props = {
 };
 
 const TableOfContents: FC<Props> = ({ tableOfContentsData }) => {
-  console.log('tableOfContentsData', tableOfContentsData);
   return (
     <aside className={styles.aside}>
       <nav>
-        {tableOfContentsData.map((data) => (
-          <a key={data.blockId} href={`#${data.blockId}`}>
-            {data.html}
-          </a>
-        ))}
+        <ul>
+          {tableOfContentsData.map((data) => (
+            <li key={data.blockId}>
+              <a
+                href={`#${data.blockId}`}
+                className={classNames(
+                  data.blockType === 'Heading2'
+                    ? styles.heading2
+                    : styles.heading3
+                )}
+              >
+                {data.html}
+              </a>
+            </li>
+          ))}
+        </ul>
       </nav>
     </aside>
   );
 };
 
 export default memo(TableOfContents);
+// https://www.emgoto.com/react-table-of-contents/

@@ -1,0 +1,28 @@
+@use '../../../styles/motion.module';
+@use '../../../styles/text-styles.module';
+
+.aside {
+  margin: 48px 0;
+  padding-bottom: 36px;
+  border-top: var(--g2) 4px solid;
+  border-bottom: var(--g6) 1px solid;
+
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    display: none;
+  }
+
+  a {
+    @include motion.scale__hover;
+  }
+}
+
+.heading2 {
+  @include text-styles.body1(500);
+  margin: 42px 4px 8px;
+}
+
+.heading3 {
+  @include text-styles.body3;
+  margin: 8px 4px 0;
+  color: var(--g3);
+}

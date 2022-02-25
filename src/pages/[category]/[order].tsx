@@ -124,11 +124,13 @@ export const getStaticProps = async ({ params }: Context) => {
 
   const tableOfContentsData: TTableOfContentsData[] = post.wysiwygDataArray
     .filter(
-      (data) => data.blockType === 'Heading2' || data.blockType === 'Heading3'
+      (data) =>
+        (data.blockType === 'Heading2' || data.blockType === 'Heading3') &&
+        data.html !== '마치며'
     )
     .map((data) => {
       const dataForTableOfContents = {
-        blockType: data.blockType,
+        blockType: data.blockType as 'Heading2' | 'Heading3',
         blockId: data.blockId,
         html: data.html
           .replace(/<code class="inline__code__block">/g, '')

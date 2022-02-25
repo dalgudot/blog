@@ -35,8 +35,8 @@ const Article: FC<Props> = ({
         dateTime={articleTitleWysiwygData.dateTime}
         status={articleTitleWysiwygData.status}
       />
-      <Message />
       <TableOfContents tableOfContentsData={tableOfContentsData} />
+      <Message />
       <WYSIWYG
         contentEditable={contentEditable}
         wysiwygDataArray={wysiwygDataArray}
