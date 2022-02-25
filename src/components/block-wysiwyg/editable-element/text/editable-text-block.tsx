@@ -6,7 +6,7 @@ import styles from './editable-text-block.module.scss';
 
 type Props = {
   blockType: TBlockTextType;
-  blockId: string;
+  blockId?: string;
   eachBlockRef: MutableRefObject<any>;
   contentEditable: boolean;
   html: string;
