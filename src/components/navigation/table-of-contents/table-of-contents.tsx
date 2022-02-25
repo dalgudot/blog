@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { FC, memo, MouseEvent } from 'react';
+import { FC, memo } from 'react';
 import styles from './table-of-contents.module.scss';
 
 export type TTableOfContentsData = {
