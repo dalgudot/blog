@@ -9,7 +9,7 @@ import {
 
 export const paste = (
   eachBlockRef: MutableRefObject<HTMLElement>,
-  setPasteData: (newHtml: string) => void
+  setData__withForcedReactRendering: (newHtml: string) => void
 ) => {
   navigator.clipboard.readText().then((clipText) => {
     const eachBlockChildNodes: NodeListOf<ChildNode> =
@@ -52,7 +52,7 @@ export const paste = (
 
     // 커서에서 붙여넣기
     // 정확한 위치에 clipText를 붙여넣으려면?
-    // 1) tempEachBlockStateText가 아닌, 즉 전체 텍스트를 이용하는 게 아닌 ***커서가 있는 노드***의 텍스트를 바꿔줘아 한다.
+    // 1) tempEachBlockStateHtml가 아닌, 즉 전체 텍스트를 이용하는 게 아닌 ***커서가 있는 노드***의 텍스트를 바꿔줘아 한다.
     // 2) 그리고 다시 전체로 구성해줘야 한다.
     if (isSelection === false) {
       pasteClipText__toSelectionStartNode();
@@ -171,7 +171,7 @@ export const paste = (
             endNode__length__afterDeleteRange === 0;
 
           if (isEmpty__endCODENode) {
-            console.log('isEmpty__endCODENode');
+            // console.log('isEmpty__endCODENode');
             removeEndNode();
             removeMiddleNode(); // 지우는 순서는 End > Middle > Start
           }
@@ -188,9 +188,9 @@ export const paste = (
     }
 
     const newHtml = getNewHtml(nodeArray);
-    setPasteData(newHtml);
+    setData__withForcedReactRendering(newHtml);
 
-    // setPasteData 데이터 업데이트 이후에 caret 위치 조정
+    // setData__withForcedReactRendering 데이터 업데이트 이후에 caret 위치 조정
     focus__afterSetClipText(
       eachBlockRef,
       eachBlockChildNodes,

@@ -7,13 +7,19 @@ import Response from './response/response';
 import { useRouter } from 'next/router';
 import Share from './share/share';
 import Author from './author/author';
+import { TTableOfContentsData } from '../navigation/table-of-contents/table-of-contents';
 
 type Props = {
   contentEditable: boolean;
   postData: IPostData;
+  tableOfContentsData?: TTableOfContentsData[];
 };
 
-const Post: FC<Props> = ({ contentEditable, postData }) => {
+const Post: FC<Props> = ({
+  contentEditable,
+  postData,
+  tableOfContentsData,
+}) => {
   const articleTitleWysiwygData = {
     title: postData.title,
     dateTime: postData.dateTime,
@@ -32,6 +38,7 @@ const Post: FC<Props> = ({ contentEditable, postData }) => {
           contentEditable={contentEditable}
           articleTitleWysiwygData={articleTitleWysiwygData}
           wysiwygDataArray={postData.wysiwygDataArray}
+          tableOfContentsData={tableOfContentsData}
         />
         {/* 3개의 박스가 정렬돼 있고, 호버하면 커지는 버튼 */}
         {/* <Share /> */}

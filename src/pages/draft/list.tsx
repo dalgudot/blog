@@ -20,7 +20,7 @@ const Draft: NextPage = () => {
       });
   }, []);
 
-  console.log(draftList);
+  // console.log(draftList);
 
   return (
     <>

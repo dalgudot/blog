@@ -10,10 +10,10 @@ const Message: FC<Props> = () => {
   const field = query.category === 'dev' ? '개발' : '디자인';
 
   return (
-    <div className={styles.message}>
+    <section className={styles.message}>
       <span />
       <p>{query.category !== 'story' && field} 경험을 공유합니다.</p>
-    </div>
+    </section>
   );
 };
 

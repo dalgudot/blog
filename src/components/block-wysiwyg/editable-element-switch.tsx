@@ -24,11 +24,12 @@ import EditableLinkBlock from './editable-element/link/editable-link-block';
 import { ILinkData } from '../../redux-toolkit/model/link-data-model';
 import EditableCodeBlock from './editable-element/code/editable-code-block';
 import EditableImageBlock from './editable-element/image/editable-image-block';
-import styles from './editable-element.module.scss';
 import { ICodeData } from '../../redux-toolkit/model/code-data-model';
 import { paste } from '../../lib/utils/editable-block/paste';
 import { useEditable } from '../../lib/hooks/useEditable';
-import { getSelectionEndIndex } from '../../lib/utils/editable-block/node';
+import { addSpacing__afterInlineCode } from '../../lib/utils/editable-block/add-spacing-after-inline-code';
+import { moveCaret__betweenInlineCodeAndSpacing } from '../../lib/utils/editable-block/move-caret-between-inline-code-and-spacing';
+import styles from './editable-element.module.scss';
 
 type Props = {
   wysiwygType: 'Normal' | 'Link';
@@ -49,12 +50,12 @@ const EditableElementSwitch: FC<Props> = ({
 }) => {
   // console.log(currentIndex, 'data.html', data.html);
   // data.html은 최초 초기화만 해주는 역할. 초기화 이후 어디서도 업데이트하지 않음.
-  // 업데이트는 각 컴포넌트의 setTempEachBlockStateText, setEachBlockStateText로 컴포넌트별 렌더링으로 성능 극대화
+  // 업데이트는 각 컴포넌트의 setTempEachBlockStateHtml, setEachBlockStateHtml로 컴포넌트별 렌더링으로 성능 극대화
   const [type, setType] = useState<TBlockType>(data.blockType);
-  const [tempEachBlockStateText, setTempEachBlockStateText] = useState<string>(
+  const [tempEachBlockStateHtml, setTempEachBlockStateHtml] = useState<string>(
     data.html
   ); // block 지울 때 활용
-  const [eachBlockStateText, setEachBlockStateText] = useState<string>(
+  const [eachBlockStateHtml, setEachBlockStateHtml] = useState<string>(
     data.html
   ); // add inline code block처럼 전체 렌더링이 아닌 블럭 개별 렌더링만 할 때
   const dispatch = useAppDispatch();
@@ -66,10 +67,10 @@ const EditableElementSwitch: FC<Props> = ({
   // console.log(currentIndex, data.blockType, type);
 
   useEffect(() => {
-    setTempEachBlockStateText(data.html);
-    setEachBlockStateText(data.html);
+    setTempEachBlockStateHtml(data.html);
+    setEachBlockStateHtml(data.html);
   }, [data.html]);
-  // console.log(currentIndex, tempEachBlockStateText, eachBlockStateText);
+  // console.log(currentIndex, tempEachBlockStateHtml, eachBlockStateHtml);
 
   const changeBlockType = (e: ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault();
@@ -110,10 +111,31 @@ const EditableElementSwitch: FC<Props> = ({
     }
   };
 
+  const [indexAddedSpacing, setIndexAddedSpacing] = useState<
+    number | undefined
+  >(undefined);
+
+  useEffect(() => {
+    if (indexAddedSpacing !== undefined) {
+      const selection: Selection | null = window.getSelection();
+
+      const setCaret__newSpacing = () => {
+        const targetNode = eachBlockRef.current?.childNodes[indexAddedSpacing];
+        const newRange = document.createRange();
+        newRange.setStart(targetNode, 1); // 코드 블럭 한 칸 뒤쪽 위치
+
+        selection && selection.removeAllRanges();
+        selection && selection.addRange(newRange);
+      };
+      setCaret__newSpacing();
+      setIndexAddedSpacing(undefined);
+    }
+  }, [indexAddedSpacing]);
+
   const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
     // html 텍스트가 없고, 블록이 2개 이상이고, Backspace를 누른 경우
     if (
-      tempEachBlockStateText === '' &&
+      tempEachBlockStateHtml === '' &&
       datasLength > 1 &&
       e.key === 'Backspace'
     ) {
@@ -121,42 +143,31 @@ const EditableElementSwitch: FC<Props> = ({
       removeBlock();
     }
 
-    // 붙여넣기 command + v
-    if (e.metaKey && e.key === 'v') {
-      e.preventDefault();
-      paste(eachBlockRef, setPasteData);
-    }
+    if (type !== 'Code') {
+      // 붙여넣기 command + v
+      if (e.metaKey && e.key === 'v') {
+        e.preventDefault();
+        paste(eachBlockRef, setData__withForcedReactRendering);
+      }
 
-    // console.log('selectionEndIndex', selectionEndIndex);
+      const childeNodes: NodeListOf<ChildNode> =
+        eachBlockRef.current?.childNodes;
 
-    // 렌더링 없이, 인라인 코드 블럭 오른쪽 한 칸 삭제 못하도록 하고, 커서 이동
-    if (e.key === 'Backspace') {
-      e.preventDefault();
-      // 이 경우 커서만 이동할 뿐 서버에 저장될 데이터는 전후로 동일함.
-      // 즉 커서만 이동할 뿐 데이터는 동기화된 상태
+      // 2번째엔 caret targetNode가 undefined > 이유는 모르겠지만 아래 조건문으로 보완, 해결됨.
+      if (e.key === 'ArrowRight') {
+        addSpacing__afterInlineCode(
+          childeNodes,
+          e,
+          setData__withForcedReactRendering,
+          setIndexAddedSpacing
+        );
+      }
 
-      const selection: Selection | null = window.getSelection();
-      const childeNodes = eachBlockRef.current?.childNodes;
-      const range = selection?.getRangeAt(0);
-      const collapsed = range?.collapsed;
-
-      const selectionEndIndex = getSelectionEndIndex(childeNodes, selection);
-
-      if (
-        collapsed &&
-        selectionEndIndex !== 0 &&
-        childeNodes[selectionEndIndex].textContent ===
-          ('\u00A0' || '&nbsp;' || ' ') &&
-        childeNodes[selectionEndIndex - 1].nodeName === 'CODE'
-      ) {
-        const targetNode = childeNodes[selectionEndIndex - 1].childNodes[0];
-        const newCaretPosition = targetNode.textContent.length;
-
-        const newRange = document.createRange();
-        newRange.setStart(targetNode, newCaretPosition); // 코드 블럭 한 칸 뒤쪽 위치
-
-        selection && selection.removeAllRanges();
-        selection && selection.addRange(newRange);
+      // 위 조건 보완!
+      // 선택 영역(isSelection)으로 지웠을 때
+      // 렌더링 없이, 인라인 코드 블럭 오른쪽 한 칸 삭제 못하도록 하고, 커서 이동
+      if (e.key === 'Backspace') {
+        moveCaret__betweenInlineCodeAndSpacing(childeNodes, e);
       }
     }
 
@@ -172,15 +183,14 @@ const EditableElementSwitch: FC<Props> = ({
     //   // 앞선 노드의 마지막 글자를 지우고 다시 생성
     //   // 코드 블럭 앞에 #text 노드가 없다면? 이 방법으로 해결 불가
 
-    //   // https://stackoverflow.com/questions/15015019/prevent-chrome-from-wrapping-contents-of-joined-p-with-a-span
-    // }
+    // https://stackoverflow.com/questions/15015019/prevent-chrome-from-wrapping-contents-of-joined-p-with-a-span
   };
 
-  const setPasteData = (newHtml: string) => {
-    setEachBlockStateText(''); // ***중요*** 같은 문자열 복사 후 지우고 다시 붙여넣으면 리액트에서 같다고 판단해 렌더링하지 않는 문제 해결
+  const setData__withForcedReactRendering = (newHtml: string) => {
+    setEachBlockStateHtml(''); // ***중요*** 같은 문자열 복사 후 지우고 다시 붙여넣으면 리액트에서 같다고 판단해 렌더링하지 않는 문제 해결
     setCurrentBlockTempPostHtmlData(newHtml);
-    setTempEachBlockStateText(newHtml);
-    setEachBlockStateText(newHtml); // 현재 블록만 렌더링
+    setTempEachBlockStateHtml(newHtml);
+    setEachBlockStateHtml(newHtml); // 현재 블록만 렌더링
   };
 
   // onInput에서 이용
@@ -191,19 +201,19 @@ const EditableElementSwitch: FC<Props> = ({
       dispatch(setCurrentBlockTempHtml({ inputHtml, currentIndex }));
     }
 
-    setTempEachBlockStateText(inputHtml); // 리덕스에서 tempHtml을 가져오면 계속 전체 리렌더가 일어나기 때문에 해당 컴포넌트의 state로 관리
+    setTempEachBlockStateHtml(inputHtml); // 리덕스에서 tempHtml을 가져오면 계속 전체 리렌더가 일어나기 때문에 해당 컴포넌트의 state로 관리
   };
 
   // updateDataWithInlineBlock에서 이용
   const setCurrentBlockPostHtmlData = (inputHtml: string) => {
-    setEachBlockStateText(inputHtml); // 현재 블록만 렌더링
+    setEachBlockStateHtml(inputHtml); // 현재 블록만 렌더링
   };
 
   const addBlockFocusUseEffectDependency = datas[currentIndex];
   const removeCurrentBlockFocusUseEffectDependency = datas[currentIndex + 1];
 
   const eachBlockRef = useEditable(
-    eachBlockStateText,
+    eachBlockStateHtml,
     addBlockFocusUseEffectDependency,
     removeCurrentBlockFocusUseEffectDependency
   );
@@ -216,7 +226,7 @@ const EditableElementSwitch: FC<Props> = ({
             blockId={data.blockId}
             eachBlockRef={eachBlockRef}
             contentEditable={contentEditable}
-            html={eachBlockStateText}
+            html={eachBlockStateHtml}
             imageDownloadURL={data.url}
             currentIndex={currentIndex}
             setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
@@ -234,7 +244,7 @@ const EditableElementSwitch: FC<Props> = ({
             linkBlockType={linkBlockType}
             eachBlockRef={eachBlockRef}
             contentEditable={contentEditable}
-            html={eachBlockStateText}
+            html={eachBlockStateHtml}
             data={data as ILinkData}
             currentIndex={currentIndex}
             setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
@@ -251,7 +261,7 @@ const EditableElementSwitch: FC<Props> = ({
             eachBlockRef={eachBlockRef}
             contentEditable={contentEditable}
             data={data as ICodeData}
-            html={eachBlockStateText}
+            html={eachBlockStateHtml}
             currentIndex={currentIndex}
             setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
             // setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
@@ -265,9 +275,10 @@ const EditableElementSwitch: FC<Props> = ({
         return (
           <EditableTextBlock
             blockType={type}
+            blockId={data.blockId}
             eachBlockRef={eachBlockRef}
             contentEditable={contentEditable}
-            html={eachBlockStateText}
+            html={eachBlockStateHtml}
             setCurrentBlockTempPostHtmlData={setCurrentBlockTempPostHtmlData}
             setCurrentBlockPostHtmlData={setCurrentBlockPostHtmlData}
             onKeyPress={onKeyPress}
@@ -280,27 +291,21 @@ const EditableElementSwitch: FC<Props> = ({
 
   return (
     <>
-      {contentEditable && wysiwygType !== 'Link' ? (
-        <>
-          <div className={styles.edit__block__type__editable__element__switch}>
-            <select value={type} onChange={changeBlockType}>
-              <option value='Paragraph'>Paragraph</option>
-              <option value='Heading1'>Heading1</option>
-              <option value='Heading2'>Heading2</option>
-              <option value='Heading3'>Heading3</option>
-              <option value='Image'>Image</option>
-              <option value='Code'>Code</option>
-              <option value='Link'>Link</option>
-            </select>
-            {switchBlocks()}
-          </div>
-          <span className={styles.currentIndex__wrapper}>
-            <span className={styles.currentIndex}>{currentIndex}</span>
-          </span>
-        </>
-      ) : (
-        <>{switchBlocks()}</>
+      {contentEditable && wysiwygType !== 'Link' && (
+        <div className={styles.edit__block__type__editable__element__switch}>
+          <span className={styles.currentIndex}>{currentIndex}</span>
+          <select value={type} onChange={changeBlockType}>
+            <option value='Paragraph'>Paragraph</option>
+            <option value='Heading1'>Heading1</option>
+            <option value='Heading2'>Heading2</option>
+            <option value='Heading3'>Heading3</option>
+            <option value='Image'>Image</option>
+            <option value='Code'>Code</option>
+            <option value='Link'>Link</option>
+          </select>
+        </div>
       )}
+      {switchBlocks()}
     </>
   );
 };

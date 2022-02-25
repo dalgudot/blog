@@ -10,6 +10,7 @@ import { useAppDispatch } from '../../../../redux-toolkit/store';
 import EditableTextBlock from '../../../block-wysiwyg/editable-element/text/editable-text-block';
 import styles from './title-wysiwyg.module.scss';
 import Profile from './profile';
+import SelectCategory from '../../../menu/select-category';
 
 type Props = {
   contentEditable: boolean;
@@ -44,6 +45,7 @@ const TitleWYSIWYG: FC<Props> = ({
   return (
     <>
       <section className={styles.article__title__section}>
+        {contentEditable && <SelectCategory />}
         <time dateTime={seoDate}>{displayDate}</time>
         <EditableTextBlock
           eachBlockRef={ref}

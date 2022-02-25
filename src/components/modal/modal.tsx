@@ -38,7 +38,7 @@ const Modal: FC = () => {
   }, [isModal.open]);
 
   const router = useRouter();
-  const asPath = router.asPath;
+  const asPath = `/${router.query.category}/${router.query.order}`;
 
   // useModal을 <Header /> 같은 전역 component에서 호출하면 return이 동작하지 않으므로 <Modal /> 컴포넌트에서 호출
   useEffect(() => {

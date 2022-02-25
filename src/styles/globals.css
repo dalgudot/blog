@@ -57,8 +57,24 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+code {
   word-break: keep-all;
+}
+
+/* For Table of Contents */
+h2,
+h3 {
+  scroll-margin-top: 120px;
+}
+
+/* For Table of Contents with Safari */
+@supports (-webkit-hyphens: none) {
+  h2,
+  h3 {
+    padding-top: 120px;
+    margin-top: -120px;
+  }
 }
 
 p {
@@ -68,14 +84,12 @@ p {
 code {
   font-family: 'Source Code Pro', Menlo, Monaco, Lucida Console, Liberation Mono,
     DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-  word-break: keep-all;
 }
 
 a {
   text-decoration: none;
   cursor: pointer;
   display: inline-block;
-
   text-decoration: none;
 
   /* iOS에서 a tag long touch 시 나오는 모달 막기 */

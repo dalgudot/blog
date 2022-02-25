@@ -57,7 +57,7 @@ const EditableImageBlock: FC<Props> = ({
       setImage(blobUrl); // [UX Logic] 서버 저장 전 로컬에서 빠르게 보여주기 위해
 
       // images 폴더 안에 저장해두고 draft나 발행된 글 모두에서 고유한 URL로 접근!
-      // 이미지 파일명의 규칙 -> `${category}${order}-숫자'
+      // 이미지 파일명 규칙 -> `${category}${order}-숫자'
       // thumbnail은 thumbnail이라 이름지음
       const storageRef = `images/${file.name}`;
 
@@ -97,6 +97,9 @@ const EditableImageBlock: FC<Props> = ({
           // https://nextjs.org/docs/basic-features/image-optimization
           <Image src={image} alt={html} layout='fill' priority />
         )}
+        {contentEditable && (
+          <UploadImage fileHandler={fileHandler} blockId={blockId} />
+        )}
         <EditableElement
           TagName='figcaption'
           eachBlockRef={eachBlockRef}
@@ -108,9 +111,6 @@ const EditableImageBlock: FC<Props> = ({
           onKeyDown={onKeyDown} // optional, 블록 삭제
           placeholder={placeholder}
         />
-        {contentEditable && (
-          <UploadImage fileHandler={fileHandler} blockId={blockId} />
-        )}
       </figure>
     </>
   );

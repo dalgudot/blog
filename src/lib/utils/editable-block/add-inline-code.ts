@@ -4,7 +4,7 @@ import { getNewHtml, getNodeArray } from './node';
 export const frontTag = '<code class="inline__code__block">';
 export const backTag = '</code>\u00A0';
 
-export const addInlineCodeBlock = (
+export const addInlineCode = (
   eachBlockRef: MutableRefObject<HTMLElement>,
   updateDataWithInlineBlock: (inputHtml: string) => void
 ) => {
@@ -17,11 +17,10 @@ export const addInlineCodeBlock = (
     let twoBacktickNodeIndex: number | null = null;
 
     for (let i = 0; i < eachBlockChildNodesLength; i++) {
-      //
       if (eachBlockChildNodes[i].nodeName === '#text') {
         const textContent = eachBlockChildNodes[i].textContent;
-        const isContinuousBacktick: boolean | undefined =
-          textContent?.includes('``');
+        const isContinuousBacktick: boolean =
+          textContent?.includes('``') ?? false;
         const numberOfBacktick: number = textContent?.match(/`/g)?.length ?? 0;
 
         if (numberOfBacktick === 2) {
@@ -61,3 +60,5 @@ export const addInlineCodeBlock = (
     return twoBacktickNodeIndex; // null이면 코드 변환이 되지 않음.
   }
 };
+
+export const updateCaretPosition__afterAddInlineCode = () => {};

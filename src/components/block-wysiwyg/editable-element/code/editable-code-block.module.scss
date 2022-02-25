@@ -37,17 +37,16 @@
   -webkit-appearance: none; // remove iOS upper inner shadow
   overflow: hidden;
   width: 100%;
-  height: 48px;
-  background-color: transparent;
-  border: 1px solid var(--g6); // 안드로이드 삼성 인터넷에서 작동 안 해서 !important
+  padding: 8px 16px;
+  height: 42px;
+  background-color: var(--g7);
+  border: 1px solid var(--g6) !important; // 안드로이드 삼성 인터넷에서 작동 안 해서 !important
   resize: none; // 늘이고 줄이는 기능 없애기
-  margin-top: 16px;
-  padding: 12px 24px;
-  font-size: 13px;
+  margin-top: 72px;
 
-  /* text */
-  font-weight: 400;
-  line-height: 1.7;
+  @include text-styles.body3(400);
+  color: var(--g2);
+  display: flex;
 
   ::placeholder {
     color: var(--g5);
