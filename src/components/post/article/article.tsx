@@ -18,7 +18,7 @@ type Props = {
     status: TStatus;
   };
   wysiwygDataArray: IParagraphData[];
-  tableOfContentsData: TTableOfContentsData[];
+  tableOfContentsData?: TTableOfContentsData[];
 };
 
 const Article: FC<Props> = ({

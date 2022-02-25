@@ -9,7 +9,7 @@ export type TTableOfContentsData = {
 };
 
 type Props = {
-  tableOfContentsData: TTableOfContentsData[];
+  tableOfContentsData: TTableOfContentsData[] | undefined;
 };
 
 const TableOfContents: FC<Props> = ({ tableOfContentsData }) => {
@@ -17,7 +17,7 @@ const TableOfContents: FC<Props> = ({ tableOfContentsData }) => {
     <aside className={styles.aside}>
       <nav>
         <ul>
-          {tableOfContentsData.map((data) => (
+          {tableOfContentsData?.map((data) => (
             <li key={data.blockId}>
               <a
                 href={`#${data.blockId}`}
