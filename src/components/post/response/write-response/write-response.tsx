@@ -33,7 +33,7 @@ const WriteResponse: FC = () => {
     : '최소 7자 이상 입력해주세요';
 
   const router = useRouter();
-  const asPath = router.asPath;
+  const asPath = `/${router.query.category}/${router.query.order}`;
   const postResponse = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const isResponse = sessionStorage.getItem(`Response of ${asPath}`);

@@ -6,6 +6,7 @@ import styles from './editable-text-block.module.scss';
 
 type Props = {
   blockType: TBlockTextType;
+  blockId?: string;
   eachBlockRef: MutableRefObject<any>;
   contentEditable: boolean;
   html: string;
@@ -19,6 +20,7 @@ type Props = {
 
 const EditableTextBlock: FC<Props> = ({
   blockType,
+  blockId,
   eachBlockRef,
   contentEditable,
   html,
@@ -47,10 +49,14 @@ const EditableTextBlock: FC<Props> = ({
       ? classNames('title3__700', styles.heading3)
       : classNames('body1__400', styles.paragraph);
 
+  const blockIdForTableOfContents =
+    blockType === 'Heading2' || blockType === 'Heading3' ? blockId : undefined;
+
   return (
     <>
       <EditableElement
         TagName={TagName}
+        blockId={blockIdForTableOfContents}
         eachBlockRef={eachBlockRef}
         contentEditable={contentEditable}
         html={html}

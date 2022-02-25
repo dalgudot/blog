@@ -62,6 +62,21 @@ code {
   word-break: keep-all;
 }
 
+/* For Table of Contents */
+h2,
+h3 {
+  scroll-margin-top: 120px;
+}
+
+/* For Table of Contents with Safari */
+@supports (-webkit-hyphens: none) {
+  h2,
+  h3 {
+    padding-top: 120px;
+    margin-top: -120px;
+  }
+}
+
 p {
   word-break: break-word;
 }

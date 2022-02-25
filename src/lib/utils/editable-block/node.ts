@@ -1,4 +1,4 @@
-import { backTag, frontTag } from './add-inline-code-block';
+import { backTag, frontTag } from './add-inline-code';
 
 export type TMyNode = {
   nodeName: '#text' | 'CODE';
