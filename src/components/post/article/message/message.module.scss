@@ -5,9 +5,6 @@
   display: flex;
   align-items: center;
 
-  // border: 1px solid var(--g6);
-  // padding: 32px;
-
   @media screen and (max-width: text-styles.$text__first__max__width) {
     margin-top: 72px;
   }
@@ -19,7 +16,7 @@
   span {
     width: 4px;
     height: 21px;
-    background-color: var(--g1);
+    background-color: var(--g2);
     margin-right: 8px;
 
     @media screen and (max-width: text-styles.$text__first__max__width) {
@@ -36,6 +33,7 @@
 
   p {
     @include text-styles.body1(500);
+    color: var(--g2);
     margin-top: 1px; // 시각 보정
   }
 }

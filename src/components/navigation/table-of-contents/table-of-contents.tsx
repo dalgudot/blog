@@ -9,7 +9,7 @@ export type TTableOfContentsData = {
 };
 
 type Props = {
-  tableOfContentsData: TTableOfContentsData[] | undefined;
+  tableOfContentsData: TTableOfContentsData[];
 };
 
 const TableOfContents: FC<Props> = ({ tableOfContentsData }) => {
