@@ -13,17 +13,15 @@ export const moveCaret__betweenInlineCodeAndSpacing = (
   const collapsed = range?.collapsed;
   const selectionStartIndex = getSelectionStartIndex(childeNodes, selection);
 
-  console.log(startOffset);
-
   const isRightBesideOfCODE = startOffset === 1;
 
   if (
     collapsed &&
     selectionStartIndex !== 0 &&
-    isRightBesideOfCODE &&
+    // isRightBesideOfCODE &&
     // 내부 블럭 오른쪽 빈 칸은 지울 수 없도록 한다
-    // childeNodes[selectionStartIndex].textContent ===
-    //   ('\u00A0' || '&nbsp;' || ' ') &&
+    childeNodes[selectionStartIndex].textContent ===
+      ('\u00A0' || '&nbsp;' || ' ') &&
     childeNodes[selectionStartIndex - 1].nodeName === 'CODE'
   ) {
     e.preventDefault();
