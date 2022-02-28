@@ -23,16 +23,17 @@ const TableOfContents: FC<Props> = ({ tableOfContentsData }) => {
               .replace(/<\/code>/g, '')
               .replace(/&lt;/g, '<')
               .replace(/&gt;/g, '>')
-              .replace(/&amp;/g, '&')
-              .replace(/\./g, '')
-              .replace(/\,/g, '');
+              .replace(/&amp;/g, '&');
 
             console.log('htmlForTOC', htmlForTOC);
 
             return (
               <li key={data.blockId}>
                 <a
-                  href={`#${htmlForTOC.replace(/ /g, '-')}`}
+                  href={`#${htmlForTOC
+                    .replace(/\./g, '')
+                    .replace(/\,/g, '')
+                    .replace(/ /g, '-')}`}
                   className={classNames(
                     data.blockType === 'Heading2'
                       ? styles.heading2
