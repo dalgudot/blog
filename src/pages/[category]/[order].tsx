@@ -132,12 +132,7 @@ export const getStaticProps = async ({ params }: Context) => {
       const dataForTableOfContents = {
         blockType: data.blockType as 'Heading2' | 'Heading3',
         blockId: data.blockId,
-        html: data.html
-          .replace(/<code class="inline__code__block">/g, '')
-          .replace(/<\/code>/g, '')
-          .replace(/&lt;/g, '<')
-          .replace(/&gt;/g, '>')
-          .replace(/&amp;/g, '&'),
+        html: data.html,
       };
 
       return dataForTableOfContents;
