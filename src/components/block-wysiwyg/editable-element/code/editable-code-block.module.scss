@@ -42,7 +42,6 @@
   background-color: var(--g7);
   border: 1px solid var(--g6) !important; // 안드로이드 삼성 인터넷에서 작동 안 해서 !important
   resize: none; // 늘이고 줄이는 기능 없애기
-  margin-top: 72px;
 
   @include text-styles.body3(400);
   color: var(--g2);

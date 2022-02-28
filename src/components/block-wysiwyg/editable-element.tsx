@@ -86,9 +86,19 @@ const EditableElement: FC<Props> = ({
     setCurrentBlockPostHtmlData(inputHtml);
   };
 
+  const htmlForTOC = html
+    .replace(/<code class="inline__code__block">/g, '')
+    .replace(/<\/code>/g, '')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+    .replace(/\./g, '')
+    .replace(/\,/g, '')
+    .replace(/ /g, '-');
+
   return (
     <TagName
-      id={blockId && blockId}
+      id={blockId && htmlForTOC}
       ref={eachBlockRef}
       contentEditable={contentEditable}
       suppressContentEditableWarning={contentEditable}
