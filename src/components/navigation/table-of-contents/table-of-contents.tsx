@@ -17,20 +17,33 @@ const TableOfContents: FC<Props> = ({ tableOfContentsData }) => {
     <aside className={styles.aside}>
       <nav>
         <ul>
-          {tableOfContentsData?.map((data) => (
-            <li key={data.blockId}>
-              <a
-                href={`#${data.blockId}`}
-                className={classNames(
-                  data.blockType === 'Heading2'
-                    ? styles.heading2
-                    : styles.heading3
-                )}
-              >
-                {data.html}
-              </a>
-            </li>
-          ))}
+          {tableOfContentsData?.map((data) => {
+            const htmlForTOC = data.html
+              .replace(/<code class="inline__code__block">/g, '')
+              .replace(/<\/code>/g, '')
+              .replace(/&lt;/g, '<')
+              .replace(/&gt;/g, '>')
+              .replace(/&amp;/g, '&')
+              .replace(/\./g, '')
+              .replace(/\,/g, '');
+
+            console.log('htmlForTOC', htmlForTOC);
+
+            return (
+              <li key={data.blockId}>
+                <a
+                  href={`#${htmlForTOC.replace(/ /g, '-')}`}
+                  className={classNames(
+                    data.blockType === 'Heading2'
+                      ? styles.heading2
+                      : styles.heading3
+                  )}
+                >
+                  {htmlForTOC}
+                </a>
+              </li>
+            );
+          })}
         </ul>
       </nav>
     </aside>

@@ -1,7 +1,13 @@
 @use '../../../../styles/text-styles.module';
 
+@mixin scrollMarginTop {
+  scroll-margin-top: 144px;
+}
+
 .heading2 {
+  @include scrollMarginTop;
   margin-top: 144px;
+  scroll-margin-top: 144px;
 
   @media screen and (max-width: text-styles.$text__first__max__width) {
     margin-top: 120px;
@@ -13,6 +19,7 @@
 }
 
 .heading3 {
+  @include scrollMarginTop;
   margin-top: 144px;
 
   @media screen and (max-width: text-styles.$text__first__max__width) {

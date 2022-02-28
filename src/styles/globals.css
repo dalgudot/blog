@@ -62,12 +62,6 @@ code {
   word-break: keep-all;
 }
 
-/* For Table of Contents */
-h2,
-h3 {
-  scroll-margin-top: 96px;
-}
-
 p {
   word-break: break-word;
 }
