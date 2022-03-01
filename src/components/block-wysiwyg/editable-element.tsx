@@ -40,7 +40,7 @@ const EditableElement: FC<Props> = ({
   const onInput = (
     e: ChangeEvent<HTMLHeadingElement | HTMLParagraphElement>
   ) => {
-    e.preventDefault();
+    // e.preventDefault();
     // https://developer.mozilla.org/ko/docs/Web/API/Element/innerHTML
     // innerHtml은 HTML 태그와 관련된 문자열  (&), (<), (>)를 "&amp;", "&lt;" ,"&gt;"로 보관해 inline 코드로 쓰고 싶을 때만 쓸 수 있도록 한다.
     // 텍스트를 쓰는 동안 바로 코드로 바뀌지 않도록 하기 위해서다.
