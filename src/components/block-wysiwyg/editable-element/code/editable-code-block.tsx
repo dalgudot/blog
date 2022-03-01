@@ -8,8 +8,6 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import CodeTextarea from './code-textarea';
 import {
   TCodeLanguage,
@@ -18,6 +16,8 @@ import {
 import { useAppDispatch } from '../../../../redux-toolkit/store';
 import { setCurrentCodeBlockTempCodeLanguage } from '../../../../redux-toolkit/slices/temp-post-slice';
 import styles from './editable-code-block.module.scss';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
 type Props = {
   eachBlockRef: MutableRefObject<any>;
@@ -78,7 +78,6 @@ const EditableCodeBlock: FC<Props> = ({
         className={styles.code__block}
         language={codeLanguage}
         style={vscDarkPlus}
-        wrapLines={true}
         wrapLongLines={true}
       >
         {codeString}

@@ -37,11 +37,11 @@ const CategoryOrderPost: NextPage<Props> = (props) => {
   const initializeClientData = useInitializeClientData();
 
   useEffect(() => {
-    const SyncServerAndClientData = () => {
+    const syncServerAndClientData = () => {
       dispatch(setPostData(props.post)); // 초기화 및 map() 상태 관리(블럭 추가, 블럭 삭제)
       dispatch(setTempPostData(props.post)); // 데이터 저장 위해(contentEditable 요소가 매번 렌더링될 때마다 생기는 문제 방지)
     };
-    SyncServerAndClientData();
+    syncServerAndClientData();
 
     return () => {
       initializeClientData();

@@ -21,10 +21,10 @@
     font-family: 'Source Code Pro', Menlo, Monaco, Lucida Console,
       Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New,
       monospace;
-    font-size: 18px;
+    font-size: 15px;
 
     @media screen and (max-width: text-styles.$text__first__max__width) {
-      font-size: 14px;
+      font-size: 13px;
     }
 
     @media all and (max-width: text-styles.$text__second__max__width) {
