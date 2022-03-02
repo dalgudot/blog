@@ -60,5 +60,3 @@ export const addInlineCode = (
     return twoBacktickNodeIndex; // null이면 코드 변환이 되지 않음.
   }
 };
-
-export const updateCaretPosition__afterAddInlineCode = () => {};
