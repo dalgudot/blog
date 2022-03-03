@@ -43,22 +43,20 @@ const TitleWYSIWYG: FC<Props> = ({
   const ref = useRef<HTMLHeadingElement>(null);
 
   return (
-    <>
-      <section className={styles.article__title__section}>
-        {contentEditable && <SelectCategory />}
-        <time dateTime={seoDate}>{displayDate}</time>
-        <EditableTextBlock
-          eachBlockRef={ref}
-          blockType='Heading1'
-          contentEditable={contentEditable}
-          html={title}
-          setCurrentBlockTempPostHtmlData={setTempPostHtmlData}
-          setCurrentBlockPostHtmlData={setPostHtmlData}
-          placeholder='글의 제목을 입력해주세요'
-        />
-        <Profile />
-      </section>
-    </>
+    <section className={styles.article__title__section}>
+      {contentEditable && <SelectCategory />}
+      <time dateTime={seoDate}>{displayDate}</time>
+      <EditableTextBlock
+        eachBlockRef={ref}
+        blockType='Heading1'
+        contentEditable={contentEditable}
+        html={title}
+        setCurrentBlockTempPostHtmlData={setTempPostHtmlData}
+        setCurrentBlockPostHtmlData={setPostHtmlData}
+        placeholder='글의 제목을 입력해주세요'
+      />
+      <Profile />
+    </section>
   );
 };
 

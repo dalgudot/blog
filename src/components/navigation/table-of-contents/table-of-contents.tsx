@@ -25,8 +25,6 @@ const TableOfContents: FC<Props> = ({ tableOfContentsData }) => {
               .replace(/&gt;/g, '>')
               .replace(/&amp;/g, '&');
 
-            console.log('htmlForTOC', htmlForTOC);
-
             return (
               <li key={data.blockId}>
                 <a

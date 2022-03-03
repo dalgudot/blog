@@ -1,11 +1,11 @@
 ## 경험의 기록
 
-✔️ 텍스트 에디터 + WYSIWYG 개발
+✔️ WYSIWYG 에디터 개발
 
-✔️ NextJS `getStaticProps` `getStaticPaths` `Dynamic Routes`로 Static Generation 구현. 성능 극대화
+✔️ Next.js `Static Generation` 활용해 성능 최적화 및 서버 비용 최소화
 
-✔️ PostCSS + SCSS 조합으로 스타일, 모션 코드 분리
+✔️ PostCSS + SCSS 로 디자인 시스템 구축 및 스타일, 모션 코드 분리
 
 ✔️ 파이어베이스 Firestore, Realtime Database로 DB 운영
 
-✔️ SEO 자동화
+✔️ SEO(Search Engine Optimization, 검색 엔진 최적화) 자동화
