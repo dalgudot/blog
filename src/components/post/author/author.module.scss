@@ -3,7 +3,7 @@
 @use '../../../styles/motion.module';
 
 .link {
-  @include motion.scale__hover;
+  // @include motion.scale__hover;
 
   display: flex;
   justify-content: space-between;
