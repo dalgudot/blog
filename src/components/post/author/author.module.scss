@@ -1,19 +1,74 @@
 @use '../../../styles/common';
 @use '../../../styles/text-styles.module';
+@use '../../../styles/motion.module';
 
-.author__section {
-  @include common.article__section__title__divider;
+.link {
+  @include motion.scale__hover;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+
+  padding: 48px 36px;
+
+  border: 1px solid var(--g6);
+  margin: 28px 0 36px;
+
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    padding: 44px 32px;
+    margin: 24px 0 32px;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    margin: 20px 0 28px;
+    padding: 32px 24px;
+  }
+
+  p {
+    @include text-styles.body1(500);
+    margin-right: 48px;
+  }
+
+  svg {
+    width: 100%;
+    max-width: 24px;
+    height: 24px;
+
+    @media screen and (max-width: text-styles.$text__first__max__width) {
+      height: 22px;
+    }
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      height: 20px;
+    }
+  }
 }
 
-.author__contents {
-  position: relative; // NextJs Image 경고 제거
+.left {
+  display: flex;
+  align-items: center;
+  min-width: 94%;
 
-  // NextJs Image
-  span:nth-child(1) {
-    width: 144px !important;
-    height: 144px !important;
-    position: relative !important;
-    border-radius: 50%;
-    // object-fit: contain;
+  p {
+    margin-left: 16px;
+  }
+
+  svg {
+    width: 100%;
+    min-width: 62px;
+    max-width: 62px;
+    height: 62px;
+    border-radius: 12px;
+
+    @media screen and (max-width: text-styles.$text__first__max__width) {
+      min-width: 54px;
+      height: 54px;
+    }
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      min-width: 48px;
+      height: 48px;
+    }
   }
 }

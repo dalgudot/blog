@@ -5,6 +5,7 @@
   max-width: common.$post__max__width;
   margin: 144px auto 240px;
   // overflow: hidden; // 갤럭시 가로 스크롤 방지 > 문제 생김!
+  overflow-x: hidden;
 
   @media screen and (max-width: common.$post__media__max__width) {
     padding: common.$main__layout__padding;
