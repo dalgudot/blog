@@ -6,6 +6,7 @@ import {
 import TableOfContents, {
   TTableOfContentsData,
 } from '../../navigation/table-of-contents/table-of-contents';
+import Author from '../author/author';
 import Message from './message/message';
 import WYSIWYG from './paragraph/wysiwyg';
 import TitleWYSIWYG from './title/title-wysiwyg';
@@ -38,6 +39,7 @@ const Article: FC<Props> = ({
       {tableOfContentsData && (
         <TableOfContents tableOfContentsData={tableOfContentsData} />
       )}
+      <Author />
       <Message />
       <WYSIWYG
         contentEditable={contentEditable}

@@ -7,15 +7,14 @@ import styles from './title-wysiwyg.module.scss';
 const Profile: FC = () => {
   const router = useRouter();
   const query = router.query;
-  const career =
-    query.category === 'dev' ? '프론트엔드 개발자' : '프로덕트 디자이너';
+  const career = '프로덕트 디자이너';
 
   return (
     <Link href='/contact'>
       <a className={styles.profile__a}>
         <Image
           src='/common/profile-photo.jpg'
-          alt='김경환의 프로필 사진'
+          alt='프로덕트 디자이너 김경환의 프로필 사진'
           layout='fill'
           priority
         />
