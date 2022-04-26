@@ -33,7 +33,7 @@ const Article: FC<Props> = ({
       ? false
       : tableOfContentsData.length !== 0;
 
-  console.log('isTableOfContentsData', isTableOfContentsData);
+  // console.log('isTableOfContentsData', isTableOfContentsData);
 
   return (
     <article>
