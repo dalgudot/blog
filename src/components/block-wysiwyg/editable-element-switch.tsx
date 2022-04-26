@@ -171,6 +171,10 @@ const EditableElementSwitch: FC<Props> = ({
       }
     }
 
+    if (e.metaKey && e.key === 'a') {
+      // 전체 선택
+    }
+
     // if (
     //   e.key === 'Backspace' &&
     //   endContainer?.parentNode?.nodeName === 'CODE' &&

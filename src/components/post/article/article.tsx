@@ -28,6 +28,13 @@ const Article: FC<Props> = ({
   wysiwygDataArray,
   tableOfContentsData,
 }) => {
+  const isTableOfContentsData: boolean =
+    tableOfContentsData === undefined
+      ? false
+      : tableOfContentsData.length !== 0;
+
+  // console.log('isTableOfContentsData', isTableOfContentsData);
+
   return (
     <article>
       <TitleWYSIWYG
@@ -36,10 +43,10 @@ const Article: FC<Props> = ({
         dateTime={articleTitleWysiwygData.dateTime}
         status={articleTitleWysiwygData.status}
       />
-      {tableOfContentsData && (
+      {isTableOfContentsData && (
         <TableOfContents tableOfContentsData={tableOfContentsData} />
       )}
-      <Author />
+      {/* <Author /> */}
       <Message />
       <WYSIWYG
         contentEditable={contentEditable}

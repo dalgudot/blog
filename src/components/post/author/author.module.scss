@@ -2,27 +2,79 @@
 @use '../../../styles/text-styles.module';
 @use '../../../styles/motion.module';
 
-.link {
+.author__section {
+  @include common.article__section__title__divider;
+}
+
+.author__img {
+  position: relative; // NextJs Image 경고 제거
+  display: flex;
+  align-items: center;
+  margin-top: 36px;
+
+  div {
+    margin-left: 24px;
+
+    @media screen and (max-width: text-styles.$text__first__max__width) {
+      margin-left: 22px;
+    }
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      margin-left: 20px;
+    }
+  }
+
+  h4 {
+    @include text-styles.body1(500);
+  }
+
+  p {
+    @include text-styles.body3(400);
+    margin-top: 8px;
+    color: var(--g2);
+  }
+
+  // NextJs Image
+  span:nth-child(1) {
+    min-width: 108px;
+    width: 108px !important;
+    height: 108px !important;
+    position: relative !important;
+    border-radius: 50%;
+    // object-fit: contain;
+
+    @media screen and (max-width: text-styles.$text__first__max__width) {
+      min-width: 96px;
+      width: 96px !important;
+      height: 96px !important;
+    }
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      min-width: 84px;
+      width: 84px !important;
+      height: 84px !important;
+    }
+  }
+}
+
+.yoonseul__link {
   @include motion.scale__hover;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 100%;
-
-  padding: 48px 36px;
-
   border: 1px solid var(--g6);
-  margin: 28px 0 36px;
+
+  padding: 32px 36px;
+  margin: 36px 0;
 
   @media screen and (max-width: text-styles.$text__first__max__width) {
-    padding: 44px 32px;
-    margin: 24px 0 32px;
+    margin: 28px 0;
   }
 
   @media screen and (max-width: text-styles.$text__second__max__width) {
-    margin: 20px 0 28px;
-    padding: 32px 24px;
+    padding: 24px 28px;
   }
 
   p {
@@ -56,19 +108,21 @@
 
   svg {
     width: 100%;
-    min-width: 62px;
-    max-width: 62px;
-    height: 62px;
+    min-width: 54px;
+    max-width: 54px;
+    height: 54px;
     border-radius: 12px;
 
     @media screen and (max-width: text-styles.$text__first__max__width) {
-      min-width: 54px;
-      height: 54px;
+      min-width: 48px;
+      height: 48px;
+      border-radius: 10px;
     }
 
     @media screen and (max-width: text-styles.$text__second__max__width) {
-      min-width: 48px;
-      height: 48px;
+      min-width: 40px;
+      height: 40px;
+      border-radius: 8px;
     }
   }
 }
