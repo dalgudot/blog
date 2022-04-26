@@ -28,6 +28,8 @@ const Article: FC<Props> = ({
   wysiwygDataArray,
   tableOfContentsData,
 }) => {
+  console.log('tableOfContentsData', tableOfContentsData);
+
   return (
     <article>
       <TitleWYSIWYG
