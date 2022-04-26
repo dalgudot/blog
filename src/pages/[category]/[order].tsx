@@ -131,7 +131,8 @@ export const getStaticProps = async ({ params }: Context) => {
     .filter(
       (data) =>
         (data.blockType === 'Heading2' || data.blockType === 'Heading3') &&
-        data.html !== '마치며'
+        data.html !== '마치며' &&
+        data.html !== '이어지는 글'
     )
     .map((data) => {
       const dataForTableOfContents = {
