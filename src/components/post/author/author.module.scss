@@ -2,7 +2,42 @@
 @use '../../../styles/text-styles.module';
 @use '../../../styles/motion.module';
 
-.link {
+.author__section {
+  @include common.article__section__title__divider;
+}
+
+.author__img {
+  position: relative; // NextJs Image 경고 제거
+  display: flex;
+  align-items: center;
+  margin-top: 42px;
+
+  div {
+    margin-left: 24px;
+  }
+
+  h4 {
+    @include text-styles.body1(500);
+  }
+
+  p {
+    @include text-styles.body3(400);
+    margin-top: 8px;
+    color: var(--g2);
+  }
+
+  // NextJs Image
+  span:nth-child(1) {
+    min-width: 114px;
+    width: 114px !important;
+    height: 114px !important;
+    position: relative !important;
+    border-radius: 50%;
+    // object-fit: contain;
+  }
+}
+
+.yoonseul__link {
   @include motion.scale__hover;
 
   display: flex;
@@ -13,7 +48,7 @@
   padding: 48px 36px;
 
   border: 1px solid var(--g6);
-  margin: 28px 0 36px;
+  margin: 36px 0 36px;
 
   @media screen and (max-width: text-styles.$text__first__max__width) {
     padding: 44px 32px;

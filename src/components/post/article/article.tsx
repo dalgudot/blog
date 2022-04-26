@@ -28,7 +28,12 @@ const Article: FC<Props> = ({
   wysiwygDataArray,
   tableOfContentsData,
 }) => {
-  const isTableOfContentsData: boolean = tableOfContentsData.length !== 0;
+  const isTableOfContentsData: boolean =
+    tableOfContentsData === undefined
+      ? false
+      : tableOfContentsData.length !== 0;
+
+  console.log('isTableOfContentsData', isTableOfContentsData);
 
   return (
     <article>
