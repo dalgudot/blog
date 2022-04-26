@@ -28,6 +28,11 @@ const GNB: FC<Props> = ({ closeModal }) => {
       target: '_self',
       href: '/',
     },
+    // {
+    //   label: '이야기',
+    //   target: '_self',
+    //   href: '/story',
+    // },
     {
       label: '연락처',
       target: '_self',
