@@ -12,7 +12,7 @@ import { TTableOfContentsData } from '../navigation/table-of-contents/table-of-c
 type Props = {
   contentEditable: boolean;
   postData: IPostData;
-  tableOfContentsData: TTableOfContentsData[];
+  tableOfContentsData?: TTableOfContentsData[];
 };
 
 const Post: FC<Props> = ({
