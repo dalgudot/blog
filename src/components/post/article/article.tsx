@@ -19,7 +19,7 @@ type Props = {
     status: TStatus;
   };
   wysiwygDataArray: IParagraphData[];
-  tableOfContentsData?: TTableOfContentsData[];
+  tableOfContentsData: TTableOfContentsData[];
 };
 
 const Article: FC<Props> = ({
@@ -28,7 +28,7 @@ const Article: FC<Props> = ({
   wysiwygDataArray,
   tableOfContentsData,
 }) => {
-  console.log('tableOfContentsData', tableOfContentsData);
+  const isTableOfContentsData: boolean = tableOfContentsData.length !== 0;
 
   return (
     <article>
@@ -38,7 +38,7 @@ const Article: FC<Props> = ({
         dateTime={articleTitleWysiwygData.dateTime}
         status={articleTitleWysiwygData.status}
       />
-      {tableOfContentsData && (
+      {isTableOfContentsData && (
         <TableOfContents tableOfContentsData={tableOfContentsData} />
       )}
       {/* <Author /> */}
