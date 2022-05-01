@@ -26,6 +26,7 @@ const Author: FC = () => {
             </div>
           </a>
         </Link>
+
         <a
           className={styles.yoonseul__link}
           href='https://apps.apple.com/kr/app/%EC%9C%A4%EC%8A%AC/id1618657913'
@@ -36,7 +37,7 @@ const Author: FC = () => {
             <div className={styles.logo}>
               <IconYoonSeulLogo24 />
             </div>
-            <p>윤슬</p>
+            <p>윤슬 iOS 앱</p>
           </div>
           <IconNewTap24 color='var(--g1)' />
         </a>

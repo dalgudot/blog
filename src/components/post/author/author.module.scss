@@ -35,7 +35,7 @@
   }
 
   // NextJs Image
-  span:nth-child(1) {
+  span {
     min-width: 108px;
     width: 108px !important;
     height: 108px !important;
@@ -50,9 +50,9 @@
     }
 
     @media screen and (max-width: text-styles.$text__second__max__width) {
-      min-width: 84px;
-      width: 84px !important;
-      height: 84px !important;
+      min-width: 88px;
+      width: 88px !important;
+      height: 88px !important;
     }
   }
 }
@@ -70,11 +70,11 @@
   margin: 36px 0;
 
   @media screen and (max-width: text-styles.$text__first__max__width) {
-    margin: 28px 0;
+    padding: 28px 32px;
   }
 
   @media screen and (max-width: text-styles.$text__second__max__width) {
-    padding: 24px 28px;
+    padding: 24px 20px;
   }
 
   p {
@@ -102,8 +102,21 @@
   align-items: center;
   min-width: 94%;
 
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+
   p {
     margin-left: 16px;
+
+    @media screen and (max-width: text-styles.$text__first__max__width) {
+      margin-left: 12px;
+    }
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      margin-left: 8px;
+    }
   }
 
   svg {
