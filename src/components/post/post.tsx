@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import Share from './share/share';
 import Author from './author/author';
 import { TTableOfContentsData } from '../navigation/table-of-contents/table-of-contents';
+import Subscription from './subscription/subscription';
 
 type Props = {
   contentEditable: boolean;
@@ -43,6 +44,7 @@ const Post: FC<Props> = ({
         {/* 3개의 박스가 정렬돼 있고, 호버하면 커지는 버튼 */}
         {/* <Share /> */}
         {isPublishedPost && <Response />}
+        <Subscription />
         <Author />
         {query.category !== 'story' && (
           <LinkWYSIWYG
