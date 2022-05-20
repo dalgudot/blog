@@ -6,7 +6,8 @@ const RightSide: FC = () => {
   const socialList = [
     { label: 'Brunch', href: 'https://brunch.co.kr/@dalgudot' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/dalgudot' },
-    { label: 'Facebook', href: 'https://www.facebook.com/dalgudot' },
+    { label: 'Instagram', href: 'https://www.instagram.com/dalgu_dot/' },
+    // { label: 'Facebook', href: 'https://www.facebook.com/dalgudot' },
     { label: 'GitHub', href: 'https://github.com/dalgudot' },
   ];
 
