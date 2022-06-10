@@ -67,13 +67,14 @@
   border: 1px solid var(--g6);
 
   padding: 32px 36px;
-  margin: 36px 0;
+  margin: 28px 0;
 
   @media screen and (max-width: text-styles.$text__first__max__width) {
     padding: 28px 32px;
   }
 
   @media screen and (max-width: text-styles.$text__second__max__width) {
+    margin: 16px 0;
     padding: 24px 20px;
   }
 

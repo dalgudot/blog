@@ -2,12 +2,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
 import IconNewTap24 from '../../../svg/icon-new-tap-24';
+import IconTodayToDoLogo24 from '../../../svg/icon-today-todo-logo-24';
 import IconYoonSeulLogo24 from '../../../svg/icon-yoonseul-logo-24';
 import styles from './author.module.scss';
 
 const Author: FC = () => {
   const description: string =
-    "순간의 감정과 생각을 기록하는 일기장 '윤슬'을 디자인하고 개발하고 있습니다.";
+    "순간의 감정과 생각을 기록하는 일기장 앱 '윤슬'과 오늘 할 일을 잘 정리하고 끝낼 수 있도록 돕는 앱 '오늘 할 일'을 디자인하고 개발하고 있습니다.";
 
   return (
     <>
@@ -27,23 +28,43 @@ const Author: FC = () => {
           </a>
         </Link>
 
-        <a
-          className={styles.yoonseul__link}
-          href='https://apps.apple.com/kr/app/%EC%9C%A4%EC%8A%AC/id1618657913'
-          target='_blank'
-          rel='noreferrer'
-        >
-          <div className={styles.left}>
-            <div className={styles.logo}>
-              <IconYoonSeulLogo24 />
-            </div>
-            <p>윤슬 iOS 앱</p>
-          </div>
-          <IconNewTap24 color='var(--g1)' />
-        </a>
+        <AuthorAppLink
+          link='https://apps.apple.com/kr/app/%EC%9C%A4%EC%8A%AC/id1618657913'
+          icon={<IconYoonSeulLogo24 />}
+          name='윤슬 iOS 앱'
+        />
+
+        <AuthorAppLink
+          link='https://apps.apple.com/kr/app/%EC%98%A4%EB%8A%98-%ED%95%A0-%EC%9D%BC-%EC%A2%8B%EC%9D%80-%EC%8A%B5%EA%B4%80-%EB%A7%8C%EB%93%A4%EA%B8%B0/id1622514232'
+          icon={<IconTodayToDoLogo24 />}
+          name='오늘 할 일 iOS 앱'
+        />
       </section>
     </>
   );
 };
 
 export default Author;
+
+type Props = {
+  link: string;
+  icon: JSX.Element;
+  name: string;
+};
+
+const AuthorAppLink: FC<Props> = ({ link, icon, name }) => {
+  return (
+    <a
+      className={styles.yoonseul__link}
+      href={link}
+      target='_blank'
+      rel='noreferrer'
+    >
+      <div className={styles.left}>
+        <div className={styles.logo}>{icon}</div>
+        <p>{name}</p>
+      </div>
+      <IconNewTap24 color='var(--g1)' />
+    </a>
+  );
+};
