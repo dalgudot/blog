@@ -14,7 +14,7 @@ const Profile: FC = () => {
       />
       <h1>김경환</h1>
       <div className={styles.career__div}>
-        <p>프로덕트 디자이너</p>
+        <p>프로덕트 디자이너 · 프론트엔드 개발자</p>
       </div>
     </section>
   );
