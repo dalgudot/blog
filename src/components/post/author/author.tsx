@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { FC } from 'react';
 import IconNewTap24 from '../../../svg/icon-new-tap-24';
 import IconTodayToDoLogo24 from '../../../svg/icon-today-todo-logo-24';
@@ -9,6 +10,11 @@ import styles from './author.module.scss';
 const Author: FC = () => {
   const description: string =
     "순간의 감정과 생각을 기록하는 일기장 앱 '윤슬'과 오늘 할 일을 잘 정리하고 끝낼 수 있도록 돕는 앱 '오늘 할 일'을 디자인하고 개발하고 있습니다.";
+
+  const router = useRouter();
+  const query = router.query;
+  const career =
+    query.category === 'design' ? '프로덕트 디자이너' : '프론트엔드 개발자';
 
   return (
     <>
@@ -22,7 +28,7 @@ const Author: FC = () => {
               layout='fill'
             />
             <div>
-              <h4>김경환 · 프로덕트 디자이너</h4>
+              <h4>김경환 · {career}</h4>
               <p>{description}</p>
             </div>
           </a>
