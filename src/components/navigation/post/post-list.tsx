@@ -97,8 +97,8 @@ type CategoryFilterProps = {
 const CategoryFilter: FC<CategoryFilterProps> = ({ pathname, asPath }) => {
   const categoryFilterList = [
     { href: '/', label: '모두' },
-    { href: '/dev', label: '개발' },
     { href: '/design', label: '디자인' },
+    { href: '/dev', label: '개발' },
   ];
   const listClassname = (href: string) => {
     return classNames(
