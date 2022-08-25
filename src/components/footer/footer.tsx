@@ -5,12 +5,10 @@ import RightSide from './right-side';
 
 const Footer: FC = () => {
   return (
-    <>
-      <footer className={styles.footer}>
-        <LeftSide />
-        <RightSide />
-      </footer>
-    </>
+    <footer className={styles.footer}>
+      <LeftSide />
+      <RightSide />
+    </footer>
   );
 };
 

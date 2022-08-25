@@ -5,10 +5,10 @@ import { FC } from 'react';
 import styles from './title-wysiwyg.module.scss';
 
 const Profile: FC = () => {
-  const router = useRouter();
-  const query = router.query;
-  const career =
-    query.category === 'design' ? '프로덕트 디자이너' : '프론트엔드 개발자';
+  // const router = useRouter();
+  // const query = router.query;
+  // const career =
+  //   query.category === 'design' ? '프로덕트 디자이너' : '프론트엔드 개발자';
 
   return (
     <Link href='/contact'>
@@ -19,7 +19,7 @@ const Profile: FC = () => {
           layout='fill'
           priority
         />
-        <p>김경환 · {career}</p>
+        <p>김경환 · 프로덕트 디자이너</p>
       </a>
     </Link>
   );

@@ -4,9 +4,9 @@ import styles from './footer.module.scss';
 
 const RightSide: FC = () => {
   const socialList = [
-    { label: 'GitHub', href: 'https://github.com/dalgudot' },
     { label: 'Brunch', href: 'https://brunch.co.kr/@dalgudot' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/dalgudot' },
+    { label: 'GitHub', href: 'https://github.com/dalgudot' },
     // { label: 'Instagram', href: 'https://www.instagram.com/dalgu_dot/' },
     // { label: 'Facebook', href: 'https://www.facebook.com/dalgudot' },
   ];
