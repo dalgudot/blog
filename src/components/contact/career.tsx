@@ -37,10 +37,6 @@ const careerData = [
     label: '경력',
     contents: [
       {
-        term: '2022.01.16 ~ 현재',
-        text: '프론트엔드 개발자',
-      },
-      {
         term: '2019.04.23 ~ 현재',
         text: '프로덕트 디자이너',
       },

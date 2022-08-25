@@ -9,12 +9,13 @@ import IconYoonSeulLogo24 from '../../../svg/icon-yoonseul-logo-24';
 import styles from './author.module.scss';
 
 const Author: FC = () => {
-  const description: string = '디자인과 개발 경험을 공유합니다.';
+  const description: string =
+    "많은 기능과 서비스를 갖추고 있는 슈퍼 앱들 사이에서 단순함을 가장 큰 목표로 하는 '작은 앱'이 사람들에게 어떠한 의미로 다가가는지, 단순함은 더 좋은 UX를 제공할 가능성이 높은지 연구하는 '작은 앱 프로젝트'를 진행하고 있습니다. 현재 운영 중인 앱은 다음과 같습니다.";
 
-  const router = useRouter();
-  const query = router.query;
-  const career =
-    query.category === 'design' ? '프로덕트 디자이너' : '프론트엔드 개발자';
+  // const router = useRouter();
+  // const query = router.query;
+  // const career =
+  //   query.category === 'design' ? '프로덕트 디자이너' : '프론트엔드 개발자';
 
   return (
     <>
@@ -28,7 +29,7 @@ const Author: FC = () => {
               layout='fill'
             />
             <div>
-              <h4>김경환 · {career}</h4>
+              <h4>김경환 · 프로덕트 디자이너</h4>
               <p>{description}</p>
             </div>
           </a>
