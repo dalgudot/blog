@@ -28,6 +28,11 @@ const GNB: FC<Props> = ({ closeModal }) => {
       target: '_self',
       href: '/',
     },
+    {
+      label: 'UX 수집',
+      target: '_self',
+      href: '/ux-collection',
+    },
     // {
     //   label: '이야기',
     //   target: '_self',
@@ -111,6 +116,8 @@ const GNBList: FC<GNBListProps> = ({ list, closeModal }) => {
   const currentStatus =
     pathname === '/' || pathname === '/[category]'
       ? '기록'
+      : pathname === '/ux-collection'
+      ? 'UX 수집'
       : pathname === '/story'
       ? '이야기'
       : pathname === '/contact'
