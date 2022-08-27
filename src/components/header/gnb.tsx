@@ -113,7 +113,7 @@ type GNBListProps = {
 const GNBList: FC<GNBListProps> = ({ list, closeModal }) => {
   const router = useRouter();
   const pathname = router.pathname;
-  const currentStatus =
+  const currentStatus = // isSelected 위한 변수
     pathname === '/' || pathname === '/[category]'
       ? '기록'
       : pathname === '/ux-collection'

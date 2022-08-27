@@ -20,17 +20,13 @@ import { usePreventRightClick } from '../lib/hooks/usePreventRightClick';
 const BlogApp = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
   const isPost = router.pathname === '/[category]/[order]';
-  const isFooter =
-    router.pathname === '/' ||
-    router.pathname === '/[category]' ||
-    router.pathname === '/story' ||
-    router.pathname === '/contact';
+  const noPost = !isPost;
 
   usePreventRightClick();
 
   return (
     <>
-      {!isPost && <HeadForSEO info={indexInfo(router)} />}
+      {noPost && <HeadForSEO info={indexInfo(router)} />}
       <RecoilRoot>
         <Provider store={store}>
           <ThemeProvider defaultTheme='dark' enableSystem={false}>
@@ -38,7 +34,7 @@ const BlogApp = ({ Component, pageProps }: AppProps) => {
             <ToastProvider>
               <Component {...pageProps} />
             </ToastProvider>
-            {isFooter && <Footer />}
+            {noPost && <Footer />}
             <Modal />
           </ThemeProvider>
         </Provider>
