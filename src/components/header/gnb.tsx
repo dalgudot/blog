@@ -28,6 +28,11 @@ const GNB: FC<Props> = ({ closeModal }) => {
       target: '_self',
       href: '/',
     },
+    {
+      label: 'UX 수집',
+      target: '_self',
+      href: '/ux-collection',
+    },
     // {
     //   label: '이야기',
     //   target: '_self',
@@ -108,9 +113,11 @@ type GNBListProps = {
 const GNBList: FC<GNBListProps> = ({ list, closeModal }) => {
   const router = useRouter();
   const pathname = router.pathname;
-  const currentStatus =
+  const currentStatus = // isSelected 위한 변수
     pathname === '/' || pathname === '/[category]'
       ? '기록'
+      : pathname === '/ux-collection'
+      ? 'UX 수집'
       : pathname === '/story'
       ? '이야기'
       : pathname === '/contact'

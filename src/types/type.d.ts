@@ -1,5 +1,7 @@
 type TtextTagName = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p';
+
 type Tchildren = JSX.Element | JSX.Element[];
+
 type TColor =
   | '--g1'
   | '--g2'
@@ -9,6 +11,7 @@ type TColor =
   | '--g6'
   | '--g7'
   | '--g8';
+
 type TSVGColor =
   | 'var(--g1)'
   | 'var(--g2)'
