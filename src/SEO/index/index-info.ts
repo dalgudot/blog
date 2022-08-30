@@ -22,7 +22,10 @@ export const indexInfo = (router: NextRouter) => {
 
     type: 'website',
 
-    thumbnail: '/images/default-thumbnail.jpg',
+    thumbnail:
+      router.pathname === '/ux-collection'
+        ? '/images/ux-collection-thumbnail.jpg'
+        : '/images/default-thumbnail.jpg',
 
     description:
       router.pathname === '/ux-collection'
