@@ -14,9 +14,6 @@
 .li {
   margin-top: 48px;
 
-  display: flex;
-  flex-direction: column;
-
   @media screen and (max-width: common.$post__list__media__max__width) {
     margin-top: 36px;
   }
@@ -32,15 +29,20 @@
     margin-top: 8px;
   }
 
-  img {
-    margin-top: 12px;
-    max-width: common.$list__max__width;
+  position: relative; // NextJS Image 경고 제거
+  width: 100%;
+  height: 100%;
+  display: block;
 
-    // S of Safari 이미지 위 아래로 빈 공간 생기는 문제 해결
-    // https://stackoverflow.com/questions/60192601/object-fit-cover-not-working-correctly-on-safari
-    width: 100%;
-    min-height: 100%;
-    object-fit: cover;
-    // E of Safari 이미지 위 아래로 빈 공간 생기는 문제 해결
+  // NextJS Image
+  span {
+    position: relative !important;
+    margin-top: 12px !important;
+
+    img {
+      width: 100% !important;
+      height: 100% !important;
+      position: relative !important;
+    }
   }
 }
