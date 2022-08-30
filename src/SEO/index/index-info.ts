@@ -24,7 +24,10 @@ export const indexInfo = (router: NextRouter) => {
 
     thumbnail: '/images/default-thumbnail.jpg',
 
-    description: '디자인과 개발 경험을 기록하고 공유합니다.',
+    description:
+      router.pathname === '/ux-collection'
+        ? '사용자 경험(UX)을 수집하고 공유합니다.'
+        : '디자인과 개발 경험을 기록하고 공유합니다.',
   };
 
   return info;

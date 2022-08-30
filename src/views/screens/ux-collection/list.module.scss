@@ -1,0 +1,38 @@
+@use '../../../styles/common';
+@use '../../../styles/text-styles.module';
+
+.main {
+  margin: 0 auto 180px;
+  max-width: common.$list__max__width;
+  overflow-x: hidden;
+
+  @media screen and (max-width: common.$post__list__media__max__width) {
+    padding: common.$main__layout__padding;
+  }
+}
+
+.li {
+  display: flex;
+  flex-direction: column;
+  margin-top: 48px;
+
+  @media screen and (max-width: common.$post__list__media__max__width) {
+    margin-top: 24px;
+  }
+
+  time {
+    @include text-styles.body3;
+    color: var(--g4);
+  }
+
+  p {
+    @include text-styles.body2;
+    color: var(--g2);
+    margin-top: 12px;
+  }
+
+  img {
+    max-width: common.$list__max__width;
+    margin-top: 12px;
+  }
+}
