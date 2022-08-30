@@ -1,0 +1,46 @@
+@use '../../../styles/common';
+@use '../../../styles/text-styles.module';
+
+.main {
+  margin: 0 auto 180px;
+  max-width: common.$list__max__width;
+  overflow-x: hidden;
+
+  @media screen and (max-width: common.$post__list__media__max__width) {
+    padding: common.$main__layout__padding;
+  }
+}
+
+.li {
+  margin-top: 48px;
+
+  display: flex;
+  flex-direction: column;
+
+  @media screen and (max-width: common.$post__list__media__max__width) {
+    margin-top: 36px;
+  }
+
+  time {
+    @include text-styles.body3;
+    color: var(--g4);
+  }
+
+  p {
+    @include text-styles.body2;
+    color: var(--g2);
+    margin-top: 8px;
+  }
+
+  img {
+    margin-top: 12px;
+    max-width: common.$list__max__width;
+
+    // S of Safari 이미지 위 아래로 빈 공간 생기는 문제 해결
+    // https://stackoverflow.com/questions/60192601/object-fit-cover-not-working-correctly-on-safari
+    width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    // E of Safari 이미지 위 아래로 빈 공간 생기는 문제 해결
+  }
+}
