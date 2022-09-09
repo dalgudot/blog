@@ -5,8 +5,7 @@ import classNames from 'classnames';
 import IconNewTap24 from '../../../svg/icon-new-tap-24';
 
 const Subscription: FC = () => {
-  const description: string =
-    '새 글이 발행되면 브런치 구독자 알림을 통해 소식을 전해드리고 있습니다. 새 글 알림을 원하시면, 브런치 구독을 부탁드립니다 :)';
+  const description: string = '새로운 글이나 소식을 이메일로 알려드립니다 :)';
 
   return (
     <>
@@ -21,11 +20,11 @@ const Subscription: FC = () => {
           )}
         >
           <a
-            href='https://brunch.co.kr/@dalgudot#articles'
+            href='https://page.stibee.com/subscriptions/96987'
             target='_blank'
             rel='noreferrer'
           >
-            <p>브런치 바로 가기</p>
+            <p>구독 신청</p>
             <IconNewTap24 color='var(--g1)' />
           </a>
         </li>
