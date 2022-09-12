@@ -4,7 +4,7 @@
 .main {
   margin: 0 auto 180px;
   max-width: common.$list__max__width;
-  overflow-x: hidden;
+  // overflow-x: hidden;
 
   @media screen and (max-width: common.$post__list__media__max__width) {
     padding: common.$main__layout__padding;
@@ -12,7 +12,7 @@
 }
 
 .li {
-  margin-top: 48px;
+  margin-top: 72px;
 
   @media screen and (max-width: common.$post__list__media__max__width) {
     margin-top: 36px;
@@ -27,6 +27,7 @@
     @include text-styles.body2;
     color: var(--g2);
     margin-top: 8px;
+    line-height: 1.5;
   }
 
   position: relative; // NextJS Image 경고 제거
