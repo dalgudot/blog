@@ -65,7 +65,7 @@ type Props = {
   name: string;
 };
 
-const AuthorAppLink: FC<Props> = ({ link, icon, name }) => {
+export const AuthorAppLink: FC<Props> = ({ link, icon, name }) => {
   return (
     <a
       className={styles.yoonseul__link}
