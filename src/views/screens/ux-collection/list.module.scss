@@ -23,7 +23,7 @@
     color: var(--g4);
   }
 
-  p {
+  .text {
     @include text-styles.body2;
     color: var(--g2);
     margin-top: 8px;
