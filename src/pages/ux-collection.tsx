@@ -61,7 +61,6 @@ export default UXCollection;
 // 방법 1) 무한 스크롤
 // https://stackoverflow.com/questions/67624601/how-to-implement-infinite-scroll-in-next-js
 // 방법 2) 10~20개 정도만 먼저 가져온 뒤 나머지는 비동기로 가져오기? > 20개짜리 새로운 배열 만들고, useEffect에서 비동기로 뒤에 데이터 받아옴.
-
 const uxCollectionData: UxCollectionDataT = [
   {
     dateTime: '2022-09-15',
