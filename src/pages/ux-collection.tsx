@@ -25,10 +25,10 @@ const UXCollection: NextPage = () => {
   }
 
   return (
-    <main className={s.main}>
-      <ul>
-        {uxCollectionData.map((data, idx) => (
-          <>
+    <>
+      <main className={s.main}>
+        <ul>
+          {uxCollectionData.map((data, idx) => (
             <li key={`${data.dateTime}-${data.text}`} className={s.li}>
               <time dateTime={data.dateTime}>
                 {getDisplayDateTime(data.dateTime)}
@@ -41,18 +41,14 @@ const UXCollection: NextPage = () => {
                 layout='fill'
                 priority
               />
+              {idx === 0 && <Subscription />}
             </li>
-
-            {idx === 3 && (
-              <>
-                <Subscription />
-                <Author />
-              </>
-            )}
-          </>
-        ))}
-      </ul>
-    </main>
+          ))}
+        </ul>
+        <Subscription />
+        <Author />
+      </main>
+    </>
   );
 };
 
@@ -62,6 +58,12 @@ export default UXCollection;
 // https://stackoverflow.com/questions/67624601/how-to-implement-infinite-scroll-in-next-js
 // 방법 2) 10~20개 정도만 먼저 가져온 뒤 나머지는 비동기로 가져오기? > 20개짜리 새로운 배열 만들고, useEffect에서 비동기로 뒤에 데이터 받아옴.
 const uxCollectionData: UxCollectionDataT = [
+  {
+    dateTime: '2022-09-22',
+    text: "'작은 앱 프로젝트'의 가장 큰 목표는 앱의 '단순함'을 유지하는 일이다. 최근 작은 앱 프로젝트의 2번째 앱인 '오늘 할 일'에 '단 하나의 목표'를 추가할 수 있는 공간을 마련했는데, 작은 앱에서는 대단히 큰 변화다. 작은 앱이기에 무언가를 '추가'해 복잡도를 올리는 일은 신중하게 결정해야 한다. 단순함을 유지하며 앱을 사람들에게 더 도움이 되도록 발전시키려면 어떻게 해야 할까? 또 그 단순함의 경계는 어떻게 기준을 잡을 수 있을까?",
+    imagePath: '/ux-collection/5.jpg',
+    appLink: '오늘 할 일',
+  },
   {
     dateTime: '2022-09-15',
     text: "디즈니 플러스를 구독하게 되면서 가장 흥미로웠던 건 '구독'을 해야 디즈니 플러스 앱을 쓸 수 있다는 점이었다. 넷플릭스도 마찬가지라 어찌보면 당연하긴 하지만, 그래도 '결제'를 해야만 서비스를 이용할 수 있도록 결정할 수 있었던 건 탄탄한 '브랜드'와 훌륭한 '콘텐츠'에 대한 확신이 있었기 때문일 것이다. 회원가입을 넘어 결제까지 해야 하는 디즈니 플러스의 구독 전환율은 얼마나 될까? 무척 궁금하다.",
