@@ -25,30 +25,28 @@ const UXCollection: NextPage = () => {
   }
 
   return (
-    <>
-      <main className={s.main}>
-        <ul>
-          {uxCollectionData.map((data, idx) => (
-            <li key={`${data.dateTime}-${data.text}`} className={s.li}>
-              <time dateTime={data.dateTime}>
-                {getDisplayDateTime(data.dateTime)}
-              </time>
-              <p className={s.text}>{data.text}</p>
-              {data.appLink && getAppLink(data.appLink)}
-              <Image
-                src={data.imagePath}
-                alt={data.text}
-                layout='fill'
-                priority
-              />
-              {idx === 0 && <Subscription />}
-            </li>
-          ))}
-        </ul>
-        <Subscription />
-        <Author />
-      </main>
-    </>
+    <main className={s.main}>
+      <ul>
+        {uxCollectionData.map((data, idx) => (
+          <li key={`${data.dateTime}-${data.text}`} className={s.li}>
+            <time dateTime={data.dateTime}>
+              {getDisplayDateTime(data.dateTime)}
+            </time>
+            <p className={s.text}>{data.text}</p>
+            {data.appLink && getAppLink(data.appLink)}
+            <Image
+              src={data.imagePath}
+              alt={data.text}
+              layout='fill'
+              priority
+            />
+            {idx === 0 && <Subscription />}
+          </li>
+        ))}
+      </ul>
+      <Subscription />
+      <Author />
+    </main>
   );
 };
 

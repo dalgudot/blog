@@ -30,7 +30,7 @@ const TitleWYSIWYG: FC<Props> = ({
 
   useEffect(() => {
     dispatch(setTempArticleDateTimeData({ seoDate }));
-  }, []);
+  }, [seoDate]);
 
   const setTempPostHtmlData = (inputHtml: string) => {
     dispatch(setTempArticleTitleData({ inputHtml }));

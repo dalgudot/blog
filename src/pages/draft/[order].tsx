@@ -33,10 +33,10 @@ const DraftWriting: NextPage = () => {
     draftOrder &&
       getDraftByOrder(draftOrder) //
         .then((draftData) => {
-          const initializeDraftData = () => {
+          function initializeDraftData() {
             dispatch(setPostData(draftData as IPostData)); // 초기화 및 map() 상태 관리(새로운 블럭 그리는 일 등)
             dispatch(setTempPostData(draftData as IPostData)); // 데이터 저장 위해(contentEditable 요소가 매번 렌더링될 때마다 생기는 문제 방지)
-          };
+          }
           initializeDraftData();
         });
 
@@ -61,9 +61,9 @@ const DraftWriting: NextPage = () => {
       maxValueOfOrder !== NaN ? maxValueOfOrder + 1 : 1
     );
 
-    await tempSaveDataToFireStoreDB(); // draft에도 저장
     await saveDataToFireStoreDB(category, newPathOrder, tempPost);
     await changeToPublished(category, newPathOrder); // change status to 'published'
+    await tempSaveDataToFireStoreDB(); // draft에도 저장
 
     // [환경 변수 설정] production인 경우 toast, localhost의 경우 만들어진 경로로 바로 이동.
     process.env.NODE_ENV === 'production'
@@ -76,11 +76,7 @@ const DraftWriting: NextPage = () => {
 
   return (
     <>
-      {isAdmin && (
-        <>
-          <Post contentEditable={isAdmin} postData={post} />
-        </>
-      )}
+      {isAdmin && <Post contentEditable={isAdmin} postData={post} />}
 
       <button
         onClick={tempSaveDataToFireStoreDB}
