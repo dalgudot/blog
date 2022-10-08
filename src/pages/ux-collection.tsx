@@ -25,30 +25,28 @@ const UXCollection: NextPage = () => {
   }
 
   return (
-    <>
-      <main className={s.main}>
-        <ul>
-          {uxCollectionData.map((data, idx) => (
-            <li key={`${data.dateTime}-${data.text}`} className={s.li}>
-              <time dateTime={data.dateTime}>
-                {getDisplayDateTime(data.dateTime)}
-              </time>
-              <p className={s.text}>{data.text}</p>
-              {data.appLink && getAppLink(data.appLink)}
-              <Image
-                src={data.imagePath}
-                alt={data.text}
-                layout='fill'
-                priority
-              />
-              {idx === 0 && <Subscription />}
-            </li>
-          ))}
-        </ul>
-        <Subscription />
-        <Author />
-      </main>
-    </>
+    <main className={s.main}>
+      <ul>
+        {uxCollectionData.map((data, idx) => (
+          <li key={`${data.dateTime}-${data.text}`} className={s.li}>
+            <time dateTime={data.dateTime}>
+              {getDisplayDateTime(data.dateTime)}
+            </time>
+            <p className={s.text}>{data.text}</p>
+            {data.appLink && getAppLink(data.appLink)}
+            <Image
+              src={data.imagePath}
+              alt={data.text}
+              layout='fill'
+              priority
+            />
+            {idx === 0 && <Subscription />}
+          </li>
+        ))}
+      </ul>
+      <Subscription />
+      <Author />
+    </main>
   );
 };
 
@@ -58,6 +56,11 @@ export default UXCollection;
 // https://stackoverflow.com/questions/67624601/how-to-implement-infinite-scroll-in-next-js
 // 방법 2) 10~20개 정도만 먼저 가져온 뒤 나머지는 비동기로 가져오기? > 20개짜리 새로운 배열 만들고, useEffect에서 비동기로 뒤에 데이터 받아옴.
 const uxCollectionData: UxCollectionDataT = [
+  {
+    dateTime: '2022-10-08',
+    text: "꽤 오랫동안 카밀 핸드크림을 써왔다. 그 이전에는 록시땅 핸드크림을 썼었는데, 카밀로 바꾸면서 '뚜껑을 돌리는 행동' 대신 뚜껑을 열기만 하면 돼서 편했다. 록시땅이 주는 감성(?)이나 품질은 좋았으나 핸드크림을 바르기 위해 뚜껑을 여닫는 과정 자체가 상당히 불편했던 것이다. 카밀을 쓰면서도 여닫는 게 점점 불편하게 느껴졌다. 여닫는 과정 자체도 그렇고, 닫을 때 나는 '딱' 소리가 사무실에서 동료들에게 불편을 줄까 신경도 쓰였다. 최근 펌프형 핸드크림을 구입했는데 이 문제가 완전히 해결됐다. 제품과 업계가 갖고 있는 관성 혹은 클리셰를 뒤집고 새로운 사용자 경험(UX)을 만드는 디자이너들의 노력이 멋지다.",
+    imagePath: '/ux-collection/7.jpg',
+  },
   {
     dateTime: '2022-09-25',
     text: "링크드인 웹 한글 버전에서 1촌 신청을 철회하면 아래와 같은 모달이 뜬다. 버튼이 2개인데 모두 '취소'라는 문구로 돼 있다. 오랫동안 바뀌지 않고 있다. 보편적인 버튼 배치와 시각적 위계로 두 버튼의 역할을 구별할 수는 있으나, 지역화(Localization)의 디테일이 아쉬운 건 사실이다.",
