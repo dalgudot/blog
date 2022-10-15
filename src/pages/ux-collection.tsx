@@ -34,13 +34,12 @@ const UXCollection: NextPage = () => {
             </time>
             <p className={s.text}>{data.text}</p>
             {data.appLink && getAppLink(data.appLink)}
-            {/* <Image
+            <Image
               src={data.imagePath}
               alt={data.text}
               layout='fill'
               priority
-            /> */}
-            <img src={data.imagePath} alt={data.text} />
+            />
             {idx === 0 && <Subscription />}
           </li>
         ))}
