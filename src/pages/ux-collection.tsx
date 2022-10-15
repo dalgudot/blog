@@ -26,7 +26,7 @@ const UXCollection: NextPage = () => {
 
   return (
     <main className={s.main}>
-      {/* <ul>
+      <ul>
         {uxCollectionData.map((data, idx) => (
           <li key={`${data.dateTime}-${data.text}`} className={s.li}>
             <time dateTime={data.dateTime}>
@@ -45,7 +45,7 @@ const UXCollection: NextPage = () => {
         ))}
       </ul>
       <Subscription />
-      <Author /> */}
+      <Author />
     </main>
   );
 };
