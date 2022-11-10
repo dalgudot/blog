@@ -40,11 +40,11 @@ const UXCollection: NextPage = () => {
               layout='fill'
               priority
             />
-            {idx === 0 && <Subscription />}
+            {/* {idx === 0 && <Subscription />} */}
           </li>
         ))}
       </ul>
-      <Subscription />
+      {/* <Subscription /> */}
       <Author />
     </main>
   );
