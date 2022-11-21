@@ -44,8 +44,9 @@ const Post: FC<Props> = ({
         {/* 3개의 박스가 정렬돼 있고, 호버하면 커지는 버튼 */}
         {/* <Share /> */}
         {isPublishedPost && <Response />}
-        {/* <Subscription /> */}
+
         <Author />
+        <Subscription />
         {query.category !== 'story' && (
           <LinkWYSIWYG
             contentEditable={contentEditable}
