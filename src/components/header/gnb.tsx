@@ -29,10 +29,15 @@ const GNB: FC<Props> = ({ closeModal }) => {
       href: '/',
     },
     {
-      label: 'UX 수집',
-      target: '_self',
-      href: '/ux-collection',
+      label: '윤슬',
+      target: '_blank',
+      href: 'https://www.instagram.com/yoonseul_ko/',
     },
+    // {
+    //   label: 'UX 수집',
+    //   target: '_self',
+    //   href: '/ux-collection',
+    // },
     // {
     //   label: '이야기',
     //   target: '_self',
@@ -135,31 +140,29 @@ const GNBList: FC<GNBListProps> = ({ list, closeModal }) => {
   );
 
   return (
-    <>
-      <li className={listClassname}>
-        {list.target === '_self' ? (
-          <Link href={list.href}>
-            <a
-              onClick={() => {
-                closeModal && closeModal();
-              }}
-            >
-              {list.label}
-            </a>
-          </Link>
-        ) : (
+    <li className={listClassname}>
+      {list.target === '_self' ? (
+        <Link href={list.href}>
           <a
             onClick={() => {
               closeModal && closeModal();
             }}
-            href={list.href}
-            target={list.target}
           >
             {list.label}
           </a>
-        )}
-        {isSelected && <div className={styles.under__line} />}
-      </li>
-    </>
+        </Link>
+      ) : (
+        <a
+          onClick={() => {
+            closeModal && closeModal();
+          }}
+          href={list.href}
+          target={list.target}
+        >
+          {list.label}
+        </a>
+      )}
+      {isSelected && <div className={styles.under__line} />}
+    </li>
   );
 };
