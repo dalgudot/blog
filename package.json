@@ -1,6 +1,6 @@
 {
   "name": "blog",
-  "version": "1.4.16 - 2022.11.20.01",
+  "version": "1.4.20 - 2022.11.25.01",
   "private": true,
   "scripts": {
     "dev": "next dev",
