@@ -7,7 +7,11 @@ const RightSide: FC = () => {
     { label: 'Brunch', href: 'https://brunch.co.kr/@dalgudot' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/dalgudot' },
     { label: 'GitHub', href: 'https://github.com/dalgudot' },
-    { label: 'Instagram', href: 'https://www.instagram.com/yoonseul_ko/' },
+    {
+      label: 'YoonSeul',
+      href: 'https://apps.apple.com/kr/app/yoonseul-diary/id1618657913',
+    },
+    // { label: 'Instagram', href: 'https://www.instagram.com/yoonseul_ko/' },
     // { label: 'Facebook', href: 'https://www.facebook.com/dalgudot' },
   ];
 
