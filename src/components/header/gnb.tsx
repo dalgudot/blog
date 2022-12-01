@@ -31,7 +31,7 @@ const GNB: FC<Props> = ({ closeModal }) => {
     {
       label: '윤슬',
       target: '_blank',
-      href: 'https://www.instagram.com/yoonseul_ko/',
+      href: 'https://apps.apple.com/kr/app/yoonseul-diary/id1618657913',
     },
     // {
     //   label: 'UX 수집',
