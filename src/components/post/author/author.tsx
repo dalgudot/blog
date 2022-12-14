@@ -1,21 +1,16 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { FC } from 'react';
 import IconNewTap24 from '../../../svg/icon-new-tap-24';
 import IconPlantFamilyLogo24 from '../../../svg/icon-plant-family-logo-24';
+import IconReminderLogo24 from '../../../svg/icon-reminder-logo-24';
 import IconTodayToDoLogo24 from '../../../svg/icon-today-todo-logo-24';
 import IconYoonSeulLogo24 from '../../../svg/icon-yoonseul-logo-24';
 import styles from './author.module.scss';
 
 const Author: FC = () => {
   const description: string =
-    "많은 기능과 서비스를 갖추고 있는 슈퍼 앱들 사이에서 단순함을 가장 큰 목표로 하는 '작은 앱'이 사람들에게 어떠한 의미로 다가갈지 연구하는 '작은 앱 프로젝트'를 진행하고 있습니다. 현재 운영 중인 앱은 다음과 같습니다.";
-
-  // const router = useRouter();
-  // const query = router.query;
-  // const career =
-  //   query.category === 'design' ? '프로덕트 디자이너' : '프론트엔드 개발자';
+    "많은 기능과 서비스를 갖추고 있는 슈퍼 앱들 사이에서 단순함을 가장 큰 목표로 하는 '작은 앱'이 사람들에게 어떠한 의미로 다가갈지 연구하는 '작은 앱 프로젝트'를 진행하고 있습니다. 현재 총 4개의 앱을 운영 중입니다.";
 
   return (
     <>
@@ -51,6 +46,12 @@ const Author: FC = () => {
           link='https://apps.apple.com/kr/app/plant-family-water-reminder/id1633937579'
           icon={<IconPlantFamilyLogo24 />}
           name='식물 가족 iOS 앱'
+        />
+
+        <AuthorAppLink
+          link='https://apps.apple.com/kr/app/%EB%A6%AC%EB%A7%88%EC%9D%B8%EB%8D%94-%ED%95%A0-%EC%9D%BC-%EC%95%8C%EB%A6%BC/id6444939279'
+          icon={<IconReminderLogo24 />}
+          name='리마인더 iOS 앱'
         />
       </section>
     </>
