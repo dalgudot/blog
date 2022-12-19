@@ -12,6 +12,14 @@
   align-items: center;
   margin-top: 36px;
 
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    margin-top: 32px;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    margin-top: 24px;
+  }
+
   div {
     margin-left: 24px;
 
@@ -66,16 +74,16 @@
   height: 100%;
   border: 1px solid var(--g6);
 
-  padding: 32px 36px;
+  padding: 40px 36px;
   margin: 28px 0;
 
   @media screen and (max-width: text-styles.$text__first__max__width) {
-    padding: 28px 32px;
+    padding: 36px 32px;
   }
 
   @media screen and (max-width: text-styles.$text__second__max__width) {
+    padding: 28px 20px;
     margin: 16px 0;
-    padding: 24px 20px;
   }
 
   p {
