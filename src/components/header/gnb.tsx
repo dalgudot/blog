@@ -28,11 +28,11 @@ const GNB: FC<Props> = ({ closeModal }) => {
       target: '_self',
       href: '/',
     },
-    {
-      label: '윤슬',
-      target: '_blank',
-      href: 'https://apps.apple.com/kr/app/yoonseul-diary/id1618657913',
-    },
+    // {
+    //   label: '윤슬',
+    //   target: '_blank',
+    //   href: 'https://apps.apple.com/kr/app/yoonseul-diary/id1618657913',
+    // },
     // {
     //   label: 'UX 수집',
     //   target: '_self',
