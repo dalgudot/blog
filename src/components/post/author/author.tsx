@@ -10,7 +10,7 @@ import styles from './author.module.scss';
 
 const Author: FC = () => {
   const description: string =
-    "많은 기능과 서비스를 갖추고 있는 슈퍼 앱들 사이에서 단순함을 가장 큰 목표로 하는 '작은 앱'이 사람들에게 어떠한 의미로 다가갈지 연구하는 '작은 앱 프로젝트'를 진행하고 있습니다. 현재 총 4개의 앱을 운영 중입니다.";
+    "많은 기능과 서비스를 갖추고 있는 슈퍼 앱들 사이에서 단순함을 가장 큰 목표로 하는 '작은 앱'이 사람들에게 어떠한 의미로 다가갈지 연구하는 '작은 앱 프로젝트'를 진행하고 있습니다.";
 
   return (
     <>
@@ -30,7 +30,7 @@ const Author: FC = () => {
           </a>
         </Link>
 
-        <AuthorAppLink
+        {/* <AuthorAppLink
           link='https://apps.apple.com/kr/app/%EC%9C%A4%EC%8A%AC/id1618657913'
           icon={<IconYoonSeulLogo24 />}
           name='윤슬 iOS 앱'
@@ -46,7 +46,7 @@ const Author: FC = () => {
           link='https://apps.apple.com/kr/app/plant-family-water-reminder/id1633937579'
           icon={<IconPlantFamilyLogo24 />}
           name='식물 가족 iOS 앱'
-        />
+        /> */}
 
         <AuthorAppLink
           link='https://apps.apple.com/kr/app/%EB%A6%AC%EB%A7%88%EC%9D%B8%EB%8D%94-%ED%95%A0-%EC%9D%BC-%EC%95%8C%EB%A6%BC/id6444939279'
