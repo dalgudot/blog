@@ -26,7 +26,7 @@ const Login: NextPage = () => {
           onLogOut();
           showToast('관리자가 아니므로 로그아웃되었습니다.');
         } else {
-          // router.push('/');
+          router.push('/');
         }
       })
       .catch((error) => {
