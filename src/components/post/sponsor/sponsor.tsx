@@ -1,15 +1,16 @@
 import { FC } from 'react';
-import styles from './subscription.module.scss';
+import styles from './sponsor.module.scss';
 import li__styles from '../../block-wysiwyg/editable-element/link/editable-link-block.module.scss';
 import classNames from 'classnames';
 import IconNewTap24 from '../../../svg/icon-new-tap-24';
 
-const Subscription: FC = () => {
-  const description: string = '브런치에 디자인 경험을 공유하고 있습니다 :)';
+const Sponsor: FC = () => {
+  const description: string =
+    '글이 도움이 되셨다면 아래 github 후원 페이지에서 후원을 부탁드립니다 :)';
 
   return (
-    <section className={styles.subscription__section}>
-      <h2>구독</h2>
+    <section className={styles.sponsor__section}>
+      <h2>후원</h2>
       <p className={styles.description}>{description}</p>
       <li
         className={classNames(
@@ -19,11 +20,11 @@ const Subscription: FC = () => {
         )}
       >
         <a
-          href='https://brunch.co.kr/@dalgudot#articles'
+          href='https://github.com/sponsors/dalgudot'
           target='_blank'
           rel='noreferrer'
         >
-          <p>브런치 구독</p>
+          <p>후원하러 가기</p>
           <IconNewTap24 color='var(--g1)' />
         </a>
       </li>
@@ -31,4 +32,4 @@ const Subscription: FC = () => {
   );
 };
 
-export default Subscription;
+export default Sponsor;
