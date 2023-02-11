@@ -9,6 +9,7 @@ import Share from './share/share';
 import Author from './author/author';
 import { TTableOfContentsData } from '../navigation/table-of-contents/table-of-contents';
 import Subscription from './subscription/subscription';
+import Sponsor from './sponsor/sponsor';
 
 type Props = {
   contentEditable: boolean;
@@ -33,28 +34,27 @@ const Post: FC<Props> = ({
   const query = router.query;
 
   return (
-    <>
-      <main className={styles.post__main}>
-        <Article
-          contentEditable={contentEditable}
-          articleTitleWysiwygData={articleTitleWysiwygData}
-          wysiwygDataArray={postData.wysiwygDataArray}
-          tableOfContentsData={tableOfContentsData}
-        />
-        {/* 3개의 박스가 정렬돼 있고, 호버하면 커지는 버튼 */}
-        {/* <Share /> */}
-        {isPublishedPost && <Response />}
+    <main className={styles.post__main}>
+      <Article
+        contentEditable={contentEditable}
+        articleTitleWysiwygData={articleTitleWysiwygData}
+        wysiwygDataArray={postData.wysiwygDataArray}
+        tableOfContentsData={tableOfContentsData}
+      />
+      {/* 3개의 박스가 정렬돼 있고, 호버하면 커지는 버튼 */}
+      {/* <Share /> */}
+      {isPublishedPost && <Response />}
 
-        <Author />
-        <Subscription />
-        {query.category !== 'story' && (
-          <LinkWYSIWYG
-            contentEditable={contentEditable}
-            linkWysiwygDataArray={postData.linkWysiwygDataArray}
-          />
-        )}
-      </main>
-    </>
+      <Author />
+      <Sponsor />
+      <Subscription />
+      {query.category !== 'story' && (
+        <LinkWYSIWYG
+          contentEditable={contentEditable}
+          linkWysiwygDataArray={postData.linkWysiwygDataArray}
+        />
+      )}
+    </main>
   );
 };
 
