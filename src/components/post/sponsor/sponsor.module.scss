@@ -1,0 +1,20 @@
+@use '../../../styles/common';
+@use '../../../styles/text-styles.module';
+
+.sponsor__section {
+  @include common.article__section__title__divider;
+}
+
+.description {
+  @include text-styles.body1(400);
+
+  margin-top: 24px;
+
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    margin-top: 24px;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    margin-top: 16px;
+  }
+}

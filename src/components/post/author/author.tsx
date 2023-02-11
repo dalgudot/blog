@@ -13,24 +13,23 @@ const Author: FC = () => {
     "많은 기능과 서비스를 갖추고 있는 슈퍼 앱들 사이에서 단순함을 가장 큰 목표로 하는 '작은 앱'이 사람들에게 어떠한 의미로 다가갈지 연구하는 '작은 앱 프로젝트'를 진행하고 있습니다.";
 
   return (
-    <>
-      <section className={styles.author__section}>
-        <h2>글쓴이</h2>
-        <Link href='/contact'>
-          <a className={styles.author__img}>
-            <Image
-              src='/common/profile-photo.jpg'
-              alt='김경환의 프로필 사진'
-              layout='fill'
-            />
-            <div>
-              <h4>김경환 · 프로덕트 디자이너</h4>
-              <p>{description}</p>
-            </div>
-          </a>
-        </Link>
+    <section className={styles.author__section}>
+      <h2>글쓴이</h2>
+      <Link href='/contact'>
+        <a className={styles.author__img}>
+          <Image
+            src='/common/profile-photo.jpg'
+            alt='김경환의 프로필 사진'
+            layout='fill'
+          />
+          <div>
+            <h4>김경환 · 프로덕트 디자이너</h4>
+            <p>{description}</p>
+          </div>
+        </a>
+      </Link>
 
-        {/* <AuthorAppLink
+      {/* <AuthorAppLink
           link='https://apps.apple.com/kr/app/%EC%9C%A4%EC%8A%AC/id1618657913'
           icon={<IconYoonSeulLogo24 />}
           name='윤슬 iOS 앱'
@@ -48,13 +47,12 @@ const Author: FC = () => {
           name='식물 가족 iOS 앱'
         /> */}
 
-        <AuthorAppLink
-          link='https://apps.apple.com/kr/app/%EB%A6%AC%EB%A7%88%EC%9D%B8%EB%8D%94-%ED%95%A0-%EC%9D%BC-%EC%95%8C%EB%A6%BC/id6444939279'
-          icon={<IconReminderLogo24 />}
-          name='리마인더 iOS 앱'
-        />
-      </section>
-    </>
+      <AuthorAppLink
+        link='https://apps.apple.com/kr/app/%EB%A6%AC%EB%A7%88%EC%9D%B8%EB%8D%94-%ED%95%A0-%EC%9D%BC-%EC%95%8C%EB%A6%BC/id6444939279'
+        icon={<IconReminderLogo24 />}
+        name='리마인더 iOS 앱'
+      />
+    </section>
   );
 };
 
