@@ -13,7 +13,7 @@ const Email: FC = () => {
         onCopy={() => showToast('메일 주소를 복사했습니다 📮')}
       >
         <button type='button' className={styles.email__button}>
-          dalgudot@gmail.com
+          <address>dalgudot@gmail.com</address>
         </button>
       </CopyToClipboard>
 
