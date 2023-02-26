@@ -2,7 +2,7 @@
 @use '../../../../styles/text-styles.module';
 @use '../../../../styles/motion.module';
 
-.article__title__section {
+.article__title__header {
   time {
     color: var(--g4);
     margin-left: 2px; // 시각 보정

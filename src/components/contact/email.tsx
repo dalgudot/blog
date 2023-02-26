@@ -24,9 +24,12 @@ const Email: FC = () => {
         >
           <button type='button'>메일 복사</button>
         </CopyToClipboard>
-        <a href='mailto:dalgudot@gmail.com' target='_blank' rel='noreferrer'>
-          메일 보내기
-        </a>
+
+        <address>
+          <a href='mailto:dalgudot@gmail.com' target='_blank' rel='noreferrer'>
+            메일 보내기
+          </a>
+        </address>
       </div>
     </section>
   );

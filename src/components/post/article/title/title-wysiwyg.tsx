@@ -43,7 +43,7 @@ const TitleWYSIWYG: FC<Props> = ({
   const ref = useRef<HTMLHeadingElement>(null);
 
   return (
-    <section className={styles.article__title__section}>
+    <header className={styles.article__title__header}>
       {contentEditable && <SelectCategory />}
       <time dateTime={seoDate}>{displayDate}</time>
       <EditableTextBlock
@@ -56,7 +56,7 @@ const TitleWYSIWYG: FC<Props> = ({
         placeholder='글의 제목을 입력해주세요'
       />
       <Profile />
-    </section>
+    </header>
   );
 };
 
