@@ -46,7 +46,9 @@ const Post: FC<Props> = ({
       {isPublishedPost && <Response />}
 
       <Author />
-      <Sponsor />
+
+      {query.category == 'dev' && <Sponsor />}
+
       <Subscription />
       {query.category !== 'story' && (
         <LinkWYSIWYG
