@@ -30,8 +30,7 @@ const BlogApp = ({ Component, pageProps }: AppProps) => {
 
   usePreventRightClick();
 
-  // mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_TOKEN ?? '', { debug: true });
-  // mixpanel.track('First Mixpanel Data');
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_TOKEN ?? '', { debug: true });
 
   return (
     <>
