@@ -18,8 +18,8 @@ const RightSide: FC = () => {
   return (
     <div className={styles.right__side}>
       <ul>
-        <li>
-          {socialList.map((list) => (
+        {socialList.map((list, idx) => (
+          <li key={`${list.label}_${idx}`}>
             <a
               key={list.label}
               href={list.href}
@@ -28,8 +28,8 @@ const RightSide: FC = () => {
             >
               {list.label}
             </a>
-          ))}
-        </li>
+          </li>
+        ))}
       </ul>
       <Link href='/contact'>
         <a className={styles.right__side__copyright}>
