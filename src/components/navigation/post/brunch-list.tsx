@@ -11,14 +11,12 @@ const BrunchList: React.FC<Props> = ({ url, dateTime, title }) => {
   const displayDateTime = dateTime.replace(/-/g, '.');
 
   return (
-    <>
-      <li className={styles.post__list}>
-        <a href={url} target='_blank' rel='noreferrer'>
-          <time dateTime={dateTime}>{displayDateTime}</time>
-          <h1>{title}</h1>
-        </a>
-      </li>
-    </>
+    <li className={styles.post__list}>
+      <a href={url} target='_blank' rel='noreferrer'>
+        <time dateTime={dateTime}>{displayDateTime}</time>
+        <h1>{title}</h1>
+      </a>
+    </li>
   );
 };
 

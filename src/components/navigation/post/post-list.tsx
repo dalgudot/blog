@@ -1,11 +1,10 @@
 import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { brunchShareDesignList } from '../../../data/brunch-list';
 import BrunchList from './brunch-list';
 import styles from './post-list.module.scss';
-import variables from '../../../styles/motion.module.scss';
 import List from './list';
 import { TListData } from '../../../pages';
 
@@ -31,29 +30,6 @@ const PostList: FC<Props> = ({
       : allPostsListData;
 
   const showBrunchList: boolean = pathname === '/' || asPath === '/design';
-
-  // const [isFadeIn, setIsFadeIn] = useState<boolean>(false);
-  // const FADE_IN_DURATION = Number(
-  //   variables.fade__in__duration.replace('s', '')
-  // );
-
-  // // Dynamic Routing에서도 Fade-in 실행
-  // useEffect(() => {
-  //   setIsFadeIn(true);
-
-  //   const timeoutId = setTimeout(() => {
-  //     setIsFadeIn(false);
-  //   }, FADE_IN_DURATION * 1000);
-
-  //   return () => {
-  //     clearTimeout(timeoutId);
-  //   };
-  // }, [asPath]);
-
-  // const mainClassname = classNames(
-  //   styles.post__list__main__layout,
-  //   isFadeIn && styles.main__fade__in
-  // );
 
   return (
     <>
