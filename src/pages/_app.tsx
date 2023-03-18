@@ -16,6 +16,7 @@ import React from 'react';
 import { RecoilRoot } from 'recoil';
 import Modal from '../components/modal/modal';
 import { usePreventRightClick } from '../lib/hooks/usePreventRightClick';
+import mixpanel from 'mixpanel-browser';
 
 const BlogApp = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
@@ -28,6 +29,9 @@ const BlogApp = ({ Component, pageProps }: AppProps) => {
     router.pathname === '/contact';
 
   usePreventRightClick();
+
+  // mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_TOKEN ?? '', { debug: true });
+  // mixpanel.track('First Mixpanel Data');
 
   return (
     <>
