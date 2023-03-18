@@ -71,16 +71,14 @@
 
   ul {
     @include text-styles.body4(500);
+    display: flex;
+    justify-content: flex-end;
 
-    a:nth-child(2) {
+    li:nth-child(2) {
       @include divider;
     }
 
-    a:nth-child(3) {
-      @include divider;
-    }
-
-    a:nth-child(4) {
+    li:nth-child(3) {
       @include divider;
     }
   }
