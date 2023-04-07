@@ -81,6 +81,10 @@
     li:nth-child(3) {
       @include divider;
     }
+
+    @media screen and (max-width: common.$footer__media__max__width) {
+      justify-content: center;
+    }
   }
 }
 
