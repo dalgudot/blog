@@ -29,7 +29,7 @@ const careerData = [
     contents: [
       {
         term: '',
-        text: '젊은 세대에게 좋은 영감을 주는 사람으로 나이 들어가기',
+        text: '좋은 영감이 되는 사람으로 나이 들어가기',
       },
     ],
   },
