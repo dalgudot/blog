@@ -1,14 +1,15 @@
 import { useToast } from '@dalgu/react-toast';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useIsAdmin } from '../lib/hooks/useIsAdmin';
-import { setUid } from '../redux-toolkit/slices/user-slice';
-import { useAppDispatch } from '../redux-toolkit/store';
+import { useIsAdmin } from '../../lib/hooks/useIsAdmin';
+import { setUid } from '../../redux-toolkit/slices/user-slice';
+import { useAppDispatch } from '../../redux-toolkit/store';
 import {
   Authentication,
   IAuthentication,
   TproviderName,
-} from '../service/firebase/authentication';
+} from '../../service/firebase/authentication';
+import s from './login.module.scss';
 
 const Login: NextPage = () => {
   const { isAdmin } = useIsAdmin();
@@ -46,11 +47,17 @@ const Login: NextPage = () => {
       });
   };
 
-  if (isAdmin) {
-    return <button onClick={onLogOut}>로그아웃</button>;
-  } else {
-    return <button onClick={() => onLogIn('Google')}>구글로 로그인</button>;
-  }
+  return (
+    <main className={s.alignment__center}>
+      <button
+        onClick={() => {
+          isAdmin ? onLogOut() : onLogIn('Google');
+        }}
+      >
+        {isAdmin ? '로그아웃' : '구글로 로그인'}
+      </button>
+    </main>
+  );
 };
 
 export default Login;
