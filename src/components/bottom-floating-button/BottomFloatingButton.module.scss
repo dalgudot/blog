@@ -1,0 +1,81 @@
+@use '../../styles/common';
+@use '../../styles/text-styles.module';
+@use '../../styles/motion.module';
+
+.fixed__positon {
+  @include motion.scale__hover;
+
+  position: fixed;
+  bottom: common.$footer__bottom__margin - 8px;
+
+  // S of 중앙 정렬 위한 코드
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  // E of 중앙 정렬 위한 코드
+
+  z-index: common.$floating__ui__z__index;
+  max-width: common.$list__max__width - 144px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 32px;
+
+  background-color: var(--g7);
+  border: 1px solid var(--g6);
+  border-radius: 24px;
+
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    // padding: 20px 28px;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    bottom: 0px;
+    width: 100%;
+    border: none;
+    border-top: 1px solid var(--g6);
+    border-radius: 0px;
+    max-width: none;
+
+    padding: 16px;
+  }
+
+  svg:nth-child(1) {
+    width: 100%;
+    max-width: 58px;
+    height: 58px;
+    border-radius: 12px;
+
+    @media screen and (max-width: text-styles.$text__first__max__width) {
+      max-width: 54px;
+      height: 54px;
+    }
+
+    @media screen and (max-width: text-styles.$text__second__max__width) {
+      max-width: 50px;
+      height: 50px;
+    }
+  }
+}
+
+.left__side {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  @media screen and (max-width: text-styles.$text__first__max__width) {
+    gap: 13px;
+  }
+
+  @media screen and (max-width: text-styles.$text__second__max__width) {
+    gap: 12px;
+  }
+}
+
+.left__side__text {
+  p {
+    margin-top: 2px;
+    color: var(--g2);
+  }
+}
