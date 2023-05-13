@@ -3,14 +3,22 @@ import { REMINDER_APPSTORE_LINK } from '../../constants/contants';
 import IconNewTap24 from '../../svg/icon-new-tap-24';
 import IconReminderLogo24 from '../../svg/icon-reminder-logo-24';
 import s from './BottomFloatingButton.module.scss';
+import { useRouter } from 'next/router';
+import mixpanel from 'mixpanel-browser';
 
 export default function BottomFloatingButton() {
+  const router = useRouter();
+  function sendMixpanelEvent() {
+    mixpanel.track('click_BottomFloatingButton', { path: router.asPath });
+  }
+
   return (
     <a
       href={REMINDER_APPSTORE_LINK}
       target='_blank'
       rel='noreferrer'
       className={s.fixed__positon}
+      onClick={sendMixpanelEvent}
     >
       <div className={s.left__side}>
         <IconReminderLogo24 />
