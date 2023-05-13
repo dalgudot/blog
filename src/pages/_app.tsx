@@ -31,11 +31,9 @@ const BlogApp = ({ Component, pageProps }: AppProps) => {
 
   usePreventRightClick();
 
-  if (process.env.NODE_ENV === 'production') {
-    mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_TOKEN ?? '', {
-      debug: false,
-    });
-  }
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_TOKEN ?? '', {
+    debug: false,
+  });
 
   return (
     <>
