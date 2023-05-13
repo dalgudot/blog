@@ -17,6 +17,7 @@ import { RecoilRoot } from 'recoil';
 import Modal from '../components/modal/modal';
 import { usePreventRightClick } from '../lib/hooks/usePreventRightClick';
 import mixpanel from 'mixpanel-browser';
+import BottomFloatingButton from '../components/bottom-floating-button/BottomFloatingButton';
 
 const BlogApp = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
@@ -42,6 +43,7 @@ const BlogApp = ({ Component, pageProps }: AppProps) => {
             <ToastProvider>
               <Component {...pageProps} />
             </ToastProvider>
+            <BottomFloatingButton />
             {isFooter && <Footer />}
             <Modal />
           </ThemeProvider>

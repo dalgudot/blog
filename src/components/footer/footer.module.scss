@@ -6,7 +6,7 @@
   display: flex;
   justify-content: space-between;
   position: fixed;
-  bottom: 64px;
+  bottom: common.$footer__bottom__margin;
   left: 0;
   right: 0;
 
@@ -16,7 +16,7 @@
     justify-content: center;
     position: relative;
     bottom: 0;
-    margin: -96px auto 72px;
+    margin: -96px auto 196px;
   }
 }
 
