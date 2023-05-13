@@ -3,8 +3,12 @@
 @use '../../../styles/text-styles.module';
 
 .post__list__main__layout {
-  margin: 0 auto 180px;
+  margin: 0 auto 240px;
   max-width: common.$list__max__width;
+
+  @media screen and (max-width: common.$footer__media__max__width) {
+    margin: 0 auto 180px;
+  }
 
   @media screen and (max-width: common.$post__list__media__max__width) {
     padding: common.$main__layout__padding;

@@ -10,10 +10,12 @@ $post__media__max__width: 824px; // 760 + 32 + 32 - 상하단 마진 위해
 $footer__media__max__width: 1540px;
 
 $main__layout__padding: 0 4vw;
+$footer__bottom__margin: 48px;
 
 // z-index
 $modal__common__background__z__index: 10;
-$modal__z__index: 11;
+$floating__ui__z__index: 11;
+$modal__z__index: 12;
 
 // :export {
 //   list__max__width: $list__max__width;

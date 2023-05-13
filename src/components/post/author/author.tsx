@@ -7,6 +7,7 @@ import IconReminderLogo24 from '../../../svg/icon-reminder-logo-24';
 import IconTodayToDoLogo24 from '../../../svg/icon-today-todo-logo-24';
 import IconYoonSeulLogo24 from '../../../svg/icon-yoonseul-logo-24';
 import styles from './author.module.scss';
+import { REMINDER_APPSTORE_LINK } from '../../../constants/contants';
 
 const Author: FC = () => {
   const description: string =
@@ -48,7 +49,7 @@ const Author: FC = () => {
         /> */}
 
       <AuthorAppLink
-        link='https://apps.apple.com/kr/app/%EB%A6%AC%EB%A7%88%EC%9D%B8%EB%8D%94-%ED%95%A0-%EC%9D%BC-%EC%95%8C%EB%A6%BC/id6444939279'
+        link={REMINDER_APPSTORE_LINK}
         icon={<IconReminderLogo24 />}
         name='리마인더 iOS 앱'
       />
@@ -66,12 +67,7 @@ type Props = {
 
 export const AuthorAppLink: FC<Props> = ({ link, icon, name }) => {
   return (
-    <a
-      className={styles.yoonseul__link}
-      href={link}
-      target='_blank'
-      rel='noreferrer'
-    >
+    <a className={styles.link} href={link} target='_blank' rel='noreferrer'>
       <div className={styles.left}>
         <div className={styles.logo}>{icon}</div>
         <p>{name}</p>
