@@ -36,7 +36,3 @@ export default function BottomFloatingButton() {
     </a>
   );
 }
-
-//
-// 아래는 '작은 앱 프로젝트' return
-//
