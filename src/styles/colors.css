@@ -18,6 +18,8 @@
 
   /* common */
   --bw: #fff;
+  --white: #fff;
+  --black: #000;
 }
 
 [data-theme='dark'] {
@@ -39,6 +41,8 @@
 
   /* common */
   --bw: #000;
+  --white: #fff;
+  --black: #000;
 }
 
 ::selection {
@@ -57,3 +61,19 @@
 
 /* --g7: 약한 버튼 색, 코드 블럭 색 --g8과 계층 구조 만드는 색*/
 /* --g8: 배경색 */
+
+/**
+ *
+ *
+ * Core Design System - Custom Button Color
+ *
+ *
+ */
+
+:root {
+  /* 임시, 오른쪽 항을 색이 준비되면 'var(--primary7)'로 바꾸기 */
+  --fill-button-color: var(--p1);
+  --fill-button-label-color: var(--white);
+  --line-button-color: var(--p1);
+  --line-button-label-color: var(--p1);
+}
