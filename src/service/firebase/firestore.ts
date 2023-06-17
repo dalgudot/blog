@@ -11,6 +11,7 @@ import {
   WithFieldValue,
   query,
   orderBy,
+  deleteDoc,
 } from 'firebase/firestore';
 import { IPostData } from '../../redux-toolkit/model/post-data-model';
 import { db } from './config';
@@ -135,4 +136,12 @@ export const updateTimestamp = async (
   await updateDoc(docRef, {
     serverTimestamp: serverTimestamp(),
   });
+};
+
+export const deleteDataToFireStoreDB = async (
+  dbCollection: string,
+  dbDocument: string
+) => {
+  // deleteDoc() - 문서 삭제 API
+  await deleteDoc(doc(db, dbCollection, dbDocument));
 };
