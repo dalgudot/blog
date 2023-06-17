@@ -72,8 +72,8 @@
 
 :root {
   /* 임시, 오른쪽 항을 색이 준비되면 'var(--primary7)'로 바꾸기 */
-  --fill-button-color: var(--p1);
+  --fill-button-color: var(--g7);
   --fill-button-label-color: var(--white);
-  --line-button-color: var(--p1);
-  --line-button-label-color: var(--p1);
+  --line-button-color: var(--g1);
+  --line-button-label-color: var(--g1);
 }

@@ -77,6 +77,12 @@ $modal__z__index: 12;
   left: 4vw;
 }
 
+.admin__button__left__2 {
+  @include admin__button;
+  left: 8.6vw;
+  background-color: #ee321d;
+}
+
 .admin__button__right {
   @include admin__button;
   right: 4vw;
