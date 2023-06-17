@@ -17,6 +17,7 @@ import {
   getDraftByOrder,
   getEachAllCollectionDataArray,
   saveDataToFireStoreDB,
+  deleteDataToFireStoreDB,
 } from '../../service/firebase/firestore';
 
 const DraftWriting: NextPage = () => {
@@ -71,18 +72,32 @@ const DraftWriting: NextPage = () => {
       : router.push('/[category]/[order]', `/${category}/${newPathOrder}`);
   };
 
+  const deletePostToFireStoreDB = async () => {
+    if (confirm('정말 삭제하시겠습니까?')) {
+      await deleteDataToFireStoreDB(draftCollectionRefName, draftOrder);
+      showToast('서버에서 삭제 완료');
+      router.push('/draft/list');
+    }
+  };
+
   // console.log('post', post.wysiwygDataArray);
   // console.log('tempPost', tempPost);
 
   return (
     <>
       {isAdmin && <Post contentEditable={isAdmin} postData={post} />}
-
       <button
         onClick={tempSaveDataToFireStoreDB}
         className='admin__button__left'
       >
         저장
+      </button>
+
+      <button
+        onClick={deletePostToFireStoreDB}
+        className='admin__button__left__2'
+      >
+        삭제
       </button>
 
       <button onClick={publishPost} className='admin__button__right'>
