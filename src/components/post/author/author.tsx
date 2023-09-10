@@ -51,7 +51,7 @@ const Author: FC = () => {
       <AuthorAppLink
         link={REMINDER_APPSTORE_LINK}
         icon={<IconReminderLogo24 />}
-        name='리마인더 iOS 앱'
+        name='리마인더'
       />
     </section>
   );
