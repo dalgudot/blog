@@ -39,6 +39,11 @@ const Post: FC<Props> = ({
     post_title: postData.title,
   });
 
+  // 2023.09.16 Funnel 관찰 위해 하나의 이벤트로 수집
+  useMixpanelTrack(`view_post`, {
+    post_title: postData.title,
+  });
+
   return (
     <main className={styles.post__main}>
       <Article
