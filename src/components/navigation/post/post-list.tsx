@@ -29,7 +29,8 @@ const PostList: FC<Props> = ({
       ? devPostListData
       : allPostsListData;
 
-  const showBrunchList: boolean = pathname === '/' || asPath === '/design';
+  const showBrunchShareDesignList: boolean =
+    pathname === '/' || asPath === '/design';
 
   return (
     <>
@@ -47,7 +48,7 @@ const PostList: FC<Props> = ({
                 status={list.status}
               />
             ))}
-            {showBrunchList &&
+            {showBrunchShareDesignList &&
               brunchShareDesignList.map((list) => (
                 <BrunchList
                   key={list.title}
