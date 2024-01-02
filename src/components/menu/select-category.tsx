@@ -3,6 +3,7 @@ import { useGetClientTempPostData } from '../../lib/hooks/useGetClientTempPostDa
 import { setTempPostCategory } from '../../redux-toolkit/slices/temp-post-slice';
 import { useAppDispatch } from '../../redux-toolkit/store';
 import {
+  brandCollectionRefName,
   designCollectionRefName,
   devCollectionRefName,
   storyCollectionRefName,
@@ -23,6 +24,7 @@ const SelectCategory: FC = () => {
         <option value={designCollectionRefName}>design</option>
         <option value={devCollectionRefName}>dev</option>
         <option value={storyCollectionRefName}>story</option>
+        <option value={brandCollectionRefName}>brand</option>
       </select>
 
       <style jsx>{`
