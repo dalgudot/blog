@@ -11,12 +11,14 @@ import { TListData } from '../../../pages';
 type Props = {
   designPostListData: TListData;
   devPostListData: TListData;
+  brandPostListData: TListData;
   allPostsListData: TListData;
 };
 
 const PostList: FC<Props> = ({
   designPostListData,
   devPostListData,
+  brandPostListData,
   allPostsListData,
 }) => {
   const router = useRouter();
@@ -27,6 +29,8 @@ const PostList: FC<Props> = ({
       ? designPostListData
       : asPath === '/dev'
       ? devPostListData
+      : asPath === '/brand'
+      ? brandPostListData
       : allPostsListData;
 
   const showBrunchShareDesignList: boolean =
@@ -76,6 +80,7 @@ const CategoryFilter: FC<CategoryFilterProps> = ({ pathname, asPath }) => {
     { href: '/', label: '모두' },
     { href: '/design', label: '디자인' },
     { href: '/dev', label: '개발' },
+    { href: '/brand', label: '브랜드' },
   ];
   const listClassname = (href: string) => {
     return classNames(

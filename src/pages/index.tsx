@@ -4,6 +4,7 @@ import { useMixpanelTrack } from '../lib/hooks/useMixpanelTrack';
 import { useUpdateVisitors } from '../lib/hooks/useUpdateVisitors';
 import { TStatus } from '../redux-toolkit/model/post-data-model';
 import {
+  brandCollectionRefName,
   designCollectionRefName,
   devCollectionRefName,
   getEachAllCollectionDataArray,
@@ -20,12 +21,14 @@ export type TListData = {
 type Props = {
   designPostListData: TListData;
   devPostListData: TListData;
+  brandPostListData: TListData;
   allPostsListData: TListData;
 };
 
 const Index: NextPage<Props> = ({
   designPostListData,
   devPostListData,
+  brandPostListData,
   allPostsListData,
 }) => {
   useUpdateVisitors();
@@ -35,6 +38,7 @@ const Index: NextPage<Props> = ({
     <PostList
       designPostListData={designPostListData}
       devPostListData={devPostListData}
+      brandPostListData={brandPostListData}
       allPostsListData={allPostsListData}
     />
   );
@@ -47,7 +51,8 @@ export const getStaticProps = async () => {
     designCollectionRefName
   );
   const devPost = await getEachAllCollectionDataArray(devCollectionRefName);
-  const allPosts = designPost.concat(devPost);
+  const brandPost = await getEachAllCollectionDataArray(brandCollectionRefName);
+  const allPosts = designPost.concat(devPost).concat(brandPost);
 
   const designPostListData = designPost.map((post) => ({
     category: post.category,
@@ -58,6 +63,14 @@ export const getStaticProps = async () => {
   }));
 
   const devPostListData = devPost.map((post) => ({
+    category: post.category,
+    order: post.order,
+    title: post.title,
+    dateTime: post.dateTime,
+    status: post.status,
+  }));
+
+  const brandPostListData = brandPost.map((post) => ({
     category: post.category,
     order: post.order,
     title: post.title,
@@ -83,6 +96,7 @@ export const getStaticProps = async () => {
     props: {
       designPostListData,
       devPostListData,
+      brandPostListData,
       allPostsListData,
     },
   };

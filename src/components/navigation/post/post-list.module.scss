@@ -19,6 +19,7 @@
   margin: 96px auto 0;
   max-width: common.$list__max__width;
   display: flex;
+  gap: 12px;
 
   @media screen and (max-width: common.$post__list__media__max__width) {
     padding: common.$main__layout__padding;
@@ -36,14 +37,6 @@
     @media screen and (max-width: text-styles.$text__second__max__width) {
       padding: 6px 10px;
     }
-  }
-
-  a:nth-child(2) {
-    margin-left: 12px;
-  }
-
-  a:nth-child(3) {
-    margin-left: 12px;
   }
 }
 
