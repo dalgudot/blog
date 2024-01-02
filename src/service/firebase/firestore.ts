@@ -18,6 +18,7 @@ import { db } from './config';
 
 export const devCollectionRefName = 'dev';
 export const designCollectionRefName = 'design';
+export const brandCollectionRefName = 'brand';
 export const storyCollectionRefName = 'story';
 export const draftCollectionRefName = 'draft';
 
@@ -58,6 +59,10 @@ export const getAllCollectionDataArray = async () => {
     designCollectionRefName
   );
 
+  const brandDataArray = await getEachAllCollectionDataArray(
+    brandCollectionRefName
+  );
+
   const storyDataArray = await getEachAllCollectionDataArray(
     storyCollectionRefName
   );
@@ -65,6 +70,7 @@ export const getAllCollectionDataArray = async () => {
   const allCollectionDataArray = [
     ...devDataArray,
     ...designDataArray,
+    ...brandDataArray,
     ...storyDataArray,
   ];
 
