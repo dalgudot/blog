@@ -7,10 +7,16 @@ const Message: FC = () => {
   const query = router.query;
   const field = query.category === 'dev' ? '개발' : '디자인';
 
+  console.log(query.category);
+
   return (
     <section className={styles.message}>
       <span />
-      <p>{query.category !== 'story' && field} 경험을 공유합니다.</p>
+      <p>
+        {query.category === 'brand'
+          ? '작은 앱 프로젝트의 성장 과정을 공유합니다.'
+          : `${field} 경험을 공유합니다.`}
+      </p>
     </section>
   );
 };
