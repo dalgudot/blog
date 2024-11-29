@@ -9,8 +9,6 @@ import Share from './share/share';
 import Author from './author/author';
 import { TTableOfContentsData } from '../navigation/table-of-contents/table-of-contents';
 import Subscription from './subscription/subscription';
-import Sponsor from './sponsor/sponsor';
-import { useMixpanelTrack } from '../../lib/hooks/useMixpanelTrack';
 
 type Props = {
   contentEditable: boolean;
@@ -34,16 +32,6 @@ const Post: FC<Props> = ({
   const isPublishedPost = pathname === '/[category]/[order]';
   const query = router.query;
 
-  // 2023.03.18 Mount 이후 <Post />가 렌더링되기 때문에 여기서 이벤트를 수집해야 property인 post_title이 수집된다.
-  useMixpanelTrack(`view_${router.asPath}_page`, {
-    post_title: postData.title,
-  });
-
-  // 2023.09.16 Funnel 관찰 위해 하나의 이벤트로 수집
-  useMixpanelTrack(`view_post`, {
-    post_title: postData.title,
-  });
-
   return (
     <main className={styles.post__main}>
       <Article
@@ -58,7 +46,7 @@ const Post: FC<Props> = ({
 
       <Author />
 
-      {query.category == 'dev' && <Sponsor />}
+      {/* {query.category == 'dev' && <Sponsor />} */}
 
       <Subscription />
       {query.category !== 'story' && (

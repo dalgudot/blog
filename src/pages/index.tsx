@@ -1,6 +1,5 @@
 import { NextPage } from 'next';
 import PostList from '../components/navigation/post/post-list';
-import { useMixpanelTrack } from '../lib/hooks/useMixpanelTrack';
 import { useUpdateVisitors } from '../lib/hooks/useUpdateVisitors';
 import { TStatus } from '../redux-toolkit/model/post-data-model';
 import {
@@ -32,7 +31,6 @@ const Index: NextPage<Props> = ({
   allPostsListData,
 }) => {
   useUpdateVisitors();
-  useMixpanelTrack('view_index_page');
 
   return (
     <PostList
