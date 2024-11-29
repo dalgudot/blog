@@ -10,7 +10,6 @@
     "test": "jest --watchAll"
   },
   "dependencies": {
-    "@dalgu/core-design-system": "^0.0.22",
     "@dalgu/react-toast": "^1.2.6",
     "@dalgu/react-utility-hooks": "^0.1.3",
     "@emotion/react": "^11.11.1",

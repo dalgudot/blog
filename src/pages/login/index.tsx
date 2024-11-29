@@ -10,7 +10,6 @@ import {
   TproviderName,
 } from '../../service/firebase/authentication';
 import s from './login.module.scss';
-import { Button } from '@dalgu/core-design-system';
 
 const Login: NextPage = () => {
   const { isAdmin } = useIsAdmin();
@@ -50,12 +49,13 @@ const Login: NextPage = () => {
 
   return (
     <main className={s.alignment__center}>
-      <Button
-        label={isAdmin ? '로그아웃' : '구글로 로그인'}
+      <button
         onClick={() => {
           isAdmin ? onLogOut() : onLogIn('Google');
         }}
-      />
+      >
+        {isAdmin ? '로그아웃' : '구글로 로그인'}
+      </button>
     </main>
   );
 };
